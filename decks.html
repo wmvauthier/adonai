@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adonai Decks Meta</title>
+  <meta name="description" content="Meta decks de Adonai Card Game: arquétipos, força no meta, matchup spread, paginação e visão competitiva." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./generic.css" />
+  <link rel="stylesheet" href="./decks.css" />
+</head>
+<body>
+  <div class="page-noise" aria-hidden="true"></div>
+
+  <header class="site-header" id="siteHeader">
+    <a href="./index.html" class="brand" aria-label="Adonai Card Game">
+      <span class="brand-mark"></span>
+      <span class="brand-text">Adonai Card Game</span>
+    </a>
+
+    <button class="mobile-toggle" id="mobileToggle" aria-expanded="false" aria-controls="primaryNav">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="site-nav" id="primaryNav">
+      <a href="index.html" data-pt="Início" data-en="Home">Início</a>
+      <a href="how-to-play.html" data-pt="Como jogar" data-en="How to play">Como jogar</a>
+      <a href="cards.html" data-pt="Cartas" data-en="Cards">Cartas</a>
+      <a href="decks.html" data-pt="Decks" data-en="Decks">Decks</a>
+      <a href="#deckbuilder" data-pt="Deckbuilder" data-en="Deckbuilder">Deckbuilder</a>
+      <a href="gallery.html" data-pt="Galeria" data-en="Gallery">Galeria</a>
+      <a href="lore.html" data-pt="Lore" data-en="Lore">Lore</a>
+      <a href="#shop" data-pt="Loja" data-en="Shop">Loja</a>
+    </nav>
+
+    <div class="header-actions">
+      <div class="lang-switch" aria-label="Alternar idioma">
+        <button class="lang-btn is-active" data-lang="pt">PT</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="decks-hero" id="meta-overview">
+      <div class="decks-hero-media">
+        <img src="https://picsum.photos/seed/adonai-decks-meta/1800/1100" alt="Mesa competitiva com cartas em destaque" />
+        <div class="decks-hero-overlay"></div>
+      </div>
+
+      <div class="decks-hero-copy container">
+        <span class="eyebrow reveal" data-pt="Meta Competitivo" data-en="Competitive Meta">Meta Competitivo</span>
+        <h1 class="reveal stagger-1" data-pt="Os decks que definem o ritmo do formato." data-en="The decks shaping the pace of the format.">Os decks que definem o ritmo do formato.</h1>
+        <p class="reveal stagger-2" data-pt="Uma vitrine editorial para o meta: ranking por tier, pontos fortes, planos de jogo, matchups, shells e leitura estratégica para quem quer competir com consistência." data-en="An editorial showcase for the meta: tier ranking, strengths, game plans, matchups, shells, and strategic reads for players who want to compete consistently.">Uma vitrine editorial para o meta: ranking por tier, pontos fortes, planos de jogo, matchups, shells e leitura estratégica para quem quer competir com consistência.</p>
+        <div class="hero-actions reveal stagger-3">
+          <a href="#archetypes" class="btn btn-primary" data-pt="Explorar decks" data-en="Explore decks">Explorar decks</a>
+          <a href="#ranking" class="btn btn-secondary" data-pt="Ver ranking" data-en="View ranking">Ver ranking</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container meta-summary">
+      <div class="section-head reveal">
+        <span class="section-kicker" data-pt="Panorama" data-en="Overview">Panorama</span>
+        <h2 data-pt="Leitura rápida do formato para decisões de ladder, torneio e side planning." data-en="Quick read of the format for ladder, tournament, and side planning decisions.">Leitura rápida do formato para decisões de ladder, torneio e side planning.</h2>
+      </div>
+
+      <div class="summary-grid">
+        <article class="summary-card reveal">
+          <span class="summary-label" data-pt="Deck dominante" data-en="Top deck">Deck dominante</span>
+          <strong id="summaryTopDeck">—</strong>
+          <p id="summaryTopDeckText">—</p>
+        </article>
+        <article class="summary-card reveal stagger-1">
+          <span class="summary-label" data-pt="Meta pace" data-en="Meta pace">Meta pace</span>
+          <strong id="summaryMetaPace">—</strong>
+          <p id="summaryMetaPaceText">—</p>
+        </article>
+        <article class="summary-card reveal stagger-2">
+          <span class="summary-label" data-pt="Melhor antimetagame" data-en="Best anti-meta">Melhor antimetagame</span>
+          <strong id="summaryAntiMeta">—</strong>
+          <p id="summaryAntiMetaText">—</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section container filters-section" id="archetypes">
+      <div class="section-head reveal">
+        <span class="section-kicker" data-pt="Arquétipos" data-en="Archetypes">Arquétipos</span>
+        <h2 data-pt="Filtre os decks mais fortes e navegue pelo meta com paginação." data-en="Filter the strongest decks and browse the meta with pagination.">Filtre os decks mais fortes e navegue pelo meta com paginação.</h2>
+      </div>
+
+      <div class="filters-shell reveal">
+        <div class="filters-grid">
+          <label class="filter-field search-field">
+            <span data-pt="Busca" data-en="Search">Busca</span>
+            <input type="search" id="searchInput" placeholder="Buscar deck, shell ou palavra-chave" />
+          </label>
+
+          <label class="filter-field">
+            <span data-pt="Tier" data-en="Tier">Tier</span>
+            <select id="tierFilter">
+              <option value="all" data-pt="Todos" data-en="All">Todos</option>
+              <option value="S">S</option>
+              <option value="A">A</option>
+              <option value="B">B</option>
+            </select>
+          </label>
+
+          <label class="filter-field">
+            <span data-pt="Estilo" data-en="Style">Estilo</span>
+            <select id="styleFilter">
+              <option value="all" data-pt="Todos" data-en="All">Todos</option>
+              <option value="Aggro">Aggro</option>
+              <option value="Midrange">Midrange</option>
+              <option value="Control">Control</option>
+              <option value="Combo">Combo</option>
+              <option value="Tempo">Tempo</option>
+            </select>
+          </label>
+
+          <label class="filter-field">
+            <span data-pt="Virtude-base" data-en="Core virtue">Virtude-base</span>
+            <select id="virtueFilter">
+              <option value="all" data-pt="Todas" data-en="All">Todas</option>
+              <option value="Fé">Fé</option>
+              <option value="Sabedoria">Sabedoria</option>
+              <option value="Justiça">Justiça</option>
+              <option value="Misericórdia">Misericórdia</option>
+            </select>
+          </label>
+
+          <label class="filter-field">
+            <span data-pt="Ordenar" data-en="Sort">Ordenar</span>
+            <select id="sortFilter">
+              <option value="power-desc" data-pt="Força do meta" data-en="Meta power">Força do meta</option>
+              <option value="matchup-desc" data-pt="Spread de matchup" data-en="Matchup spread">Spread de matchup</option>
+              <option value="speed-asc" data-pt="Curva mais rápida" data-en="Fastest curve">Curva mais rápida</option>
+              <option value="name-asc" data-pt="Nome" data-en="Name">Nome</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="filters-actions">
+          <div class="results-copy">
+            <strong id="resultsCount">0</strong>
+            <span id="resultsLabel" data-pt="decks encontrados" data-en="decks found">decks encontrados</span>
+          </div>
+          <button class="btn btn-secondary" id="resetFilters" type="button" data-pt="Limpar filtros" data-en="Clear filters">Limpar filtros</button>
+        </div>
+      </div>
+
+      <div class="decks-grid" id="decksGrid"></div>
+
+      <div class="pagination-shell reveal" id="ranking">
+        <button class="pagination-btn" id="prevPage" type="button">← <span data-pt="Anterior" data-en="Previous">Anterior</span></button>
+        <div class="pagination-status">
+          <strong id="pageIndicator">1 / 1</strong>
+          <span id="rangeIndicator">—</span>
+        </div>
+        <button class="pagination-btn" id="nextPage" type="button"><span data-pt="Próxima" data-en="Next">Próxima</span> →</button>
+      </div>
+    </section>
+  </main>
+
+  <aside class="deck-drawer" id="deckDrawer" aria-hidden="true">
+    <div class="deck-drawer-backdrop" id="deckDrawerBackdrop"></div>
+    <div class="deck-drawer-panel">
+      <button class="drawer-close" id="drawerClose" type="button" aria-label="Fechar">×</button>
+      <div class="deck-drawer-scroll" id="drawerContent"></div>
+    </div>
+  </aside>
+
+  <script src="./decks.js"></script>
+</body>
+</html>

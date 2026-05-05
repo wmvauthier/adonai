@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adonai Card Game — Como Jogar</title>
+  <meta name="description" content="Guia visual e editorial com fundamentos, tipos de carta, estrutura de turno, zonas e regras essenciais de Adonai Card Game.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./generic.css">
+  <link rel="stylesheet" href="./how-to-play.css">
+</head>
+<body>
+  <div class="page-noise" aria-hidden="true"></div>
+
+  <header class="site-header" id="siteHeader">
+    <a href="./index.html" class="brand" aria-label="Adonai Card Game">
+      <span class="brand-mark"></span>
+      <span class="brand-text">Adonai Card Game</span>
+    </a>
+
+    <button class="mobile-toggle" id="mobileToggle" aria-expanded="false" aria-controls="primaryNav" aria-label="Abrir menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="site-nav" id="primaryNav">
+      <a href="index.html" data-pt="Início" data-en="Home">Início</a>
+      <a href="how-to-play.html" data-pt="Como jogar" data-en="How to play">Como jogar</a>
+      <a href="cards.html" data-pt="Cartas" data-en="Cards">Cartas</a>
+      <a href="decks.html" data-pt="Decks" data-en="Decks">Decks</a>
+      <a href="#deckbuilder" data-pt="Deckbuilder" data-en="Deckbuilder">Deckbuilder</a>
+      <a href="gallery.html" data-pt="Galeria" data-en="Gallery">Galeria</a>
+      <a href="lore.html" data-pt="Lore" data-en="Lore">Lore</a>
+      <a href="#shop" data-pt="Loja" data-en="Shop">Loja</a>
+    </nav>
+
+    <div class="header-actions">
+      <div class="lang-switch" aria-label="Alternar idioma">
+        <button class="lang-btn is-active" data-lang="pt">PT</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="rules-hero" id="home">
+      <div class="rules-hero-media">
+        <img src="https://picsum.photos/seed/adonai-how-to-play/1800/1100" alt="Mesa ritual com cartas e iluminação dourada">
+        <div class="rules-hero-overlay"></div>
+      </div>
+
+      <div class="rules-hero-copy container">
+        <span class="eyebrow reveal" data-pt="Guia de jogo" data-en="Game guide">Guia de jogo</span>
+        <h1 class="reveal stagger-1" data-pt="Aprenda o fluxo da partida, leia a mesa e jogue com clareza." data-en="Learn the match flow, read the board, and play with clarity.">
+          Aprenda o fluxo da partida, leia a mesa e jogue com clareza.
+        </h1>
+        <p class="reveal stagger-2" data-pt="Esta página organiza os fundamentos de Adonai em uma leitura editorial: objetivo, tipos de carta, zonas, turnos e princípios de resolução para que a experiência continue premium sem parecer documentação fria." data-en="This page organizes Adonai's fundamentals into an editorial reading: objective, card types, zones, turns, and resolution principles so the experience remains premium without feeling like cold documentation.">
+          Esta página organiza os fundamentos de Adonai em uma leitura editorial: objetivo, tipos de carta, zonas, turnos e princípios de resolução para que a experiência continue premium sem parecer documentação fria.
+        </p>
+
+        <div class="hero-actions reveal stagger-3">
+          <a class="btn btn-primary" href="#gameFoundations" data-pt="Ver fundamentos" data-en="View fundamentals">Ver fundamentos</a>
+          <a class="btn btn-secondary" href="#turnFlow" data-pt="Ler os turnos" data-en="Read turn flow">Ler os turnos</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container" id="gameFoundations">
+      <div class="section-head reveal">
+        <span class="section-kicker" data-pt="Fundamentos" data-en="Foundations">Fundamentos</span>
+        <h2 data-pt="A estrutura central da partida apresentada como visão de mesa." data-en="The core structure of a match presented as a table view.">
+          A estrutura central da partida apresentada como visão de mesa.
+        </h2>
+        <p data-pt="Antes de detalhar cartas e turnos, esta camada resume o que cada jogador está tentando fazer: administrar recursos, estabelecer presença, responder no tempo certo e conduzir a partida até a condição de vitória." data-en="Before detailing cards and turns, this layer summarizes what each player is trying to do: manage resources, establish presence, answer at the right time, and steer the game toward the win condition.">
+          Antes de detalhar cartas e turnos, esta camada resume o que cada jogador está tentando fazer: administrar recursos, estabelecer presença, responder no tempo certo e conduzir a partida até a condição de vitória.
+        </p>
+      </div>
+
+      <div class="rules-summary-grid">
+        <article class="summary-panel reveal tilt-card">
+          <span class="summary-label" data-pt="Objetivo" data-en="Objective">Objetivo</span>
+          <strong data-pt="Reduzir a essência do oponente até a ruptura final." data-en="Reduce the opponent's essence until the final break.">Reduzir a essência do oponente até a ruptura final.</strong>
+          <p data-pt="Cada decisão de mesa deve aproximar você do fechamento: pressão constante, valor acumulado ou preparação de um turno decisivo." data-en="Every board decision should move you toward closing the match: constant pressure, accumulated value, or preparing a decisive turn.">
+            Cada decisão de mesa deve aproximar você do fechamento: pressão constante, valor acumulado ou preparação de um turno decisivo.
+          </p>
+        </article>
+
+        <article class="summary-panel reveal stagger-1 tilt-card">
+          <span class="summary-label" data-pt="Ritmo" data-en="Rhythm">Ritmo</span>
+          <strong data-pt="A partida alterna construção, disputa e resolução." data-en="The match alternates between setup, dispute, and resolution.">A partida alterna construção, disputa e resolução.</strong>
+          <p data-pt="Adonar recompensa leitura de sequência: quando expandir, quando segurar recursos e quando transformar vantagem em dano efetivo." data-en="Adonar rewards sequence reading: when to expand, when to hold resources, and when to convert advantage into effective damage.">
+            Adonar recompensa leitura de sequência: quando expandir, quando segurar recursos e quando transformar vantagem em dano efetivo.
+          </p>
+        </article>
+
+        <article class="summary-panel reveal stagger-2 tilt-card">
+          <span class="summary-label" data-pt="Condição de jogo" data-en="Game condition">Condição de jogo</span>
+          <strong data-pt="Mesa, mão e cemitério precisam conversar entre si." data-en="Board, hand, and discard must speak to each other.">Mesa, mão e cemitério precisam conversar entre si.</strong>
+          <p data-pt="As linhas mais fortes surgem quando suas cartas trocam valor entre zonas e mantêm o deck funcionando além do turno atual." data-en="The strongest lines emerge when your cards exchange value across zones and keep the deck functioning beyond the current turn.">
+            As linhas mais fortes surgem quando suas cartas trocam valor entre zonas e mantêm o deck funcionando além do turno atual.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section rules-layout-shell" id="turnFlow">
+      <div class="container rules-layout-grid">
+        <div class="rules-layout-media reveal">
+          <img src="https://picsum.photos/seed/adonai-board-guide/1100/1400" alt="Tabuleiro com zonas do jogo em destaque">
+        </div>
+
+        <div class="rules-layout-copy">
+          <div class="rules-sticky-copy reveal">
+            <span class="section-kicker" data-pt="Estrutura de turno" data-en="Turn structure">Estrutura de turno</span>
+            <h2 data-pt="Cinco momentos claros para organizar a tomada de decisão." data-en="Five clear moments to organize decision making.">
+              Cinco momentos claros para organizar a tomada de decisão.
+            </h2>
+            <p data-pt="O turno deve ser entendido como uma escada de prioridade. Em vez de pensar apenas em “jogar cartas”, o ideal é enxergar janelas: preparação, compra, desenvolvimento, confronto e encerramento." data-en="A turn should be understood as a priority ladder. Instead of thinking only about “playing cards,” the ideal is to see windows: preparation, draw, development, confrontation, and end step.">
+              O turno deve ser entendido como uma escada de prioridade. Em vez de pensar apenas em “jogar cartas”, o ideal é enxergar janelas: preparação, compra, desenvolvimento, confronto e encerramento.
+            </p>
+
+            <div class="turn-flow-stack" id="turnFlowStack">
+              <article class="turn-step is-active" data-step="1">
+                <span class="turn-step-index">01</span>
+                <div>
+                  <h3 data-pt="Preparação" data-en="Preparation">Preparação</h3>
+                  <p data-pt="Desvire permanentes, restaure estados temporários e resolva efeitos que acontecem no início do turno." data-en="Ready permanents, restore temporary states, and resolve effects that happen at the start of the turn.">Desvire permanentes, restaure estados temporários e resolva efeitos que acontecem no início do turno.</p>
+                </div>
+              </article>
+              <article class="turn-step" data-step="2">
+                <span class="turn-step-index">02</span>
+                <div>
+                  <h3 data-pt="Compra" data-en="Draw">Compra</h3>
+                  <p data-pt="Compre a carta do turno e atualize suas linhas possíveis antes de se comprometer com qualquer recurso." data-en="Draw your turn card and update your possible lines before committing any resource.">Compre a carta do turno e atualize suas linhas possíveis antes de se comprometer com qualquer recurso.</p>
+                </div>
+              </article>
+              <article class="turn-step" data-step="3">
+                <span class="turn-step-index">03</span>
+                <div>
+                  <h3 data-pt="Desenvolvimento" data-en="Development">Desenvolvimento</h3>
+                  <p data-pt="Baixe cartas, expanda presença e posicione ameaças sem abrir brechas desnecessárias para a resposta adversária." data-en="Play cards, expand presence, and position threats without opening unnecessary windows for the opponent's answer.">Baixe cartas, expanda presença e posicione ameaças sem abrir brechas desnecessárias para a resposta adversária.</p>
+                </div>
+              </article>
+              <article class="turn-step" data-step="4">
+                <span class="turn-step-index">04</span>
+                <div>
+                  <h3 data-pt="Confronto" data-en="Confrontation">Confronto</h3>
+                  <p data-pt="Declare ataques, ative habilidades e resolva a troca de pressão, proteção e dano na ordem correta." data-en="Declare attacks, activate abilities, and resolve the exchange of pressure, protection, and damage in the correct order.">Declare ataques, ative habilidades e resolva a troca de pressão, proteção e dano na ordem correta.</p>
+                </div>
+              </article>
+              <article class="turn-step" data-step="5">
+                <span class="turn-step-index">05</span>
+                <div>
+                  <h3 data-pt="Encerramento" data-en="End step">Encerramento</h3>
+                  <p data-pt="Cheque limites, descarte excedentes se necessário e finalize efeitos “até o fim do turno”." data-en="Check limits, discard excess if needed, and finish “until end of turn” effects.">Cheque limites, descarte excedentes se necessário e finalize efeitos “até o fim do turno”.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container" id="cardFamilies">
+      <div class="section-head reveal">
+        <span class="section-kicker" data-pt="Tipos de carta" data-en="Card types">Tipos de carta</span>
+        <h2 data-pt="Quatro famílias centrais para compor identidade, pressão e resposta." data-en="Four core families to shape identity, pressure, and answers.">
+          Quatro famílias centrais para compor identidade, pressão e resposta.
+        </h2>
+        <p data-pt="Os tipos abaixo seguem a linguagem já estabelecida no universo do jogo. Eles podem ganhar novas subclasses no futuro, mas a leitura-base da mesa continua estável e fácil de expandir." data-en="The types below follow the language already established in the game's universe. They may gain new subclasses in the future, but the base board reading remains stable and easy to expand.">
+          Os tipos abaixo seguem a linguagem já estabelecida no universo do jogo. Eles podem ganhar novas subclasses no futuro, mas a leitura-base da mesa continua estável e fácil de expandir.
+        </p>
+      </div>
+
+      <div class="card-family-grid">
+        <article class="card-family reveal tilt-card">
+          <div class="card-family-top">
+            <span>01</span>
+            <strong data-pt="Herói" data-en="Hero">Herói</strong>
+          </div>
+          <p data-pt="Peça de assinatura que concentra presença, atributos e impacto contínuo. Normalmente define o plano principal do deck em campo." data-en="Signature piece that concentrates presence, stats, and ongoing impact. It usually defines the deck's primary plan on the board.">Peça de assinatura que concentra presença, atributos e impacto contínuo. Normalmente define o plano principal do deck em campo.</p>
+        </article>
+
+        <article class="card-family reveal stagger-1 tilt-card">
+          <div class="card-family-top">
+            <span>02</span>
+            <strong data-pt="Virtude" data-en="Virtue">Virtude</strong>
+          </div>
+          <p data-pt="Linha de identidade permanente do deck. Sustenta sinergias, melhora unidades e transforma pequenas vantagens em valor recorrente." data-en="The deck's permanent identity line. It sustains synergies, improves units, and turns small edges into recurring value.">Linha de identidade permanente do deck. Sustenta sinergias, melhora unidades e transforma pequenas vantagens em valor recorrente.</p>
+        </article>
+
+        <article class="card-family reveal stagger-2 tilt-card">
+          <div class="card-family-top">
+            <span>03</span>
+            <strong data-pt="Milagre" data-en="Miracle">Milagre</strong>
+          </div>
+          <p data-pt="Carta de impacto imediato para ruptura de ritmo, proteção, remoção ou explosão. Costuma decidir janelas críticas da partida." data-en="An immediate-impact card for tempo swings, protection, removal, or burst. It often decides critical windows of the match.">Carta de impacto imediato para ruptura de ritmo, proteção, remoção ou explosão. Costuma decidir janelas críticas da partida.</p>
+        </article>
+
+        <article class="card-family reveal stagger-3 tilt-card">
+          <div class="card-family-top">
+            <span>04</span>
+            <strong data-pt="Profecia" data-en="Prophecy">Profecia</strong>
+          </div>
+          <p data-pt="Ferramenta de previsão e preparação. Trabalha com informação, inevitabilidade e pressão de longo prazo sobre recursos e decisão adversária." data-en="A tool for foresight and setup. It works with information, inevitability, and long-term pressure on resources and opponent decisions.">Ferramenta de previsão e preparação. Trabalha com informação, inevitabilidade e pressão de longo prazo sobre recursos e decisão adversária.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section rules-band" id="battlefieldZones">
+      <div class="container rules-band-grid">
+        <div class="section-copy reveal">
+          <span class="section-kicker" data-pt="Zonas da mesa" data-en="Board zones">Zonas da mesa</span>
+          <h2 data-pt="Uma leitura limpa de onde cada carta vive, age e retorna." data-en="A clean reading of where each card lives, acts, and returns.">
+            Uma leitura limpa de onde cada carta vive, age e retorna.
+          </h2>
+          <p data-pt="Quando a página fala em “mesa”, ela separa espaços funcionais. Isso ajuda tanto na explicação para iniciantes quanto na futura evolução visual para deckbuilder, replays ou simulador." data-en="When the page talks about the “board,” it separates functional spaces. This helps both beginner explanations and future visual evolution into a deckbuilder, replay viewer, or simulator.">
+            Quando a página fala em “mesa”, ela separa espaços funcionais. Isso ajuda tanto na explicação para iniciantes quanto na futura evolução visual para deckbuilder, replays ou simulador.
+          </p>
+        </div>
+
+        <div class="zone-grid">
+          <article class="zone-card reveal tilt-card">
+            <span class="zone-card-label" data-pt="Mão" data-en="Hand">Mão</span>
+            <h3 data-pt="Reserva tática" data-en="Tactical reserve">Reserva tática</h3>
+            <p data-pt="Espaço de opções ocultas. Aqui você administra timing, blefes e preparo para o próximo ciclo de prioridade." data-en="The space of hidden options. Here you manage timing, bluffs, and preparation for the next priority cycle.">Espaço de opções ocultas. Aqui você administra timing, blefes e preparo para o próximo ciclo de prioridade.</p>
+          </article>
+
+          <article class="zone-card reveal stagger-1 tilt-card">
+            <span class="zone-card-label" data-pt="Mesa" data-en="Board">Mesa</span>
+            <h3 data-pt="Presença e disputa" data-en="Presence and contest">Presença e disputa</h3>
+            <p data-pt="Local onde suas cartas manifestam pressão, bloqueio, buffs e efeitos permanentes de leitura aberta." data-en="The place where your cards manifest pressure, blocking, buffs, and permanent open-information effects.">Local onde suas cartas manifestam pressão, bloqueio, buffs e efeitos permanentes de leitura aberta.</p>
+          </article>
+
+          <article class="zone-card reveal stagger-2 tilt-card">
+            <span class="zone-card-label" data-pt="Cemitério" data-en="Discard">Cemitério</span>
+            <h3 data-pt="Memória do duelo" data-en="Memory of the duel">Memória do duelo</h3>
+            <p data-pt="Zona de cartas usadas ou destruídas. Também serve como recurso para estratégias de retorno, contagem e inevitabilidade." data-en="The zone of used or destroyed cards. It also serves as a resource for recursion, counting, and inevitability strategies.">Zona de cartas usadas ou destruídas. Também serve como recurso para estratégias de retorno, contagem e inevitabilidade.</p>
+          </article>
+
+          <article class="zone-card reveal stagger-3 tilt-card">
+            <span class="zone-card-label" data-pt="Deck" data-en="Deck">Deck</span>
+            <h3 data-pt="Fonte de progressão" data-en="Source of progression">Fonte de progressão</h3>
+            <p data-pt="Motor estrutural da partida. Comprar, filtrar e proteger o topo do deck altera a qualidade das suas próximas janelas." data-en="The structural engine of the match. Drawing, filtering, and protecting the top of the deck changes the quality of your next windows.">Motor estrutural da partida. Comprar, filtrar e proteger o topo do deck altera a qualidade das suas próximas janelas.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container" id="rulesAccordion">
+      <div class="section-head reveal">
+        <span class="section-kicker" data-pt="Regras essenciais" data-en="Essential rules">Regras essenciais</span>
+        <h2 data-pt="Uma camada rápida para esclarecer dúvidas sem sair do fluxo visual." data-en="A quick layer to clarify questions without leaving the visual flow.">
+          Uma camada rápida para esclarecer dúvidas sem sair do fluxo visual.
+        </h2>
+      </div>
+
+      <div class="rules-faq-shell reveal">
+        <article class="rule-item is-open">
+          <button class="rule-trigger" type="button" aria-expanded="true">
+            <span data-pt="Como uma partida começa?" data-en="How does a match begin?">Como uma partida começa?</span>
+            <strong>+</strong>
+          </button>
+          <div class="rule-content">
+            <p data-pt="Cada jogador embaralha o deck, compra a mão inicial e prepara sua mesa inicial de acordo com os parâmetros do formato. Depois disso, o primeiro turno começa com a etapa de preparação." data-en="Each player shuffles the deck, draws an opening hand, and prepares the initial table setup according to the format's parameters. After that, the first turn begins with the preparation step.">Cada jogador embaralha o deck, compra a mão inicial e prepara sua mesa inicial de acordo com os parâmetros do formato. Depois disso, o primeiro turno começa com a etapa de preparação.</p>
+          </div>
+        </article>
+
+        <article class="rule-item">
+          <button class="rule-trigger" type="button" aria-expanded="false">
+            <span data-pt="Quando efeitos entram na pilha de resolução?" data-en="When do effects enter the resolution stack?">Quando efeitos entram na pilha de resolução?</span>
+            <strong>+</strong>
+          </button>
+          <div class="rule-content">
+            <p data-pt="Sempre que uma carta ou habilidade cria uma resposta imediata ou contestável, ela entra na ordem de resolução da janela atual. A recomendação visual desta página é pensar na pilha como a “ordem sagrada” dos acontecimentos." data-en="Whenever a card or ability creates an immediate or contestable response, it enters the resolution order of the current window. This page's visual recommendation is to think of the stack as the “sacred order” of events.">Sempre que uma carta ou habilidade cria uma resposta imediata ou contestável, ela entra na ordem de resolução da janela atual. A recomendação visual desta página é pensar na pilha como a “ordem sagrada” dos acontecimentos.</p>
+          </div>
+        </article>
+
+        <article class="rule-item">
+          <button class="rule-trigger" type="button" aria-expanded="false">
+            <span data-pt="O que acontece quando uma carta é destruída?" data-en="What happens when a card is destroyed?">O que acontece quando uma carta é destruída?</span>
+            <strong>+</strong>
+          </button>
+          <div class="rule-content">
+            <p data-pt="A carta deixa a mesa e vai para o cemitério, a menos que algum efeito de substituição altere esse destino. Quaisquer gatilhos de saída devem ser lidos e resolvidos a partir dessa mudança de zona." data-en="The card leaves the board and goes to the discard zone unless a replacement effect changes that destination. Any leave-play triggers should be read and resolved from that zone change.">A carta deixa a mesa e vai para o cemitério, a menos que algum efeito de substituição altere esse destino. Quaisquer gatilhos de saída devem ser lidos e resolvidos a partir dessa mudança de zona.</p>
+          </div>
+        </article>
+
+        <article class="rule-item">
+          <button class="rule-trigger" type="button" aria-expanded="false">
+            <span data-pt="Como vencer com consistência?" data-en="How do you win consistently?">Como vencer com consistência?</span>
+            <strong>+</strong>
+          </button>
+          <div class="rule-content">
+            <p data-pt="Em vez de pensar apenas em dano bruto, tente manter o seu plano vivo por mais turnos do que o adversário consegue responder. Consistência em Adonar vem de sequência, densidade de função e uso correto das zonas." data-en="Instead of thinking only about raw damage, try to keep your plan alive for more turns than the opponent can answer. Consistency in Adonar comes from sequencing, functional density, and correct use of zones.">Em vez de pensar apenas em dano bruto, tente manter o seu plano vivo por mais turnos do que o adversário consegue responder. Consistência em Adonar vem de sequência, densidade de função e uso correto das zonas.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <span class="footer-brand">Adonai Card Game</span>
+        <p data-pt="Página de regras com direção premium, pronta para evoluir para exemplos de partida, glossário de palavras-chave e tutoriais por arquétipo." data-en="Rules page with a premium direction, ready to evolve into match examples, a keyword glossary, and archetype-specific tutorials.">
+          Página de regras com direção premium, pronta para evoluir para exemplos de partida, glossário de palavras-chave e tutoriais por arquétipo.
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <a href="#home" data-pt="Topo" data-en="Top">Topo</a>
+        <a href="#gameFoundations" data-pt="Fundamentos" data-en="Foundations">Fundamentos</a>
+        <a href="#turnFlow" data-pt="Turnos" data-en="Turns">Turnos</a>
+        <a href="#cardFamilies" data-pt="Tipos" data-en="Types">Tipos</a>
+        <a href="#battlefieldZones" data-pt="Zonas" data-en="Zones">Zonas</a>
+        <a href="#rulesAccordion" data-pt="Regras" data-en="Rules">Regras</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./how-to-play.js"></script>
+</body>
+</html>

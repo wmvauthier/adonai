@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adonai Card Game</title>
+  <meta name="description" content="Adonai Card Game — homepage premium inspirada em TCGs editoriais, com foco em universo, cartas, regras e comunidade." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="generic.css" />
+  <link rel="stylesheet" href="index.css" />
+</head>
+<body>
+  <div class="page-noise" aria-hidden="true"></div>
+
+  <header class="site-header" id="siteHeader">
+    <a href="#" class="brand" aria-label="Adonai Card Game">
+      <span class="brand-mark"></span>
+      <span class="brand-text">Adonai Card Game</span>
+    </a>
+
+    <button class="mobile-toggle" id="mobileToggle" aria-expanded="false" aria-controls="primaryNav">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="site-nav" id="primaryNav">
+      <a href="index.html" data-pt="Início" data-en="Home">Início</a>
+      <a href="how-to-play.html" data-pt="Como jogar" data-en="How to play">Como jogar</a>
+      <a href="cards.html" data-pt="Cartas" data-en="Cards">Cartas</a>
+      <a href="decks.html" data-pt="Decks" data-en="Decks">Decks</a>
+      <a href="#deckbuilder" data-pt="Deckbuilder" data-en="Deckbuilder">Deckbuilder</a>
+      <a href="gallery.html" data-pt="Galeria" data-en="Gallery">Galeria</a>
+      <a href="lore.html" data-pt="Lore" data-en="Lore">Lore</a>
+      <a href="#shop" data-pt="Loja" data-en="Shop">Loja</a>
+    </nav>
+
+    <div class="header-actions">
+      <div class="lang-switch" aria-label="Alternar idioma">
+        <button class="lang-btn is-active" data-lang="pt">PT</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-media">
+        <img src="https://picsum.photos/seed/adonai-hero/1600/980" alt="Arte conceitual placeholder" />
+        <div class="hero-overlay"></div>
+      </div>
+
+      <div class="hero-copy container">
+        <div class="eyebrow reveal" data-pt="Trading Card Game Premium" data-en="Premium Trading Card Game">Trading Card Game Premium</div>
+        <h1 class="reveal stagger-1" data-pt="Um universo sagrado.<br>Um duelo estratégico." data-en="A sacred universe.<br>A strategic duel.">
+          Um universo sagrado.<br>Um duelo estratégico.
+        </h1>
+        <p class="hero-text reveal stagger-2" data-pt="Conheça Adonai Card Game: um TCG épico com identidade editorial, atmosfera solene e profundidade competitiva." data-en="Discover Adonai Card Game: an epic TCG with editorial identity, solemn atmosphere, and competitive depth.">
+          Conheça Adonai Card Game: um TCG épico com identidade editorial, atmosfera solene e profundidade competitiva.
+        </p>
+        <div class="hero-actions reveal stagger-3">
+          <a href="#lore" class="btn btn-primary" data-pt="Conheça o universo" data-en="Discover the universe">Conheça o universo</a>
+          <a href="#cards" class="btn btn-secondary" data-pt="Ver cards" data-en="View cards">Ver cards</a>
+        </div>
+      </div>
+
+      <div class="hero-scroll-indicator reveal stagger-3">
+        <span></span>
+        <small data-pt="Role para explorar" data-en="Scroll to explore">Role para explorar</small>
+      </div>
+    </section>
+
+    <section class="feature-intro section container" id="lore">
+      <div class="section-grid">
+        <div class="section-copy reveal">
+          <span class="section-kicker" data-pt="Sobre o jogo" data-en="About the game">Sobre o jogo</span>
+          <h2 data-pt="Construído para quem ama atmosfera, deckbuilding e presença de mesa." data-en="Built for players who love atmosphere, deckbuilding, and table presence.">
+            Construído para quem ama atmosfera, deckbuilding e presença de mesa.
+          </h2>
+          <p data-pt="Esta homepage segue uma direção inspirada em sites editoriais de TCG premium: hero cinematográfico, respiros generosos, tipografia refinada e animações sutis. O conteúdo ainda é placeholder, mas a estrutura já prepara o projeto para regras, decklists, galeria de vídeos e posts de Instagram." data-en="This homepage follows a direction inspired by premium editorial TCG sites: cinematic hero, generous spacing, refined typography, and subtle animations. The content is still placeholder, but the structure is already prepared for rules, decklists, videos, and Instagram posts.">
+            Esta homepage segue uma direção inspirada em sites editoriais de TCG premium: hero cinematográfico, respiros generosos, tipografia refinada e animações sutis. O conteúdo ainda é placeholder, mas a estrutura já prepara o projeto para regras, decklists, galeria de vídeos e posts de Instagram.
+          </p>
+        </div>
+
+        <div class="floating-cards reveal stagger-1" aria-label="Mock cards">
+          <article class="floating-card tilt-card">
+            <img src="https://picsum.photos/seed/adonai-card-1/520/720" alt="Card placeholder 1">
+            <div class="floating-card-caption">
+              <strong>Virtude da Luz</strong>
+              <span>Hero / Placeholder</span>
+            </div>
+          </article>
+          <article class="floating-card tilt-card offset">
+            <img src="https://picsum.photos/seed/adonai-card-2/520/720" alt="Card placeholder 2">
+            <div class="floating-card-caption">
+              <strong>Chamado do Reino</strong>
+              <span>Miracle / Placeholder</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section split-showcase" id="how-to-play">
+      <div class="split-media reveal">
+        <img src="https://picsum.photos/seed/adonai-board/1100/1400" alt="Mesa e ambientação placeholder">
+      </div>
+      <div class="split-copy">
+        <div class="sticky-copy reveal">
+          <span class="section-kicker" data-pt="Como jogar" data-en="How to play">Como jogar</span>
+          <h2 data-pt="Camadas estratégicas, leitura de mesa e arquétipos com identidade." data-en="Strategic layers, board reading, and identity-driven archetypes.">
+            Camadas estratégicas, leitura de mesa e arquétipos com identidade.
+          </h2>
+          <p data-pt="A estrutura já deixa espaço para explicar setup, turnos, recursos, zonas, vitórias e exemplos de deckbuilding. O layout foi pensado para receber guias, vídeos explicativos e deck techs sem perder o aspecto premium." data-en="The structure already leaves space to explain setup, turns, resources, zones, win conditions, and deckbuilding examples. The layout was designed to support guides, tutorial videos, and deck techs without losing its premium feel.">
+            A estrutura já deixa espaço para explicar setup, turnos, recursos, zonas, vitórias e exemplos de deckbuilding. O layout foi pensado para receber guias, vídeos explicativos e deck techs sem perder o aspecto premium.
+          </p>
+
+          <div class="bullet-panels">
+            <article class="info-panel reveal">
+              <span class="info-number">01</span>
+              <h3 data-pt="Aprenda o fluxo" data-en="Learn the flow">Aprenda o fluxo</h3>
+              <p data-pt="Preparação, compra, ações e resolução em blocos claros." data-en="Setup, draw, actions, and resolution in clear phases.">Preparação, compra, ações e resolução em blocos claros.</p>
+            </article>
+            <article class="info-panel reveal stagger-1">
+              <span class="info-number">02</span>
+              <h3 data-pt="Entenda os arquétipos" data-en="Understand archetypes">Entenda os arquétipos</h3>
+              <p data-pt="Controle, pressão, valor e sinergias temáticas." data-en="Control, pressure, value, and thematic synergies.">Controle, pressão, valor e sinergias temáticas.</p>
+            </article>
+            <article class="info-panel reveal stagger-2">
+              <span class="info-number">03</span>
+              <h3 data-pt="Evolua seu deck" data-en="Improve your deck">Evolua seu deck</h3>
+              <p data-pt="Espaço ideal para decklists, techs e linhas de jogo." data-en="An ideal space for decklists, techs, and lines of play.">Espaço ideal para decklists, techs e linhas de jogo.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container" id="cards">
+      <div class="section-head reveal">
+        <span class="section-kicker" data-pt="Tipos de carta" data-en="Card types">Tipos de carta</span>
+        <h2 data-pt="Uma base pronta para organizar o ecossistema do jogo." data-en="A foundation ready to organize the game's ecosystem.">
+          Uma base pronta para organizar o ecossistema do jogo.
+        </h2>
+      </div>
+
+      <div class="type-grid">
+        <article class="type-card reveal tilt-card">
+          <div class="type-card-top">
+            <span>01</span>
+            <strong data-pt="Herói" data-en="Hero">Herói</strong>
+          </div>
+          <p data-pt="Unidades centrais que definem presença, papel e ritmo da partida." data-en="Core units that define presence, role, and match tempo.">Unidades centrais que definem presença, papel e ritmo da partida.</p>
+        </article>
+
+        <article class="type-card reveal stagger-1 tilt-card">
+          <div class="type-card-top">
+            <span>02</span>
+            <strong data-pt="Virtude" data-en="Virtue">Virtude</strong>
+          </div>
+          <p data-pt="Cartas de identidade e valor contínuo que moldam o deck." data-en="Identity and ongoing value cards that shape your deck.">Cartas de identidade e valor contínuo que moldam o deck.</p>
+        </article>
+
+        <article class="type-card reveal stagger-2 tilt-card">
+          <div class="type-card-top">
+            <span>03</span>
+            <strong data-pt="Milagre" data-en="Miracle">Milagre</strong>
+          </div>
+          <p data-pt="Respostas impactantes e momentos de virada." data-en="Impactful responses and swing-turn moments.">Respostas impactantes e momentos de virada.</p>
+        </article>
+
+        <article class="type-card reveal stagger-3 tilt-card">
+          <div class="type-card-top">
+            <span>04</span>
+            <strong data-pt="Profecia" data-en="Prophecy">Profecia</strong>
+          </div>
+          <p data-pt="Planejamento, previsão e pressão de longo prazo." data-en="Planning, foresight, and long-term pressure.">Planejamento, previsão e pressão de longo prazo.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section showcase-band">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="section-kicker" data-pt="Cards em destaque" data-en="Featured cards">Cards em destaque</span>
+          <h2 data-pt="Use estas áreas para mockar ilustrações, molduras e raridades." data-en="Use these areas to mock art, frames, and rarities.">
+            Use estas áreas para mockar ilustrações, molduras e raridades.
+          </h2>
+        </div>
+
+        <div class="showcase-grid">
+          <article class="showcase-card reveal tilt-card">
+            <img src="https://picsum.photos/seed/adonai-feature-1/700/900" alt="Card destaque 1">
+            <div class="showcase-card-copy">
+              <span>Hero / Signature</span>
+              <h3>Leão da Aurora</h3>
+            </div>
+          </article>
+
+          <article class="showcase-card reveal stagger-1 tilt-card">
+            <img src="https://picsum.photos/seed/adonai-feature-2/700/900" alt="Card destaque 2">
+            <div class="showcase-card-copy">
+              <span>Miracle / Rare</span>
+              <h3>Véu Rasgado</h3>
+            </div>
+          </article>
+
+          <article class="showcase-card reveal stagger-2 tilt-card">
+            <img src="https://picsum.photos/seed/adonai-feature-3/700/900" alt="Card destaque 3">
+            <div class="showcase-card-copy">
+              <span>Prophecy / Epic</span>
+              <h3>Coroa do Reino</h3>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container virtues-section">
+      <div class="section-head reveal">
+        <span class="section-kicker" data-pt="Virtudes" data-en="Virtues">Virtudes</span>
+        <h2 data-pt="Pilares que podem organizar facções, afinidades ou linhas de design." data-en="Pillars that can organize factions, affinities, or design lines.">
+          Pilares que podem organizar facções, afinidades ou linhas de design.
+        </h2>
+      </div>
+
+      <div class="virtue-grid">
+        <article class="virtue-block reveal">
+          <strong>Fé</strong>
+          <p data-pt="Convicção, sustentação e resistência." data-en="Conviction, sustain, and resilience.">Convicção, sustentação e resistência.</p>
+        </article>
+        <article class="virtue-block reveal stagger-1">
+          <strong>Sabedoria</strong>
+          <p data-pt="Preparação, previsão e valor incremental." data-en="Preparation, foresight, and incremental value.">Preparação, previsão e valor incremental.</p>
+        </article>
+        <article class="virtue-block reveal stagger-2">
+          <strong>Justiça</strong>
+          <p data-pt="Ordem, punição e equilíbrio estratégico." data-en="Order, punishment, and strategic balance.">Ordem, punição e equilíbrio estratégico.</p>
+        </article>
+        <article class="virtue-block reveal stagger-3">
+          <strong>Misericórdia</strong>
+          <p data-pt="Restauração, reversão e proteção." data-en="Restoration, reversal, and protection.">Restauração, reversão e proteção.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section container archetypes-section" id="rules">
+      <div class="editorial-panel reveal">
+        <div class="editorial-copy">
+          <span class="section-kicker" data-pt="Arquétipos" data-en="Archetypes">Arquétipos</span>
+          <h2 data-pt="Um bloco editorial para decklists, metas e linhas de jogo." data-en="An editorial block for decklists, metas, and lines of play.">
+            Um bloco editorial para decklists, metas e linhas de jogo.
+          </h2>
+          <p data-pt="Aqui você pode futuramente publicar listas vencedoras, guias de matchups, análises de cartas e conteúdo de criadores. A composição lembra uma landing de TCG premium, mas sem copiar elementos de marca de terceiros." data-en="Here you can later publish winning lists, matchup guides, card analysis, and creator content. The composition echoes a premium TCG landing page without copying third-party brand elements.">
+            Aqui você pode futuramente publicar listas vencedoras, guias de matchups, análises de cartas e conteúdo de criadores. A composição lembra uma landing de TCG premium, mas sem copiar elementos de marca de terceiros.
+          </p>
+        </div>
+        <div class="editorial-stats">
+          <div class="stat-card">
+            <span>04</span>
+            <p data-pt="Arquétipos-base" data-en="Core archetypes">Arquétipos-base</p>
+          </div>
+          <div class="stat-card">
+            <span>12</span>
+            <p data-pt="Slots para deck techs" data-en="Slots for deck techs">Slots para deck techs</p>
+          </div>
+          <div class="stat-card">
+            <span>∞</span>
+            <p data-pt="Espaço para expansão" data-en="Room for expansion">Espaço para expansão</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section media-section" id="shop">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="section-kicker" data-pt="Vídeos & Instagram" data-en="Videos & Instagram">Vídeos & Instagram</span>
+          <h2 data-pt="Blocos prontos para creators, reels, shorts e posts sociais." data-en="Blocks ready for creators, reels, shorts, and social posts.">
+            Blocos prontos para creators, reels, shorts e posts sociais.
+          </h2>
+        </div>
+
+        <div class="media-grid">
+          <article class="media-card reveal">
+            <img src="https://picsum.photos/seed/adonai-media-1/800/540" alt="Vídeo placeholder 1">
+            <div class="media-copy">
+              <span>YouTube / Feature</span>
+              <h3 data-pt="Como começar em Adonai" data-en="How to start in Adonai">Como começar em Adonai</h3>
+            </div>
+          </article>
+          <article class="media-card reveal stagger-1">
+            <img src="https://picsum.photos/seed/adonai-media-2/800/540" alt="Vídeo placeholder 2">
+            <div class="media-copy">
+              <span>Instagram / Reel</span>
+              <h3 data-pt="Reveal de carta lendária" data-en="Legendary card reveal">Reveal de carta lendária</h3>
+            </div>
+          </article>
+          <article class="media-card reveal stagger-2">
+            <img src="https://picsum.photos/seed/adonai-media-3/800/540" alt="Vídeo placeholder 3">
+            <div class="media-copy">
+              <span>Deck Tech / Community</span>
+              <h3 data-pt="Arquétipos para o primeiro meta" data-en="Archetypes for the first meta">Arquétipos para o primeiro meta</h3>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container influencers-section">
+      <div class="section-head reveal">
+        <span class="section-kicker" data-pt="Influencers" data-en="Influencers">Influencers</span>
+        <h2 data-pt="Galeria pronta para creators, parceiros e embaixadores." data-en="A ready-made gallery for creators, partners, and ambassadors.">
+          Galeria pronta para creators, parceiros e embaixadores.
+        </h2>
+      </div>
+
+      <div class="influencer-grid">
+        <article class="influencer-card reveal">
+          <img src="https://picsum.photos/seed/adonai-influ-1/500/600" alt="Creator placeholder 1">
+          <div>
+            <strong>Creator One</strong>
+            <span>Deck Techs</span>
+          </div>
+        </article>
+        <article class="influencer-card reveal stagger-1">
+          <img src="https://picsum.photos/seed/adonai-influ-2/500/600" alt="Creator placeholder 2">
+          <div>
+            <strong>Creator Two</strong>
+            <span>Gameplay</span>
+          </div>
+        </article>
+        <article class="influencer-card reveal stagger-2">
+          <img src="https://picsum.photos/seed/adonai-influ-3/500/600" alt="Creator placeholder 3">
+          <div>
+            <strong>Creator Three</strong>
+            <span>Instagram</span>
+          </div>
+        </article>
+        <article class="influencer-card reveal stagger-3">
+          <img src="https://picsum.photos/seed/adonai-influ-4/500/600" alt="Creator placeholder 4">
+          <div>
+            <strong>Creator Four</strong>
+            <span>Guides</span>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <span class="footer-brand">Adonai Card Game</span>
+        <p data-pt="Homepage conceitual com direção premium, pronta para evoluir para regras, decklists, loja e lore." data-en="Concept homepage with a premium direction, ready to grow into rules, decklists, store, and lore.">
+          Homepage conceitual com direção premium, pronta para evoluir para regras, decklists, loja e lore.
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <a href="#home" data-pt="Início" data-en="Home">Início</a>
+        <a href="#how-to-play" data-pt="Como jogar" data-en="How to play">Como jogar</a>
+        <a href="#cards" data-pt="Cartas" data-en="Cards">Cartas</a>
+        <a href="#rules" data-pt="Regras" data-en="Rules">Regras</a>
+        <a href="#lore" data-pt="Lore" data-en="Lore">Lore</a>
+        <a href="#shop" data-pt="Loja" data-en="Shop">Loja</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

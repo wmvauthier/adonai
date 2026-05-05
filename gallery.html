@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adonai Card Game — Galeria</title>
+  <meta name="description" content="Galeria dinâmica com vídeos e posts reunindo YouTube e Instagram em uma curadoria premium.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="generic.css">
+  <link rel="stylesheet" href="gallery.css">
+</head>
+<body>
+  <div class="page-noise" aria-hidden="true"></div>
+
+  <header class="site-header" id="siteHeader">
+    <a href="index.html" class="brand" aria-label="Adonai Card Game">
+      <span class="brand-mark"></span>
+      <span class="brand-text">Adonai Card Game</span>
+    </a>
+
+    <button class="mobile-toggle" id="mobileToggle" aria-expanded="false" aria-controls="primaryNav" aria-label="Abrir menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="site-nav" id="primaryNav">
+      <a href="index.html" data-pt="Início" data-en="Home">Início</a>
+      <a href="how-to-play.html" data-pt="Como jogar" data-en="How to play">Como jogar</a>
+      <a href="cards.html" data-pt="Cartas" data-en="Cards">Cartas</a>
+      <a href="decks.html" data-pt="Decks" data-en="Decks">Decks</a>
+      <a href="#deckbuilder" data-pt="Deckbuilder" data-en="Deckbuilder">Deckbuilder</a>
+      <a href="gallery.html" data-pt="Galeria" data-en="Gallery">Galeria</a>
+      <a href="lore.html" data-pt="Lore" data-en="Lore">Lore</a>
+      <a href="#shop" data-pt="Loja" data-en="Shop">Loja</a>
+    </nav>
+
+    <div class="header-actions">
+      <div class="lang-switch" aria-label="Alternar idioma">
+        <button class="lang-btn is-active" data-lang="pt">PT</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="gallery-hero" id="home">
+      <div class="gallery-hero-backdrop"></div>
+      <div class="container gallery-hero-grid">
+        <div class="gallery-hero-copy reveal">
+          <span class="section-kicker" data-pt="Galeria viva" data-en="Living gallery">Galeria viva</span>
+          <h1 data-pt="Um mural de vídeos e posts para acompanhar a voz da comunidade." data-en="A mural of videos and posts following the community's voice.">
+            Um mural de vídeos e posts para acompanhar a voz da comunidade.
+          </h1>
+          <p data-pt="Inspirada no feed do Instagram e na clareza do YouTube, esta página reúne creators, reviews, unboxings e recomendações em uma experiência editorial única." data-en="Inspired by Instagram's feed and YouTube's clarity, this page brings creators, reviews, unboxings, and recommendations into a single editorial experience.">
+            Inspirada no feed do Instagram e na clareza do YouTube, esta página reúne creators, reviews, unboxings e recomendações em uma experiência editorial única.
+          </p>
+          <div class="gallery-hero-actions">
+            <a class="btn btn-primary" href="#galleryFeed" data-pt="Ver a galeria" data-en="View gallery">Ver a galeria</a>
+            <a class="btn btn-secondary" href="#galleryHighlights" data-pt="Ver destaques" data-en="View highlights">Ver destaques</a>
+          </div>
+        </div>
+
+        <aside class="gallery-highlight-panel reveal stagger-1" id="galleryHighlights">
+          <div class="highlight-panel-head">
+            <span class="panel-label" data-pt="Destaques" data-en="Highlights">Destaques</span>
+            <strong data-pt="Influenciadores em evidência" data-en="Featured influencers">Influenciadores em evidência</strong>
+          </div>
+          <p class="highlight-panel-copy" data-pt="Perfis únicos extraídos do Instagram e do YouTube, ordenados do maior destaque para o menor." data-en="Unique profiles pulled from Instagram and YouTube, ordered from highest to lowest prominence.">
+            Perfis únicos extraídos do Instagram e do YouTube, ordenados do maior destaque para o menor.
+          </p>
+          <div class="highlight-bubbles" id="highlightStack"></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section container gallery-shell" id="galleryFeed">
+      <div class="section-head reveal">
+        <span class="section-kicker" data-pt="Media feed" data-en="Media feed">Media feed</span>
+        <h2 data-pt="Conteúdo dinâmico, pronto para crescer com novos posts e novos vídeos." data-en="Dynamic content, ready to grow with new posts and videos.">
+          Conteúdo dinâmico, pronto para crescer com novos posts e novos vídeos.
+        </h2>
+        <p data-pt="Os cards abaixo são alimentados por JSON e combinam Instagram e YouTube em um único feed visual." data-en="The cards below are powered by JSON and combine Instagram and YouTube into a single visual feed.">
+          Os cards abaixo são alimentados por JSON e combinam Instagram e YouTube em um único feed visual.
+        </p>
+      </div>
+
+      <div class="gallery-toolbar reveal stagger-1">
+        <div class="toolbar-group toolbar-filters" role="tablist" aria-label="Filtrar plataforma">
+          <button class="toolbar-chip is-active" type="button" data-filter="all">Tudo</button>
+          <button class="toolbar-chip" type="button" data-filter="youtube">YouTube</button>
+          <button class="toolbar-chip" type="button" data-filter="instagram">Instagram</button>
+        </div>
+
+        <div class="toolbar-group toolbar-sort" aria-label="Ordenação">
+          <button class="toolbar-chip is-active" type="button" data-sort="recent" data-pt="Mais recentes" data-en="Most recent">Mais recentes</button>
+          <button class="toolbar-chip" type="button" data-sort="creator" data-pt="Creator" data-en="Creator">Creator</button>
+        </div>
+      </div>
+
+      <div class="gallery-meta reveal stagger-2">
+        <p id="gallerySummary">Carregando conteúdos...</p>
+      </div>
+
+      <div class="gallery-grid" id="galleryGrid" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <span class="footer-brand">Adonai Card Game</span>
+        <p data-pt="Homepage conceitual com direção premium, pronta para evoluir para regras, decklists, loja e lore." data-en="Concept homepage with a premium direction, ready to grow into rules, decklists, store, and lore.">
+          Homepage conceitual com direção premium, pronta para evoluir para regras, decklists, loja e lore.
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <a href="index.html#home" data-pt="Início" data-en="Home">Início</a>
+        <a href="index.html#how-to-play" data-pt="Como jogar" data-en="How to play">Como jogar</a>
+        <a href="index.html#cards" data-pt="Cartas" data-en="Cards">Cartas</a>
+        <a href="index.html#rules" data-pt="Regras" data-en="Rules">Regras</a>
+        <a href="index.html#lore" data-pt="Lore" data-en="Lore">Lore</a>
+        <a href="index.html#shop" data-pt="Loja" data-en="Shop">Loja</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="gallery.js"></script>
+</body>
+</html>
