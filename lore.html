@@ -44,49 +44,77 @@
   </header>
 
   <main>
-    <section class="lore-hero" id="home">
-      <div class="lore-hero-media">
-        <img src="https://picsum.photos/seed/adonar-library/1680/1200" alt="Biblioteca litúrgica do universo de Adonar">
-        <div class="lore-hero-overlay"></div>
-      </div>
-
-      <div class="container lore-hero-grid">
-        <div class="lore-hero-copy reveal">
-          <span class="eyebrow" data-pt="Biblioteca sagrada" data-en="Sacred library">Biblioteca sagrada</span>
-          <h1 data-pt="Cada coleção como um livro.<br>Cada carta como um capítulo vivo." data-en="Every set as a book.<br>Every card as a living chapter.">
-            Cada coleção como um livro.<br>Cada carta como um capítulo vivo.
-          </h1>
-          <p class="lore-hero-text" data-pt="A Lore de Adonar transforma o catálogo em uma biblioteca editorial. Entre pelos volumes, escolha um capítulo e leia a origem, o conflito e o legado de cada personagem com arte ampliada, notas de mundo e conexões narrativas." data-en="Adonar lore turns the catalog into an editorial library. Enter the volumes, choose a chapter, and read each character's origin, conflict, and legacy with expanded art, world notes, and narrative links.">
-            A Lore de Adonar transforma o catálogo em uma biblioteca editorial. Entre pelos volumes, escolha um capítulo e leia a origem, o conflito e o legado de cada personagem com arte ampliada, notas de mundo e conexões narrativas.
-          </p>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="#libraryShelves" data-pt="Explorar livros" data-en="Explore books">Explorar livros</a>
-            <a class="btn btn-secondary" href="#readingRoom" data-pt="Abrir sala de leitura" data-en="Open reading room">Abrir sala de leitura</a>
+    <section class="hero hero-carousel" id="home" aria-label="Destaques">
+      <article class="hero-slide active">
+        <div class="hero-media">
+          <img src="assets/belem-campo-do-pastor.webp" alt="Arte de fundo 1" />
+          <div class="hero-overlay"></div>
+        </div>
+        <div class="hero-content container">
+          <div class="hero-copy reveal">
+            <span class="eyebrow" data-pt="Adonai Card Game" data-en="Adonai Card Game">Adonai Card Game</span>
+            <h1 data-pt="O LCG bíblico competitivo." data-en="The competitive biblical LCG.">O LCG bíblico competitivo.</h1>
+            <p class="hero-text" data-pt="Construa sua estratégia com campeões, territórios, templos, virtudes, pecados, milagres e artefatos em um campo de batalha inspirado nas Escrituras." data-en="Build your strategy with champions, territories, temples, virtues, sins, miracles, and artifacts in a battlefield inspired by Scripture.">Construa sua estratégia com campeões, territórios, templos, virtudes, pecados, milagres e artefatos em um campo de batalha inspirado nas Escrituras.</p>
+            <div class="hero-actions">
+              <a href="#libraryShelves" class="btn btn-primary" data-pt="Explorar livros" data-en="Explore books">Explorar livros</a>
+              <a href="#readingRoom" class="btn btn-secondary" data-pt="Abrir sala de leitura" data-en="Open reading room">Abrir sala de leitura</a>
+            </div>
+          </div>
+          <div class="hero-card-frame hero-card-stack reveal stagger-1" aria-hidden="true">
+            <img class="hero-feature-card hero-feature-card--back" src="assets/funda-de-davi.webp" alt="Carta Funda de Davi" />
+            <img class="hero-feature-card hero-feature-card--front" src="assets/davi.webp" alt="Carta Davi" />
+            <img class="hero-feature-card hero-feature-card--mid" src="assets/pedra-da-funda.webp" alt="Carta Pedra da Funda" />
           </div>
         </div>
-
-        <aside class="lore-compendium reveal stagger-1">
-          <span class="section-kicker" data-pt="Compêndio" data-en="Compendium">Compêndio</span>
-          <h2 data-pt="Uma navegação feita para descoberta e imersão." data-en="Navigation built for discovery and immersion.">
-            Uma navegação feita para descoberta e imersão.
-          </h2>
-          <div class="lore-compendium-grid">
-            <article class="compendium-card">
-              <span data-pt="Volumes" data-en="Volumes">Volumes</span>
-              <strong id="collectionCount">04</strong>
-              <p data-pt="Coleções tratadas como livros independentes, cada uma com estética, tom e conflitos próprios." data-en="Sets treated as standalone books, each with its own aesthetic, tone, and conflicts.">
-                Coleções tratadas como livros independentes, cada uma com estética, tom e conflitos próprios.
-              </p>
-            </article>
-            <article class="compendium-card">
-              <span data-pt="Capítulos" data-en="Chapters">Capítulos</span>
-              <strong id="chapterCount">12</strong>
-              <p data-pt="Cada carta abre um capítulo com personagem, contexto, arte e fragmentos do mundo." data-en="Each card opens a chapter with character, context, artwork, and fragments of the world.">
-                Cada carta abre um capítulo com personagem, contexto, arte e fragmentos do mundo.
-              </p>
-            </article>
+      </article>
+      <article class="hero-slide">
+        <div class="hero-media">
+          <img src="assets/tenda-da-presenca.webp" alt="Arte de fundo 2" />
+          <div class="hero-overlay"></div>
+        </div>
+        <div class="hero-content container">
+          <div class="hero-copy reveal">
+            <span class="eyebrow" data-pt="Foundations" data-en="Foundations">Foundations</span>
+            <h1 data-pt="Primeira coleção. Primeiro metagame." data-en="First set. First metagame.">Primeira coleção. Primeiro metagame.</h1>
+            <p class="hero-text" data-pt="A base de Adonai apresenta os fundamentos de construção, combate, consagração e pressão territorial." data-en="Adonai Foundations introduces deck construction, combat, consecration, and territorial pressure.">A base de Adonai apresenta os fundamentos de construção, combate, consagração e pressão territorial.</p>
+            <div class="hero-actions">
+              <a href="#libraryShelves" class="btn btn-primary" data-pt="Explorar livros" data-en="Explore books">Explorar livros</a>
+              <a href="#readingRoom" class="btn btn-secondary" data-pt="Abrir sala de leitura" data-en="Open reading room">Abrir sala de leitura</a>
+            </div>
           </div>
-        </aside>
+          <div class="hero-card-frame hero-card-stack reveal stagger-1" aria-hidden="true">
+            <img class="hero-feature-card hero-feature-card--back" src="assets/belem-campo-do-pastor.webp" alt="Carta Belém, Campo do Pastor" />
+            <img class="hero-feature-card hero-feature-card--front" src="assets/tenda-da-presenca.webp" alt="Carta Tenda da Presença" />
+            <img class="hero-feature-card hero-feature-card--mid" src="assets/campeao.webp" alt="Carta Campeão" />
+          </div>
+        </div>
+      </article>
+      <article class="hero-slide">
+        <div class="hero-media">
+          <img src="assets/egoismo.webp" alt="Arte de fundo 3" />
+          <div class="hero-overlay"></div>
+        </div>
+        <div class="hero-content container">
+          <div class="hero-copy reveal">
+            <span class="eyebrow" data-pt="Competitivo" data-en="Competitive">Competitivo</span>
+            <h1 data-pt="Monte, teste e refine seu deck." data-en="Build, test, and refine your deck.">Monte, teste e refine seu deck.</h1>
+            <p class="hero-text" data-pt="O deckbuilder será o centro competitivo: busca, validação de formato, exportação de listas e preparação para torneios." data-en="The deckbuilder will be the competitive hub: search, format validation, list export, and tournament preparation.">O deckbuilder será o centro competitivo: busca, validação de formato, exportação de listas e preparação para torneios.</p>
+            <div class="hero-actions">
+              <a href="#libraryShelves" class="btn btn-primary" data-pt="Explorar livros" data-en="Explore books">Explorar livros</a>
+              <a href="#readingRoom" class="btn btn-secondary" data-pt="Abrir sala de leitura" data-en="Open reading room">Abrir sala de leitura</a>
+            </div>
+          </div>
+          <div class="hero-card-frame hero-card-stack reveal stagger-1" aria-hidden="true">
+            <img class="hero-feature-card hero-feature-card--back" src="assets/sacrificio-de-saul.webp" alt="Carta Sacrifício de Saul" />
+            <img class="hero-feature-card hero-feature-card--front" src="assets/egoismo.webp" alt="Carta Egoísmo" />
+            <img class="hero-feature-card hero-feature-card--mid" src="assets/pedra-da-funda.webp" alt="Carta Pedra da Funda" />
+          </div>
+        </div>
+      </article>
+      <div class="hero-carousel-dots" aria-label="Controle do carrossel">
+      <button class="hero-dot active" type="button" data-slide="0" aria-label="Ir para destaque 1"></button>
+      <button class="hero-dot" type="button" data-slide="1" aria-label="Ir para destaque 2"></button>
+      <button class="hero-dot" type="button" data-slide="2" aria-label="Ir para destaque 3"></button>
       </div>
     </section>
 
@@ -243,5 +271,6 @@
   </footer>
 
   <script src="lore.js"></script>
+  <script src="hero-carousel.js"></script>
 </body>
 </html>

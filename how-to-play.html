@@ -44,25 +44,77 @@
   </header>
 
   <main>
-    <section class="rules-hero" id="home">
-      <div class="rules-hero-media">
-        <img src="https://picsum.photos/seed/adonai-how-to-play/1800/1100" alt="Mesa ritual com cartas e iluminação dourada">
-        <div class="rules-hero-overlay"></div>
-      </div>
-
-      <div class="rules-hero-copy container">
-        <span class="eyebrow reveal" data-pt="Guia de jogo" data-en="Game guide">Guia de jogo</span>
-        <h1 class="reveal stagger-1" data-pt="Aprenda o fluxo da partida, leia a mesa e jogue com clareza." data-en="Learn the match flow, read the board, and play with clarity.">
-          Aprenda o fluxo da partida, leia a mesa e jogue com clareza.
-        </h1>
-        <p class="reveal stagger-2" data-pt="Esta página organiza os fundamentos de Adonai em uma leitura editorial: objetivo, tipos de carta, zonas, turnos e princípios de resolução para que a experiência continue premium sem parecer documentação fria." data-en="This page organizes Adonai's fundamentals into an editorial reading: objective, card types, zones, turns, and resolution principles so the experience remains premium without feeling like cold documentation.">
-          Esta página organiza os fundamentos de Adonai em uma leitura editorial: objetivo, tipos de carta, zonas, turnos e princípios de resolução para que a experiência continue premium sem parecer documentação fria.
-        </p>
-
-        <div class="hero-actions reveal stagger-3">
-          <a class="btn btn-primary" href="#gameFoundations" data-pt="Ver fundamentos" data-en="View fundamentals">Ver fundamentos</a>
-          <a class="btn btn-secondary" href="#turnFlow" data-pt="Ler os turnos" data-en="Read turn flow">Ler os turnos</a>
+    <section class="hero hero-carousel" id="home" aria-label="Destaques">
+      <article class="hero-slide active">
+        <div class="hero-media">
+          <img src="assets/belem-campo-do-pastor.webp" alt="Arte de fundo 1" />
+          <div class="hero-overlay"></div>
         </div>
+        <div class="hero-content container">
+          <div class="hero-copy reveal">
+            <span class="eyebrow" data-pt="Adonai Card Game" data-en="Adonai Card Game">Adonai Card Game</span>
+            <h1 data-pt="O LCG bíblico competitivo." data-en="The competitive biblical LCG.">O LCG bíblico competitivo.</h1>
+            <p class="hero-text" data-pt="Construa sua estratégia com campeões, territórios, templos, virtudes, pecados, milagres e artefatos em um campo de batalha inspirado nas Escrituras." data-en="Build your strategy with champions, territories, temples, virtues, sins, miracles, and artifacts in a battlefield inspired by Scripture.">Construa sua estratégia com campeões, territórios, templos, virtudes, pecados, milagres e artefatos em um campo de batalha inspirado nas Escrituras.</p>
+            <div class="hero-actions">
+              <a href="#gameFoundations" class="btn btn-primary" data-pt="Ver fundamentos" data-en="View foundations">Ver fundamentos</a>
+              <a href="#turnFlow" class="btn btn-secondary" data-pt="Ler turnos" data-en="Read turns">Ler turnos</a>
+            </div>
+          </div>
+          <div class="hero-card-frame hero-card-stack reveal stagger-1" aria-hidden="true">
+            <img class="hero-feature-card hero-feature-card--back" src="assets/funda-de-davi.webp" alt="Carta Funda de Davi" />
+            <img class="hero-feature-card hero-feature-card--front" src="assets/davi.webp" alt="Carta Davi" />
+            <img class="hero-feature-card hero-feature-card--mid" src="assets/pedra-da-funda.webp" alt="Carta Pedra da Funda" />
+          </div>
+        </div>
+      </article>
+      <article class="hero-slide">
+        <div class="hero-media">
+          <img src="assets/tenda-da-presenca.webp" alt="Arte de fundo 2" />
+          <div class="hero-overlay"></div>
+        </div>
+        <div class="hero-content container">
+          <div class="hero-copy reveal">
+            <span class="eyebrow" data-pt="Foundations" data-en="Foundations">Foundations</span>
+            <h1 data-pt="Primeira coleção. Primeiro metagame." data-en="First set. First metagame.">Primeira coleção. Primeiro metagame.</h1>
+            <p class="hero-text" data-pt="A base de Adonai apresenta os fundamentos de construção, combate, consagração e pressão territorial." data-en="Adonai Foundations introduces deck construction, combat, consecration, and territorial pressure.">A base de Adonai apresenta os fundamentos de construção, combate, consagração e pressão territorial.</p>
+            <div class="hero-actions">
+              <a href="#gameFoundations" class="btn btn-primary" data-pt="Ver fundamentos" data-en="View foundations">Ver fundamentos</a>
+              <a href="#turnFlow" class="btn btn-secondary" data-pt="Ler turnos" data-en="Read turns">Ler turnos</a>
+            </div>
+          </div>
+          <div class="hero-card-frame hero-card-stack reveal stagger-1" aria-hidden="true">
+            <img class="hero-feature-card hero-feature-card--back" src="assets/belem-campo-do-pastor.webp" alt="Carta Belém, Campo do Pastor" />
+            <img class="hero-feature-card hero-feature-card--front" src="assets/tenda-da-presenca.webp" alt="Carta Tenda da Presença" />
+            <img class="hero-feature-card hero-feature-card--mid" src="assets/campeao.webp" alt="Carta Campeão" />
+          </div>
+        </div>
+      </article>
+      <article class="hero-slide">
+        <div class="hero-media">
+          <img src="assets/egoismo.webp" alt="Arte de fundo 3" />
+          <div class="hero-overlay"></div>
+        </div>
+        <div class="hero-content container">
+          <div class="hero-copy reveal">
+            <span class="eyebrow" data-pt="Competitivo" data-en="Competitive">Competitivo</span>
+            <h1 data-pt="Monte, teste e refine seu deck." data-en="Build, test, and refine your deck.">Monte, teste e refine seu deck.</h1>
+            <p class="hero-text" data-pt="O deckbuilder será o centro competitivo: busca, validação de formato, exportação de listas e preparação para torneios." data-en="The deckbuilder will be the competitive hub: search, format validation, list export, and tournament preparation.">O deckbuilder será o centro competitivo: busca, validação de formato, exportação de listas e preparação para torneios.</p>
+            <div class="hero-actions">
+              <a href="#gameFoundations" class="btn btn-primary" data-pt="Ver fundamentos" data-en="View foundations">Ver fundamentos</a>
+              <a href="#turnFlow" class="btn btn-secondary" data-pt="Ler turnos" data-en="Read turns">Ler turnos</a>
+            </div>
+          </div>
+          <div class="hero-card-frame hero-card-stack reveal stagger-1" aria-hidden="true">
+            <img class="hero-feature-card hero-feature-card--back" src="assets/sacrificio-de-saul.webp" alt="Carta Sacrifício de Saul" />
+            <img class="hero-feature-card hero-feature-card--front" src="assets/egoismo.webp" alt="Carta Egoísmo" />
+            <img class="hero-feature-card hero-feature-card--mid" src="assets/pedra-da-funda.webp" alt="Carta Pedra da Funda" />
+          </div>
+        </div>
+      </article>
+      <div class="hero-carousel-dots" aria-label="Controle do carrossel">
+      <button class="hero-dot active" type="button" data-slide="0" aria-label="Ir para destaque 1"></button>
+      <button class="hero-dot" type="button" data-slide="1" aria-label="Ir para destaque 2"></button>
+      <button class="hero-dot" type="button" data-slide="2" aria-label="Ir para destaque 3"></button>
       </div>
     </section>
 
@@ -321,5 +373,6 @@
   </footer>
 
   <script src="./how-to-play.js"></script>
+  <script src="hero-carousel.js"></script>
 </body>
 </html>
