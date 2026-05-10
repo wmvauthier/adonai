@@ -84,9 +84,11 @@
   border:1px solid rgba(255,255,255,.10);
   box-shadow:var(--shadow);
 }
-.floating-card:first-child{top:0; left:4%}
-.floating-card.offset{right:4%; top:100px}
-.floating-card img{height:420px; width:100%; object-fit:cover}
+.floating-card:first-child{top:0; left:2%}
+.floating-card.offset{right:4%; top:100px; z-index: 9999;}
+.floating-card.offset-2{top:0; left:94%}
+
+.floating-card img{height:520px; width:100%; object-fit:cover}
 .floating-card-caption{padding:16px 18px 18px; display:flex; flex-direction:column; gap:4px}
 .floating-card-caption strong{font-size:1.05rem}
 .floating-card-caption span{color:var(--muted); font-size:.88rem}
