@@ -378,3 +378,59 @@
   .featured-card-track{grid-auto-columns:62vw; gap:16px}
   .featured-arrow{display:none}
 }
+.hero-card-stack--mixed {
+  position: relative;
+  width: min(720px, 52vw);
+  height: 520px;
+}
+
+.hero-card-stack--mixed .hero-feature-card--front {
+  position: absolute;
+  width: 240px;
+  left: 50%;
+  top: 20px;
+  z-index: 5;
+
+  transform:
+    translateX(-50%)
+    rotate(2deg);
+
+  filter:
+    drop-shadow(0 24px 48px rgba(0,0,0,.42));
+}
+
+/* Horizontal esquerda */
+.hero-card-stack--mixed .hero-feature-card--back {
+  position: absolute;
+  width: 340px;
+
+  left: 0;
+  top: 170px;
+
+  z-index: 2;
+
+  transform:
+    rotate(-8deg);
+
+  filter:
+    brightness(.92)
+    drop-shadow(0 18px 34px rgba(0,0,0,.28));
+}
+
+/* Horizontal direita */
+.hero-card-stack--mixed .hero-feature-card--mid {
+  position: absolute;
+  width: 340px;
+
+  right: 0;
+  top: 170px;
+
+  z-index: 1;
+
+  transform:
+    rotate(8deg);
+
+  filter:
+    brightness(.92)
+    drop-shadow(0 18px 34px rgba(0,0,0,.28));
+}

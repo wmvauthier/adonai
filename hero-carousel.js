@@ -2,7 +2,7 @@
   const carousels = document.querySelectorAll('.hero-carousel');
   if (!carousels.length) return;
 
-  const SLIDE_DURATION = 70000;
+  const SLIDE_DURATION = 90000;
 
   carousels.forEach((carousel) => {
     const slides = [...carousel.querySelectorAll('.hero-slide')];
