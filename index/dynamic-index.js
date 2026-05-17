@@ -1,32 +1,33 @@
 (() => {
-  const CONTENT_URL = 'site-content.json';
+  const CONTENT_URL = "index/index-content.json";
 
   const getLang = () => {
-    const active = document.querySelector('.lang-btn.is-active');
-    return active?.dataset.lang || 'pt';
+    const active = document.querySelector(".lang-btn.is-active");
+    return active?.dataset.lang || "pt";
   };
 
   const text = (value, lang) => {
-    if (!value) return '';
-    if (typeof value === 'string') return value;
-    return value[lang] || value.pt || value.en || '';
+    if (!value) return "";
+    if (typeof value === "string") return value;
+    return value[lang] || value.pt || value.en || "";
   };
 
   const youtubeThumb = (item) => {
     if (item.thumbnail) return item.thumbnail;
-    if (item.youtubeId) return `https://img.youtube.com/vi/${item.youtubeId}/maxresdefault.jpg`;
-    return '';
+    if (item.youtubeId)
+      return `https://img.youtube.com/vi/${item.youtubeId}/maxresdefault.jpg`;
+    return "";
   };
 
   const setTextBindings = (data, lang) => {
-    document.querySelectorAll('[data-i18n]').forEach((el) => {
-      const path = el.dataset.i18n.split('.');
+    document.querySelectorAll("[data-i18n]").forEach((el) => {
+      const path = el.dataset.i18n.split(".");
       const value = path.reduce((acc, key) => acc?.[key], data);
       el.textContent = text(value, lang);
     });
 
-    document.querySelectorAll('[data-bind-src]').forEach((el) => {
-      const path = el.dataset.bindSrc.split('.');
+    document.querySelectorAll("[data-bind-src]").forEach((el) => {
+      const path = el.dataset.bindSrc.split(".");
       const value = path.reduce((acc, key) => acc?.[key], data);
       if (value) el.src = value;
     });
@@ -36,7 +37,9 @@
     const track = document.querySelector('[data-render="tutorials"]');
     if (!track) return;
 
-    track.innerHTML = items.map((item) => `
+    track.innerHTML = items
+      .map(
+        (item) => `
       <a class="media-card" href="${item.url}" target="_blank" rel="noopener noreferrer">
         <img src="${youtubeThumb(item)}" alt="${text(item.title, lang)}">
         <div class="media-copy">
@@ -44,14 +47,18 @@
           <h3>${text(item.title, lang)}</h3>
         </div>
       </a>
-    `).join('');
+    `,
+      )
+      .join("");
   };
 
   const renderReviews = (items, lang) => {
     const track = document.querySelector('[data-render="reviews"]');
     if (!track) return;
 
-    track.innerHTML = items.map((item) => `
+    track.innerHTML = items
+      .map(
+        (item) => `
       <a class="influencer-card review-card" href="${item.url}" target="_blank" rel="noopener noreferrer">
         <img src="${youtubeThumb(item)}" alt="Review de ${item.name}">
         <div>
@@ -59,23 +66,29 @@
           <span>“${text(item.quote, lang)}”</span>
         </div>
       </a>
-    `).join('');
+    `,
+      )
+      .join("");
   };
 
   const renderFooterLinks = (links, lang) => {
     const container = document.querySelector('[data-render="footerLinks"]');
     if (!container) return;
 
-    container.innerHTML = links.map((link) => `
+    container.innerHTML = links
+      .map(
+        (link) => `
       <a href="${link.href}">${text(link.label, lang)}</a>
-    `).join('');
+    `,
+      )
+      .join("");
   };
 
   const initCarousels = () => {
-    document.querySelectorAll('.content-carousel').forEach((carousel) => {
-      const track = carousel.querySelector('.carousel-track');
-      const prev = carousel.querySelector('.carousel-arrow--prev');
-      const next = carousel.querySelector('.carousel-arrow--next');
+    document.querySelectorAll(".content-carousel").forEach((carousel) => {
+      const track = carousel.querySelector(".carousel-track");
+      const prev = carousel.querySelector(".carousel-arrow--prev");
+      const next = carousel.querySelector(".carousel-arrow--next");
 
       if (!track || !prev || !next) return;
 
@@ -87,11 +100,11 @@
       };
 
       prev.onclick = () => {
-        track.scrollBy({ left: -getStep(), behavior: 'smooth' });
+        track.scrollBy({ left: -getStep(), behavior: "smooth" });
       };
 
       next.onclick = () => {
-        track.scrollBy({ left: getStep(), behavior: 'smooth' });
+        track.scrollBy({ left: getStep(), behavior: "smooth" });
       };
     });
   };
@@ -111,15 +124,17 @@
     .then((data) => {
       render(data);
 
-      document.querySelectorAll('.lang-btn').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          document.querySelectorAll('.lang-btn').forEach((b) => b.classList.remove('is-active'));
-          btn.classList.add('is-active');
+      document.querySelectorAll(".lang-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document
+            .querySelectorAll(".lang-btn")
+            .forEach((b) => b.classList.remove("is-active"));
+          btn.classList.add("is-active");
           render(data);
         });
       });
     })
     .catch((err) => {
-      console.error('Erro ao carregar site-content.json:', err);
+      console.error("Erro ao carregar " + CONTENT_URL + ":", err);
     });
 })();
