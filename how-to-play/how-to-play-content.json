@@ -1,14 +1,6 @@
 {
   "currentLang": "pt",
   "tutorials": {
-    "kicker": {
-      "pt": "PASSO 6",
-      "en": "STEP 6"
-    },
-    "title": {
-      "pt": "Aprenda estratégias, mecânicas e fundamentos de Adonai.",
-      "en": "Learn strategies, mechanics, and the foundations of Adonai."
-    },
     "items": [
       {
         "youtubeId": "dQw4w9WgXcQ",
@@ -69,113 +61,6 @@
           "en": "Mistakes That Cost Victory"
         },
         "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-      }
-    ]
-  },
-  "reviews": {
-    "kicker": {
-      "pt": "Reviews",
-      "en": "Reviews"
-    },
-    "title": {
-      "pt": "O que criadores estão dizendo sobre Adonai.",
-      "en": "What creators are saying about Adonai."
-    },
-    "items": [
-      {
-        "name": "Creator One",
-        "quote": {
-          "pt": "Adonai mistura tema bíblico com decisões realmente pesadas de mesa.",
-          "en": "Adonai blends biblical theme with truly meaningful tabletop decisions."
-        },
-        "youtubeId": "dQw4w9WgXcQ",
-        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-      },
-      {
-        "name": "Creator Two",
-        "quote": {
-          "pt": "O jogo tem camadas estratégicas que aparecem a cada nova partida.",
-          "en": "The game reveals new strategic layers with every match."
-        },
-        "youtubeId": "dQw4w9WgXcQ",
-        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-      },
-      {
-        "name": "Creator Three",
-        "quote": {
-          "pt": "A ideia de escolhas que deixam marcas dá muita personalidade ao jogo.",
-          "en": "The idea of choices leaving marks gives the game a strong identity."
-        },
-        "youtubeId": "dQw4w9WgXcQ",
-        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-      },
-      {
-        "name": "Creator Four",
-        "quote": {
-          "pt": "É competitivo, mas ainda carrega uma ambientação muito forte.",
-          "en": "It feels competitive while still carrying a very strong atmosphere."
-        },
-        "youtubeId": "dQw4w9WgXcQ",
-        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-      },
-      {
-        "name": "Creator Five",
-        "quote": {
-          "pt": "O deckbuilding parece ter bastante espaço para exploração.",
-          "en": "The deckbuilding seems to offer a lot of room for exploration."
-        },
-        "youtubeId": "dQw4w9WgXcQ",
-        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-      },
-      {
-        "name": "Creator Six",
-        "quote": {
-          "pt": "A proposta é diferente do que vemos normalmente em card games.",
-          "en": "The concept feels different from what we usually see in card games."
-        },
-        "youtubeId": "dQw4w9WgXcQ",
-        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-      }
-    ]
-  },
-  "footer": {
-    "logo": "assets/logo/adonai_logo_base-4.webp",
-    "brand": {
-      "pt": "Adonai Card Game",
-      "en": "Adonai Card Game"
-    },
-    "description": {
-      "pt": "Um card game bíblico competitivo sobre escolhas, alianças, consequências e caminhos estratégicos.",
-      "en": "A competitive biblical card game about choices, alliances, consequences, and strategic paths."
-    },
-    "links": [
-      {
-        "label": {
-          "pt": "Início",
-          "en": "Home"
-        },
-        "href": "#home"
-      },
-      {
-        "label": {
-          "pt": "Como jogar",
-          "en": "How to play"
-        },
-        "href": "#how-to-play"
-      },
-      {
-        "label": {
-          "pt": "Tutoriais",
-          "en": "Tutorials"
-        },
-        "href": "#tutorials"
-      },
-      {
-        "label": {
-          "pt": "Reviews",
-          "en": "Reviews"
-        },
-        "href": "#reviews"
       }
     ]
   }

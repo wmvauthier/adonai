@@ -894,3 +894,106 @@ SECTION TYPOGRAPHY STANDARD
     --orb: 48px;
   }
 }
+
+/* =========================================
+TUTORIAL VIDEO CAROUSEL
+========================================= */
+
+.media-section {
+  position: relative;
+}
+
+.content-carousel {
+  position: relative;
+  overflow: visible;
+}
+
+.carousel-track {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 22px;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+}
+
+.media-carousel .carousel-track {
+  grid-template-columns: none;
+  grid-auto-columns: calc((100% - 44px) / 3);
+}
+
+.carousel-track > * {
+  scroll-snap-align: start;
+  min-width: 0;
+}
+
+.media-card {
+  border-radius: 28px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, .02);
+}
+
+.media-card img {
+  height: 250px;
+  width: 100%;
+  object-fit: cover;
+  filter: brightness(.85);
+}
+
+.media-copy {
+  padding: 18px;
+}
+
+.media-copy span {
+  font-size: .82rem;
+  color: var(--gold);
+}
+
+.media-copy h3 {
+  margin: 10px 0 0;
+  font-size: 1.15rem;
+  line-height: 1.35;
+}
+
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 10;
+  width: 52px;
+  height: 52px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(8,8,8,.82);
+  color: #d5c18b;
+  display: grid;
+  place-items: center;
+  font-size: 2rem;
+  cursor: pointer;
+  transform: translateY(-50%);
+  backdrop-filter: blur(10px);
+  transition: background .25s ease, transform .25s ease;
+}
+
+.carousel-arrow:hover {
+  background: rgba(213,193,139,.12);
+}
+
+.carousel-arrow--prev {
+  left: -26px;
+}
+
+.carousel-arrow--next {
+  right: -26px;
+}
+
+@media (max-width: 980px) {
+  .media-carousel .carousel-track {
+    grid-auto-columns: 82vw;
+    overflow-x: auto;
+  }
+
+  .carousel-arrow {
+    display: none;
+  }
+}

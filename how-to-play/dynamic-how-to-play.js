@@ -1,5 +1,5 @@
 (() => {
-  const CONTENT_URL = "how-to-play/how-to-play-content.json";
+  const CONTENT_URL = "how-to-play-content.json";
 
   const getLang = () => {
     const active = document.querySelector(".lang-btn.is-active");
@@ -52,38 +52,6 @@
       .join("");
   };
 
-  const renderReviews = (items, lang) => {
-    const track = document.querySelector('[data-render="reviews"]');
-    if (!track) return;
-
-    track.innerHTML = items
-      .map(
-        (item) => `
-      <a class="influencer-card review-card" href="${item.url}" target="_blank" rel="noopener noreferrer">
-        <img src="${youtubeThumb(item)}" alt="Review de ${item.name}">
-        <div>
-          <strong>${item.name}</strong>
-          <span>“${text(item.quote, lang)}”</span>
-        </div>
-      </a>
-    `,
-      )
-      .join("");
-  };
-
-  const renderFooterLinks = (links, lang) => {
-    const container = document.querySelector('[data-render="footerLinks"]');
-    if (!container) return;
-
-    container.innerHTML = links
-      .map(
-        (link) => `
-      <a href="${link.href}">${text(link.label, lang)}</a>
-    `,
-      )
-      .join("");
-  };
-
   const initCarousels = () => {
     document.querySelectorAll(".content-carousel").forEach((carousel) => {
       const track = carousel.querySelector(".carousel-track");
@@ -114,8 +82,6 @@
 
     setTextBindings(data, lang);
     renderTutorials(data.tutorials.items, lang);
-    renderReviews(data.reviews.items, lang);
-    renderFooterLinks(data.footer.links, lang);
     initCarousels();
   };
 
