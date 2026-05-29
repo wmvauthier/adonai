@@ -154,28 +154,63 @@
           "pt": "Início",
           "en": "Home"
         },
-        "href": "#home"
+        "href": "./index.html"
       },
       {
         "label": {
-          "pt": "Como jogar",
-          "en": "How to play"
+          "pt": "Como Jogar",
+          "en": "How to Play"
         },
-        "href": "#how-to-play"
+        "href": "./how-to-play/how-to-play.html"
       },
       {
         "label": {
-          "pt": "Tutoriais",
-          "en": "Tutorials"
+          "pt": "Cartas",
+          "en": "Cards"
         },
-        "href": "#tutorials"
+        "href": "./cards/"
       },
       {
         "label": {
-          "pt": "Reviews",
-          "en": "Reviews"
+          "pt": "Decks",
+          "en": "Decks"
         },
-        "href": "#reviews"
+        "href": "./decks.html"
+      },
+      {
+        "label": {
+          "pt": "Deckbuilder",
+          "en": "Deckbuilder"
+        },
+        "href": "./index.html#deckbuilder"
+      },
+      {
+        "label": {
+          "pt": "Manual",
+          "en": "Rulebook"
+        },
+        "href": "./how-to-play/how-to-play.html#manual"
+      },
+      {
+        "label": {
+          "pt": "Galeria",
+          "en": "Gallery"
+        },
+        "href": "./gallery.html"
+      },
+      {
+        "label": {
+          "pt": "Lore",
+          "en": "Lore"
+        },
+        "href": "./lore.html"
+      },
+      {
+        "label": {
+          "pt": "Loja",
+          "en": "Shop"
+        },
+        "href": "./index.html#shop"
       }
     ]
   }

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adonai Card Game — Cartas</title>
+  <meta name="description"
+    content="Catálogo dinâmico de cartas de Adonai Card Game com busca, filtros, paginação e detalhes da coleção." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../generic.css" />
+  <link rel="stylesheet" href="./cards.css" />
+</head>
+
+<body>
+  <div class="page-noise" aria-hidden="true"></div>
+
+  <header class="site-header" id="siteHeader">
+    <a href="../index.html" class="brand" aria-label="Adonai Card Game">
+      <img src="../assets/logo/adonai_logo_base-4.webp" alt="Adonai Logo" class="brand-logo" />
+    </a>
+
+    <button class="mobile-toggle" id="mobileToggle" aria-expanded="false" aria-controls="primaryNav">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="site-nav" id="primaryNav">
+      <a href="../index.html" data-pt="Início" data-en="Home">Início</a>
+      <a href="../how-to-play/how-to-play.html" data-pt="Como Jogar" data-en="How to Play">Como Jogar</a>
+      <a href="./" data-pt="Cartas" data-en="Cards">Cartas</a>
+      <a href="../decks.html" data-pt="Decks" data-en="Decks">Decks</a>
+      <a href="../index.html#deckbuilder" data-pt="Deckbuilder" data-en="Deckbuilder">Deckbuilder</a>
+      <a href="../how-to-play/how-to-play.html#manual" data-pt="Manual" data-en="Rulebook">Manual</a>
+      <a href="../gallery.html" data-pt="Galeria" data-en="Gallery">Galeria</a>
+      <a href="../lore.html" data-pt="Lore" data-en="Lore">Lore</a>
+      <a href="../index.html#shop" data-pt="Loja" data-en="Shop">Loja</a>
+    </nav>
+
+    <div class="header-actions">
+      <div class="lang-switch" aria-label="Alternar idioma">
+        <button class="lang-btn is-active" data-lang="pt">PT</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="section catalog-shell" id="cardsCatalog">
+      <div class="container catalog-heading reveal">
+        <span class="section-kicker" data-pt="Catálogo de Cartas" data-en="Card Catalog">Catálogo de Cartas</span>
+      </div>
+      <div class="container catalog-layout">
+        <aside class="filters-panel reveal">
+          <div class="filters-panel-head">
+            <span class="section-kicker" data-pt="Refinar busca" data-en="Refine search">Refinar busca</span>
+            <h2 data-pt="Busque pelo que importa no jogo." data-en="Search by what matters in play.">
+              Busque pelo que importa no jogo.
+            </h2>
+          </div>
+
+          <div class="filter-actions">
+            <div class="filter-count">
+              <span data-pt="Resultados" data-en="Results">Resultados</span>
+              <strong id="resultCount">0</strong>
+            </div>
+            <button class="btn btn-primary" id="clearFilters" data-pt="Limpar filtros" data-en="Clear filters">Limpar
+              filtros</button>
+          </div><br>
+
+          <div class="search-box">
+            <label for="nameFilter" data-pt="Nome" data-en="Name">Nome</label>
+            <input id="nameFilter" type="search" placeholder="Nome da carta" data-pt="Nome da carta"
+              data-en="Card name" />
+          </div>
+
+          <div class="search-box">
+            <label for="textFilter" data-pt="Caixa de texto" data-en="Text box">Caixa de texto</label>
+            <input id="textFilter" type="search" placeholder="Texto da carta" data-pt="Texto da carta"
+              data-en="Card text" />
+          </div>
+
+          <div class="filter-group">
+            <label for="typeFilter" data-pt="Tipo" data-en="Type">Tipo</label>
+            <select id="typeFilter">
+              <option value="all">Todos</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="subtypeFilter" data-pt="Subtipo" data-en="Subtype">Subtipo</label>
+            <select id="subtypeFilter">
+              <option value="all">Todas</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="functionFilter" data-pt="Função" data-en="Function">Função</label>
+            <select id="functionFilter">
+              <option value="all">Todas</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="costFilter" data-pt="Custo máximo" data-en="Max cost">Custo máximo</label>
+            <input id="costFilter" type="range" min="1" max="9" step="1" value="9" />
+            <div class="range-value"><span data-pt="Até" data-en="Up to">Até</span> <strong id="costValue">9</strong>
+            </div>
+          </div>
+
+          <div class="filter-group">
+            <label for="setFilter" data-pt="Coleção" data-en="Set">Coleção</label>
+            <select id="setFilter">
+              <option value="all">Todas</option>
+            </select>
+          </div>
+
+          <div class="search-box">
+            <label for="numberFilter" data-pt="Número" data-en="Number">Número</label>
+            <input id="numberFilter" type="search" placeholder="001, CAM-001..." data-pt="001, CAM-001..."
+              data-en="001, CAM-001..." />
+          </div>
+
+          <div class="filter-group">
+            <label for="sortSelect" data-pt="Ordenação" data-en="Sort">Ordenação</label>
+            <select id="sortSelect">
+              <option value="rating-desc" data-pt="Avaliação" data-en="Rating">Avaliação</option>
+              <option value="number-asc" data-pt="Ordem da coleção" data-en="Set order">Ordem da coleção</option>
+              <option value="name-asc" data-pt="Nome A-Z" data-en="Name A-Z">Nome A-Z</option>
+              <option value="cost-asc" data-pt="Custo crescente" data-en="Cost ascending">Custo crescente</option>
+              <option value="cost-desc" data-pt="Custo decrescente" data-en="Cost descending">Custo decrescente</option>
+            </select>
+          </div>
+
+        </aside>
+
+        <div class="catalog-main">
+          <div class="cards-grid" id="cardsGrid"></div>
+
+          <div class="pagination-shell reveal" id="pagination"></div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <aside class="card-drawer" id="cardDrawer" aria-hidden="true">
+    <div class="drawer-backdrop" id="drawerBackdrop"></div>
+    <div class="drawer-panel">
+      <button class="drawer-close" id="drawerClose" aria-label="Fechar detalhes">×</button>
+      <div class="drawer-inner" id="drawerContent"></div>
+    </div>
+  </aside>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="footer-brand-wrap">
+          <img src="../assets/logo/adonai_logo_base-4.webp" alt="Adonai Logo" class="footer-logo" />
+          <span class="footer-brand">Adonai Card Game</span>
+        </div>
+        <p data-pt="Um card game bíblico competitivo sobre escolhas, alianças, consequências e caminhos estratégicos."
+          data-en="A competitive biblical card game about choices, alliances, consequences, and strategic paths.">
+          Um card game bíblico competitivo sobre escolhas, alianças, consequências e caminhos estratégicos.
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <a href="../index.html" data-pt="Início" data-en="Home">Início</a>
+        <a href="../how-to-play/how-to-play.html" data-pt="Como Jogar" data-en="How to Play">Como Jogar</a>
+        <a href="./" data-pt="Cartas" data-en="Cards">Cartas</a>
+        <a href="../decks.html" data-pt="Decks" data-en="Decks">Decks</a>
+        <a href="../index.html#deckbuilder" data-pt="Deckbuilder" data-en="Deckbuilder">Deckbuilder</a>
+        <a href="../how-to-play/how-to-play.html#manual" data-pt="Manual" data-en="Rulebook">Manual</a>
+        <a href="../gallery.html" data-pt="Galeria" data-en="Gallery">Galeria</a>
+        <a href="../lore.html" data-pt="Lore" data-en="Lore">Lore</a>
+        <a href="../index.html#shop" data-pt="Loja" data-en="Shop">Loja</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./cards.js"></script>
+</body>
+
+</html>

@@ -16,8 +16,7 @@
 
   <header class="site-header" id="siteHeader">
     <a href="./index.html" class="brand" aria-label="Adonai Card Game">
-      <span class="brand-mark"></span>
-      <span class="brand-text">Adonai Card Game</span>
+      <img src="assets/logo/adonai_logo_base-4.webp" alt="Adonai Logo" class="brand-logo" />
     </a>
 
     <button class="mobile-toggle" id="mobileToggle" aria-expanded="false" aria-controls="primaryNav">
@@ -25,16 +24,15 @@
     </button>
 
     <nav class="site-nav" id="primaryNav">
-      <a href="../index.html" data-pt="Início" data-en="Home">Início</a>
-
-            <a href="./how-to-play/how-to-play.html" data-pt="Como jogar" data-en="How to play">Como jogar</a>
-
-      <a href="cards.html" data-pt="Cartas" data-en="Cards">Cartas</a>
-      <a href="decks.html" data-pt="Decks" data-en="Decks">Decks</a>
-      <a href="#deckbuilder" data-pt="Deckbuilder" data-en="Deckbuilder">Deckbuilder</a>
-      <a href="gallery.html" data-pt="Galeria" data-en="Gallery">Galeria</a>
-      <a href="lore.html" data-pt="Lore" data-en="Lore">Lore</a>
-      <a href="#shop" data-pt="Loja" data-en="Shop">Loja</a>
+      <a href="./index.html" data-pt="Início" data-en="Home">Início</a>
+      <a href="./how-to-play/how-to-play.html" data-pt="Como Jogar" data-en="How to Play">Como Jogar</a>
+      <a href="./cards/" data-pt="Cartas" data-en="Cards">Cartas</a>
+      <a href="./decks.html" data-pt="Decks" data-en="Decks">Decks</a>
+      <a href="./index.html#deckbuilder" data-pt="Deckbuilder" data-en="Deckbuilder">Deckbuilder</a>
+      <a href="./how-to-play/how-to-play.html#manual" data-pt="Manual" data-en="Rulebook">Manual</a>
+      <a href="./gallery.html" data-pt="Galeria" data-en="Gallery">Galeria</a>
+      <a href="./lore.html" data-pt="Lore" data-en="Lore">Lore</a>
+      <a href="./index.html#shop" data-pt="Loja" data-en="Shop">Loja</a>
     </nav>
 
     <div class="header-actions">
@@ -224,6 +222,33 @@
     </section>
   </main>
 
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="footer-brand-wrap">
+          <img src="assets/logo/adonai_logo_base-4.webp" alt="Adonai Logo" class="footer-logo" />
+          <span class="footer-brand">Adonai Card Game</span>
+        </div>
+        <p data-pt="Um card game bíblico competitivo sobre escolhas, alianças, consequências e caminhos estratégicos."
+          data-en="A competitive biblical card game about choices, alliances, consequences, and strategic paths.">
+          Um card game bíblico competitivo sobre escolhas, alianças, consequências e caminhos estratégicos.
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <a href="./index.html" data-pt="Início" data-en="Home">Início</a>
+        <a href="./how-to-play/how-to-play.html" data-pt="Como Jogar" data-en="How to Play">Como Jogar</a>
+        <a href="./cards/" data-pt="Cartas" data-en="Cards">Cartas</a>
+        <a href="./decks.html" data-pt="Decks" data-en="Decks">Decks</a>
+        <a href="./index.html#deckbuilder" data-pt="Deckbuilder" data-en="Deckbuilder">Deckbuilder</a>
+        <a href="./how-to-play/how-to-play.html#manual" data-pt="Manual" data-en="Rulebook">Manual</a>
+        <a href="./gallery.html" data-pt="Galeria" data-en="Gallery">Galeria</a>
+        <a href="./lore.html" data-pt="Lore" data-en="Lore">Lore</a>
+        <a href="./index.html#shop" data-pt="Loja" data-en="Shop">Loja</a>
+      </div>
+    </div>
+  </footer>
+
   <aside class="deck-drawer" id="deckDrawer" aria-hidden="true">
     <div class="deck-drawer-backdrop" id="deckDrawerBackdrop"></div>
     <div class="deck-drawer-panel">
@@ -233,6 +258,6 @@
   </aside>
 
   <script src="./decks.js"></script>
-  <script src="hero-carousel.js"></script>
+  <script src="index/hero-carousel.js"></script>
 </body>
 </html>
