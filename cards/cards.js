@@ -73,7 +73,7 @@ const copy = {
     loadingTitle: "Carregando cartas",
     loadingBody: "Buscando os dados da coleção Foundations.",
     errorTitle: "Não foi possível carregar as cartas",
-    errorBody: "Confira se a página está sendo servida por um servidor local e se cards/cards.json existe.",
+    errorBody: "Confira se a página está sendo servida por um servidor local e se data/cards.json existe.",
     emptyTitle: "Nenhuma carta encontrada",
     emptyBody: "Tente reduzir a combinação de filtros ou buscar por outro termo.",
     results: "Resultados",
@@ -86,6 +86,7 @@ const copy = {
     viewDetails: "Ver detalhes",
     noData: "A definir",
     cardText: "Texto da carta",
+    reference: "Referência da carta",
     usage: "Utilização",
     rating: "Avaliação",
     decks: "Decks",
@@ -105,7 +106,7 @@ const copy = {
     loadingTitle: "Loading cards",
     loadingBody: "Fetching the Foundations card data.",
     errorTitle: "Cards could not be loaded",
-    errorBody: "Check that the page is running from a local server and that cards/cards.json exists.",
+    errorBody: "Check that the page is running from a local server and that data/cards.json exists.",
     emptyTitle: "No cards found",
     emptyBody: "Try reducing the filter combination or searching for a different term.",
     results: "Results",
@@ -118,6 +119,7 @@ const copy = {
     viewDetails: "View details",
     noData: "TBD",
     cardText: "Card text",
+    reference: "Card reference",
     usage: "Usage",
     rating: "Rating",
     decks: "Decks",
@@ -366,12 +368,6 @@ function icon(name) {
   return `<svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true">${paths[name] || paths.tag}</svg>`;
 }
 
-function renderStars(rating) {
-  const rounded = Math.round(rating);
-  const stars = Array.from({ length: 5 }, (_, index) => index < rounded ? "★" : "☆").join("");
-  return `<span class="stars" aria-label="${escapeHtml(`${t("rating")}: ${rating}/5`)}">${stars}</span><strong>${rating.toFixed(1)}</strong>`;
-}
-
 function formatFunctions(card) {
   return card.functions.map((item) => labelForValue(item)).filter(Boolean);
 }
@@ -402,7 +398,7 @@ function setCatalogMessage(kind, title, body) {
       <p>${escapeHtml(body)}</p>
     </article>
   `;
-  els.resultCount.textContent = "0";
+  // els.resultCount.textContent = "0";
   els.pagination.innerHTML = "";
 }
 
@@ -444,7 +440,7 @@ function getFilteredCards() {
     const functionLabels = formatFunctions(card);
     const matchesFunction = state.function === "all" || functionLabels.includes(state.function);
     const matchesCost = state.maxCost === null || card.cost === null || card.cost <= state.maxCost;
-    const matchesText = !text || normalizeSearch([card.text, card.details, card.tags]).includes(text);
+    const matchesText = !text || normalizeSearch([card.text, card.reference, card.details, card.tags]).includes(text);
 
     return matchesName && matchesNumber && matchesSet && matchesType && matchesSubtype && matchesFunction && matchesCost && matchesText;
   }));
@@ -539,7 +535,7 @@ function renderCards() {
   const start = (state.currentPage - 1) * state.itemsPerPage;
   const paginated = filtered.slice(start, start + state.itemsPerPage);
 
-  els.resultCount.textContent = String(filtered.length);
+  // els.resultCount.textContent = String(filtered.length);
 
   if (!paginated.length) {
     setCatalogMessage("empty", t("emptyTitle"), t("emptyBody"));
@@ -549,33 +545,12 @@ function renderCards() {
 
   els.cardsGrid.innerHTML = paginated.map((card) => {
     const name = getCardName(card);
-    const type = labelForType(card.type);
-    const subtype = labelForValue(card.subtype);
-    const functions = formatFunctions(card);
-
     return `
-      <article class="card-entry tilt-card" data-id="${escapeHtml(card.id)}">
-        <div class="card-entry-media">
+      <button class="card-entry card-entry-button tilt-card" type="button" data-id="${escapeHtml(card.id)}" data-open-card="${escapeHtml(card.id)}" aria-label="${escapeHtml(`${t("viewDetails")}: ${name}`)}">
+        <span class="card-entry-media">
           <img src="${escapeHtml(card.images.card)}" alt="${escapeHtml(`${t("imageAlt")}: ${name}`)}" loading="lazy" />
-          <div class="rating-badge">${renderStars(card.rating)}</div>
-        </div>
-        <div class="card-entry-body">
-          <div class="card-meta-row">
-            <span class="card-tag card-tag--type">${escapeHtml(type)}</span>
-            <span class="card-tag card-tag--subtype">${escapeHtml(subtype)}</span>
-            ${functions.map((item) => `<span class="card-tag card-tag--function">${escapeHtml(item)}</span>`).join("")}
-          </div>
-          <h3>${escapeHtml(name)}</h3>
-          <div class="card-set-line">
-            ${icon("tag")}
-            <span>${escapeHtml(card.set)} · ${escapeHtml(getCardCode(card))}</span>
-          </div>
-          ${renderUsageCard(card)}
-          <div class="card-footer">
-            <button class="card-link" type="button" data-open-card="${escapeHtml(card.id)}">${escapeHtml(t("viewDetails"))}</button>
-          </div>
-        </div>
-      </article>
+        </span>
+      </button>
     `;
   }).join("");
 
@@ -612,12 +587,12 @@ function getCardById(cardId) {
 
 function renderDetailMeta(card) {
   const meta = [
-    [t("number"), getCardCode(card)],
-    [t("set"), card.set],
+    [t("cost"), card.cost === null ? t("noData") : card.cost],
     [t("type"), labelForType(card.type)],
     [t("subtype"), labelForValue(card.subtype)],
-    [t("cost"), card.cost === null ? t("noData") : card.cost],
-    [t("rating"), `${card.rating.toFixed(1)}/5`]
+    [t("set"), card.set],
+    [t("number"), getCardCode(card)],
+    [t("rating"), `★ ${card.rating.toFixed(1)}/5.0`]
   ];
 
   return meta.map(([label, value]) => `
@@ -645,7 +620,6 @@ function openDrawer(cardId) {
         <div class="detail-heading">
           <span class="section-kicker">${escapeHtml(card.set)} · ${escapeHtml(getCardCode(card))}</span>
           <h2>${escapeHtml(name)}</h2>
-          <div class="detail-rating">${renderStars(card.rating)}</div>
         </div>
 
         <div class="drawer-meta">
@@ -662,6 +636,11 @@ function openDrawer(cardId) {
         <div class="drawer-section drawer-section--compact">
           <h3>${escapeHtml(t("cardText"))}</h3>
           <p>${escapeHtml(localize(card.text) || t("noData"))}</p>
+        </div>
+
+        <div class="drawer-section drawer-section--compact">
+          <h3>${escapeHtml(t("reference"))}</h3>
+          <p class="drawer-reference">${escapeHtml(localize(card.reference) || t("noData"))}</p>
         </div>
       </div>
       <aside class="detail-side">

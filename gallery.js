@@ -359,8 +359,8 @@ async function loadGallery() {
     `;
 
     const [instagramResponse, youtubeResponse] = await Promise.all([
-      fetch("instagram.json"),
-      fetch("youtube.json"),
+      fetch("data/instagram.json"),
+      fetch("data/youtube.json"),
     ]);
 
     const instagram = await instagramResponse.json();
@@ -386,7 +386,7 @@ async function loadGallery() {
       <div class="gallery-empty is-visible">
         <div>
           <h3>${currentLang === "pt" ? "Falha ao carregar" : "Loading failed"}</h3>
-          <p>${currentLang === "pt" ? "Verifique se os arquivos JSON estão disponíveis no mesmo diretório da página." : "Check whether the JSON files are available in the same directory as the page."}</p>
+          <p>${currentLang === "pt" ? "Verifique se os arquivos JSON estão disponíveis na pasta data." : "Check whether the JSON files are available in the data folder."}</p>
         </div>
       </div>
     `;

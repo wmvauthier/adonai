@@ -3,7 +3,7 @@
   "updatedAt": "2026-05-28",
   "meta": {
     "set": "Foundations",
-    "cardCount": 69
+    "cardCount": 55
   },
   "defaults": {
     "rarity": "A definir",
@@ -29,63 +29,783 @@
     "text": {
       "pt": "Dados de jogo em revisão. Atualize este registro quando o texto final da carta estiver fechado.",
       "en": "Game data under review. Update this record when the final card text is locked."
+    },
+    "reference": {
+      "pt": "Versículo bíblico a definir.",
+      "en": "Bible verse TBD."
     }
   },
   "cards": [
-    {"id": "foundations-artefato-001", "number": "001", "set": "Foundations", "type": "Artefato", "name": {"pt": "Artefato - Foundations 1", "en": "Artifact - Foundations 1"}, "images": {"card": "../assets/cards/Artefato - Foundations-1.webp", "art": "../assets/imgs/Artefato - Foundations-1 - img.webp"}},
-    {"id": "foundations-artefato-002", "number": "002", "set": "Foundations", "type": "Artefato", "name": {"pt": "Artefato - Foundations 2", "en": "Artifact - Foundations 2"}, "images": {"card": "../assets/cards/Artefato - Foundations-2.webp", "art": "../assets/imgs/Artefato - Foundations-2 - img.webp"}},
-    {"id": "foundations-artefato-003", "number": "003", "set": "Foundations", "type": "Artefato", "name": {"pt": "Artefato - Foundations 3", "en": "Artifact - Foundations 3"}, "images": {"card": "../assets/cards/Artefato - Foundations-3.webp", "art": "../assets/imgs/Artefato - Foundations-3 - img.webp"}},
-    {"id": "foundations-artefato-004", "number": "004", "set": "Foundations", "type": "Artefato", "name": {"pt": "Artefato - Foundations 4", "en": "Artifact - Foundations 4"}, "images": {"card": "../assets/cards/Artefato - Foundations-4.webp", "art": "../assets/imgs/Artefato - Foundations-4 - img.webp"}},
-    {"id": "foundations-campeao-001", "number": "001", "set": "Foundations", "type": "Campeao", "name": {"pt": "Campeão - Foundations 1", "en": "Champion - Foundations 1"}, "images": {"card": "../assets/cards/Campeão - Foundations-1.webp", "art": "../assets/imgs/Campeão - Foundations-1 - img.webp"}},
-    {"id": "foundations-campeao-002", "number": "002", "set": "Foundations", "type": "Campeao", "name": {"pt": "Campeão - Foundations 2", "en": "Champion - Foundations 2"}, "images": {"card": "../assets/cards/Campeão - Foundations-2.webp", "art": "../assets/imgs/Campeão - Foundations-2 - img.webp"}},
-    {"id": "foundations-campeao-003", "number": "003", "set": "Foundations", "type": "Campeao", "name": {"pt": "Campeão - Foundations 3", "en": "Champion - Foundations 3"}, "images": {"card": "../assets/cards/Campeão - Foundations-3.webp", "art": "../assets/imgs/Campeão - Foundations-3 - img.webp"}},
-    {"id": "foundations-campeao-004", "number": "004", "set": "Foundations", "type": "Campeao", "name": {"pt": "Campeão - Foundations 4", "en": "Champion - Foundations 4"}, "images": {"card": "../assets/cards/Campeão - Foundations-4.webp", "art": "../assets/imgs/Campeão - Foundations-4 - img.webp"}},
-    {"id": "foundations-milagre-001", "number": "001", "set": "Foundations", "type": "Milagre", "name": {"pt": "Milagre - Foundations 1", "en": "Miracle - Foundations 1"}, "images": {"card": "../assets/cards/Milagre - Foundations-1.webp", "art": "../assets/imgs/Milagre - Foundations-1 - img.webp"}},
-    {"id": "foundations-milagre-002", "number": "002", "set": "Foundations", "type": "Milagre", "name": {"pt": "Milagre - Foundations 2", "en": "Miracle - Foundations 2"}, "images": {"card": "../assets/cards/Milagre - Foundations-2.webp", "art": "../assets/imgs/Milagre - Foundations-2 - img.webp"}},
-    {"id": "foundations-milagre-003", "number": "003", "set": "Foundations", "type": "Milagre", "name": {"pt": "Milagre - Foundations 3", "en": "Miracle - Foundations 3"}, "images": {"card": "../assets/cards/Milagre - Foundations-3.webp", "art": "../assets/imgs/Milagre - Foundations-3 - img.webp"}},
-    {"id": "foundations-milagre-004", "number": "004", "set": "Foundations", "type": "Milagre", "name": {"pt": "Milagre - Foundations 4", "en": "Miracle - Foundations 4"}, "images": {"card": "../assets/cards/Milagre - Foundations-4.webp", "art": "../assets/imgs/Milagre - Foundations-4 - img.webp"}},
-    {"id": "foundations-milagre-005", "number": "005", "set": "Foundations", "type": "Milagre", "name": {"pt": "Milagre - Foundations 5", "en": "Miracle - Foundations 5"}, "images": {"card": "../assets/cards/Milagre - Foundations-5.webp", "art": "../assets/imgs/Milagre - Foundations-5 - img.webp"}},
-    {"id": "foundations-milagre-006", "number": "006", "set": "Foundations", "type": "Milagre", "name": {"pt": "Milagre - Foundations 6", "en": "Miracle - Foundations 6"}, "images": {"card": "../assets/cards/Milagre - Foundations-6.webp", "art": "../assets/imgs/Milagre - Foundations-6 - img.webp"}},
-    {"id": "foundations-milagre-007", "number": "007", "set": "Foundations", "type": "Milagre", "name": {"pt": "Milagre - Foundations 7", "en": "Miracle - Foundations 7"}, "images": {"card": "../assets/cards/Milagre - Foundations-7.webp", "art": "../assets/imgs/Milagre - Foundations-7 - img.webp"}},
-    {"id": "foundations-milagre-008", "number": "008", "set": "Foundations", "type": "Milagre", "name": {"pt": "Milagre - Foundations 8", "en": "Miracle - Foundations 8"}, "images": {"card": "../assets/cards/Milagre - Foundations-8.webp", "art": "../assets/imgs/Milagre - Foundations-8 - img.webp"}},
-    {"id": "foundations-pecado-001", "number": "001", "set": "Foundations", "type": "Pecado", "name": {"pt": "Pecado - Foundations 1", "en": "Sin - Foundations 1"}, "images": {"card": "../assets/cards/Pecado - Foundations-1.webp", "art": "../assets/imgs/Pecado - Foundations-1 - img.webp"}},
-    {"id": "foundations-pecado-002", "number": "002", "set": "Foundations", "type": "Pecado", "name": {"pt": "Pecado - Foundations 2", "en": "Sin - Foundations 2"}, "images": {"card": "../assets/cards/Pecado - Foundations-2.webp", "art": "../assets/imgs/Pecado - Foundations-2 - img.webp"}},
-    {"id": "foundations-pecado-003", "number": "003", "set": "Foundations", "type": "Pecado", "name": {"pt": "Pecado - Foundations 3", "en": "Sin - Foundations 3"}, "images": {"card": "../assets/cards/Pecado - Foundations-3.webp", "art": "../assets/imgs/Pecado - Foundations-3 - img.webp"}},
-    {"id": "foundations-pecado-004", "number": "004", "set": "Foundations", "type": "Pecado", "name": {"pt": "Pecado - Foundations 4", "en": "Sin - Foundations 4"}, "images": {"card": "../assets/cards/Pecado - Foundations-4.webp", "art": "../assets/imgs/Pecado - Foundations-4 - img.webp"}},
-    {"id": "foundations-pecado-005", "number": "005", "set": "Foundations", "type": "Pecado", "name": {"pt": "Pecado - Foundations 5", "en": "Sin - Foundations 5"}, "images": {"card": "../assets/cards/Pecado - Foundations-5.webp", "art": "../assets/imgs/Pecado - Foundations-5 - img.webp"}},
-    {"id": "foundations-pecado-006", "number": "006", "set": "Foundations", "type": "Pecado", "name": {"pt": "Pecado - Foundations 6", "en": "Sin - Foundations 6"}, "images": {"card": "../assets/cards/Pecado - Foundations-6.webp", "art": "../assets/imgs/Pecado - Foundations-6 - img.webp"}},
-    {"id": "foundations-pecado-007", "number": "007", "set": "Foundations", "type": "Pecado", "name": {"pt": "Pecado - Foundations 7", "en": "Sin - Foundations 7"}, "images": {"card": "../assets/cards/Pecado - Foundations-7.webp", "art": "../assets/imgs/Pecado - Foundations-7 - img.webp"}},
-    {"id": "foundations-pecado-008", "number": "008", "set": "Foundations", "type": "Pecado", "name": {"pt": "Pecado - Foundations 8", "en": "Sin - Foundations 8"}, "images": {"card": "../assets/cards/Pecado - Foundations-8.webp", "art": "../assets/imgs/Pecado - Foundations-8 - img.webp"}},
-    {"id": "foundations-personagem-001", "number": "001", "set": "Foundations", "type": "Personagem", "name": {"pt": "Personagem - Foundations 1", "en": "Character - Foundations 1"}, "images": {"card": "../assets/cards/Personagem - Foundations-1.webp", "art": "../assets/imgs/Personagem - Foundations-1 - img.webp"}},
-    {"id": "foundations-personagem-002", "number": "002", "set": "Foundations", "type": "Personagem", "name": {"pt": "Personagem - Foundations 2", "en": "Character - Foundations 2"}, "images": {"card": "../assets/cards/Personagem - Foundations-2.webp", "art": "../assets/imgs/Personagem - Foundations-2 - img.webp"}},
-    {"id": "foundations-personagem-003", "number": "003", "set": "Foundations", "type": "Personagem", "name": {"pt": "Personagem - Foundations 3", "en": "Character - Foundations 3"}, "images": {"card": "../assets/cards/Personagem - Foundations-3.webp", "art": "../assets/imgs/Personagem - Foundations-3 - img.webp"}},
-    {"id": "foundations-personagem-004", "number": "004", "set": "Foundations", "type": "Personagem", "name": {"pt": "Personagem - Foundations 4", "en": "Character - Foundations 4"}, "images": {"card": "../assets/cards/Personagem - Foundations-4.webp", "art": "../assets/imgs/Personagem - Foundations-4 - img.webp"}},
-    {"id": "foundations-personagem-005", "number": "005", "set": "Foundations", "type": "Personagem", "name": {"pt": "Personagem - Foundations 5", "en": "Character - Foundations 5"}, "images": {"card": "../assets/cards/Personagem - Foundations-5.webp", "art": "../assets/imgs/Personagem - Foundations-5 - img.webp"}},
-    {"id": "foundations-personagem-006", "number": "006", "set": "Foundations", "type": "Personagem", "name": {"pt": "Personagem - Foundations 6", "en": "Character - Foundations 6"}, "images": {"card": "../assets/cards/Personagem - Foundations-6.webp", "art": "../assets/imgs/Personagem - Foundations-6 - img.webp"}},
-    {"id": "foundations-personagem-007", "number": "007", "set": "Foundations", "type": "Personagem", "name": {"pt": "Personagem - Foundations 7", "en": "Character - Foundations 7"}, "images": {"card": "../assets/cards/Personagem - Foundations-7.webp", "art": "../assets/imgs/Personagem - Foundations-7 - img.webp"}},
-    {"id": "foundations-personagem-008", "number": "008", "set": "Foundations", "type": "Personagem", "name": {"pt": "Personagem - Foundations 8", "en": "Character - Foundations 8"}, "images": {"card": "../assets/cards/Personagem - Foundations-8.webp", "art": "../assets/imgs/Personagem - Foundations-8 - img.webp"}},
-    {"id": "foundations-personagem-009", "number": "009", "set": "Foundations", "type": "Personagem", "name": {"pt": "Personagem - Foundations 9", "en": "Character - Foundations 9"}, "images": {"card": "../assets/cards/Personagem - Foundations-9.webp", "art": "../assets/imgs/Personagem - Foundations-9 - img.webp"}},
-    {"id": "foundations-personagem-010", "number": "010", "set": "Foundations", "type": "Personagem", "name": {"pt": "Personagem - Foundations 10", "en": "Character - Foundations 10"}, "images": {"card": "../assets/cards/Personagem - Foundations-10.webp", "art": "../assets/imgs/Personagem - Foundations-10 - img.webp"}},
-    {"id": "foundations-personagem-011", "number": "011", "set": "Foundations", "type": "Personagem", "name": {"pt": "Personagem - Foundations 11", "en": "Character - Foundations 11"}, "images": {"card": "../assets/cards/Personagem - Foundations-11.webp", "art": "../assets/imgs/Personagem - Foundations-11 - img.webp"}},
-    {"id": "foundations-personagem-012", "number": "012", "set": "Foundations", "type": "Personagem", "name": {"pt": "Personagem - Foundations 12", "en": "Character - Foundations 12"}, "images": {"card": "../assets/cards/Personagem - Foundations-12.webp", "art": "../assets/imgs/Personagem - Foundations-12 - img.webp"}},
-    {"id": "foundations-personagem-013", "number": "013", "set": "Foundations", "type": "Personagem", "name": {"pt": "Personagem - Foundations 13", "en": "Character - Foundations 13"}, "images": {"card": "../assets/cards/Personagem - Foundations-13.webp", "art": "../assets/imgs/Personagem - Foundations-13 - img.webp"}},
-    {"id": "foundations-personagem-014", "number": "014", "set": "Foundations", "type": "Personagem", "name": {"pt": "Personagem - Foundations 14", "en": "Character - Foundations 14"}, "images": {"card": "../assets/cards/Personagem - Foundations-14.webp", "art": "../assets/imgs/Personagem - Foundations-14 - img.webp"}},
-    {"id": "foundations-personagem-015", "number": "015", "set": "Foundations", "type": "Personagem", "name": {"pt": "Personagem - Foundations 15", "en": "Character - Foundations 15"}, "images": {"card": "../assets/cards/Personagem - Foundations-15.webp", "art": "../assets/imgs/Personagem - Foundations-15 - img.webp"}},
-    {"id": "foundations-personagem-016", "number": "016", "set": "Foundations", "type": "Personagem", "name": {"pt": "Personagem - Foundations 16", "en": "Character - Foundations 16"}, "images": {"card": "../assets/cards/Personagem - Foundations-16.webp", "art": "../assets/imgs/Personagem - Foundations-16 - img.webp"}},
-    {"id": "foundations-personagem-017", "number": "017", "set": "Foundations", "type": "Personagem", "name": {"pt": "Personagem - Foundations 17", "en": "Character - Foundations 17"}, "images": {"card": "../assets/cards/Personagem - Foundations-17.webp", "art": "../assets/imgs/Personagem - Foundations-17 - img.webp"}},
-    {"id": "foundations-personagem-018", "number": "018", "set": "Foundations", "type": "Personagem", "name": {"pt": "Personagem - Foundations 18", "en": "Character - Foundations 18"}, "images": {"card": "../assets/cards/Personagem - Foundations-18.webp", "art": "../assets/imgs/Personagem - Foundations-18 - img.webp"}},
-    {"id": "foundations-personagem-019", "number": "019", "set": "Foundations", "type": "Personagem", "name": {"pt": "Personagem - Foundations 19", "en": "Character - Foundations 19"}, "images": {"card": "../assets/cards/Personagem - Foundations-19.webp", "art": "../assets/imgs/Personagem - Foundations-19 - img.webp"}},
-    {"id": "foundations-personagem-020", "number": "020", "set": "Foundations", "type": "Personagem", "name": {"pt": "Personagem - Foundations 20", "en": "Character - Foundations 20"}, "images": {"card": "../assets/cards/Personagem - Foundations-20.webp", "art": "../assets/imgs/Personagem - Foundations-20 - img.webp"}},
-    {"id": "foundations-personagem-021", "number": "021", "set": "Foundations", "type": "Personagem", "name": {"pt": "Personagem - Foundations 21", "en": "Character - Foundations 21"}, "images": {"card": "../assets/cards/Personagem - Foundations-21.webp", "art": "../assets/imgs/Personagem - Foundations-21 - img.webp"}},
-    {"id": "foundations-personagem-022", "number": "022", "set": "Foundations", "type": "Personagem", "name": {"pt": "Personagem - Foundations 22", "en": "Character - Foundations 22"}, "images": {"card": "../assets/cards/Personagem - Foundations-22.webp", "art": "../assets/imgs/Personagem - Foundations-22 - img.webp"}},
-    {"id": "foundations-personagem-023", "number": "023", "set": "Foundations", "type": "Personagem", "name": {"pt": "Personagem - Foundations 23", "en": "Character - Foundations 23"}, "images": {"card": "../assets/cards/Personagem - Foundations-23.webp", "art": "../assets/imgs/Personagem - Foundations-23 - img.webp"}},
-    {"id": "foundations-templo-001", "number": "001", "set": "Foundations", "type": "Templo", "name": {"pt": "Templo - Foundations 1", "en": "Temple - Foundations 1"}, "images": {"card": "../assets/cards/Templo - Foundations-1.webp", "art": "../assets/imgs/Templo - Foundations-1 - img.webp"}},
-    {"id": "foundations-templo-002", "number": "002", "set": "Foundations", "type": "Templo", "name": {"pt": "Templo - Foundations 2", "en": "Temple - Foundations 2"}, "images": {"card": "../assets/cards/Templo - Foundations-2.webp", "art": "../assets/imgs/Templo - Foundations-2 - img.webp"}},
-    {"id": "foundations-templo-003", "number": "003", "set": "Foundations", "type": "Templo", "name": {"pt": "Templo - Foundations 3", "en": "Temple - Foundations 3"}, "images": {"card": "../assets/cards/Templo - Foundations-3.webp", "art": "../assets/imgs/Templo - Foundations-3 - img.webp"}},
-    {"id": "foundations-templo-004", "number": "004", "set": "Foundations", "type": "Templo", "name": {"pt": "Templo - Foundations 4", "en": "Temple - Foundations 4"}, "images": {"card": "../assets/cards/Templo - Foundations-4.webp", "art": "../assets/imgs/Templo - Foundations-4 - img.webp"}},
-    {"id": "foundations-territorio-001", "number": "001", "set": "Foundations", "type": "Territorio", "name": {"pt": "Território - Foundations 1", "en": "Territory - Foundations 1"}, "images": {"card": "../assets/cards/Território - Foundations-1.webp", "art": "../assets/imgs/Território - Foundations-1 - img.webp"}},
-    {"id": "foundations-territorio-002", "number": "002", "set": "Foundations", "type": "Territorio", "name": {"pt": "Território - Foundations 2", "en": "Territory - Foundations 2"}, "images": {"card": "../assets/cards/Território - Foundations-2.webp", "art": "../assets/imgs/Território - Foundations-2 - img.webp"}},
-    {"id": "foundations-territorio-003", "number": "003", "set": "Foundations", "type": "Territorio", "name": {"pt": "Território - Foundations 3", "en": "Territory - Foundations 3"}, "images": {"card": "../assets/cards/Território - Foundations-3.webp", "art": "../assets/imgs/Território - Foundations-3 - img.webp"}},
-    {"id": "foundations-territorio-004", "number": "004", "set": "Foundations", "type": "Territorio", "name": {"pt": "Território - Foundations 4", "en": "Territory - Foundations 4"}, "images": {"card": "../assets/cards/Território - Foundations-4.webp", "art": "../assets/imgs/Território - Foundations-4 - img.webp"}}
+    {
+      "id": "foundations-artefato-001",
+      "number": "001",
+      "set": "Foundations",
+      "type": "Artefato",
+      "name": {
+        "pt": "Artefato - Foundations 1",
+        "en": "Artifact - Foundations 1"
+      },
+      "images": {
+        "card": "../assets/cards/Artefato - Foundations-1.webp",
+        "art": "../assets/imgs/Artefato - Foundations-1 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-artefato-002",
+      "number": "002",
+      "set": "Foundations",
+      "type": "Artefato",
+      "name": {
+        "pt": "Artefato - Foundations 2",
+        "en": "Artifact - Foundations 2"
+      },
+      "images": {
+        "card": "../assets/cards/Artefato - Foundations-2.webp",
+        "art": "../assets/imgs/Artefato - Foundations-2 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-artefato-003",
+      "number": "003",
+      "set": "Foundations",
+      "type": "Artefato",
+      "name": {
+        "pt": "Artefato - Foundations 3",
+        "en": "Artifact - Foundations 3"
+      },
+      "images": {
+        "card": "../assets/cards/Artefato - Foundations-3.webp",
+        "art": "../assets/imgs/Artefato - Foundations-3 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-artefato-004",
+      "number": "004",
+      "set": "Foundations",
+      "type": "Artefato",
+      "name": {
+        "pt": "Artefato - Foundations 4",
+        "en": "Artifact - Foundations 4"
+      },
+      "images": {
+        "card": "../assets/cards/Artefato - Foundations-4.webp",
+        "art": "../assets/imgs/Artefato - Foundations-4 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-campeao-001",
+      "number": "001",
+      "set": "Foundations",
+      "type": "Campeão",
+      "name": {
+        "pt": "Campeão - Foundations 1",
+        "en": "Champion - Foundations 1"
+      },
+      "images": {
+        "card": "../assets/cards/Campeão - Foundations-1.webp",
+        "art": "../assets/imgs/Campeão - Foundations-1 - img.webp"
+      }
+    },
+    {
+      "id": "FND-CMP-002",
+      "number": "FND-CMP-002",
+      "set": "Foundations",
+      "type": "Campeão",
+      "subtype": "-",
+      "name": {
+        "pt": "Golias, o Gigante Profano",
+        "en": "Champion - Foundations 2"
+      },
+      "images": {
+        "card": "../assets/cards/Campeão - Foundations-2.webp",
+        "art": "../assets/imgs/Campeão - Foundations-2 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-campeao-003",
+      "number": "003",
+      "set": "Foundations",
+      "type": "Campeão",
+      "name": {
+        "pt": "Campeão - Foundations 3",
+        "en": "Champion - Foundations 3"
+      },
+      "images": {
+        "card": "../assets/cards/Campeão - Foundations-3.webp",
+        "art": "../assets/imgs/Campeão - Foundations-3 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-campeao-004",
+      "number": "004",
+      "set": "Foundations",
+      "type": "Campeão",
+      "name": {
+        "pt": "Campeão - Foundations 4",
+        "en": "Champion - Foundations 4"
+      },
+      "images": {
+        "card": "../assets/cards/Campeão - Foundations-4.webp",
+        "art": "../assets/imgs/Campeão - Foundations-4 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-milagre-001",
+      "number": "001",
+      "set": "Foundations",
+      "type": "Milagre",
+      "name": {
+        "pt": "Milagre - Foundations 1",
+        "en": "Miracle - Foundations 1"
+      },
+      "images": {
+        "card": "../assets/cards/Milagre - Foundations-1.webp",
+        "art": "../assets/imgs/Milagre - Foundations-1 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-milagre-002",
+      "number": "002",
+      "set": "Foundations",
+      "type": "Milagre",
+      "name": {
+        "pt": "Milagre - Foundations 2",
+        "en": "Miracle - Foundations 2"
+      },
+      "images": {
+        "card": "../assets/cards/Milagre - Foundations-2.webp",
+        "art": "../assets/imgs/Milagre - Foundations-2 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-milagre-003",
+      "number": "003",
+      "set": "Foundations",
+      "type": "Milagre",
+      "name": {
+        "pt": "Milagre - Foundations 3",
+        "en": "Miracle - Foundations 3"
+      },
+      "images": {
+        "card": "../assets/cards/Milagre - Foundations-3.webp",
+        "art": "../assets/imgs/Milagre - Foundations-3 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-milagre-004",
+      "number": "004",
+      "set": "Foundations",
+      "type": "Milagre",
+      "name": {
+        "pt": "Milagre - Foundations 4",
+        "en": "Miracle - Foundations 4"
+      },
+      "images": {
+        "card": "../assets/cards/Milagre - Foundations-4.webp",
+        "art": "../assets/imgs/Milagre - Foundations-4 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-milagre-005",
+      "number": "005",
+      "set": "Foundations",
+      "type": "Milagre",
+      "name": {
+        "pt": "Milagre - Foundations 5",
+        "en": "Miracle - Foundations 5"
+      },
+      "images": {
+        "card": "../assets/cards/Milagre - Foundations-5.webp",
+        "art": "../assets/imgs/Milagre - Foundations-5 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-milagre-006",
+      "number": "006",
+      "set": "Foundations",
+      "type": "Milagre",
+      "name": {
+        "pt": "Milagre - Foundations 6",
+        "en": "Miracle - Foundations 6"
+      },
+      "images": {
+        "card": "../assets/cards/Milagre - Foundations-6.webp",
+        "art": "../assets/imgs/Milagre - Foundations-6 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-milagre-007",
+      "number": "007",
+      "set": "Foundations",
+      "type": "Milagre",
+      "name": {
+        "pt": "Milagre - Foundations 7",
+        "en": "Miracle - Foundations 7"
+      },
+      "images": {
+        "card": "../assets/cards/Milagre - Foundations-7.webp",
+        "art": "../assets/imgs/Milagre - Foundations-7 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-milagre-008",
+      "number": "008",
+      "set": "Foundations",
+      "type": "Milagre",
+      "name": {
+        "pt": "Milagre - Foundations 8",
+        "en": "Miracle - Foundations 8"
+      },
+      "images": {
+        "card": "../assets/cards/Milagre - Foundations-8.webp",
+        "art": "../assets/imgs/Milagre - Foundations-8 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-pecado-001",
+      "number": "001",
+      "set": "Foundations",
+      "type": "Pecado",
+      "name": {
+        "pt": "Pecado - Foundations 1",
+        "en": "Sin - Foundations 1"
+      },
+      "images": {
+        "card": "../assets/cards/Pecado - Foundations-1.webp",
+        "art": "../assets/imgs/Pecado - Foundations-1 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-pecado-002",
+      "number": "002",
+      "set": "Foundations",
+      "type": "Pecado",
+      "name": {
+        "pt": "Pecado - Foundations 2",
+        "en": "Sin - Foundations 2"
+      },
+      "images": {
+        "card": "../assets/cards/Pecado - Foundations-2.webp",
+        "art": "../assets/imgs/Pecado - Foundations-2 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-pecado-003",
+      "number": "003",
+      "set": "Foundations",
+      "type": "Pecado",
+      "name": {
+        "pt": "Pecado - Foundations 3",
+        "en": "Sin - Foundations 3"
+      },
+      "images": {
+        "card": "../assets/cards/Pecado - Foundations-3.webp",
+        "art": "../assets/imgs/Pecado - Foundations-3 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-pecado-004",
+      "number": "004",
+      "set": "Foundations",
+      "type": "Pecado",
+      "name": {
+        "pt": "Pecado - Foundations 4",
+        "en": "Sin - Foundations 4"
+      },
+      "images": {
+        "card": "../assets/cards/Pecado - Foundations-4.webp",
+        "art": "../assets/imgs/Pecado - Foundations-4 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-pecado-005",
+      "number": "005",
+      "set": "Foundations",
+      "type": "Pecado",
+      "name": {
+        "pt": "Pecado - Foundations 5",
+        "en": "Sin - Foundations 5"
+      },
+      "images": {
+        "card": "../assets/cards/Pecado - Foundations-5.webp",
+        "art": "../assets/imgs/Pecado - Foundations-5 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-pecado-006",
+      "number": "006",
+      "set": "Foundations",
+      "type": "Pecado",
+      "name": {
+        "pt": "Pecado - Foundations 6",
+        "en": "Sin - Foundations 6"
+      },
+      "images": {
+        "card": "../assets/cards/Pecado - Foundations-6.webp",
+        "art": "../assets/imgs/Pecado - Foundations-6 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-pecado-007",
+      "number": "007",
+      "set": "Foundations",
+      "type": "Pecado",
+      "name": {
+        "pt": "Pecado - Foundations 7",
+        "en": "Sin - Foundations 7"
+      },
+      "images": {
+        "card": "../assets/cards/Pecado - Foundations-7.webp",
+        "art": "../assets/imgs/Pecado - Foundations-7 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-pecado-008",
+      "number": "008",
+      "set": "Foundations",
+      "type": "Pecado",
+      "name": {
+        "pt": "Pecado - Foundations 8",
+        "en": "Sin - Foundations 8"
+      },
+      "images": {
+        "card": "../assets/cards/Pecado - Foundations-8.webp",
+        "art": "../assets/imgs/Pecado - Foundations-8 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-personagem-001",
+      "number": "001",
+      "set": "Foundations",
+      "type": "Personagem",
+      "name": {
+        "pt": "Personagem - Foundations 1",
+        "en": "Character - Foundations 1"
+      },
+      "images": {
+        "card": "../assets/cards/Personagem - Foundations-1.webp",
+        "art": "../assets/imgs/Personagem - Foundations-1 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-personagem-002",
+      "number": "002",
+      "set": "Foundations",
+      "type": "Personagem",
+      "name": {
+        "pt": "Personagem - Foundations 2",
+        "en": "Character - Foundations 2"
+      },
+      "images": {
+        "card": "../assets/cards/Personagem - Foundations-2.webp",
+        "art": "../assets/imgs/Personagem - Foundations-2 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-personagem-003",
+      "number": "003",
+      "set": "Foundations",
+      "type": "Personagem",
+      "name": {
+        "pt": "Personagem - Foundations 3",
+        "en": "Character - Foundations 3"
+      },
+      "images": {
+        "card": "../assets/cards/Personagem - Foundations-3.webp",
+        "art": "../assets/imgs/Personagem - Foundations-3 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-personagem-004",
+      "number": "004",
+      "set": "Foundations",
+      "type": "Personagem",
+      "name": {
+        "pt": "Personagem - Foundations 4",
+        "en": "Character - Foundations 4"
+      },
+      "images": {
+        "card": "../assets/cards/Personagem - Foundations-4.webp",
+        "art": "../assets/imgs/Personagem - Foundations-4 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-personagem-005",
+      "number": "005",
+      "set": "Foundations",
+      "type": "Personagem",
+      "name": {
+        "pt": "Personagem - Foundations 5",
+        "en": "Character - Foundations 5"
+      },
+      "images": {
+        "card": "../assets/cards/Personagem - Foundations-5.webp",
+        "art": "../assets/imgs/Personagem - Foundations-5 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-personagem-006",
+      "number": "006",
+      "set": "Foundations",
+      "type": "Personagem",
+      "name": {
+        "pt": "Personagem - Foundations 6",
+        "en": "Character - Foundations 6"
+      },
+      "images": {
+        "card": "../assets/cards/Personagem - Foundations-6.webp",
+        "art": "../assets/imgs/Personagem - Foundations-6 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-personagem-007",
+      "number": "007",
+      "set": "Foundations",
+      "type": "Personagem",
+      "name": {
+        "pt": "Personagem - Foundations 7",
+        "en": "Character - Foundations 7"
+      },
+      "images": {
+        "card": "../assets/cards/Personagem - Foundations-7.webp",
+        "art": "../assets/imgs/Personagem - Foundations-7 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-personagem-008",
+      "number": "008",
+      "set": "Foundations",
+      "type": "Personagem",
+      "name": {
+        "pt": "Personagem - Foundations 8",
+        "en": "Character - Foundations 8"
+      },
+      "images": {
+        "card": "../assets/cards/Personagem - Foundations-8.webp",
+        "art": "../assets/imgs/Personagem - Foundations-8 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-personagem-009",
+      "number": "009",
+      "set": "Foundations",
+      "type": "Personagem",
+      "name": {
+        "pt": "Personagem - Foundations 9",
+        "en": "Character - Foundations 9"
+      },
+      "images": {
+        "card": "../assets/cards/Personagem - Foundations-9.webp",
+        "art": "../assets/imgs/Personagem - Foundations-9 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-personagem-010",
+      "number": "010",
+      "set": "Foundations",
+      "type": "Personagem",
+      "name": {
+        "pt": "Personagem - Foundations 10",
+        "en": "Character - Foundations 10"
+      },
+      "images": {
+        "card": "../assets/cards/Personagem - Foundations-10.webp",
+        "art": "../assets/imgs/Personagem - Foundations-10 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-personagem-011",
+      "number": "011",
+      "set": "Foundations",
+      "type": "Personagem",
+      "name": {
+        "pt": "Personagem - Foundations 11",
+        "en": "Character - Foundations 11"
+      },
+      "images": {
+        "card": "../assets/cards/Personagem - Foundations-11.webp",
+        "art": "../assets/imgs/Personagem - Foundations-11 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-personagem-012",
+      "number": "012",
+      "set": "Foundations",
+      "type": "Personagem",
+      "name": {
+        "pt": "Personagem - Foundations 12",
+        "en": "Character - Foundations 12"
+      },
+      "images": {
+        "card": "../assets/cards/Personagem - Foundations-12.webp",
+        "art": "../assets/imgs/Personagem - Foundations-12 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-personagem-013",
+      "number": "013",
+      "set": "Foundations",
+      "type": "Personagem",
+      "name": {
+        "pt": "Personagem - Foundations 13",
+        "en": "Character - Foundations 13"
+      },
+      "images": {
+        "card": "../assets/cards/Personagem - Foundations-13.webp",
+        "art": "../assets/imgs/Personagem - Foundations-13 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-personagem-014",
+      "number": "014",
+      "set": "Foundations",
+      "type": "Personagem",
+      "name": {
+        "pt": "Personagem - Foundations 14",
+        "en": "Character - Foundations 14"
+      },
+      "images": {
+        "card": "../assets/cards/Personagem - Foundations-14.webp",
+        "art": "../assets/imgs/Personagem - Foundations-14 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-personagem-015",
+      "number": "015",
+      "set": "Foundations",
+      "type": "Personagem",
+      "name": {
+        "pt": "Personagem - Foundations 15",
+        "en": "Character - Foundations 15"
+      },
+      "images": {
+        "card": "../assets/cards/Personagem - Foundations-15.webp",
+        "art": "../assets/imgs/Personagem - Foundations-15 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-personagem-016",
+      "number": "016",
+      "set": "Foundations",
+      "type": "Personagem",
+      "name": {
+        "pt": "Personagem - Foundations 16",
+        "en": "Character - Foundations 16"
+      },
+      "images": {
+        "card": "../assets/cards/Personagem - Foundations-16.webp",
+        "art": "../assets/imgs/Personagem - Foundations-16 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-personagem-017",
+      "number": "017",
+      "set": "Foundations",
+      "type": "Personagem",
+      "name": {
+        "pt": "Personagem - Foundations 17",
+        "en": "Character - Foundations 17"
+      },
+      "images": {
+        "card": "../assets/cards/Personagem - Foundations-17.webp",
+        "art": "../assets/imgs/Personagem - Foundations-17 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-personagem-018",
+      "number": "018",
+      "set": "Foundations",
+      "type": "Personagem",
+      "name": {
+        "pt": "Personagem - Foundations 18",
+        "en": "Character - Foundations 18"
+      },
+      "images": {
+        "card": "../assets/cards/Personagem - Foundations-18.webp",
+        "art": "../assets/imgs/Personagem - Foundations-18 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-personagem-019",
+      "number": "019",
+      "set": "Foundations",
+      "type": "Personagem",
+      "name": {
+        "pt": "Personagem - Foundations 19",
+        "en": "Character - Foundations 19"
+      },
+      "images": {
+        "card": "../assets/cards/Personagem - Foundations-19.webp",
+        "art": "../assets/imgs/Personagem - Foundations-19 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-personagem-020",
+      "number": "020",
+      "set": "Foundations",
+      "type": "Personagem",
+      "name": {
+        "pt": "Personagem - Foundations 20",
+        "en": "Character - Foundations 20"
+      },
+      "images": {
+        "card": "../assets/cards/Personagem - Foundations-20.webp",
+        "art": "../assets/imgs/Personagem - Foundations-20 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-personagem-021",
+      "number": "021",
+      "set": "Foundations",
+      "type": "Personagem",
+      "name": {
+        "pt": "Personagem - Foundations 21",
+        "en": "Character - Foundations 21"
+      },
+      "images": {
+        "card": "../assets/cards/Personagem - Foundations-21.webp",
+        "art": "../assets/imgs/Personagem - Foundations-21 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-personagem-022",
+      "number": "022",
+      "set": "Foundations",
+      "type": "Personagem",
+      "name": {
+        "pt": "Personagem - Foundations 22",
+        "en": "Character - Foundations 22"
+      },
+      "images": {
+        "card": "../assets/cards/Personagem - Foundations-22.webp",
+        "art": "../assets/imgs/Personagem - Foundations-22 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-personagem-023",
+      "number": "023",
+      "set": "Foundations",
+      "type": "Personagem",
+      "name": {
+        "pt": "Personagem - Foundations 23",
+        "en": "Character - Foundations 23"
+      },
+      "images": {
+        "card": "../assets/cards/Personagem - Foundations-23.webp",
+        "art": "../assets/imgs/Personagem - Foundations-23 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-templo-001",
+      "number": "001",
+      "set": "Foundations",
+      "type": "Templo",
+      "name": {
+        "pt": "Templo - Foundations 1",
+        "en": "Temple - Foundations 1"
+      },
+      "images": {
+        "card": "../assets/cards/Templo - Foundations-1.webp",
+        "art": "../assets/imgs/Templo - Foundations-1 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-templo-002",
+      "number": "002",
+      "set": "Foundations",
+      "type": "Templo",
+      "name": {
+        "pt": "Templo - Foundations 2",
+        "en": "Temple - Foundations 2"
+      },
+      "images": {
+        "card": "../assets/cards/Templo - Foundations-2.webp",
+        "art": "../assets/imgs/Templo - Foundations-2 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-templo-003",
+      "number": "003",
+      "set": "Foundations",
+      "type": "Templo",
+      "name": {
+        "pt": "Templo - Foundations 3",
+        "en": "Temple - Foundations 3"
+      },
+      "images": {
+        "card": "../assets/cards/Templo - Foundations-3.webp",
+        "art": "../assets/imgs/Templo - Foundations-3 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-templo-004",
+      "number": "004",
+      "set": "Foundations",
+      "type": "Templo",
+      "name": {
+        "pt": "Templo - Foundations 4",
+        "en": "Temple - Foundations 4"
+      },
+      "images": {
+        "card": "../assets/cards/Templo - Foundations-4.webp",
+        "art": "../assets/imgs/Templo - Foundations-4 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-territorio-001",
+      "number": "001",
+      "set": "Foundations",
+      "type": "Territorio",
+      "name": {
+        "pt": "Território - Foundations 1",
+        "en": "Territory - Foundations 1"
+      },
+      "images": {
+        "card": "../assets/cards/Território - Foundations-1.webp",
+        "art": "../assets/imgs/Território - Foundations-1 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-territorio-002",
+      "number": "002",
+      "set": "Foundations",
+      "type": "Territorio",
+      "name": {
+        "pt": "Território - Foundations 2",
+        "en": "Territory - Foundations 2"
+      },
+      "images": {
+        "card": "../assets/cards/Território - Foundations-2.webp",
+        "art": "../assets/imgs/Território - Foundations-2 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-territorio-003",
+      "number": "003",
+      "set": "Foundations",
+      "type": "Territorio",
+      "name": {
+        "pt": "Território - Foundations 3",
+        "en": "Territory - Foundations 3"
+      },
+      "images": {
+        "card": "../assets/cards/Território - Foundations-3.webp",
+        "art": "../assets/imgs/Território - Foundations-3 - img.webp"
+      }
+    },
+    {
+      "id": "foundations-territorio-004",
+      "number": "004",
+      "set": "Foundations",
+      "type": "Territorio",
+      "name": {
+        "pt": "Território - Foundations 4",
+        "en": "Territory - Foundations 4"
+      },
+      "images": {
+        "card": "../assets/cards/Território - Foundations-4.webp",
+        "art": "../assets/imgs/Território - Foundations-4 - img.webp"
+      }
+    }
   ]
 }
