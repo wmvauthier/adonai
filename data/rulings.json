@@ -1,0 +1,220 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-05-29",
+  "rulings": {
+    "type": [
+      {
+        "type": "Artefato",
+        "title": "Artefato",
+        "rulings": [
+          "Artefatos permanecem em jogo enquanto não forem removidos por uma regra ou efeito.",
+          "Quando um artefato estiver associado a outra carta, remova-o se a carta associada deixar o jogo."
+        ]
+      },
+      {
+        "type": "Campeão",
+        "title": "Campeão",
+        "rulings": [
+          "Campeões representam cartas centrais e seguem suas próprias condições de entrada.",
+          "Campeões com custo “-” não são pagos por custo numérico."
+        ]
+      },
+      {
+        "type": "Milagre",
+        "title": "Milagre",
+        "rulings": [
+          "Milagres resolvem seu efeito e depois deixam a zona de resolução.",
+          "Um milagre pode ser usado como resposta quando sua janela de uso permitir."
+        ]
+      },
+      {
+        "type": "Pecado",
+        "title": "Pecado",
+        "rulings": [
+          "Pecados aplicam efeitos de risco ou disrupção conforme indicado pela carta.",
+          "Se um pecado for anulado, trate-o como não resolvido."
+        ]
+      },
+      {
+        "type": "Personagem",
+        "title": "Personagem",
+        "rulings": [
+          "Personagens permanecem em jogo e podem participar de interações de presença.",
+          "Efeitos contínuos sobre personagens duram enquanto a fonte determinar."
+        ]
+      },
+      {
+        "type": "Templo",
+        "title": "Templo",
+        "rulings": [
+          "Templos são permanentes de suporte e não usam custo numérico nesta versão.",
+          "Cada jogador deve seguir os limites de construção definidos para Templos."
+        ]
+      },
+      {
+        "type": "Território",
+        "title": "Território",
+        "rulings": [
+          "Territórios são bases de jogo e não usam custo numérico nesta versão.",
+          "Territórios podem modificar recursos e condições de partida enquanto estiverem ativos."
+        ]
+      }
+    ],
+    "subtype": [
+      {
+        "subtype": "Equipamento",
+        "title": "Equipamento",
+        "rulings": [
+          "Equipamentos podem ser associados a cartas elegíveis conforme indicado pelo efeito.",
+          "Se a carta equipada deixar o jogo, o equipamento deve seguir a regra de descarte ou permanência indicada."
+        ]
+      },
+      {
+        "subtype": "Momentâneo",
+        "title": "Momentâneo",
+        "rulings": [
+          "Cartas momentâneas resolvem uma única vez e não permanecem em jogo.",
+          "Depois de resolver, uma carta momentânea deve ir para a zona apropriada."
+        ]
+      },
+      {
+        "subtype": "Aliado",
+        "title": "Aliado",
+        "rulings": [
+          "Aliados contam como personagens para efeitos que verificam presença em jogo."
+        ]
+      },
+      {
+        "subtype": "Profeta",
+        "title": "Profeta",
+        "rulings": [
+          "Profetas podem interagir com efeitos de revelação, preparação ou previsão quando uma carta mencionar esse subtipo."
+        ]
+      },
+      {
+        "subtype": "Sacerdote",
+        "title": "Sacerdote",
+        "rulings": [
+          "Sacerdotes podem interagir com efeitos de cura, templo ou restauração quando uma carta mencionar esse subtipo."
+        ]
+      },
+      {
+        "subtype": "Guerreiro",
+        "title": "Guerreiro",
+        "rulings": [
+          "Guerreiros podem interagir com efeitos de combate, ataque ou defesa quando uma carta mencionar esse subtipo."
+        ]
+      },
+      {
+        "subtype": "Governante",
+        "title": "Governante",
+        "rulings": [
+          "Governantes podem interagir com efeitos de liderança, ordem ou comando quando uma carta mencionar esse subtipo."
+        ]
+      }
+    ],
+    "effect": [
+      {
+        "effect": "anexe",
+        "title": "Anexar",
+        "rulings": [
+          "Anexar cria uma associação entre duas cartas.",
+          "Uma carta anexada deixa de estar solta e passa a seguir a carta à qual está associada."
+        ]
+      },
+      {
+        "effect": "responder",
+        "title": "Responder",
+        "rulings": [
+          "Responder permite agir durante a resolução ou preparação de outro efeito.",
+          "A resposta deve resolver antes do efeito que a originou, salvo regra específica em contrário."
+        ]
+      },
+      {
+        "effect": "removido",
+        "title": "Remover",
+        "rulings": [
+          "Remover tira uma carta da zona em que ela estava.",
+          "Uma carta removida não conta mais para presença naquela zona."
+        ]
+      },
+      {
+        "effect": "recurso",
+        "title": "Recurso",
+        "rulings": [
+          "Recursos representam meios de pagar custos ou habilitar efeitos.",
+          "Se um efeito preparar recurso, ele deve indicar quando esse recurso pode ser usado."
+        ]
+      }
+    ],
+    "keyword": [
+      {
+        "keyword": "anular",
+        "title": "Anular",
+        "forms": [
+          "anular",
+          "anulado",
+          "anulada",
+          "anulação",
+          "anulações",
+          "anule",
+          "anulei",
+          "anulando"
+        ],
+        "rulings": [
+          "Anular impede que o efeito ou carta resolva.",
+          "Uma carta anulada não aplica seus efeitos de resolução."
+        ]
+      },
+      {
+        "keyword": "destruir",
+        "title": "Destruir",
+        "forms": [
+          "destruir",
+          "destruído",
+          "destruida",
+          "destruída",
+          "destruição",
+          "destruindo",
+          "destrua"
+        ],
+        "rulings": [
+          "Destruir move a carta afetada para a zona apropriada de descarte ou perda.",
+          "Algo destruído deixa de gerar efeitos contínuos, salvo se outra regra disser o contrário."
+        ]
+      },
+      {
+        "keyword": "comprar",
+        "title": "Comprar",
+        "forms": [
+          "comprar",
+          "compra",
+          "comprado",
+          "comprada",
+          "comprando",
+          "compre"
+        ],
+        "rulings": [
+          "Comprar adiciona a carta do topo do deck à mão do jogador.",
+          "Se não houver cartas suficientes para comprar, aplique a regra de deck vazio."
+        ]
+      },
+      {
+        "keyword": "curar",
+        "title": "Curar",
+        "forms": [
+          "curar",
+          "cura",
+          "curado",
+          "curada",
+          "curando",
+          "cure"
+        ],
+        "rulings": [
+          "Curar remove dano ou recupera um valor indicado por uma carta.",
+          "Cura não pode ultrapassar limites máximos definidos pela carta ou pelo jogador."
+        ]
+      }
+    ]
+  }
+}

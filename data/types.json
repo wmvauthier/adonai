@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-05-29",
+  "types": [
+    {
+      "id": 1,
+      "code": "ART",
+      "name": {
+        "pt": "Artefato",
+        "en": "Artifact"
+      }
+    },
+    {
+      "id": 2,
+      "code": "CMP",
+      "name": {
+        "pt": "Campeão",
+        "en": "Champion"
+      }
+    },
+    {
+      "id": 3,
+      "code": "MIL",
+      "name": {
+        "pt": "Milagre",
+        "en": "Miracle"
+      }
+    },
+    {
+      "id": 4,
+      "code": "PEC",
+      "name": {
+        "pt": "Pecado",
+        "en": "Sin"
+      }
+    },
+    {
+      "id": 5,
+      "code": "PER",
+      "name": {
+        "pt": "Personagem",
+        "en": "Character"
+      }
+    },
+    {
+      "id": 6,
+      "code": "TEM",
+      "name": {
+        "pt": "Templo",
+        "en": "Temple"
+      }
+    },
+    {
+      "id": 7,
+      "code": "TER",
+      "name": {
+        "pt": "Território",
+        "en": "Territory"
+      }
+    }
+  ]
+}

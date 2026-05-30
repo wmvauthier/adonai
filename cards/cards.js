@@ -1,70 +1,16 @@
 const DATA_URL = "../data/cards.json";
-
-const typeLabels = {
-  Artefato: { pt: "Artefato", en: "Artifact" },
-  Campeao: { pt: "Campeão", en: "Champion" },
-  Milagre: { pt: "Milagre", en: "Miracle" },
-  Pecado: { pt: "Pecado", en: "Sin" },
-  Personagem: { pt: "Personagem", en: "Character" },
-  Templo: { pt: "Templo", en: "Temple" },
-  Territorio: { pt: "Território", en: "Territory" },
-  Virtude: { pt: "Virtude", en: "Virtue" }
+const RULINGS_URL = "../data/rulings.json";
+const REFERENCE_URLS = {
+  collections: "../data/collections.json",
+  types: "../data/types.json",
+  subtypes: "../data/subtypes.json",
+  functions: "../data/functions.json",
+  roles: "../data/roles.json",
+  virtues: "../data/virtues.json",
+  bible: "../data/bible.json"
 };
 
-const typeOrder = [
-  "Campeao",
-  "Territorio",
-  "Templo",
-  "Personagem",
-  "Milagre",
-  "Artefato",
-  "Virtude",
-  "Pecado"
-];
-
-const typeCodes = {
-  Artefato: "ART",
-  Campeao: "CAM",
-  Milagre: "MIL",
-  Pecado: "PEC",
-  Personagem: "PER",
-  Templo: "TEM",
-  Territorio: "TER",
-  Virtude: "VIR"
-};
-
-const subtypeByType = {
-  Artefato: { pt: "Relíquia", en: "Relic" },
-  Campeao: { pt: "Ungido", en: "Anointed" },
-  Milagre: { pt: "Intervenção", en: "Intervention" },
-  Pecado: { pt: "Desvirtude", en: "Vice" },
-  Personagem: { pt: "Aliado", en: "Ally" },
-  Templo: { pt: "Estrutura", en: "Structure" },
-  Territorio: { pt: "Campo", en: "Field" },
-  Virtude: { pt: "Virtude moral", en: "Moral virtue" }
-};
-
-const functionsByType = {
-  Artefato: [{ pt: "Ferramenta", en: "Tool" }, { pt: "Valor", en: "Value" }],
-  Campeao: [{ pt: "Condição de vitória", en: "Win condition" }, { pt: "Pressão", en: "Pressure" }],
-  Milagre: [{ pt: "Resposta", en: "Answer" }, { pt: "Virada", en: "Swing" }],
-  Pecado: [{ pt: "Disrupção", en: "Disruption" }, { pt: "Risco", en: "Risk" }],
-  Personagem: [{ pt: "Presença", en: "Presence" }, { pt: "Sinergia", en: "Synergy" }],
-  Templo: [{ pt: "Suporte", en: "Support" }, { pt: "Motor", en: "Engine" }],
-  Territorio: [{ pt: "Base", en: "Base" }, { pt: "Recursos", en: "Resources" }],
-  Virtude: [{ pt: "Identidade", en: "Identity" }, { pt: "Aprimoramento", en: "Enhancement" }]
-};
-
-const archetypesByType = {
-  Artefato: [{ pt: "Midrange", en: "Midrange" }, { pt: "Combo", en: "Combo" }],
-  Campeao: [{ pt: "Midrange", en: "Midrange" }, { pt: "Controle", en: "Control" }],
-  Milagre: [{ pt: "Controle", en: "Control" }, { pt: "Tempo", en: "Tempo" }],
-  Pecado: [{ pt: "Disrupção", en: "Disruption" }, { pt: "Controle", en: "Control" }],
-  Personagem: [{ pt: "Aggro", en: "Aggro" }, { pt: "Midrange", en: "Midrange" }],
-  Templo: [{ pt: "Controle", en: "Control" }, { pt: "Valor", en: "Value" }],
-  Territorio: [{ pt: "Base", en: "Base" }, { pt: "Ramp", en: "Ramp" }],
-  Virtude: [{ pt: "Aggro", en: "Aggro" }, { pt: "Sinergia", en: "Synergy" }]
-};
+const typeOrder = ["Campeão", "Território", "Templo", "Personagem", "Milagre", "Artefato", "Pecado"];
 
 const copy = {
   pt: {
@@ -73,10 +19,9 @@ const copy = {
     loadingTitle: "Carregando cartas",
     loadingBody: "Buscando os dados da coleção Foundations.",
     errorTitle: "Não foi possível carregar as cartas",
-    errorBody: "Confira se a página está sendo servida por um servidor local e se data/cards.json existe.",
+    errorBody: "Confira se a página está sendo servida por um servidor local e se os arquivos em data existem.",
     emptyTitle: "Nenhuma carta encontrada",
     emptyBody: "Tente reduzir a combinação de filtros ou buscar por outro termo.",
-    results: "Resultados",
     showing: "Mostrando",
     of: "de",
     previous: "Anterior",
@@ -85,18 +30,23 @@ const copy = {
     noCost: "Sem custo definido",
     viewDetails: "Ver detalhes",
     noData: "A definir",
-    cardText: "Texto da carta",
+    cardText: "Rulings",
     reference: "Referência da carta",
+    specificRuling: "Ruling da carta",
     usage: "Utilização",
     rating: "Avaliação",
     decks: "Decks",
-    deckTypes: "Tipos de deck",
     inclusion: "Inclusão",
     type: "Tipo",
     subtype: "Subtipo",
     functions: "Funções",
-    set: "Coleção",
-    number: "Número",
+    virtues: "Virtudes",
+    noVirtues: "Sem virtudes associadas",
+    collection: "Coleção",
+    identification: "Identificação",
+    status: "Status",
+    attack: "Ataque",
+    resistance: "Resistência",
     imageAlt: "Imagem da carta",
     close: "Fechar detalhes"
   },
@@ -106,10 +56,9 @@ const copy = {
     loadingTitle: "Loading cards",
     loadingBody: "Fetching the Foundations card data.",
     errorTitle: "Cards could not be loaded",
-    errorBody: "Check that the page is running from a local server and that data/cards.json exists.",
+    errorBody: "Check that the page is running from a local server and that the files in data exist.",
     emptyTitle: "No cards found",
     emptyBody: "Try reducing the filter combination or searching for a different term.",
-    results: "Results",
     showing: "Showing",
     of: "of",
     previous: "Prev",
@@ -118,18 +67,23 @@ const copy = {
     noCost: "No cost defined",
     viewDetails: "View details",
     noData: "TBD",
-    cardText: "Card text",
+    cardText: "Rulings",
     reference: "Card reference",
+    specificRuling: "Card ruling",
     usage: "Usage",
     rating: "Rating",
     decks: "Decks",
-    deckTypes: "Deck types",
     inclusion: "Inclusion",
     type: "Type",
     subtype: "Subtype",
     functions: "Functions",
-    set: "Set",
-    number: "Number",
+    virtues: "Virtues",
+    noVirtues: "No associated virtues",
+    collection: "Collection",
+    identification: "Identification",
+    status: "Status",
+    attack: "Attack",
+    resistance: "Resistance",
     imageAlt: "Card image",
     close: "Close details"
   }
@@ -144,8 +98,12 @@ const state = {
   type: "all",
   subtype: "all",
   function: "all",
+  virtue: "all",
   maxCost: null,
+  maxAttack: null,
+  maxResistance: null,
   text: "",
+  query: "",
   sort: "rating-desc",
   lang: "pt"
 };
@@ -155,7 +113,6 @@ const els = {
   mobileToggle: document.getElementById("mobileToggle"),
   primaryNav: document.getElementById("primaryNav"),
   cardsGrid: document.getElementById("cardsGrid"),
-  resultCount: document.getElementById("resultCount"),
   pagination: document.getElementById("pagination"),
   nameFilter: document.getElementById("nameFilter"),
   numberFilter: document.getElementById("numberFilter"),
@@ -163,12 +120,21 @@ const els = {
   typeFilter: document.getElementById("typeFilter"),
   subtypeFilter: document.getElementById("subtypeFilter"),
   functionFilter: document.getElementById("functionFilter"),
+  virtueFilter: document.getElementById("virtueFilter"),
   costFilter: document.getElementById("costFilter"),
   costValue: document.getElementById("costValue"),
+  attackFilter: document.getElementById("attackFilter"),
+  attackValue: document.getElementById("attackValue"),
+  resistanceFilter: document.getElementById("resistanceFilter"),
+  resistanceValue: document.getElementById("resistanceValue"),
   textFilter: document.getElementById("textFilter"),
+  queryFilter: document.getElementById("queryFilter"),
+  queryLegendList: document.getElementById("queryLegendList"),
+  querySuggestions: document.getElementById("querySuggestions"),
   sortSelect: document.getElementById("sortSelect"),
   clearFilters: document.getElementById("clearFilters"),
   drawer: document.getElementById("cardDrawer"),
+  drawerPanel: document.querySelector(".drawer-panel"),
   drawerBackdrop: document.getElementById("drawerBackdrop"),
   drawerClose: document.getElementById("drawerClose"),
   drawerContent: document.getElementById("drawerContent"),
@@ -177,7 +143,20 @@ const els = {
 
 let cardsData = [];
 let cardsMeta = {};
+let rulingBase = { type: [], subtype: [], effect: [], keyword: [] };
+let referenceData = {
+  collections: new Map(),
+  types: new Map(),
+  subtypes: new Map(),
+  functions: new Map(),
+  roles: new Map(),
+  virtues: new Map(),
+  bible: new Map()
+};
 let costBounds = { min: null, max: null };
+let attackBounds = { min: null, max: null };
+let resistanceBounds = { min: null, max: null };
+let querySuggestionState = null;
 
 function t(key) {
   return copy[state.lang][key] || copy.pt[key] || key;
@@ -196,7 +175,24 @@ function localize(value) {
   if (value === null || typeof value === "undefined") return "";
   if (Array.isArray(value)) return value.map(localize).filter(Boolean).join(", ");
   if (typeof value === "object") {
+    if (value.name) return localize(value.name);
+    if (value.label) return localize(value.label);
+    if (value.text) return localize(value.text);
+    if (value.citation) return localize(value.citation);
     return value[state.lang] || value.pt || value.en || Object.values(value).find(Boolean) || "";
+  }
+  return String(value);
+}
+
+function structuralValue(value) {
+  if (value === null || typeof value === "undefined") return "";
+  if (Array.isArray(value)) return structuralValue(value[0]);
+  if (typeof value === "object") {
+    if (value.name) return structuralValue(value.name);
+    if (value.label) return structuralValue(value.label);
+    if (value.text) return structuralValue(value.text);
+    if (value.citation) return structuralValue(value.citation);
+    return value.pt || value.en || Object.values(value).find(Boolean) || "";
   }
   return String(value);
 }
@@ -215,13 +211,16 @@ function normalizeSearch(value) {
     .toLowerCase();
 }
 
-function getTypeRank(type) {
-  const index = typeOrder.indexOf(type);
-  return index === -1 ? Number.MAX_SAFE_INTEGER : index;
+function normalizeRuleText(value) {
+  return normalizeSearch(value)
+    .replace(/[^a-z0-9\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
-function labelForType(type) {
-  return typeLabels[type]?.[state.lang] || type || t("noData");
+function normalizeList(value) {
+  if (value === null || typeof value === "undefined") return [];
+  return Array.isArray(value) ? value : [value];
 }
 
 function labelForValue(value) {
@@ -229,90 +228,197 @@ function labelForValue(value) {
   return localize(value);
 }
 
-function getCardName(card) {
-  return localize(card.name) || `${labelForType(card.type)} ${card.number}`;
+function labelForType(value) {
+  return labelForValue(value) || t("noData");
 }
 
-function getCardCode(card) {
-  const prefix = typeCodes[card.type] || "CRD";
-  return `${prefix}-${card.number}`;
+function getTypeRank(type) {
+  const key = structuralValue(type);
+  const normalized = key === "Campeao" ? "Campeão" : key === "Territorio" ? "Território" : key;
+  const index = typeOrder.indexOf(normalized);
+  return index === -1 ? Number.MAX_SAFE_INTEGER : index;
 }
 
 function toCost(value) {
   if (value === null || typeof value === "undefined" || value === "") return null;
+  if (Array.isArray(value)) return toCost(value[0]);
+  if (String(value).trim() === "-") return null;
   const cost = Number(value);
   return Number.isFinite(cost) ? cost : null;
 }
 
-function deriveCost(type, numericNumber) {
-  const baseByType = {
-    Campeao: 5,
-    Territorio: 0,
-    Templo: 2,
-    Personagem: 2,
-    Milagre: 3,
-    Artefato: 2,
-    Virtude: 1,
-    Pecado: 2
-  };
-  const base = baseByType[type] ?? 2;
-  const offset = numericNumber % 3;
-  return Math.max(0, Math.min(8, base + offset));
-}
-
-function getDefaultSubtype(type) {
-  return subtypeByType[type] || { pt: "A definir", en: "TBD" };
-}
-
-function getDefaultFunctions(type) {
-  return functionsByType[type] || [{ pt: "A definir", en: "TBD" }];
-}
-
-function deriveRating(type, numericNumber) {
-  const baseByType = {
-    Campeao: 4.2,
-    Territorio: 3.8,
-    Templo: 3.9,
-    Personagem: 3.5,
-    Milagre: 3.7,
-    Artefato: 3.6,
-    Virtude: 3.8,
-    Pecado: 3.4
-  };
-  const base = baseByType[type] || 3.2;
-  const offset = ((numericNumber % 4) - 1) * 0.25;
-  return Math.max(1, Math.min(5, Math.round((base + offset) * 2) / 2));
-}
-
-function deriveUsage(type, numericNumber, rating) {
-  const baseDecks = {
-    Campeao: 18,
-    Territorio: 22,
-    Templo: 14,
-    Personagem: 16,
-    Milagre: 15,
-    Artefato: 13,
-    Virtude: 17,
-    Pecado: 11
-  };
-  const deckCount = (baseDecks[type] || 10) + (numericNumber % 7);
-  const inclusion = Math.max(8, Math.min(92, Math.round(deckCount * 2.1 + rating * 7)));
+function normalizeCost(value) {
+  const first = Array.isArray(value) ? value[0] : value;
+  if (first === null || typeof first === "undefined" || first === "") {
+    return { value: null, label: t("noCost") };
+  }
+  if (String(first).trim() === "-") {
+    return { value: null, label: "-" };
+  }
+  const numeric = toCost(first);
   return {
-    deckCount,
-    inclusion,
-    archetypes: archetypesByType[type] || [{ pt: "Aberto", en: "Open" }]
+    value: numeric,
+    label: numeric === null ? String(first) : String(numeric)
   };
 }
 
-function normalizeList(value) {
-  if (!value) return [];
-  return Array.isArray(value) ? value : [value];
+function toNumber(value, fallback = 0) {
+  const number = Number(value);
+  return Number.isFinite(number) ? number : fallback;
+}
+
+function getCardName(card) {
+  return localize(card.name) || `${labelForType(card.type?.[0])} ${card.number}`;
+}
+
+function normalizeNumber(value, fallback) {
+  const match = String(value || "").match(/\d+/g);
+  const raw = match?.length ? match[match.length - 1] : String(fallback || 0);
+  return raw.padStart(3, "0").slice(-3);
+}
+
+function mapById(items = []) {
+  return new Map(items.map((item) => [Number(item.id), item]));
+}
+
+function mapByStringId(items = []) {
+  return new Map(items.map((item) => [String(item.id), item]));
+}
+
+function setReferenceData(payloads) {
+  referenceData = {
+    collections: mapById(payloads.collections?.collections),
+    types: mapById(payloads.types?.types),
+    subtypes: mapById(payloads.subtypes?.subtypes),
+    functions: mapById(payloads.functions?.functions),
+    roles: mapById(payloads.roles?.roles),
+    virtues: mapById(payloads.virtues?.virtues),
+    bible: mapByStringId(payloads.bible?.books)
+  };
+}
+
+function resolveEntity(kind, value) {
+  if (value === null || typeof value === "undefined" || value === "") return null;
+  if (typeof value === "object" && !Array.isArray(value)) return value;
+  return referenceData[kind]?.get(Number(value)) || null;
+}
+
+function resolveEntities(kind, values) {
+  return normalizeList(values)
+    .map((value) => resolveEntity(kind, value))
+    .filter(Boolean);
+}
+
+function resolveBible(value) {
+  if (!value) return null;
+  if (typeof value === "object" && !Array.isArray(value)) return value;
+  return String(value).trim().toUpperCase();
+}
+
+function parseBibleReference(reference) {
+  const match = String(reference || "").trim().toUpperCase().match(/^(([1-3][A-Z]{2})|([A-Z]{3}))\s+(\d+):(\d+)(?:-(\d+))?$/);
+  if (!match) return null;
+  const bookCode = match[1];
+  const chapterRaw = match[4];
+  const verseStartRaw = match[5];
+  const verseEndRaw = match[6];
+  const chapter = Number(chapterRaw);
+  const verseStart = Number(verseStartRaw);
+  const verseEnd = verseEndRaw ? Number(verseEndRaw) : verseStart;
+  if (!Number.isFinite(chapter) || !Number.isFinite(verseStart) || !Number.isFinite(verseEnd) || verseEnd < verseStart) return null;
+  return { bookCode, chapter, verseStart, verseEnd };
+}
+
+function resolveBibleReference(reference) {
+  const parsed = parseBibleReference(reference);
+  if (!parsed) return null;
+  const book = referenceData.bible.get(parsed.bookCode);
+  if (!book) return null;
+
+  const chapter = book.chapters?.[String(parsed.chapter)];
+  if (!chapter) return null;
+
+  const verses = [];
+  for (let verse = parsed.verseStart; verse <= parsed.verseEnd; verse += 1) {
+    const line = chapter[String(verse)];
+    if (!line) continue;
+    const text = localize(line);
+    if (text) verses.push(text);
+  }
+  if (!verses.length) return null;
+
+  const citation = `${localize(book.name)} ${parsed.chapter}:${parsed.verseStart}${parsed.verseEnd > parsed.verseStart ? `-${parsed.verseEnd}` : ""}`;
+  return {
+    citation,
+    text: verses.join(" ")
+  };
+}
+
+function normalizeCollection(value) {
+  const resolved = resolveEntity("collections", value);
+  if (resolved) {
+    const code = String(localize(resolved.set) || resolved.code || "FND").toUpperCase();
+    return {
+      ...resolved,
+      code,
+      label: resolved.label || { pt: `${localize(resolved.name)} (${code})`, en: `${localize(resolved.name)} (${code})` }
+    };
+  }
+
+  if (value && typeof value === "object" && !Array.isArray(value)) {
+    const name = value.name || value.pt || value.label || "Foundations";
+    const code = String(value.code || "FND").toUpperCase();
+    return {
+      name,
+      code,
+      label: value.label || `${name} (${code})`
+    };
+  }
+
+  const text = String(value || "Foundations (FND)");
+  const match = text.match(/^(.+?)\s*\(([A-Za-z0-9]{3})\)$/);
+  if (match) {
+    return {
+      name: match[1].trim(),
+      code: match[2].toUpperCase(),
+      label: `${match[1].trim()} (${match[2].toUpperCase()})`
+    };
+  }
+
+  return {
+    name: text,
+    code: "FND",
+    label: `${text} (FND)`
+  };
+}
+
+function getCollectionLabel(card) {
+  return localize(card.collection?.label) || `${localize(card.collection?.name) || "Foundations"} (${card.collection?.code || "FND"})`;
+}
+
+function getPrimaryType(card) {
+  return structuralValue(normalizeList(card.type)[0]);
+}
+
+function getCardCode(card) {
+  const collectionCode = card.collection?.code || "FND";
+  const primaryType = normalizeList(card.type)[0] || {};
+  const type = getPrimaryType(card);
+  const typeCode = primaryType.code || type.slice(0, 3).toUpperCase() || "CRD";
+  return `${collectionCode}-${typeCode}-${card.number}`;
+}
+
+function cssUrl(value) {
+  return String(value || "")
+    .replace(/\\/g, "\\\\")
+    .replace(/"/g, '\\"');
 }
 
 function normalizeCard(card, defaults, index) {
   const merged = {
     ...defaults,
     ...card,
+    collection: card.collection || defaults.collection || cardsMeta.collection,
     images: {
       ...(defaults.images || {}),
       ...(card.images || {})
@@ -323,36 +429,41 @@ function normalizeCard(card, defaults, index) {
     }
   };
 
-  const type = merged.type || "Carta";
-  const number = String(merged.number || index + 1).padStart(3, "0");
-  const numericNumber = Number(number.replace(/\D/g, "")) || index + 1;
-  const cost = toCost(merged.cost) ?? deriveCost(type, numericNumber);
-  const subtype = merged.subtype && merged.subtype !== "A definir" ? merged.subtype : getDefaultSubtype(type);
-  const functions = normalizeList(merged.functions).length ? normalizeList(merged.functions) : getDefaultFunctions(type);
-  const rating = Number(merged.rating) > 0 ? Number(merged.rating) : deriveRating(type, numericNumber);
-  const usage = Number(merged.usage?.deckCount) > 0 ? merged.usage : deriveUsage(type, numericNumber, rating);
-  const tags = [
-    ...(Array.isArray(merged.tags) ? merged.tags : []),
-    type,
-    subtype,
-    merged.set,
-    ...functions,
-    ...(usage.archetypes || [])
-  ].filter(Boolean);
+  const collection = normalizeCollection(merged.collection);
+  const type = resolveEntities("types", merged.type).length ? resolveEntities("types", merged.type) : normalizeList(merged.type);
+  const subtype = resolveEntities("subtypes", merged.subtype).length ? resolveEntities("subtypes", merged.subtype) : normalizeList(merged.subtype);
+  const functions = resolveEntities("functions", merged.functions).length ? resolveEntities("functions", merged.functions) : normalizeList(merged.functions);
+  const virtues = resolveEntities("virtues", merged.virtues).length ? resolveEntities("virtues", merged.virtues) : normalizeList(merged.virtues);
+  const role = resolveEntity("roles", merged.role) || merged.role;
+  const reference = resolveBible(merged.reference) || merged.reference;
+  const rulings = normalizeList(merged.rulings).map((item) => String(item)).filter(Boolean);
+  const text = String(localize(merged.text) || merged.text || "");
+  const number = normalizeNumber(merged.number, index + 1);
+  const cost = normalizeCost(merged.cost);
+  const usage = {
+    deckCount: toNumber(merged.usage?.deckCount, 0),
+    inclusion: toNumber(merged.usage?.inclusion, 0),
+    archetypes: normalizeList(merged.usage?.archetypes)
+  };
 
   return {
     ...merged,
-    id: merged.id || `${String(merged.set || "set").toLowerCase()}-${String(type).toLowerCase()}-${number}`,
+    collection,
     number,
     collectionIndex: index + 1,
-    numericNumber,
+    numericNumber: Number(number),
     type,
     subtype,
     functions,
-    cost,
-    rating,
-    usage,
-    tags
+    virtues,
+    role,
+    reference,
+    rulings,
+    text,
+    cost: cost.value,
+    costLabel: cost.label,
+    rating: toNumber(merged.rating, 0),
+    usage
   };
 }
 
@@ -361,19 +472,51 @@ function icon(name) {
     decks: '<path d="M6 4h10a2 2 0 0 1 2 2v12H8a2 2 0 0 1-2-2V4Z"/><path d="M8 8h7"/><path d="M8 12h7"/>',
     chart: '<path d="M4 18V6"/><path d="M9 18v-7"/><path d="M14 18V9"/><path d="M19 18V4"/>',
     layers: '<path d="m12 3 8 4-8 4-8-4 8-4Z"/><path d="m4 12 8 4 8-4"/><path d="m4 17 8 4 8-4"/>',
-    tag: '<path d="M20 10 12 2H4v8l8 8 8-8Z"/><path d="M7.5 7.5h.01"/>',
-    star: '<path d="m12 3 2.7 5.47 6.03.88-4.36 4.25 1.03 6-5.4-2.84-5.4 2.84 1.03-6-4.36-4.25 6.03-.88L12 3Z"/>',
-    text: '<path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h10"/>'
+    cost: '<circle cx="12" cy="12" r="7"/><path d="M12 5v14"/><path d="M5 12h14"/>',
+    sword: '<path d="m14.5 4.5 5 5"/><path d="m12 7 5 5"/><path d="m3 21 7-7"/><path d="m8 16 3 3"/><path d="m11 13 2 2"/>',
+    shield: '<path d="M12 3 5 6v5c0 5 3.5 8.5 7 10 3.5-1.5 7-5 7-10V6l-7-3Z"/>'
   };
-  return `<svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true">${paths[name] || paths.tag}</svg>`;
+  return `<svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true">${paths[name] || paths.layers}</svg>`;
+}
+
+function formatList(values) {
+  return normalizeList(values).map((item) => labelForValue(item)).filter(Boolean);
 }
 
 function formatFunctions(card) {
-  return card.functions.map((item) => labelForValue(item)).filter(Boolean);
+  return formatList(card.functions);
+}
+
+function formatVirtues(card) {
+  return formatList(card.virtues);
+}
+
+function formatVirtueItems(card) {
+  return normalizeList(card.virtues).map((item) => {
+    const label = labelForValue(item);
+    const image = item && typeof item === "object" && !Array.isArray(item) ? item.images?.icon || item.images?.item || item.image : "";
+    return { label, image };
+  }).filter((item) => item.label);
 }
 
 function formatArchetypes(card) {
-  return normalizeList(card.usage?.archetypes).map((item) => labelForValue(item)).filter(Boolean);
+  return formatList(card.usage?.archetypes);
+}
+
+function formatReference(card) {
+  if (!card.reference) return "";
+  const resolved = resolveBibleReference(card.reference);
+  if (resolved?.text) {
+    return `${resolved.text} - ${resolved.citation}`;
+  }
+  return localize(card.reference);
+}
+
+function formatReferenceParts(card) {
+  if (!card.reference) return { text: "", citation: "" };
+  const resolved = resolveBibleReference(card.reference);
+  if (resolved?.text) return { text: resolved.text, citation: resolved.citation };
+  return { text: localize(card.reference), citation: "" };
 }
 
 function handleHeader() {
@@ -398,7 +541,6 @@ function setCatalogMessage(kind, title, body) {
       <p>${escapeHtml(body)}</p>
     </article>
   `;
-  // els.resultCount.textContent = "0";
   els.pagination.innerHTML = "";
 }
 
@@ -416,6 +558,9 @@ function sortCards(cards) {
     case "cost-desc":
       sorted.sort((a, b) => (b.cost ?? -1) - (a.cost ?? -1) || getCardName(a).localeCompare(getCardName(b), locale));
       break;
+    case "number-asc":
+      sorted.sort((a, b) => getCardCode(a).localeCompare(getCardCode(b), locale));
+      break;
     case "rating-desc":
       sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0) || getCardName(a).localeCompare(getCardName(b), locale));
       break;
@@ -426,40 +571,379 @@ function sortCards(cards) {
   return sorted;
 }
 
+function tokenizeQuery(query) {
+  const tokens = [];
+  let current = "";
+  let quote = "";
+
+  for (const char of query.trim()) {
+    if ((char === '"' || char === "'") && quote === "") {
+      quote = char;
+      current += char;
+      continue;
+    }
+
+    if (char === quote) {
+      quote = "";
+      current += char;
+      continue;
+    }
+
+    if (/\s/.test(char) && quote === "") {
+      if (current) tokens.push(current);
+      current = "";
+      continue;
+    }
+
+    current += char;
+  }
+
+  if (current) tokens.push(current);
+  return tokens;
+}
+
+function cleanQueryValue(value) {
+  const text = String(value || "").trim();
+  if ((text.startsWith('"') && text.endsWith('"')) || (text.startsWith("'") && text.endsWith("'"))) {
+    return text.slice(1, -1);
+  }
+  return text;
+}
+
+function parseQueryToken(token) {
+  let raw = token.trim();
+  const negated = raw.startsWith("-");
+  if (negated) raw = raw.slice(1);
+
+  const match = raw.match(/^([a-zA-ZçÇãÃõÕáÁéÉíÍóÓúÚêÊâÂ]+)(<=|>=|!=|=|<|>|:)(.*)$/);
+  if (!match) {
+    return { negated, key: "any", operator: ":", value: cleanQueryValue(raw) };
+  }
+
+  return {
+    negated,
+    key: normalizeSearch(match[1]),
+    operator: match[2],
+    value: cleanQueryValue(match[3])
+  };
+}
+
+function getActiveQueryTokenContext(query, caretIndex) {
+  const start = query.lastIndexOf(" ", Math.max(0, caretIndex - 1)) + 1;
+  const after = query.slice(caretIndex);
+  const nextSpace = after.indexOf(" ");
+  const end = nextSpace === -1 ? query.length : caretIndex + nextSpace;
+  const token = query.slice(start, end);
+  const raw = token.trim();
+  if (!raw) return null;
+
+  const match = raw.match(/^(-)?([a-zA-ZçÇãÃõÕáÁéÉíÍóÓúÚêÊâÂ]+)(<=|>=|!=|=|<|>|:)(.*)$/);
+  if (!match) return null;
+
+  return {
+    start,
+    end,
+    token,
+    negated: Boolean(match[1]),
+    rawKey: match[2],
+    key: normalizeSearch(match[2]),
+    operator: match[3],
+    value: cleanQueryValue(match[4])
+  };
+}
+
+function extractTypeFilters(query) {
+  return tokenizeQuery(query)
+    .map(parseQueryToken)
+    .filter((token) => !token.negated && [":", "="].includes(token.operator) && ["t", "type", "types"].includes(token.key))
+    .map((token) => token.value)
+    .filter(Boolean);
+}
+
+function subtypeOptionsByTypeContext(query) {
+  const typeFilters = extractTypeFilters(query);
+  if (!typeFilters.length) return getUniqueValues("subtype");
+
+  const filtered = cardsData.filter((card) => {
+    const labels = formatList(card.type);
+    return typeFilters.some((filterValue) => labels.some((label) => includesText(label, filterValue)));
+  });
+
+  return uniqueSorted(filtered.flatMap((card) => formatList(card.subtype)));
+}
+
+function getReferenceOptions() {
+  return uniqueSorted(cardsData.map((card) => String(card.reference || "").trim()).filter(Boolean));
+}
+
+function getQueryValueOptions(key, fullQuery) {
+  if (["t", "type", "types"].includes(key)) return getUniqueValues("type");
+  if (["st", "subtype", "subtypes"].includes(key)) return subtypeOptionsByTypeContext(fullQuery);
+  if (["fn", "function", "functions", "funcao", "funcoes"].includes(key)) return getUniqueValues("function");
+  if (["v", "virtue", "virtudes", "virtude", "virtues"].includes(key)) return getUniqueValues("virtue");
+  if (["set", "collection", "collections", "e"].includes(key)) return getUniqueValues("set");
+  if (["ref", "reference", "flavor"].includes(key)) return getReferenceOptions();
+  return [];
+}
+
+function hideQuerySuggestions() {
+  querySuggestionState = null;
+  if (els.querySuggestions) {
+    els.querySuggestions.hidden = true;
+    els.querySuggestions.innerHTML = "";
+  }
+  if (els.queryLegendList) els.queryLegendList.hidden = false;
+}
+
+function setActiveSuggestion(index) {
+  if (!els.querySuggestions || els.querySuggestions.hidden) return;
+  const buttons = [...els.querySuggestions.querySelectorAll("[data-query-option]")];
+  if (!buttons.length) return;
+  const safeIndex = ((index % buttons.length) + buttons.length) % buttons.length;
+  querySuggestionState.activeIndex = safeIndex;
+  querySuggestionState.activeOption = buttons[safeIndex]?.dataset.queryOption || "";
+  buttons.forEach((button, idx) => {
+    button.classList.toggle("is-active", idx === safeIndex);
+  });
+}
+
+function buildQueryWithSuggestion(option, baseQuery = els.queryFilter?.value || "", context = querySuggestionState) {
+  if (!context) return baseQuery;
+  const { start, end, rawKey } = context;
+  const prefix = baseQuery.slice(0, start);
+  const suffix = baseQuery.slice(end);
+  const replacement = `${rawKey}:${option}`;
+  const joinSuffix = suffix.startsWith(" ") || suffix === "" ? suffix : ` ${suffix}`;
+  const candidate = `${prefix}${replacement}${joinSuffix}`.trim();
+  return candidate;
+}
+
+function suggestionProducesResults(option, context, fullQuery) {
+  const query = buildQueryWithSuggestion(option, fullQuery, context);
+  if (!query) return false;
+  return cardsData.some((card) => matchesAdvancedQuery(card, query));
+}
+
+function applySuggestion(option) {
+  if (!querySuggestionState || !els.queryFilter) return;
+
+  const next = buildQueryWithSuggestion(option).trim();
+
+  els.queryFilter.value = next ? `${next} ` : "";
+  const caret = els.queryFilter.value.length;
+  els.queryFilter.setSelectionRange(caret, caret);
+  hideQuerySuggestions();
+  updateStateFromControls();
+}
+
+function renderQuerySuggestions(options, context) {
+  if (!els.querySuggestions || !els.queryLegendList) return;
+  if (!options.length) {
+    hideQuerySuggestions();
+    return;
+  }
+
+  const previousOption = querySuggestionState?.activeOption || "";
+  querySuggestionState = { ...context, activeIndex: 0, activeOption: "" };
+  els.queryLegendList.hidden = true;
+  els.querySuggestions.hidden = false;
+  els.querySuggestions.innerHTML = options.slice(0, 60)
+    .map((option) => `<button class="query-suggestion" type="button" data-query-option="${escapeHtml(option)}">${escapeHtml(option)}</button>`)
+    .join("");
+  const preferredIndex = options.findIndex((option) => option === previousOption);
+  setActiveSuggestion(preferredIndex >= 0 ? preferredIndex : 0);
+}
+
+function updateQuerySuggestions() {
+  if (!els.queryFilter) return;
+
+  const query = els.queryFilter.value;
+  const caret = els.queryFilter.selectionStart ?? query.length;
+  const context = getActiveQueryTokenContext(query, caret);
+
+  if (!context || context.negated || ![":", "="].includes(context.operator)) {
+    hideQuerySuggestions();
+    return;
+  }
+
+  const allOptions = getQueryValueOptions(context.key, query);
+  if (!allOptions.length) {
+    hideQuerySuggestions();
+    return;
+  }
+
+  const filteredText = context.value
+    ? allOptions.filter((item) => includesText(item, context.value))
+    : allOptions;
+
+  const filteredValid = filteredText.filter((item) => suggestionProducesResults(item, context, query));
+  renderQuerySuggestions(filteredValid, context);
+}
+
+function includesText(haystack, needle) {
+  return normalizeSearch(haystack).includes(normalizeSearch(needle));
+}
+
+function compareNumber(actual, operator, expected) {
+  const left = Number(actual);
+  const right = Number(expected);
+  if (!Number.isFinite(left) || !Number.isFinite(right)) return false;
+
+  switch (operator) {
+    case "<": return left < right;
+    case "<=": return left <= right;
+    case ">": return left > right;
+    case ">=": return left >= right;
+    case "!=": return left !== right;
+    default: return left === right;
+  }
+}
+
+function queryFieldValue(card, key) {
+  const typeLine = [card.type, card.subtype].map(flattenValue).join(" ");
+  const oracleText = [card.text, card.rulings];
+  const referenceText = formatReference(card);
+  const allText = [
+    card.name,
+    card.text,
+    card.rulings,
+    referenceText,
+    card.role,
+    card.type,
+    card.subtype,
+    card.functions,
+    card.virtues,
+    getCollectionLabel(card),
+    getCardCode(card),
+    card.number
+  ];
+
+  const fields = {
+    any: allText,
+    n: card.name,
+    name: card.name,
+    o: oracleText,
+    oracle: oracleText,
+    text: oracleText,
+    ruling: card.rulings,
+    rulings: card.rulings,
+    t: typeLine,
+    type: card.type,
+    types: card.type,
+    st: card.subtype,
+    subtype: card.subtype,
+    subtypes: card.subtype,
+    fn: card.functions,
+    function: card.functions,
+    functions: card.functions,
+    funcao: card.functions,
+    funcoes: card.functions,
+    v: card.virtues,
+    virtue: card.virtues,
+    virtues: card.virtues,
+    virtude: card.virtues,
+    virtudes: card.virtues,
+    ref: [referenceText, card.reference],
+    reference: [referenceText, card.reference],
+    flavor: [referenceText, card.reference],
+    e: [card.collection?.code, card.collection?.name, getCollectionLabel(card)],
+    set: [card.collection?.code, card.collection?.name, getCollectionLabel(card)],
+    collection: [card.collection?.code, card.collection?.name, getCollectionLabel(card)],
+    collections: [card.collection?.code, card.collection?.name, getCollectionLabel(card)],
+    cn: card.number,
+    number: card.number,
+    id: getCardCode(card),
+    code: getCardCode(card),
+    role: card.role,
+    is: allText
+  };
+
+  return fields[key] ?? fields.any;
+}
+
+function matchesQueryToken(card, token) {
+  const numericFields = {
+    cost: card.cost,
+    mana: card.cost,
+    mv: card.cost,
+    cmc: card.cost,
+    manavalue: card.cost,
+    rating: card.rating,
+    decks: card.usage?.deckCount,
+    deckcount: card.usage?.deckCount,
+    usage: card.usage?.inclusion,
+    inclusion: card.usage?.inclusion,
+    attack: card.stats?.attack,
+    atk: card.stats?.attack,
+    resistance: card.stats?.resistance,
+    res: card.stats?.resistance,
+    defense: card.stats?.resistance,
+    def: card.stats?.resistance
+  };
+
+  let matched;
+  if (Object.prototype.hasOwnProperty.call(numericFields, token.key)) {
+    matched = compareNumber(numericFields[token.key], token.operator, token.value);
+  } else {
+    const value = queryFieldValue(card, token.key);
+    matched = token.operator === "!="
+      ? !includesText(value, token.value)
+      : includesText(value, token.value);
+  }
+
+  return token.negated ? !matched : matched;
+}
+
+function matchesAdvancedQuery(card, query) {
+  if (!query.trim()) return true;
+  return tokenizeQuery(query).map(parseQueryToken).every((token) => matchesQueryToken(card, token));
+}
+
 function getFilteredCards() {
   const name = normalizeSearch(state.name.trim());
   const number = normalizeSearch(state.number.trim());
   const text = normalizeSearch(state.text.trim());
 
   return sortCards(cardsData.filter((card) => {
+    const typeLabels = formatList(card.type);
+    const subtypeLabels = formatList(card.subtype);
+    const functionLabels = formatFunctions(card);
+    const virtueLabels = formatVirtues(card);
     const matchesName = !name || normalizeSearch(card.name).includes(name);
     const matchesNumber = !number || normalizeSearch([card.number, getCardCode(card)]).includes(number);
-    const matchesSet = state.set === "all" || card.set === state.set;
-    const matchesType = state.type === "all" || card.type === state.type;
-    const matchesSubtype = state.subtype === "all" || labelForValue(card.subtype) === state.subtype;
-    const functionLabels = formatFunctions(card);
+    const matchesSet = state.set === "all" || getCollectionLabel(card) === state.set;
+    const matchesType = state.type === "all" || typeLabels.includes(state.type);
+    const matchesSubtype = state.subtype === "all" || subtypeLabels.includes(state.subtype);
     const matchesFunction = state.function === "all" || functionLabels.includes(state.function);
+    const matchesVirtue = state.virtue === "all"
+      || (state.virtue === "__none" && virtueLabels.length === 0)
+      || virtueLabels.includes(state.virtue);
     const matchesCost = state.maxCost === null || card.cost === null || card.cost <= state.maxCost;
-    const matchesText = !text || normalizeSearch([card.text, card.reference, card.details, card.tags]).includes(text);
+    const matchesAttack = state.maxAttack === null || card.stats?.attack === null || typeof card.stats?.attack === "undefined" || Number(card.stats.attack) <= state.maxAttack;
+    const matchesResistance = state.maxResistance === null || card.stats?.resistance === null || typeof card.stats?.resistance === "undefined" || Number(card.stats.resistance) <= state.maxResistance;
+    const matchesText = !text || normalizeSearch([card.text, card.rulings, formatReference(card), card.virtues]).includes(text);
+    const matchesQuery = matchesAdvancedQuery(card, state.query);
 
-    return matchesName && matchesNumber && matchesSet && matchesType && matchesSubtype && matchesFunction && matchesCost && matchesText;
+    return matchesName && matchesNumber && matchesSet && matchesType && matchesSubtype && matchesFunction && matchesVirtue && matchesCost && matchesAttack && matchesResistance && matchesText && matchesQuery;
   }));
 }
 
-function getUniqueValues(field) {
-  if (field === "subtype") {
-    return [...new Set(cardsData.map((card) => labelForValue(card.subtype)).filter(Boolean))].sort();
-  }
-  if (field === "function") {
-    return [...new Set(cardsData.flatMap(formatFunctions).filter(Boolean))].sort();
-  }
-  return [...new Set(cardsData.map((card) => card[field]).filter(Boolean))].sort((a, b) => {
-    if (field === "type") return getTypeRank(a) - getTypeRank(b);
-    return labelForValue(a).localeCompare(labelForValue(b), state.lang === "pt" ? "pt-BR" : "en-US");
-  });
+function uniqueSorted(values) {
+  return [...new Set(values.filter(Boolean))].sort((a, b) => a.localeCompare(b, state.lang === "pt" ? "pt-BR" : "en-US"));
 }
 
-function populateSelect(select, values, allLabel, getLabel = labelForValue) {
+function getUniqueValues(field) {
+  if (field === "type") {
+    return uniqueSorted(cardsData.flatMap((card) => formatList(card.type))).sort((a, b) => getTypeRank(a) - getTypeRank(b));
+  }
+  if (field === "subtype") return uniqueSorted(cardsData.flatMap((card) => formatList(card.subtype)));
+  if (field === "function") return uniqueSorted(cardsData.flatMap(formatFunctions));
+  if (field === "virtue") return uniqueSorted(cardsData.flatMap(formatVirtues));
+  if (field === "set") return uniqueSorted(cardsData.map(getCollectionLabel));
+  return uniqueSorted(cardsData.map((card) => labelForValue(card[field])));
+}
+
+function populateSelect(select, values, allLabel, getLabel = (value) => value) {
   if (!select) return;
   const previous = select.value || "all";
   select.innerHTML = [
@@ -467,6 +951,18 @@ function populateSelect(select, values, allLabel, getLabel = labelForValue) {
     ...values.map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(getLabel(value))}</option>`)
   ].join("");
   select.value = values.includes(previous) ? previous : "all";
+}
+
+function populateVirtueFilter() {
+  if (!els.virtueFilter) return;
+  const values = getUniqueValues("virtue");
+  const previous = els.virtueFilter.value || "all";
+  els.virtueFilter.innerHTML = [
+    `<option value="all">${escapeHtml(t("allFeminine"))}</option>`,
+    `<option value="__none">${escapeHtml(t("noVirtues"))}</option>`,
+    ...values.map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`)
+  ].join("");
+  els.virtueFilter.value = previous === "__none" || values.includes(previous) ? previous : "all";
 }
 
 function setupCostFilter() {
@@ -497,12 +993,71 @@ function setupCostFilter() {
   els.costValue.textContent = String(state.maxCost);
 }
 
+function setupAttackFilter() {
+  const attacks = cardsData.map((card) => card.stats?.attack).filter((attack) => attack !== null && typeof attack !== "undefined");
+  const hasAttack = attacks.length > 0;
+
+  if (!hasAttack) {
+    attackBounds = { min: null, max: null };
+    state.maxAttack = null;
+    els.attackFilter.min = "0";
+    els.attackFilter.max = "0";
+    els.attackFilter.value = "0";
+    els.attackFilter.disabled = true;
+    els.attackFilter.closest(".filter-group")?.classList.add("is-disabled");
+    els.attackValue.textContent = t("noData");
+    return;
+  }
+
+  const min = Math.min(...attacks);
+  const max = Math.max(...attacks);
+  attackBounds = { min, max };
+  state.maxAttack = state.maxAttack ?? max;
+  els.attackFilter.min = String(min);
+  els.attackFilter.max = String(max);
+  els.attackFilter.value = String(state.maxAttack);
+  els.attackFilter.disabled = false;
+  els.attackFilter.closest(".filter-group")?.classList.remove("is-disabled");
+  els.attackValue.textContent = String(state.maxAttack);
+}
+
+function setupResistanceFilter() {
+  const resistances = cardsData.map((card) => card.stats?.resistance).filter((resistance) => resistance !== null && typeof resistance !== "undefined");
+  const hasResistance = resistances.length > 0;
+
+  if (!hasResistance) {
+    resistanceBounds = { min: null, max: null };
+    state.maxResistance = null;
+    els.resistanceFilter.min = "0";
+    els.resistanceFilter.max = "0";
+    els.resistanceFilter.value = "0";
+    els.resistanceFilter.disabled = true;
+    els.resistanceFilter.closest(".filter-group")?.classList.add("is-disabled");
+    els.resistanceValue.textContent = t("noData");
+    return;
+  }
+
+  const min = Math.min(...resistances);
+  const max = Math.max(...resistances);
+  resistanceBounds = { min, max };
+  state.maxResistance = state.maxResistance ?? max;
+  els.resistanceFilter.min = String(min);
+  els.resistanceFilter.max = String(max);
+  els.resistanceFilter.value = String(state.maxResistance);
+  els.resistanceFilter.disabled = false;
+  els.resistanceFilter.closest(".filter-group")?.classList.remove("is-disabled");
+  els.resistanceValue.textContent = String(state.maxResistance);
+}
+
 function populateFilters() {
   populateSelect(els.setFilter, getUniqueValues("set"), t("allFeminine"));
-  populateSelect(els.typeFilter, getUniqueValues("type"), t("all"), labelForType);
-  populateSelect(els.subtypeFilter, getUniqueValues("subtype"), t("allFeminine"), (value) => value);
-  populateSelect(els.functionFilter, getUniqueValues("function"), t("allFeminine"), (value) => value);
+  populateSelect(els.typeFilter, getUniqueValues("type"), t("all"));
+  populateSelect(els.subtypeFilter, getUniqueValues("subtype"), t("allFeminine"));
+  populateSelect(els.functionFilter, getUniqueValues("function"), t("allFeminine"));
+  populateVirtueFilter();
   setupCostFilter();
+  setupAttackFilter();
+  setupResistanceFilter();
 }
 
 function renderUsageCard(card, large = false) {
@@ -530,12 +1085,23 @@ function renderUsageCard(card, large = false) {
   `;
 }
 
+function renderStatusSummary(card) {
+  const parts = [`◆ ${t("cost")} ${card.costLabel || t("noData")}`];
+  const attack = card.stats?.attack;
+  const resistance = card.stats?.resistance;
+  if (attack !== null && typeof attack !== "undefined") {
+    parts.push(`⚔ ATK ${attack}`);
+  }
+  if (resistance !== null && typeof resistance !== "undefined") {
+    parts.push(`⬟ RES ${resistance}`);
+  }
+  return escapeHtml(parts.join(" / "));
+}
+
 function renderCards() {
   const filtered = getFilteredCards();
   const start = (state.currentPage - 1) * state.itemsPerPage;
   const paginated = filtered.slice(start, start + state.itemsPerPage);
-
-  // els.resultCount.textContent = String(filtered.length);
 
   if (!paginated.length) {
     setCatalogMessage("empty", t("emptyTitle"), t("emptyBody"));
@@ -545,8 +1111,9 @@ function renderCards() {
 
   els.cardsGrid.innerHTML = paginated.map((card) => {
     const name = getCardName(card);
+    const code = getCardCode(card);
     return `
-      <button class="card-entry card-entry-button tilt-card" type="button" data-id="${escapeHtml(card.id)}" data-open-card="${escapeHtml(card.id)}" aria-label="${escapeHtml(`${t("viewDetails")}: ${name}`)}">
+      <button class="card-entry card-entry-button tilt-card" type="button" data-open-card="${escapeHtml(code)}" aria-label="${escapeHtml(`${t("viewDetails")}: ${name}`)}">
         <span class="card-entry-media">
           <img src="${escapeHtml(card.images.card)}" alt="${escapeHtml(`${t("imageAlt")}: ${name}`)}" loading="lazy" />
         </span>
@@ -581,36 +1148,165 @@ function renderPagination(totalItems) {
   `;
 }
 
-function getCardById(cardId) {
-  return cardsData.find((item) => item.id === cardId);
+function getCardByCode(cardCode) {
+  return cardsData.find((item) => getCardCode(item) === cardCode);
 }
 
 function renderDetailMeta(card) {
   const meta = [
-    [t("cost"), card.cost === null ? t("noData") : card.cost],
-    [t("type"), labelForType(card.type)],
-    [t("subtype"), labelForValue(card.subtype)],
-    [t("set"), card.set],
-    [t("number"), getCardCode(card)],
-    [t("rating"), `★ ${card.rating.toFixed(1)}/5.0`]
+    ["identification", t("identification"), getCardCode(card)],
+    ["type", t("type"), formatList(card.type).join(", ") || t("noData")],
+    ["subtype", t("subtype"), formatList(card.subtype).join(", ") || t("noData")],
+    ["status", t("status"), renderStatusSummary(card), true],
+    ["collection", t("collection"), getCollectionLabel(card)],
+    ["rating", t("rating"), `★ ${card.rating.toFixed(1)}/5.0`]
   ];
 
-  return meta.map(([label, value]) => `
-    <article class="drawer-meta-card">
+  return meta.map(([key, label, value, raw]) => `
+    <article class="drawer-meta-card drawer-meta-card--${escapeHtml(key)}">
       <span>${escapeHtml(label)}</span>
-      <strong>${escapeHtml(value)}</strong>
+      <strong>${raw ? value : escapeHtml(value)}</strong>
     </article>
   `).join("");
 }
 
-function openDrawer(cardId) {
-  const card = getCardById(cardId);
+function renderTagGroup(items, modifier) {
+  return items.map((item) => `<span class="card-tag ${modifier}">${escapeHtml(item)}</span>`).join("");
+}
+
+function renderVirtueImages(card) {
+  const virtues = formatVirtueItems(card);
+  if (!virtues.length) {
+    return `<span class="card-tag card-tag--empty">${escapeHtml(t("noVirtues"))}</span>`;
+  }
+
+  return virtues.map((virtue) => `
+    <figure class="virtue-mark" title="${escapeHtml(virtue.label)}">
+      ${virtue.image ? `<img src="${escapeHtml(virtue.image)}" alt="${escapeHtml(virtue.label)}" loading="lazy" />` : ""}
+      <figcaption class="sr-only">${escapeHtml(virtue.label)}</figcaption>
+    </figure>
+  `).join("");
+}
+
+function normalizeRulingEntries(kind) {
+  return normalizeList(rulingBase[kind]).map((entry) => {
+    const key = entry.type || entry.subtype || entry.effect || entry.keyword || entry.match || entry.title || "";
+    return {
+      ...entry,
+      key,
+      title: entry.title || key,
+      forms: normalizeList(entry.forms),
+      rulings: normalizeList(entry.rulings || entry.ruling).map((item) => String(item)).filter(Boolean)
+    };
+  }).filter((entry) => entry.key && entry.rulings.length);
+}
+
+function normalizedIncludes(haystack, needle) {
+  const target = normalizeRuleText(needle);
+  if (!target) return false;
+  return normalizeRuleText(haystack).includes(target);
+}
+
+function keywordForms(keyword) {
+  const normalized = normalizeRuleText(keyword);
+  const forms = [keyword];
+  if (normalized.endsWith("ar")) {
+    const root = normalized.slice(0, -2);
+    forms.push(
+      `${root}ar`,
+      `${root}ado`,
+      `${root}ada`,
+      `${root}acao`,
+      `${root}acoes`,
+      `${root}ando`,
+      `${root}ei`,
+      `${root}e`,
+      `${root}ou`,
+      `${root}a`,
+      `${root}am`
+    );
+  }
+  return forms;
+}
+
+function cardRulingText(card) {
+  return [card.text, card.rulings, card.functions, formatReference(card)].map(flattenValue).join(" ");
+}
+
+function matchingRulingEntries(card, kind) {
+  const typeValues = normalizeList(card.type).flatMap((value) => [localize(value), structuralValue(value), flattenValue(value)]);
+  const subtypeValues = normalizeList(card.subtype).flatMap((value) => [localize(value), structuralValue(value), flattenValue(value)]);
+  const text = cardRulingText(card);
+
+  return normalizeRulingEntries(kind).filter((entry) => {
+    if (kind === "type") return typeValues.some((value) => normalizedIncludes(value, entry.key));
+    if (kind === "subtype") return subtypeValues.some((value) => normalizedIncludes(value, entry.key));
+    if (kind === "effect") return normalizedIncludes(text, entry.key);
+    if (kind === "keyword") {
+      const forms = [...entry.forms, ...keywordForms(entry.keyword || entry.key)];
+      return forms.some((form) => normalizedIncludes(text, form));
+    }
+    return false;
+  });
+}
+
+function getRulingGroups(card) {
+  const groups = [];
+  if (card.rulings?.length) {
+    groups.push({
+      title: "",
+      generic: false,
+      rulings: card.rulings
+    });
+  }
+
+  ["type", "subtype", "effect", "keyword"].forEach((kind) => {
+    matchingRulingEntries(card, kind).forEach((entry) => {
+      groups.push({
+        title: String(entry.title || "").toUpperCase(),
+        generic: true,
+        rulings: entry.rulings
+      });
+    });
+  });
+
+  return groups;
+}
+
+function renderRulings(card) {
+  const groups = getRulingGroups(card);
+  if (!groups.length) {
+    return `<p>${escapeHtml(t("noData"))}</p>`;
+  }
+
+  return `
+    <div class="ruling-groups">
+      ${groups.map((group) => `
+        <article class="ruling-group">
+          ${group.generic ? `<strong>${escapeHtml(group.title)}</strong>` : ""}
+          <ul>
+            ${group.rulings.map((ruling) => `<li>${escapeHtml(ruling)}</li>`).join("")}
+          </ul>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function openDrawer(cardCode) {
+  const card = getCardByCode(cardCode);
   if (!card) return;
 
   const name = getCardName(card);
   const image = card.images.card || card.images.art;
+  const backgroundImage = card.images.art || image;
   const functions = formatFunctions(card);
+  const referenceParts = formatReferenceParts(card);
+  const reference = referenceParts.text
+    ? `<span class="drawer-reference-text">"${escapeHtml(referenceParts.text)}"</span>${referenceParts.citation ? ` - <span class="drawer-reference-citation">${escapeHtml(referenceParts.citation)}</span>` : ""}`
+    : escapeHtml(t("noData"));
 
+  els.drawerPanel?.style.setProperty("--drawer-bg", `url("${cssUrl(backgroundImage)}")`);
   els.drawerContent.innerHTML = `
     <section class="detail-layout">
       <div class="detail-art">
@@ -618,33 +1314,34 @@ function openDrawer(cardId) {
       </div>
       <div class="detail-main">
         <div class="detail-heading">
-          <span class="section-kicker">${escapeHtml(card.set)} · ${escapeHtml(getCardCode(card))}</span>
-          <h2>${escapeHtml(name)}</h2>
-        </div>
-
-        <div class="drawer-meta">
-          ${renderDetailMeta(card)}
-        </div>
-
-        <div class="drawer-section drawer-section--compact">
-          <h3>${escapeHtml(t("functions"))}</h3>
-          <div class="drawer-tags">
-            ${functions.map((item) => `<span class="card-tag card-tag--function">${escapeHtml(item)}</span>`).join("")}
-          </div>
+          <span class="section-kicker">${escapeHtml(name)}</span>
         </div>
 
         <div class="drawer-section drawer-section--compact">
           <h3>${escapeHtml(t("cardText"))}</h3>
-          <p>${escapeHtml(localize(card.text) || t("noData"))}</p>
-        </div>
-
-        <div class="drawer-section drawer-section--compact">
-          <h3>${escapeHtml(t("reference"))}</h3>
-          <p class="drawer-reference">${escapeHtml(localize(card.reference) || t("noData"))}</p>
+          ${renderRulings(card)}
+          <p class="drawer-reference">${reference}</p>
         </div>
       </div>
       <aside class="detail-side">
-        <h3>${escapeHtml(t("usage"))}</h3>
+        <div class="drawer-meta">
+          ${renderDetailMeta(card)}
+        </div>
+        <div class="drawer-section drawer-section--compact">
+          <h3>${escapeHtml(t("functions"))}</h3>
+          <div class="drawer-tags">
+            ${renderTagGroup(functions, "card-tag--function")}
+          </div>
+        </div>
+        <div class="drawer-section drawer-section--compact">
+          <h3>${escapeHtml(t("virtues"))}</h3>
+          <div class="virtue-grid">
+            ${renderVirtueImages(card)}
+          </div>
+        </div>
+        <div class="drawer-section drawer-section--compact">
+          <h3>${escapeHtml(t("usage"))}</h3>
+        </div>
         ${renderUsageCard(card, true)}
         <div class="detail-mini-chart" style="--usage:${Number(card.usage?.inclusion) || 0}%">
           <span style="--h:68%"></span>
@@ -667,6 +1364,7 @@ function closeDrawer() {
   els.drawer.classList.remove("is-open");
   els.drawer.setAttribute("aria-hidden", "true");
   document.body.style.overflow = "";
+  els.drawerPanel?.style.removeProperty("--drawer-bg");
 }
 
 function bindTilt() {
@@ -693,12 +1391,19 @@ function updateStateFromControls() {
   state.type = els.typeFilter.value;
   state.subtype = els.subtypeFilter.value;
   state.function = els.functionFilter.value;
+  state.virtue = els.virtueFilter?.value || "all";
   state.maxCost = els.costFilter.disabled ? null : Number(els.costFilter.value);
+  state.maxAttack = els.attackFilter.disabled ? null : Number(els.attackFilter.value);
+  state.maxResistance = els.resistanceFilter.disabled ? null : Number(els.resistanceFilter.value);
   state.text = els.textFilter.value;
+  state.query = els.queryFilter?.value || "";
   state.sort = els.sortSelect.value;
   state.currentPage = 1;
   els.costValue.textContent = els.costFilter.disabled ? t("noCost") : String(state.maxCost);
+  els.attackValue.textContent = els.attackFilter.disabled ? t("noData") : String(state.maxAttack);
+  els.resistanceValue.textContent = els.resistanceFilter.disabled ? t("noData") : String(state.maxResistance);
   renderCards();
+  updateQuerySuggestions();
 }
 
 function resetFilters() {
@@ -708,10 +1413,14 @@ function resetFilters() {
   state.type = "all";
   state.subtype = "all";
   state.function = "all";
+  state.virtue = "all";
   state.text = "";
+  state.query = "";
   state.sort = "rating-desc";
   state.currentPage = 1;
   state.maxCost = costBounds.max;
+  state.maxAttack = attackBounds.max;
+  state.maxResistance = resistanceBounds.max;
 
   els.nameFilter.value = "";
   els.numberFilter.value = "";
@@ -719,15 +1428,26 @@ function resetFilters() {
   els.typeFilter.value = "all";
   els.subtypeFilter.value = "all";
   els.functionFilter.value = "all";
+  if (els.virtueFilter) els.virtueFilter.value = "all";
   els.textFilter.value = "";
+  if (els.queryFilter) els.queryFilter.value = "";
   els.sortSelect.value = "rating-desc";
 
   if (!els.costFilter.disabled && costBounds.max !== null) {
     els.costFilter.value = String(costBounds.max);
     els.costValue.textContent = String(costBounds.max);
   }
+  if (!els.attackFilter.disabled && attackBounds.max !== null) {
+    els.attackFilter.value = String(attackBounds.max);
+    els.attackValue.textContent = String(attackBounds.max);
+  }
+  if (!els.resistanceFilter.disabled && resistanceBounds.max !== null) {
+    els.resistanceFilter.value = String(resistanceBounds.max);
+    els.resistanceValue.textContent = String(resistanceBounds.max);
+  }
 
   renderCards();
+  hideQuerySuggestions();
 }
 
 function applyLanguage(lang) {
@@ -749,18 +1469,39 @@ function applyLanguage(lang) {
   });
 
   populateFilters();
+  state.set = els.setFilter.value;
+  state.type = els.typeFilter.value;
+  state.subtype = els.subtypeFilter.value;
+  state.function = els.functionFilter.value;
+  state.virtue = els.virtueFilter?.value || "all";
+  state.maxAttack = els.attackFilter.disabled ? null : Number(els.attackFilter.value);
+  state.maxResistance = els.resistanceFilter.disabled ? null : Number(els.resistanceFilter.value);
   renderCards();
+  updateQuerySuggestions();
 }
 
 async function loadCards() {
   setCatalogMessage("loading", t("loadingTitle"), t("loadingBody"));
 
   try {
-    const response = await fetch(DATA_URL);
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const referenceEntries = Object.entries(REFERENCE_URLS);
+    const [cardsResponse, rulingsResponse, ...referenceResponses] = await Promise.all([
+      fetch(DATA_URL),
+      fetch(RULINGS_URL),
+      ...referenceEntries.map(([, url]) => fetch(url))
+    ]);
+    if (!cardsResponse.ok) throw new Error(`HTTP ${cardsResponse.status}`);
+    if (!rulingsResponse.ok) throw new Error(`HTTP ${rulingsResponse.status}`);
+    const failedReference = referenceResponses.find((response) => !response.ok);
+    if (failedReference) throw new Error(`HTTP ${failedReference.status}`);
 
-    const payload = await response.json();
-    cardsMeta = payload.meta || { set: payload.defaults?.deck?.pt || "Foundations" };
+    const payload = await cardsResponse.json();
+    const rulingsPayload = await rulingsResponse.json();
+    const referencePayloads = await Promise.all(referenceResponses.map((response) => response.json()));
+    setReferenceData(Object.fromEntries(referenceEntries.map(([key], index) => [key, referencePayloads[index]])));
+
+    cardsMeta = payload.meta || {};
+    rulingBase = rulingsPayload.rulings || { type: [], subtype: [], effect: [], keyword: [] };
     cardsData = (payload.cards || []).map((card, index) => normalizeCard(card, payload.defaults || {}, index));
 
     populateFilters();
@@ -790,11 +1531,50 @@ els.primaryNav?.querySelectorAll("a").forEach((link) => {
   els.typeFilter,
   els.subtypeFilter,
   els.functionFilter,
+  els.virtueFilter,
   els.costFilter,
+  els.attackFilter,
+  els.resistanceFilter,
   els.textFilter,
+  els.queryFilter,
   els.sortSelect
 ].forEach((control) => {
   control?.addEventListener(control.tagName === "SELECT" ? "change" : "input", updateStateFromControls);
+});
+
+els.queryFilter?.addEventListener("focus", updateQuerySuggestions);
+els.queryFilter?.addEventListener("click", updateQuerySuggestions);
+els.queryFilter?.addEventListener("keydown", (event) => {
+  if (!querySuggestionState || els.querySuggestions.hidden) return;
+
+  const options = [...els.querySuggestions.querySelectorAll("[data-query-option]")];
+  if (!options.length) return;
+
+  if (event.key === "ArrowRight") {
+    event.preventDefault();
+    setActiveSuggestion((querySuggestionState.activeIndex || 0) + 1);
+    return;
+  }
+
+  if (event.key === "ArrowLeft") {
+    event.preventDefault();
+    setActiveSuggestion((querySuggestionState.activeIndex || 0) - 1);
+    return;
+  }
+
+  if (event.key === "Tab") {
+    const active = options[querySuggestionState.activeIndex || 0] || options[0];
+    if (active) {
+      event.preventDefault();
+      applySuggestion(active.dataset.queryOption);
+    }
+  }
+});
+
+els.querySuggestions?.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-query-option]");
+  if (!button) return;
+  applySuggestion(button.dataset.queryOption);
 });
 
 els.clearFilters.addEventListener("click", resetFilters);

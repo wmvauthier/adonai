@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-05-29",
+  "subtypes": [
+    {
+      "id": 1,
+      "name": {
+        "pt": "-",
+        "en": "-"
+      }
+    },
+    {
+      "id": 2,
+      "name": {
+        "pt": "Equipamento",
+        "en": "Equipment"
+      }
+    },
+    {
+      "id": 3,
+      "name": {
+        "pt": "Momentâneo",
+        "en": "Momentary"
+      }
+    },
+    {
+      "id": 4,
+      "name": {
+        "pt": "Aliado",
+        "en": "Ally"
+      }
+    },
+    {
+      "id": 5,
+      "name": {
+        "pt": "Profeta",
+        "en": "Prophet"
+      }
+    },
+    {
+      "id": 6,
+      "name": {
+        "pt": "Sacerdote",
+        "en": "Priest"
+      }
+    },
+    {
+      "id": 7,
+      "name": {
+        "pt": "Guerreiro",
+        "en": "Warrior"
+      }
+    },
+    {
+      "id": 8,
+      "name": {
+        "pt": "Governante",
+        "en": "Ruler"
+      }
+    }
+  ]
+}

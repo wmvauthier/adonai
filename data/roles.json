@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-05-29",
+  "roles": [
+    {
+      "id": 1,
+      "name": {
+        "pt": "Ferramenta de suporte",
+        "en": "Support tool"
+      }
+    },
+    {
+      "id": 2,
+      "name": {
+        "pt": "Finalizador de partida",
+        "en": "Game finisher"
+      }
+    },
+    {
+      "id": 3,
+      "name": {
+        "pt": "Resposta tática",
+        "en": "Tactical answer"
+      }
+    },
+    {
+      "id": 4,
+      "name": {
+        "pt": "Ameaça disruptiva",
+        "en": "Disruptive threat"
+      }
+    },
+    {
+      "id": 5,
+      "name": {
+        "pt": "Presença de mesa",
+        "en": "Board presence"
+      }
+    },
+    {
+      "id": 6,
+      "name": {
+        "pt": "Motor de valor",
+        "en": "Value engine"
+      }
+    },
+    {
+      "id": 7,
+      "name": {
+        "pt": "Base de recursos",
+        "en": "Resource base"
+      }
+    }
+  ]
+}

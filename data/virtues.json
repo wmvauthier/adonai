@@ -1,0 +1,160 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-05-29",
+  "virtues": [
+    {
+      "id": 1,
+      "name": {
+        "pt": "Fé",
+        "en": "Faith"
+      },
+      "images": {
+        "icon": "../assets/icons/01-fe.webp",
+        "item": "../assets/itens/01 - Fé - Logo.webp"
+      }
+    },
+    {
+      "id": 2,
+      "name": {
+        "pt": "Dúvida",
+        "en": "Doubt"
+      },
+      "images": {
+        "icon": "../assets/icons/02-duvida.webp",
+        "item": "../assets/itens/02 - Dúvida - Logo.webp"
+      }
+    },
+    {
+      "id": 3,
+      "name": {
+        "pt": "Temperança",
+        "en": "Temperance"
+      },
+      "images": {
+        "icon": "../assets/icons/03-temperanca.webp",
+        "item": "../assets/itens/03 - Temperança - Logo.webp"
+      }
+    },
+    {
+      "id": 4,
+      "name": {
+        "pt": "Descontrole",
+        "en": "Lack of control"
+      },
+      "images": {
+        "icon": "../assets/icons/04-descontrole.webp",
+        "item": "../assets/itens/04 - Descontrole - Logo.webp"
+      }
+    },
+    {
+      "id": 5,
+      "name": {
+        "pt": "Justiça",
+        "en": "Justice"
+      },
+      "images": {
+        "icon": "../assets/icons/05-justica.webp",
+        "item": "../assets/itens/05 - Justiça - Logo.webp"
+      }
+    },
+    {
+      "id": 6,
+      "name": {
+        "pt": "Iniquidade",
+        "en": "Iniquity"
+      },
+      "images": {
+        "icon": "../assets/icons/06-iniquidade.webp",
+        "item": "../assets/itens/06 - Iniquidade - Logo.webp"
+      }
+    },
+    {
+      "id": 7,
+      "name": {
+        "pt": "Fortaleza",
+        "en": "Fortitude"
+      },
+      "images": {
+        "icon": "../assets/icons/07-fortaleza.webp",
+        "item": "../assets/itens/07 - Fortaleza - Logo.webp"
+      }
+    },
+    {
+      "id": 8,
+      "name": {
+        "pt": "Covardia",
+        "en": "Cowardice"
+      },
+      "images": {
+        "icon": "../assets/icons/08-covardia.webp",
+        "item": "../assets/itens/08 - Covardia - Logo.webp"
+      }
+    },
+    {
+      "id": 9,
+      "name": {
+        "pt": "Esperança",
+        "en": "Hope"
+      },
+      "images": {
+        "icon": "../assets/icons/09-esperanca.webp",
+        "item": "../assets/itens/09 - Esperança - Logo.webp"
+      }
+    },
+    {
+      "id": 10,
+      "name": {
+        "pt": "Desespero",
+        "en": "Despair"
+      },
+      "images": {
+        "icon": "../assets/icons/10-desespero.webp",
+        "item": "../assets/itens/10 - Desespero - Logo.webp"
+      }
+    },
+    {
+      "id": 11,
+      "name": {
+        "pt": "Prudência",
+        "en": "Prudence"
+      },
+      "images": {
+        "icon": "../assets/icons/11-prudencia.webp",
+        "item": "../assets/itens/11 - Prudência - Logo.webp"
+      }
+    },
+    {
+      "id": 12,
+      "name": {
+        "pt": "Insensatez",
+        "en": "Folly"
+      },
+      "images": {
+        "icon": "../assets/icons/12-insensatez.webp",
+        "item": "../assets/itens/12 - Insensatez - Logo.webp"
+      }
+    },
+    {
+      "id": 13,
+      "name": {
+        "pt": "Caridade",
+        "en": "Charity"
+      },
+      "images": {
+        "icon": "../assets/icons/13-caridade.webp",
+        "item": "../assets/itens/13 - Caridade - Logo.webp"
+      }
+    },
+    {
+      "id": 14,
+      "name": {
+        "pt": "Egoísmo",
+        "en": "Selfishness"
+      },
+      "images": {
+        "icon": "../assets/icons/14-egoismo.webp",
+        "item": "../assets/itens/14 - Egoísmo - Logo.webp"
+      }
+    }
+  ]
+}

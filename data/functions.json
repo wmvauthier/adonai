@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-05-29",
+  "functions": [
+    {
+      "id": 1,
+      "name": {
+        "pt": "Equipamento",
+        "en": "Equipment"
+      }
+    },
+    {
+      "id": 2,
+      "name": {
+        "pt": "Valor",
+        "en": "Value"
+      }
+    },
+    {
+      "id": 3,
+      "name": {
+        "pt": "Condição de vitória",
+        "en": "Win condition"
+      }
+    },
+    {
+      "id": 4,
+      "name": {
+        "pt": "Pressão",
+        "en": "Pressure"
+      }
+    },
+    {
+      "id": 5,
+      "name": {
+        "pt": "Resposta",
+        "en": "Answer"
+      }
+    },
+    {
+      "id": 6,
+      "name": {
+        "pt": "Virada",
+        "en": "Swing"
+      }
+    },
+    {
+      "id": 7,
+      "name": {
+        "pt": "Disrupção",
+        "en": "Disruption"
+      }
+    },
+    {
+      "id": 8,
+      "name": {
+        "pt": "Risco",
+        "en": "Risk"
+      }
+    },
+    {
+      "id": 9,
+      "name": {
+        "pt": "Presença",
+        "en": "Presence"
+      }
+    },
+    {
+      "id": 10,
+      "name": {
+        "pt": "Sinergia",
+        "en": "Synergy"
+      }
+    },
+    {
+      "id": 11,
+      "name": {
+        "pt": "Suporte",
+        "en": "Support"
+      }
+    },
+    {
+      "id": 12,
+      "name": {
+        "pt": "Motor",
+        "en": "Engine"
+      }
+    },
+    {
+      "id": 13,
+      "name": {
+        "pt": "Base",
+        "en": "Base"
+      }
+    },
+    {
+      "id": 14,
+      "name": {
+        "pt": "Recursos",
+        "en": "Resources"
+      }
+    }
+  ]
+}

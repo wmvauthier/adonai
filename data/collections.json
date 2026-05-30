@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-05-29",
+  "collections": [
+    {
+      "id": 1,
+      "code": "FND",
+      "name": {
+        "pt": "Foundations",
+        "en": "Foundations"
+      },
+      "set": {
+        "pt": "FND",
+        "en": "FND"
+      },
+      "label": {
+        "pt": "Foundations (FND)",
+        "en": "Foundations (FND)"
+      }
+    }
+  ]
+}

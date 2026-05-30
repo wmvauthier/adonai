@@ -58,27 +58,37 @@
         <aside class="filters-panel reveal">
           <div class="filters-panel-head">
             <span class="section-kicker" data-pt="Filtros" data-en="Filters">Filtros</span>
-          </div>
+          </div><br>
 
           <div class="filter-actions">
-            <!-- <div class="filter-count">
-              <span data-pt="Resultados" data-en="Results">Resultados</span>
-              <strong id="resultCount">0</strong>
-            </div> -->
             <button class="btn btn-primary" id="clearFilters" data-pt="Limpar filtros" data-en="Clear filters">Limpar
               filtros</button>
-          </div><br>
+          </div>
+
+          <div class="search-box">
+            <label for="numberFilter" data-pt="Identificação" data-en="Identification">Identificação</label>
+            <input id="numberFilter" type="search" placeholder="Insira aqui a identificação"
+              data-pt="Insira aqui a identificação" data-en="Type identification here" />
+          </div>
 
           <div class="search-box">
             <label for="nameFilter" data-pt="Nome" data-en="Name">Nome</label>
-            <input id="nameFilter" type="search" placeholder="Nome da carta" data-pt="Nome da carta"
-              data-en="Card name" />
+            <input id="nameFilter" type="search" placeholder="Insira aqui o nome" data-pt="Insira aqui o nome"
+              data-en="Type name here" />
           </div>
 
           <div class="search-box">
-            <label for="textFilter" data-pt="Caixa de texto" data-en="Text box">Caixa de texto</label>
-            <input id="textFilter" type="search" placeholder="Texto da carta" data-pt="Texto da carta"
-              data-en="Card text" />
+            <label for="textFilter" data-pt="Texto e/ou rulings" data-en="Text and/or rulings">Texto e/ou
+              rulings</label>
+            <input id="textFilter" type="search" placeholder="Insira aqui o texto" data-pt="Insira aqui o texto"
+              data-en="Type text here" />
+          </div>
+
+          <div class="filter-group">
+            <label for="setFilter" data-pt="Coleção" data-en="Set">Coleção</label>
+            <select id="setFilter">
+              <option value="all">Todas</option>
+            </select>
           </div>
 
           <div class="filter-group">
@@ -103,6 +113,14 @@
           </div>
 
           <div class="filter-group">
+            <label for="virtueFilter" data-pt="Virtude" data-en="Virtue">Virtude</label>
+            <select id="virtueFilter">
+              <option value="all">Todas</option>
+              <option value="__none">Sem virtudes associadas</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
             <label for="costFilter" data-pt="Custo máximo" data-en="Max cost">Custo máximo</label>
             <input id="costFilter" type="range" min="1" max="9" step="1" value="9" />
             <div class="range-value"><span data-pt="Até" data-en="Up to">Até</span> <strong id="costValue">9</strong>
@@ -110,32 +128,82 @@
           </div>
 
           <div class="filter-group">
-            <label for="setFilter" data-pt="Coleção" data-en="Set">Coleção</label>
-            <select id="setFilter">
-              <option value="all">Todas</option>
-            </select>
-          </div>
-
-          <div class="search-box">
-            <label for="numberFilter" data-pt="Número" data-en="Number">Número</label>
-            <input id="numberFilter" type="search" placeholder="001, CAM-001..." data-pt="001, CAM-001..."
-              data-en="001, CAM-001..." />
+            <label for="attackFilter" data-pt="Ataque máximo" data-en="Max attack">Ataque máximo</label>
+            <input id="attackFilter" type="range" min="0" max="10" step="1" value="10" />
+            <div class="range-value"><span data-pt="Até" data-en="Up to">Até</span> <strong id="attackValue">10</strong>
+            </div>
           </div>
 
           <div class="filter-group">
-            <label for="sortSelect" data-pt="Ordenação" data-en="Sort">Ordenação</label>
-            <select id="sortSelect">
-              <option value="rating-desc" data-pt="Avaliação" data-en="Rating">Avaliação</option>
-              <option value="number-asc" data-pt="Ordem da coleção" data-en="Set order">Ordem da coleção</option>
-              <option value="name-asc" data-pt="Nome A-Z" data-en="Name A-Z">Nome A-Z</option>
-              <option value="cost-asc" data-pt="Custo crescente" data-en="Cost ascending">Custo crescente</option>
-              <option value="cost-desc" data-pt="Custo decrescente" data-en="Cost descending">Custo decrescente</option>
-            </select>
+            <label for="resistanceFilter" data-pt="Resistência máxima" data-en="Max resistance">Resistência
+              máxima</label>
+            <input id="resistanceFilter" type="range" min="0" max="10" step="1" value="10" />
+            <div class="range-value"><span data-pt="Até" data-en="Up to">Até</span> <strong
+                id="resistanceValue">10</strong>
+            </div>
           </div>
 
         </aside>
 
         <div class="catalog-main">
+          <section class="advanced-search-panel reveal" aria-labelledby="advancedSearchTitle">
+            <div class="advanced-search-box">
+              <span class="section-kicker" id="advancedSearchTitle" data-pt="Busca avançada"
+                data-en="Advanced search">Busca avançada</span>
+              <div class="advanced-search-row">
+                <div class="advanced-search-input">
+                  <label for="queryFilter" data-pt="Query" data-en="Query">Query</label>
+                  <input id="queryFilter" type="search" spellcheck="false"
+                    placeholder='n:Golias t:Campeão cost<=5 virtue:Fé -type:Pecado'
+                    data-pt='n:Golias t:Campeão cost<=5 virtue:Fé -type:Pecado'
+                    data-en='n:Goliath t:Champion cost<=5 virtue:Faith -type:Sin' />
+                </div>
+                <div class="advanced-sort-box">
+                  <label for="sortSelect" data-pt="Ordenação" data-en="Sort">Ordenação</label>
+                  <select id="sortSelect">
+                    <option value="rating-desc" data-pt="Avaliação" data-en="Rating">Avaliação</option>
+                    <option value="number-asc" data-pt="Ordem da coleção" data-en="Set order">Ordem da coleção</option>
+                    <option value="name-asc" data-pt="Nome A-Z" data-en="Name A-Z">Nome A-Z</option>
+                    <option value="cost-asc" data-pt="Custo crescente" data-en="Cost ascending">Custo crescente</option>
+                    <option value="cost-desc" data-pt="Custo decrescente" data-en="Cost descending">Custo decrescente
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="query-legend query-legend--wide" aria-label="Legenda da busca avançada">
+              <strong data-pt="Legenda" data-en="Guide">Legenda</strong>
+              <ul id="queryLegendList">
+                <li><code>n:</code><span data-pt="nome da carta" data-en="card name">nome da carta</span></li>
+                <li><code>o:</code><span data-pt="texto ou rulings" data-en="text or rulings">texto ou rulings</span>
+                </li>
+                <li><code>t:</code><span data-pt="tipo" data-en="type">tipo</span></li>
+                <li><code>st:</code><span data-pt="subtipo" data-en="subtype">subtipo</span></li>
+                <li><code>fn:</code><span data-pt="função" data-en="function">função</span></li>
+                <li><code>v:</code><span data-pt="virtude" data-en="virtue">virtude</span></li>
+                <li><code>set:</code><span data-pt="coleção" data-en="collection">coleção</span></li>
+                <li><code>cn:</code><span data-pt="número" data-en="number">número</span></li>
+                <li><code>id:</code><span data-pt="identificação" data-en="identification">identificação</span></li>
+                <li><code>cost&gt;=</code><span data-pt="custo" data-en="cost">custo</span></li>
+                <li><code>attack&gt;=</code><span data-pt="ataque" data-en="attack">ataque</span>
+                </li>
+                <li><code>res&gt;=</code><span data-pt="resistência" data-en="resistance">resistência</span></li>
+                <li><code>rating&gt;=</code><span data-pt="avaliação" data-en="rating">avaliação</span></li>
+                <li><code>decks&gt;=</code><span data-pt="decks usando" data-en="decks using it">decks usando</span>
+                </li>
+                <li><code>ref:</code><span data-pt="referência bíblica (ex.: ref:GEN 1:1, ref:EXD 1:2-3)"
+                    data-en="Bible reference (e.g.: ref:GEN 1:1, ref:EXD 1:2-3)">referência
+                    bíblica</span></li>
+              </ul>
+              <p class="query-help" data-pt="Autocomplete: use as setas ←/→ para alternar sugestões e TAB para selecionar."
+                data-en="Autocomplete: use ←/→ arrows to switch suggestions and TAB to select.">
+                Autocomplete: use as setas ←/→ para alternar sugestões e TAB para selecionar.
+              </p>
+              <div class="query-suggestions" id="querySuggestions" hidden></div>
+            </div>
+          </section>
+
           <div class="cards-grid" id="cardsGrid"></div>
 
           <div class="pagination-shell reveal" id="pagination"></div>
