@@ -48,7 +48,7 @@
     </div>
   </header>
 
-  <main>
+  <main><br><br><br>
 
     <section class="section catalog-shell" id="cardsCatalog">
       <div class="container catalog-heading reveal">
@@ -58,7 +58,7 @@
         <aside class="filters-panel reveal">
           <div class="filters-panel-head">
             <span class="section-kicker" data-pt="Filtros" data-en="Filters">Filtros</span>
-          </div><br>
+          </div>
 
           <div class="filter-actions">
             <button class="btn btn-primary" id="clearFilters" data-pt="Limpar filtros" data-en="Clear filters">Limpar
@@ -153,21 +153,19 @@
               <div class="advanced-search-row">
                 <div class="advanced-search-input">
                   <label for="queryFilter" data-pt="Query" data-en="Query">Query</label>
-                  <input id="queryFilter" type="search" spellcheck="false"
-                    placeholder='n:Golias t:Campeão cost<=5 virtue:Fé -type:Pecado'
-                    data-pt='n:Golias t:Campeão cost<=5 virtue:Fé -type:Pecado'
-                    data-en='n:Goliath t:Champion cost<=5 virtue:Faith -type:Sin' />
+                  <div class="advanced-query-input-wrap">
+                    <input id="queryFilter" type="search" spellcheck="false"
+                      placeholder='n:Golias t:Campeão cost<=5 virtue:Fé -type:Pecado'
+                      data-pt='n:Golias t:Campeão cost<=5 virtue:Fé -type:Pecado'
+                      data-en='n:Goliath t:Champion cost<=5 virtue:Faith -type:Sin' />
+                  </div>
                 </div>
                 <div class="advanced-sort-box">
-                  <label for="sortSelect" data-pt="Ordenação" data-en="Sort">Ordenação</label>
-                  <select id="sortSelect">
-                    <option value="rating-desc" data-pt="Avaliação" data-en="Rating">Avaliação</option>
-                    <option value="number-asc" data-pt="Ordem da coleção" data-en="Set order">Ordem da coleção</option>
-                    <option value="name-asc" data-pt="Nome A-Z" data-en="Name A-Z">Nome A-Z</option>
-                    <option value="cost-asc" data-pt="Custo crescente" data-en="Cost ascending">Custo crescente</option>
-                    <option value="cost-desc" data-pt="Custo decrescente" data-en="Cost descending">Custo decrescente
-                    </option>
-                  </select>
+                  <label data-pt="Ações de query" data-en="Query actions">Ações de query</label>
+                  <div class="sort-view-row">
+                    <button class="query-copy-btn" id="copyQueryBtn" type="button" data-pt="Copiar query"
+                      data-en="Copy query">Copiar query</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -196,11 +194,43 @@
                     data-en="Bible reference (e.g.: ref:GEN 1:1, ref:EXD 1:2-3)">referência
                     bíblica</span></li>
               </ul>
-              <p class="query-help" data-pt="Autocomplete: use as setas ←/→ para alternar sugestões e TAB para selecionar."
+              <p class="query-help"
+                data-pt="Autocomplete: use as setas ←/→ para alternar sugestões e TAB para selecionar."
                 data-en="Autocomplete: use ←/→ arrows to switch suggestions and TAB to select.">
                 Autocomplete: use as setas ←/→ para alternar sugestões e TAB para selecionar.
               </p>
               <div class="query-suggestions" id="querySuggestions" hidden></div>
+            </div>
+          </section>
+
+          <section class="catalog-tools reveal" aria-label="Resumo dos filtros">
+            <div class="catalog-tools-top">
+              <div class="catalog-tools-summary">
+                <div class="results-count" id="resultsCount"></div>
+                <div class="active-filters" id="activeFilters"></div>
+              </div>
+              <div class="catalog-tools-controls">
+                <div class="catalog-tools-control">
+                  <label for="sortSelect" data-pt="Ordenação" data-en="Sort">Ordenação</label>
+                  <select id="sortSelect">
+                    <option value="rating-desc" data-pt="Avaliação" data-en="Rating">Avaliação</option>
+                    <option value="number-asc" data-pt="Ordem da coleção" data-en="Set order">Ordem da coleção</option>
+                    <option value="name-asc" data-pt="Nome A-Z" data-en="Name A-Z">Nome A-Z</option>
+                    <option value="cost-asc" data-pt="Custo crescente" data-en="Cost ascending">Custo crescente</option>
+                    <option value="cost-desc" data-pt="Custo decrescente" data-en="Cost descending">Custo decrescente
+                    </option>
+                  </select>
+                </div>
+                <div class="catalog-tools-control">
+                  <label data-pt="Visualização" data-en="View mode">Visualização</label>
+                  <div class="view-toggle" role="group" aria-label="Modo de visualização">
+                    <button class="view-toggle-btn is-active" id="viewStandardBtn" type="button" data-view="standard"
+                      data-pt="Padrão" data-en="Standard">Padrão</button>
+                    <button class="view-toggle-btn" id="viewCompactBtn" type="button" data-view="compact"
+                      data-pt="Compacto" data-en="Compact">Compacto</button>
+                  </div>
+                </div>
+              </div>
             </div>
           </section>
 
@@ -220,6 +250,7 @@
       <div class="drawer-inner" id="drawerContent"></div>
     </div>
   </aside>
+  <div class="hover-preview" id="hoverPreview" aria-hidden="true"></div>
 
   <footer class="site-footer">
     <div class="container footer-grid">

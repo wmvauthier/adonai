@@ -1,5 +1,6 @@
 const DATA_URL = "../data/cards.json";
 const RULINGS_URL = "../data/rulings.json";
+const STORAGE_KEY = "adonai.cards.filters.v1";
 const REFERENCE_URLS = {
   collections: "../data/collections.json",
   types: "../data/types.json",
@@ -22,6 +23,13 @@ const copy = {
     errorBody: "Confira se a página está sendo servida por um servidor local e se os arquivos em data existem.",
     emptyTitle: "Nenhuma carta encontrada",
     emptyBody: "Tente reduzir a combinação de filtros ou buscar por outro termo.",
+    emptyQueryTitle: "Nenhum resultado para a busca",
+    emptyQueryBody: "Tente simplificar a query ou remover um dos termos.",
+    clearQuery: "Limpar query",
+    clearAllFilters: "Limpar todos os filtros",
+    emptyActiveFilters: "Filtros ativos",
+    resultsFound: "cartas encontradas",
+    noActiveFilters: "Nenhum filtro ativo",
     showing: "Mostrando",
     of: "de",
     previous: "Anterior",
@@ -48,7 +56,11 @@ const copy = {
     attack: "Ataque",
     resistance: "Resistência",
     imageAlt: "Imagem da carta",
-    close: "Fechar detalhes"
+    close: "Fechar detalhes",
+    viewStandard: "Padrão",
+    viewCompact: "Compacto",
+    copyQuery: "Copiar query",
+    copied: "Copiado!"
   },
   en: {
     all: "All",
@@ -59,6 +71,13 @@ const copy = {
     errorBody: "Check that the page is running from a local server and that the files in data exist.",
     emptyTitle: "No cards found",
     emptyBody: "Try reducing the filter combination or searching for a different term.",
+    emptyQueryTitle: "No results for this search",
+    emptyQueryBody: "Try simplifying the query or removing one term.",
+    clearQuery: "Clear query",
+    clearAllFilters: "Clear all filters",
+    emptyActiveFilters: "Active filters",
+    resultsFound: "cards found",
+    noActiveFilters: "No active filters",
     showing: "Showing",
     of: "of",
     previous: "Prev",
@@ -85,13 +104,17 @@ const copy = {
     attack: "Attack",
     resistance: "Resistance",
     imageAlt: "Card image",
-    close: "Close details"
+    close: "Close details",
+    viewStandard: "Standard",
+    viewCompact: "Compact",
+    copyQuery: "Copy query",
+    copied: "Copied!"
   }
 };
 
 const state = {
   currentPage: 1,
-  itemsPerPage: 12,
+  itemsPerPage: 24,
   name: "",
   number: "",
   set: "all",
@@ -105,14 +128,18 @@ const state = {
   text: "",
   query: "",
   sort: "rating-desc",
+  viewMode: "standard",
   lang: "pt"
 };
+let isApplyingUrlState = false;
 
 const els = {
   header: document.getElementById("siteHeader"),
   mobileToggle: document.getElementById("mobileToggle"),
   primaryNav: document.getElementById("primaryNav"),
   cardsGrid: document.getElementById("cardsGrid"),
+  resultsCount: document.getElementById("resultsCount"),
+  activeFilters: document.getElementById("activeFilters"),
   pagination: document.getElementById("pagination"),
   nameFilter: document.getElementById("nameFilter"),
   numberFilter: document.getElementById("numberFilter"),
@@ -131,13 +158,17 @@ const els = {
   queryFilter: document.getElementById("queryFilter"),
   queryLegendList: document.getElementById("queryLegendList"),
   querySuggestions: document.getElementById("querySuggestions"),
+  copyQueryBtn: document.getElementById("copyQueryBtn"),
   sortSelect: document.getElementById("sortSelect"),
+  viewStandardBtn: document.getElementById("viewStandardBtn"),
+  viewCompactBtn: document.getElementById("viewCompactBtn"),
   clearFilters: document.getElementById("clearFilters"),
   drawer: document.getElementById("cardDrawer"),
   drawerPanel: document.querySelector(".drawer-panel"),
   drawerBackdrop: document.getElementById("drawerBackdrop"),
   drawerClose: document.getElementById("drawerClose"),
   drawerContent: document.getElementById("drawerContent"),
+  hoverPreview: document.getElementById("hoverPreview"),
   langButtons: document.querySelectorAll(".lang-btn")
 };
 
@@ -543,6 +574,51 @@ function setCatalogMessage(kind, title, body) {
   `;
   els.pagination.innerHTML = "";
 }
+
+function serializeUiState() {
+  return {
+    name: state.name,
+    number: state.number,
+    set: state.set,
+    type: state.type,
+    subtype: state.subtype,
+    function: state.function,
+    virtue: state.virtue,
+    maxCost: state.maxCost,
+    maxAttack: state.maxAttack,
+    maxResistance: state.maxResistance,
+    text: state.text,
+    query: state.query,
+    sort: state.sort,
+    viewMode: state.viewMode
+  };
+}
+
+function saveUiState() {
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(serializeUiState()));
+  } catch (error) {
+    console.warn("Could not persist filters in localStorage", error);
+  }
+}
+
+function readStoredState() {
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== "object") return null;
+    return parsed;
+  } catch (error) {
+    console.warn("Could not read filters from localStorage", error);
+    return null;
+  }
+}
+
+function hasUrlState() {
+  return new URLSearchParams(window.location.search).toString().length > 0;
+}
+
 
 function sortCards(cards) {
   const sorted = [...cards];
@@ -1086,25 +1162,105 @@ function renderUsageCard(card, large = false) {
 }
 
 function renderStatusSummary(card) {
-  const parts = [`◆ ${t("cost")} ${card.costLabel || t("noData")}`];
+  const primaryType = normalizeSearch(getPrimaryType(card));
+  const isChampion = primaryType === normalizeSearch("Campeão") || primaryType === normalizeSearch("Campeao");
+  const isTemple = primaryType === normalizeSearch("Templo");
+  const isTerritory = primaryType === normalizeSearch("Território") || primaryType === normalizeSearch("Territorio");
+
+  if (isChampion || isTemple) {
+    return "-";
+  }
+
+  const parts = [];
+  const hasCost = !isTerritory
+    && card.cost !== null
+    && typeof card.cost !== "undefined"
+    && String(card.costLabel || "").trim() !== ""
+    && String(card.costLabel || "").trim() !== "-";
+  if (hasCost) {
+    parts.push(`◆ ${t("cost")} ${card.costLabel}`);
+  }
   const attack = card.stats?.attack;
   const resistance = card.stats?.resistance;
-  if (attack !== null && typeof attack !== "undefined") {
+  if (!isTerritory && attack !== null && typeof attack !== "undefined") {
     parts.push(`⚔ ATK ${attack}`);
   }
   if (resistance !== null && typeof resistance !== "undefined") {
     parts.push(`⬟ RES ${resistance}`);
   }
-  return escapeHtml(parts.join(" / "));
+  return escapeHtml(parts.join(" / ") || "-");
+}
+
+function getMaxRange(field) {
+  if (field === "cost") return costBounds.max;
+  if (field === "attack") return attackBounds.max;
+  if (field === "resistance") return resistanceBounds.max;
+  return null;
+}
+
+function activeFilterChips() {
+  const chips = [];
+  if (state.name.trim()) chips.push({ key: "name", label: "Nome", value: state.name.trim() });
+  if (state.number.trim()) chips.push({ key: "number", label: "ID", value: state.number.trim() });
+  if (state.text.trim()) chips.push({ key: "text", label: "Texto", value: state.text.trim() });
+  if (state.set !== "all") chips.push({ key: "set", label: "Coleção", value: state.set });
+  if (state.type !== "all") chips.push({ key: "type", label: "Tipo", value: state.type });
+  if (state.subtype !== "all") chips.push({ key: "subtype", label: "Subtipo", value: state.subtype });
+  if (state.function !== "all") chips.push({ key: "function", label: "Função", value: state.function });
+  if (state.virtue !== "all") chips.push({ key: "virtue", label: "Virtude", value: state.virtue === "__none" ? t("noVirtues") : state.virtue });
+  if (state.query.trim()) chips.push({ key: "query", label: "Query", value: state.query.trim() });
+  if (state.maxCost !== null && getMaxRange("cost") !== null && state.maxCost !== getMaxRange("cost")) chips.push({ key: "cost", label: "Custo", value: `<= ${state.maxCost}` });
+  if (state.maxAttack !== null && getMaxRange("attack") !== null && state.maxAttack !== getMaxRange("attack")) chips.push({ key: "attack", label: "Ataque", value: `<= ${state.maxAttack}` });
+  if (state.maxResistance !== null && getMaxRange("resistance") !== null && state.maxResistance !== getMaxRange("resistance")) chips.push({ key: "resistance", label: "Resistência", value: `<= ${state.maxResistance}` });
+  return chips;
+}
+
+function renderFilterSummary(total) {
+  if (els.resultsCount) {
+    if (total === 0) {
+      const hasQuery = Boolean(state.query.trim());
+      const title = hasQuery ? t("emptyQueryTitle") : t("emptyTitle");
+      const body = hasQuery ? t("emptyQueryBody") : t("emptyBody");
+      els.resultsCount.innerHTML = `
+        <strong>${escapeHtml(title)}</strong>
+        <span>${escapeHtml(body)}</span>
+      `;
+    } else {
+      els.resultsCount.textContent = `${total} ${t("resultsFound")}`;
+    }
+  }
+
+  if (!els.activeFilters) return;
+  const chips = activeFilterChips();
+  if (!chips.length) {
+    els.activeFilters.innerHTML = `<span class="active-filter-chip">${escapeHtml(t("noActiveFilters"))}</span>`;
+    return;
+  }
+
+  const clearAll = `<button class="active-filter-clear" type="button" data-empty-action="clear-all">${escapeHtml(t("clearAllFilters"))}</button>`;
+  const clearQuery = state.query.trim()
+    ? `<button class="active-filter-clear" type="button" data-empty-action="clear-query">${escapeHtml(t("clearQuery"))}</button>`
+    : "";
+
+  els.activeFilters.innerHTML = `
+    ${total === 0 ? `${clearAll}${clearQuery}` : ""}
+    ${chips.map((chip) => `
+    <span class="active-filter-chip">
+      <span>${escapeHtml(`${chip.label}: ${chip.value}`)}</span>
+      <button type="button" data-remove-filter="${escapeHtml(chip.key)}" aria-label="Remover ${escapeHtml(chip.label)}">×</button>
+    </span>
+    `).join("")}
+  `;
 }
 
 function renderCards() {
   const filtered = getFilteredCards();
+  renderFilterSummary(filtered.length);
   const start = (state.currentPage - 1) * state.itemsPerPage;
   const paginated = filtered.slice(start, start + state.itemsPerPage);
 
   if (!paginated.length) {
-    setCatalogMessage("empty", t("emptyTitle"), t("emptyBody"));
+    els.cardsGrid.innerHTML = "";
     renderPagination(filtered.length);
     return;
   }
@@ -1124,6 +1280,203 @@ function renderCards() {
   bindTilt();
   renderPagination(filtered.length);
   handleReveal();
+}
+
+function applyViewMode() {
+  if (!els.cardsGrid) return;
+  els.cardsGrid.classList.toggle("is-compact", state.viewMode === "compact");
+  els.viewStandardBtn?.classList.toggle("is-active", state.viewMode === "standard");
+  els.viewCompactBtn?.classList.toggle("is-active", state.viewMode === "compact");
+}
+
+function clampRange(value, min, max) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return max;
+  return Math.max(min, Math.min(max, number));
+}
+
+function syncUrlFromState() {
+  if (isApplyingUrlState) return;
+  const params = new URLSearchParams();
+  if (state.name.trim()) params.set("name", state.name.trim());
+  if (state.number.trim()) params.set("id", state.number.trim());
+  if (state.text.trim()) params.set("text", state.text.trim());
+  if (state.set !== "all") params.set("set", state.set);
+  if (state.type !== "all") params.set("type", state.type);
+  if (state.subtype !== "all") params.set("subtype", state.subtype);
+  if (state.function !== "all") params.set("fn", state.function);
+  if (state.virtue !== "all") params.set("virtue", state.virtue);
+  if (state.query.trim()) params.set("q", state.query.trim());
+  if (state.sort !== "rating-desc") params.set("sort", state.sort);
+  if (state.viewMode !== "standard") params.set("view", state.viewMode);
+
+  if (state.maxCost !== null && costBounds.max !== null && state.maxCost !== costBounds.max) params.set("costMax", String(state.maxCost));
+  if (state.maxAttack !== null && attackBounds.max !== null && state.maxAttack !== attackBounds.max) params.set("atkMax", String(state.maxAttack));
+  if (state.maxResistance !== null && resistanceBounds.max !== null && state.maxResistance !== resistanceBounds.max) params.set("resMax", String(state.maxResistance));
+  if (state.currentPage > 1) params.set("page", String(state.currentPage));
+
+  const next = `${window.location.pathname}${params.toString() ? `?${params.toString()}` : ""}`;
+  window.history.replaceState({}, "", next);
+}
+
+function applyUrlStateToControls() {
+  const params = new URLSearchParams(window.location.search);
+  if (!params.toString()) return;
+
+  isApplyingUrlState = true;
+  const assignSelectValue = (select, value, fallback = "all") => {
+    if (!select || !value) return;
+    const hasOption = [...select.options].some((option) => option.value === value);
+    select.value = hasOption ? value : fallback;
+  };
+
+  els.nameFilter.value = params.get("name") || "";
+  els.numberFilter.value = params.get("id") || "";
+  els.textFilter.value = params.get("text") || "";
+  if (els.queryFilter) els.queryFilter.value = params.get("q") || "";
+  assignSelectValue(els.setFilter, params.get("set"));
+  assignSelectValue(els.typeFilter, params.get("type"));
+  assignSelectValue(els.subtypeFilter, params.get("subtype"));
+  assignSelectValue(els.functionFilter, params.get("fn"));
+  assignSelectValue(els.virtueFilter, params.get("virtue"));
+  assignSelectValue(els.sortSelect, params.get("sort"), "rating-desc");
+  const viewMode = params.get("view");
+  state.viewMode = viewMode === "compact" ? "compact" : "standard";
+  applyViewMode();
+
+  if (!els.costFilter.disabled && costBounds.max !== null) {
+    const min = Number(els.costFilter.min);
+    const max = Number(els.costFilter.max);
+    const value = params.get("costMax");
+    els.costFilter.value = String(value ? clampRange(value, min, max) : max);
+    els.costValue.textContent = els.costFilter.value;
+  }
+  if (!els.attackFilter.disabled && attackBounds.max !== null) {
+    const min = Number(els.attackFilter.min);
+    const max = Number(els.attackFilter.max);
+    const value = params.get("atkMax");
+    els.attackFilter.value = String(value ? clampRange(value, min, max) : max);
+    els.attackValue.textContent = els.attackFilter.value;
+  }
+  if (!els.resistanceFilter.disabled && resistanceBounds.max !== null) {
+    const min = Number(els.resistanceFilter.min);
+    const max = Number(els.resistanceFilter.max);
+    const value = params.get("resMax");
+    els.resistanceFilter.value = String(value ? clampRange(value, min, max) : max);
+    els.resistanceValue.textContent = els.resistanceFilter.value;
+  }
+
+  const requestedPage = Number(params.get("page"));
+  updateStateFromControls();
+  if (Number.isFinite(requestedPage) && requestedPage > 1) {
+    state.currentPage = requestedPage;
+    renderCards();
+  }
+  isApplyingUrlState = false;
+}
+
+function applyStoredStateToControls() {
+  const saved = readStoredState();
+  if (!saved) return false;
+
+  const assignSelectValue = (select, value, fallback = "all") => {
+    if (!select || !value) return;
+    const hasOption = [...select.options].some((option) => option.value === value);
+    select.value = hasOption ? value : fallback;
+  };
+
+  isApplyingUrlState = true;
+  els.nameFilter.value = String(saved.name || "");
+  els.numberFilter.value = String(saved.number || "");
+  els.textFilter.value = String(saved.text || "");
+  if (els.queryFilter) els.queryFilter.value = String(saved.query || "");
+  assignSelectValue(els.setFilter, saved.set);
+  assignSelectValue(els.typeFilter, saved.type);
+  assignSelectValue(els.subtypeFilter, saved.subtype);
+  assignSelectValue(els.functionFilter, saved.function);
+  assignSelectValue(els.virtueFilter, saved.virtue);
+  assignSelectValue(els.sortSelect, saved.sort, "rating-desc");
+  state.viewMode = saved.viewMode === "compact" ? "compact" : "standard";
+  applyViewMode();
+
+  if (!els.costFilter.disabled && costBounds.max !== null) {
+    const min = Number(els.costFilter.min);
+    const max = Number(els.costFilter.max);
+    const value = Number(saved.maxCost);
+    els.costFilter.value = String(Number.isFinite(value) ? clampRange(value, min, max) : max);
+    els.costValue.textContent = els.costFilter.value;
+  }
+  if (!els.attackFilter.disabled && attackBounds.max !== null) {
+    const min = Number(els.attackFilter.min);
+    const max = Number(els.attackFilter.max);
+    const value = Number(saved.maxAttack);
+    els.attackFilter.value = String(Number.isFinite(value) ? clampRange(value, min, max) : max);
+    els.attackValue.textContent = els.attackFilter.value;
+  }
+  if (!els.resistanceFilter.disabled && resistanceBounds.max !== null) {
+    const min = Number(els.resistanceFilter.min);
+    const max = Number(els.resistanceFilter.max);
+    const value = Number(saved.maxResistance);
+    els.resistanceFilter.value = String(Number.isFinite(value) ? clampRange(value, min, max) : max);
+    els.resistanceValue.textContent = els.resistanceFilter.value;
+  }
+
+  updateStateFromControls();
+  isApplyingUrlState = false;
+  syncUrlFromState();
+  return true;
+}
+
+function hideHoverPreview() {
+  if (!els.hoverPreview) return;
+  els.hoverPreview.classList.remove("is-visible");
+  els.hoverPreview.innerHTML = "";
+}
+
+function moveHoverPreview(event) {
+  if (!els.hoverPreview || !els.hoverPreview.classList.contains("is-visible")) return;
+  const margin = 16;
+  const width = els.hoverPreview.offsetWidth || 280;
+  const height = els.hoverPreview.offsetHeight || 380;
+  let x = event.clientX + margin;
+  let y = event.clientY + margin;
+  if (x + width > window.innerWidth - margin) x = event.clientX - width - margin;
+  if (y + height > window.innerHeight - margin) y = window.innerHeight - height - margin;
+  if (y < margin) y = margin;
+  els.hoverPreview.style.left = `${x}px`;
+  els.hoverPreview.style.top = `${y}px`;
+}
+
+function showHoverPreview(cardCode, event) {
+  if (!els.hoverPreview || window.innerWidth <= 1024 || state.viewMode !== "compact") return;
+  const card = getCardByCode(cardCode);
+  if (!card || !card.images?.card) return;
+  const name = getCardName(card);
+  els.hoverPreview.innerHTML = `
+    <img src="${escapeHtml(card.images.card)}" alt="${escapeHtml(name)}" loading="lazy" />
+    <div class="hover-preview-meta">
+      <strong>${escapeHtml(name)}</strong>
+      <span>${escapeHtml(getCardCode(card))}</span>
+    </div>
+  `;
+  els.hoverPreview.classList.add("is-visible");
+  moveHoverPreview(event);
+}
+
+function removeActiveFilter(key) {
+  if (key === "name") els.nameFilter.value = "";
+  if (key === "number") els.numberFilter.value = "";
+  if (key === "text") els.textFilter.value = "";
+  if (key === "set") els.setFilter.value = "all";
+  if (key === "type") els.typeFilter.value = "all";
+  if (key === "subtype") els.subtypeFilter.value = "all";
+  if (key === "function") els.functionFilter.value = "all";
+  if (key === "virtue" && els.virtueFilter) els.virtueFilter.value = "all";
+  if (key === "query" && els.queryFilter) els.queryFilter.value = "";
+  if (key === "cost" && !els.costFilter.disabled && costBounds.max !== null) els.costFilter.value = String(costBounds.max);
+  if (key === "attack" && !els.attackFilter.disabled && attackBounds.max !== null) els.attackFilter.value = String(attackBounds.max);
+  if (key === "resistance" && !els.resistanceFilter.disabled && resistanceBounds.max !== null) els.resistanceFilter.value = String(resistanceBounds.max);
+  updateStateFromControls();
 }
 
 function renderPagination(totalItems) {
@@ -1398,11 +1751,15 @@ function updateStateFromControls() {
   state.text = els.textFilter.value;
   state.query = els.queryFilter?.value || "";
   state.sort = els.sortSelect.value;
+  state.viewMode = els.viewCompactBtn?.classList.contains("is-active") ? "compact" : "standard";
   state.currentPage = 1;
   els.costValue.textContent = els.costFilter.disabled ? t("noCost") : String(state.maxCost);
   els.attackValue.textContent = els.attackFilter.disabled ? t("noData") : String(state.maxAttack);
   els.resistanceValue.textContent = els.resistanceFilter.disabled ? t("noData") : String(state.maxResistance);
   renderCards();
+  applyViewMode();
+  syncUrlFromState();
+  saveUiState();
   updateQuerySuggestions();
 }
 
@@ -1447,6 +1804,9 @@ function resetFilters() {
   }
 
   renderCards();
+  applyViewMode();
+  syncUrlFromState();
+  saveUiState();
   hideQuerySuggestions();
 }
 
@@ -1476,7 +1836,13 @@ function applyLanguage(lang) {
   state.virtue = els.virtueFilter?.value || "all";
   state.maxAttack = els.attackFilter.disabled ? null : Number(els.attackFilter.value);
   state.maxResistance = els.resistanceFilter.disabled ? null : Number(els.resistanceFilter.value);
+  if (els.copyQueryBtn) {
+    els.copyQueryBtn.textContent = t("copyQuery");
+    els.copyQueryBtn.classList.remove("is-copied");
+  }
   renderCards();
+  applyViewMode();
+  saveUiState();
   updateQuerySuggestions();
 }
 
@@ -1505,7 +1871,13 @@ async function loadCards() {
     cardsData = (payload.cards || []).map((card, index) => normalizeCard(card, payload.defaults || {}, index));
 
     populateFilters();
-    renderCards();
+    if (hasUrlState()) {
+      applyUrlStateToControls();
+    } else if (!applyStoredStateToControls()) {
+      renderCards();
+      applyViewMode();
+      syncUrlFromState();
+    }
   } catch (error) {
     console.error(error);
     setCatalogMessage("error", t("errorTitle"), t("errorBody"));
@@ -1577,12 +1949,92 @@ els.querySuggestions?.addEventListener("click", (event) => {
   applySuggestion(button.dataset.queryOption);
 });
 
+els.copyQueryBtn?.addEventListener("click", async () => {
+  const value = (els.queryFilter?.value || "").trim();
+  if (!value) return;
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(value);
+    } else {
+      const temp = document.createElement("textarea");
+      temp.value = value;
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand("copy");
+      temp.remove();
+    }
+    els.copyQueryBtn.textContent = t("copied");
+    els.copyQueryBtn.classList.add("is-copied");
+    setTimeout(() => {
+      els.copyQueryBtn.textContent = t("copyQuery");
+      els.copyQueryBtn.classList.remove("is-copied");
+    }, 1200);
+  } catch (error) {
+    console.error("Copy query failed", error);
+  }
+});
+
+els.viewStandardBtn?.addEventListener("click", () => {
+  state.viewMode = "standard";
+  applyViewMode();
+  hideHoverPreview();
+  saveUiState();
+  syncUrlFromState();
+});
+
+els.viewCompactBtn?.addEventListener("click", () => {
+  state.viewMode = "compact";
+  applyViewMode();
+  saveUiState();
+  syncUrlFromState();
+});
+
 els.clearFilters.addEventListener("click", resetFilters);
 
 els.cardsGrid.addEventListener("click", (event) => {
   const button = event.target.closest("[data-open-card]");
   if (!button) return;
   openDrawer(button.dataset.openCard);
+});
+
+els.cardsGrid.addEventListener("mouseenter", (event) => {
+  const button = event.target.closest("[data-open-card]");
+  if (!button) return;
+  showHoverPreview(button.dataset.openCard, event);
+}, true);
+
+els.cardsGrid.addEventListener("mousemove", (event) => {
+  const button = event.target.closest("[data-open-card]");
+  if (!button) {
+    hideHoverPreview();
+    return;
+  }
+  if (!els.hoverPreview?.classList.contains("is-visible")) {
+    showHoverPreview(button.dataset.openCard, event);
+    return;
+  }
+  moveHoverPreview(event);
+});
+
+els.cardsGrid.addEventListener("mouseleave", hideHoverPreview);
+
+els.activeFilters?.addEventListener("click", (event) => {
+  const emptyAction = event.target.closest("[data-empty-action]");
+  if (emptyAction) {
+    if (emptyAction.dataset.emptyAction === "clear-query" && els.queryFilter) {
+      els.queryFilter.value = "";
+      updateStateFromControls();
+      return;
+    }
+    if (emptyAction.dataset.emptyAction === "clear-all") {
+      resetFilters();
+      return;
+    }
+  }
+
+  const button = event.target.closest("[data-remove-filter]");
+  if (!button) return;
+  removeActiveFilter(button.dataset.removeFilter);
 });
 
 els.pagination.addEventListener("click", (event) => {
@@ -1595,6 +2047,8 @@ els.pagination.addEventListener("click", (event) => {
   else state.currentPage = Number(value);
 
   renderCards();
+  saveUiState();
+  syncUrlFromState();
   window.scrollTo({ top: els.cardsGrid.offsetTop - 120, behavior: "smooth" });
 });
 
@@ -1618,4 +2072,8 @@ window.addEventListener("load", () => {
   handleHeader();
   handleReveal();
   loadCards();
+});
+
+window.addEventListener("pageshow", () => {
+  syncUrlFromState();
 });

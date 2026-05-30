@@ -2375,112 +2375,6 @@
       ]
     },
     {
-      "number": "021",
-      "collection": 1,
-      "type": [
-        5
-      ],
-      "subtype": [
-        4
-      ],
-      "name": {
-        "pt": "Personagem - Foundations 21",
-        "en": "Character - Foundations 21"
-      },
-      "images": {
-        "card": "../assets/cards/Personagem - Foundations-21.webp",
-        "art": "../assets/imgs/Personagem - Foundations-21 - img.webp"
-      },
-      "virtues": [
-        5,
-        10
-      ],
-      "cost": 1,
-      "stats": {
-        "attack": 1,
-        "resistance": 5
-      },
-      "rating": 3.5,
-      "functions": [
-        9,
-        10
-      ],
-      "usage": {
-        "deckCount": 11,
-        "inclusion": 45,
-        "archetypes": [
-          {
-            "pt": "Aggro",
-            "en": "Aggro"
-          },
-          {
-            "pt": "Midrange",
-            "en": "Midrange"
-          }
-        ]
-      },
-      "role": 5,
-      "reference": "MAT 5:16",
-      "text": "Coloque este personagem em jogo para ampliar sua presença e ativar novas sinergias.",
-      "rulings": [
-        "Este personagem permanece em jogo enquanto não for removido por combate, efeito ou regra específica.",
-        "Personagens podem receber modificadores de artefatos e outros efeitos contínuos."
-      ]
-    },
-    {
-      "number": "022",
-      "collection": 1,
-      "type": [
-        5
-      ],
-      "subtype": [
-        5
-      ],
-      "name": {
-        "pt": "Personagem - Foundations 22",
-        "en": "Character - Foundations 22"
-      },
-      "images": {
-        "card": "../assets/cards/Personagem - Foundations-22.webp",
-        "art": "../assets/imgs/Personagem - Foundations-22 - img.webp"
-      },
-      "virtues": [
-        7,
-        12
-      ],
-      "cost": 2,
-      "stats": {
-        "attack": 2,
-        "resistance": 6
-      },
-      "rating": 4.0,
-      "functions": [
-        9,
-        10
-      ],
-      "usage": {
-        "deckCount": 13,
-        "inclusion": 52,
-        "archetypes": [
-          {
-            "pt": "Aggro",
-            "en": "Aggro"
-          },
-          {
-            "pt": "Midrange",
-            "en": "Midrange"
-          }
-        ]
-      },
-      "role": 5,
-      "reference": "EPH 6:11",
-      "text": "Coloque este personagem em jogo para ampliar sua presença e ativar novas sinergias.",
-      "rulings": [
-        "Este personagem permanece em jogo enquanto não for removido por combate, efeito ou regra específica.",
-        "Personagens podem receber modificadores de artefatos e outros efeitos contínuos."
-      ]
-    },
-    {
       "number": "001",
       "collection": 1,
       "type": [
@@ -2711,7 +2605,7 @@
       ],
       "stats": {
         "attack": null,
-        "resistance": null
+        "resistance": 18
       },
       "rating": 3.5,
       "functions": [
@@ -2763,7 +2657,7 @@
       ],
       "stats": {
         "attack": null,
-        "resistance": null
+        "resistance": 24
       },
       "rating": 4.0,
       "functions": [
@@ -2815,7 +2709,7 @@
       ],
       "stats": {
         "attack": null,
-        "resistance": null
+        "resistance": 16
       },
       "rating": 4.0,
       "functions": [
@@ -2867,7 +2761,7 @@
       ],
       "stats": {
         "attack": null,
-        "resistance": null
+        "resistance": 18
       },
       "rating": 3.5,
       "functions": [
