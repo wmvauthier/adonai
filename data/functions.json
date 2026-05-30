@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-05-29",
+  "updatedAt": "2026-05-30",
   "functions": [
     {
       "id": 1,
@@ -98,6 +98,580 @@
       "name": {
         "pt": "Recursos",
         "en": "Resources"
+      }
+    },
+    {
+      "id": 15,
+      "name": {
+        "pt": "Remoção pontual",
+        "en": "Spot removal"
+      }
+    },
+    {
+      "id": 16,
+      "name": {
+        "pt": "Remoção em massa",
+        "en": "Board wipe"
+      }
+    },
+    {
+      "id": 17,
+      "name": {
+        "pt": "Dano direto",
+        "en": "Direct damage"
+      }
+    },
+    {
+      "id": 18,
+      "name": {
+        "pt": "Proteção",
+        "en": "Protection"
+      }
+    },
+    {
+      "id": 19,
+      "name": {
+        "pt": "Prevenção de dano",
+        "en": "Damage prevention"
+      }
+    },
+    {
+      "id": 20,
+      "name": {
+        "pt": "Cura",
+        "en": "Healing"
+      }
+    },
+    {
+      "id": 21,
+      "name": {
+        "pt": "Compra de cartas",
+        "en": "Card draw"
+      }
+    },
+    {
+      "id": 22,
+      "name": {
+        "pt": "Seleção de cartas",
+        "en": "Card selection"
+      }
+    },
+    {
+      "id": 23,
+      "name": {
+        "pt": "Tutor",
+        "en": "Tutor"
+      }
+    },
+    {
+      "id": 24,
+      "name": {
+        "pt": "Recursão",
+        "en": "Recursion"
+      }
+    },
+    {
+      "id": 25,
+      "name": {
+        "pt": "Retorno à mão",
+        "en": "Bounce"
+      }
+    },
+    {
+      "id": 26,
+      "name": {
+        "pt": "Anulação",
+        "en": "Counterspell"
+      }
+    },
+    {
+      "id": 27,
+      "name": {
+        "pt": "Aceleração de recursos",
+        "en": "Ramp"
+      }
+    },
+    {
+      "id": 28,
+      "name": {
+        "pt": "Geração de fichas",
+        "en": "Token generation"
+      }
+    },
+    {
+      "id": 29,
+      "name": {
+        "pt": "Sacrifício",
+        "en": "Sacrifice"
+      }
+    },
+    {
+      "id": 30,
+      "name": {
+        "pt": "Controle temporário",
+        "en": "Temporary control"
+      }
+    },
+    {
+      "id": 31,
+      "name": {
+        "pt": "Luta",
+        "en": "Fight"
+      }
+    },
+    {
+      "id": 32,
+      "name": {
+        "pt": "Desativação",
+        "en": "Tapdown"
+      }
+    },
+    {
+      "id": 33,
+      "name": {
+        "pt": "Evasão",
+        "en": "Evasion"
+      }
+    },
+    {
+      "id": 34,
+      "name": {
+        "pt": "Sobrepujar",
+        "en": "Trample"
+      }
+    },
+    {
+      "id": 35,
+      "name": {
+        "pt": "Aumento de poder/resistência",
+        "en": "Pump"
+      }
+    },
+    {
+      "id": 36,
+      "name": {
+        "pt": "Truque de combate",
+        "en": "Combat trick"
+      }
+    },
+    {
+      "id": 37,
+      "name": {
+        "pt": "Sinergia com equipamentos",
+        "en": "Equipment synergy"
+      }
+    },
+    {
+      "id": 38,
+      "name": {
+        "pt": "Antífona",
+        "en": "Anthem"
+      }
+    },
+    {
+      "id": 39,
+      "name": {
+        "pt": "Punição de entrada",
+        "en": "Enter-the-battlefield punishment"
+      }
+    },
+    {
+      "id": 40,
+      "name": {
+        "pt": "Punição de território",
+        "en": "Territory punishment"
+      }
+    },
+    {
+      "id": 41,
+      "name": {
+        "pt": "Revelação de mão",
+        "en": "Hand reveal"
+      }
+    },
+    {
+      "id": 42,
+      "name": {
+        "pt": "Descarte",
+        "en": "Discard"
+      }
+    },
+    {
+      "id": 43,
+      "name": {
+        "pt": "Manipulação do topo",
+        "en": "Topdeck manipulation"
+      }
+    },
+    {
+      "id": 44,
+      "name": {
+        "pt": "Preparação de compra",
+        "en": "Draw setup"
+      }
+    },
+    {
+      "id": 45,
+      "name": {
+        "pt": "Recuperação de cemitério",
+        "en": "Graveyard recovery"
+      }
+    },
+    {
+      "id": 46,
+      "name": {
+        "pt": "Ódio a ameaças grandes",
+        "en": "Big-creature hate"
+      }
+    },
+    {
+      "id": 47,
+      "name": {
+        "pt": "Ódio a ameaças pequenas",
+        "en": "Small-creature hate"
+      }
+    },
+    {
+      "id": 48,
+      "name": {
+        "pt": "Anexação automática",
+        "en": "Auto-attach"
+      }
+    },
+    {
+      "id": 49,
+      "name": {
+        "pt": "Redução de custo",
+        "en": "Cost reduction"
+      }
+    },
+    {
+      "id": 50,
+      "name": {
+        "pt": "Alteração moral",
+        "en": "Moral shift"
+      }
+    },
+    {
+      "id": 51,
+      "name": {
+        "pt": "Requisito de Virtude",
+        "en": "Virtue requirement"
+      }
+    },
+    {
+      "id": 52,
+      "name": {
+        "pt": "Requisito de Desvirtude",
+        "en": "Vice requirement"
+      }
+    },
+    {
+      "id": 53,
+      "name": {
+        "pt": "Identidade",
+        "en": "Identity"
+      }
+    },
+    {
+      "id": 54,
+      "name": {
+        "pt": "Agressão de território",
+        "en": "Territory aggression"
+      }
+    },
+    {
+      "id": 55,
+      "name": {
+        "pt": "Defesa de território",
+        "en": "Territory defense"
+      }
+    },
+    {
+      "id": 56,
+      "name": {
+        "pt": "Território de risco",
+        "en": "Risk territory"
+      }
+    },
+    {
+      "id": 57,
+      "name": {
+        "pt": "Motor de Consagração",
+        "en": "Consecration engine"
+      }
+    },
+    {
+      "id": 58,
+      "name": {
+        "pt": "Motor de Profanação",
+        "en": "Profanation engine"
+      }
+    },
+    {
+      "id": 59,
+      "name": {
+        "pt": "Substituição de efeito",
+        "en": "Replacement effect"
+      }
+    },
+    {
+      "id": 60,
+      "name": {
+        "pt": "Acesso à Reserva",
+        "en": "Reserve access"
+      }
+    },
+    {
+      "id": 61,
+      "name": {
+        "pt": "Tutor universal",
+        "en": "Universal tutor"
+      }
+    },
+    {
+      "id": 62,
+      "name": {
+        "pt": "Limpeza de campo",
+        "en": "Field reset"
+      }
+    },
+    {
+      "id": 63,
+      "name": {
+        "pt": "Taxação",
+        "en": "Taxing"
+      }
+    },
+    {
+      "id": 64,
+      "name": {
+        "pt": "Ameaça grande",
+        "en": "Large threat"
+      }
+    },
+    {
+      "id": 65,
+      "name": {
+        "pt": "Ameaça eficiente",
+        "en": "Efficient threat"
+      }
+    },
+    {
+      "id": 66,
+      "name": {
+        "pt": "Geração de Essência",
+        "en": "Essence generation"
+      }
+    },
+    {
+      "id": 67,
+      "name": {
+        "pt": "Velocidade aberta",
+        "en": "Open-speed play"
+      }
+    },
+    {
+      "id": 68,
+      "name": {
+        "pt": "Tempo",
+        "en": "Tempo"
+      }
+    },
+    {
+      "id": 69,
+      "name": {
+        "pt": "Defesa",
+        "en": "Defense"
+      }
+    },
+    {
+      "id": 70,
+      "name": {
+        "pt": "Voltron",
+        "en": "Voltron"
+      }
+    },
+    {
+      "id": 71,
+      "name": {
+        "pt": "Recompensa de sacrifício",
+        "en": "Sacrifice payoff"
+      }
+    },
+    {
+      "id": 72,
+      "name": {
+        "pt": "Recompensa de morte",
+        "en": "Death payoff"
+      }
+    },
+    {
+      "id": 73,
+      "name": {
+        "pt": "Controle de combate",
+        "en": "Combat control"
+      }
+    },
+    {
+      "id": 74,
+      "name": {
+        "pt": "Ataque solo",
+        "en": "Solo attack"
+      }
+    },
+    {
+      "id": 75,
+      "name": {
+        "pt": "Estratégia larga",
+        "en": "Go-wide"
+      }
+    },
+    {
+      "id": 76,
+      "name": {
+        "pt": "Payoff de equipamento",
+        "en": "Equipment payoff"
+      }
+    },
+    {
+      "id": 77,
+      "name": {
+        "pt": "Dano próprio",
+        "en": "Self-damage"
+      }
+    },
+    {
+      "id": 78,
+      "name": {
+        "pt": "Compra com risco",
+        "en": "Risk draw"
+      }
+    },
+    {
+      "id": 79,
+      "name": {
+        "pt": "Finisher",
+        "en": "Finisher"
+      }
+    },
+    {
+      "id": 80,
+      "name": {
+        "pt": "Estabilização",
+        "en": "Stabilization"
+      }
+    },
+    {
+      "id": 81,
+      "name": {
+        "pt": "Filtro",
+        "en": "Filtering"
+      }
+    },
+    {
+      "id": 82,
+      "name": {
+        "pt": "Vantagem de cartas",
+        "en": "Card advantage"
+      }
+    },
+    {
+      "id": 83,
+      "name": {
+        "pt": "Comando de mesa",
+        "en": "Board command"
+      }
+    },
+    {
+      "id": 84,
+      "name": {
+        "pt": "Sinergia de Rei",
+        "en": "King synergy"
+      }
+    },
+    {
+      "id": 85,
+      "name": {
+        "pt": "Sinergia de Guerreiro",
+        "en": "Warrior synergy"
+      }
+    },
+    {
+      "id": 86,
+      "name": {
+        "pt": "Sinergia de Profeta",
+        "en": "Prophet synergy"
+      }
+    },
+    {
+      "id": 87,
+      "name": {
+        "pt": "Sinergia de Sacerdote",
+        "en": "Priest synergy"
+      }
+    },
+    {
+      "id": 88,
+      "name": {
+        "pt": "Sinergia de Animal",
+        "en": "Animal synergy"
+      }
+    },
+    {
+      "id": 89,
+      "name": {
+        "pt": "Sinergia de Soldado",
+        "en": "Soldier synergy"
+      }
+    },
+    {
+      "id": 90,
+      "name": {
+        "pt": "Sinergia de ficha",
+        "en": "Token synergy"
+      }
+    },
+    {
+      "id": 91,
+      "name": {
+        "pt": "Incenso",
+        "en": "Incense"
+      }
+    },
+    {
+      "id": 92,
+      "name": {
+        "pt": "Resposta condicional",
+        "en": "Conditional answer"
+      }
+    },
+    {
+      "id": 93,
+      "name": {
+        "pt": "Ameaça inevitável",
+        "en": "Inevitable threat"
+      }
+    },
+    {
+      "id": 94,
+      "name": {
+        "pt": "Pressão evasiva",
+        "en": "Evasive pressure"
+      }
+    },
+    {
+      "id": 95,
+      "name": {
+        "pt": "Reorganização de mão",
+        "en": "Hand smoothing"
+      }
+    },
+    {
+      "id": 96,
+      "name": {
+        "pt": "Setup de cemitério",
+        "en": "Graveyard setup"
       }
     }
   ]

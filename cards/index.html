@@ -66,12 +66,6 @@
           </div>
 
           <div class="search-box">
-            <label for="numberFilter" data-pt="Identificação" data-en="Identification">Identificação</label>
-            <input id="numberFilter" type="search" placeholder="Insira aqui a identificação"
-              data-pt="Insira aqui a identificação" data-en="Type identification here" />
-          </div>
-
-          <div class="search-box">
             <label for="nameFilter" data-pt="Nome" data-en="Name">Nome</label>
             <input id="nameFilter" type="search" placeholder="Insira aqui o nome" data-pt="Insira aqui o nome"
               data-en="Type name here" />
@@ -106,9 +100,47 @@
           </div>
 
           <div class="filter-group">
+            <label data-pt="Custo" data-en="Cost">Custo</label>
+            <div class="range-pair">
+              <input id="minCostFilter" type="range" min="1" max="9" step="1" value="1" />
+              <input id="maxCostFilter" type="range" min="1" max="9" step="1" value="9" />
+            </div>
+            <div class="range-value"><span data-pt="Entre" data-en="Between">Entre</span> <strong id="costValue">1-9</strong>
+            </div>
+          </div>
+
+          <div class="filter-group">
+            <label data-pt="Ataque" data-en="Attack">Ataque</label>
+            <div class="range-pair">
+              <input id="minAttackFilter" type="range" min="0" max="10" step="1" value="0" />
+              <input id="maxAttackFilter" type="range" min="0" max="10" step="1" value="10" />
+            </div>
+            <div class="range-value"><span data-pt="Entre" data-en="Between">Entre</span> <strong id="attackValue">0-10</strong>
+            </div>
+          </div>
+
+          <div class="filter-group">
+            <label data-pt="Resistência" data-en="Resistance">Resistência</label>
+            <div class="range-pair">
+              <input id="minResistanceFilter" type="range" min="0" max="10" step="1" value="0" />
+              <input id="maxResistanceFilter" type="range" min="0" max="10" step="1" value="10" />
+            </div>
+            <div class="range-value"><span data-pt="Entre" data-en="Between">Entre</span> <strong
+                id="resistanceValue">0-10</strong>
+            </div>
+          </div>
+
+          <div class="filter-group">
             <label for="functionFilter" data-pt="Função" data-en="Function">Função</label>
             <select id="functionFilter">
               <option value="all">Todas</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="roleFilter" data-pt="Role" data-en="Role">Role</label>
+            <select id="roleFilter">
+              <option value="all">Todos</option>
             </select>
           </div>
 
@@ -120,27 +152,16 @@
             </select>
           </div>
 
-          <div class="filter-group">
-            <label for="costFilter" data-pt="Custo máximo" data-en="Max cost">Custo máximo</label>
-            <input id="costFilter" type="range" min="1" max="9" step="1" value="9" />
-            <div class="range-value"><span data-pt="Até" data-en="Up to">Até</span> <strong id="costValue">9</strong>
-            </div>
+          <div class="search-box">
+            <label for="cardNumberFilter" data-pt="Número" data-en="Number">Número</label>
+            <input id="cardNumberFilter" type="search" placeholder="Insira aqui o número"
+              data-pt="Insira aqui o número" data-en="Type number here" />
           </div>
 
-          <div class="filter-group">
-            <label for="attackFilter" data-pt="Ataque máximo" data-en="Max attack">Ataque máximo</label>
-            <input id="attackFilter" type="range" min="0" max="10" step="1" value="10" />
-            <div class="range-value"><span data-pt="Até" data-en="Up to">Até</span> <strong id="attackValue">10</strong>
-            </div>
-          </div>
-
-          <div class="filter-group">
-            <label for="resistanceFilter" data-pt="Resistência máxima" data-en="Max resistance">Resistência
-              máxima</label>
-            <input id="resistanceFilter" type="range" min="0" max="10" step="1" value="10" />
-            <div class="range-value"><span data-pt="Até" data-en="Up to">Até</span> <strong
-                id="resistanceValue">10</strong>
-            </div>
+          <div class="search-box">
+            <label for="numberFilter" data-pt="Identificação" data-en="Identification">Identificação</label>
+            <input id="numberFilter" type="search" placeholder="Insira aqui a identificação"
+              data-pt="Insira aqui a identificação" data-en="Type identification here" />
           </div>
 
         </aside>
@@ -155,9 +176,9 @@
                   <label for="queryFilter" data-pt="Query" data-en="Query">Query</label>
                   <div class="advanced-query-input-wrap">
                     <input id="queryFilter" type="search" spellcheck="false"
-                      placeholder='n:Golias t:Campeão cost<=5 virtue:Fé -type:Pecado'
-                      data-pt='n:Golias t:Campeão cost<=5 virtue:Fé -type:Pecado'
-                      data-en='n:Goliath t:Champion cost<=5 virtue:Faith -type:Sin' />
+                      placeholder='n:Golias t:Campeão c<=5 v:Fé -type:Pecado'
+                      data-pt='n:Golias t:Campeão c<=5 v:Fé -type:Pecado'
+                      data-en='n:Goliath t:Champion c<=5 v:Faith -type:Sin' />
                   </div>
                 </div>
                 <div class="advanced-sort-box">
@@ -178,15 +199,15 @@
                 </li>
                 <li><code>t:</code><span data-pt="tipo" data-en="type">tipo</span></li>
                 <li><code>st:</code><span data-pt="subtipo" data-en="subtype">subtipo</span></li>
-                <li><code>fn:</code><span data-pt="função" data-en="function">função</span></li>
                 <li><code>v:</code><span data-pt="virtude" data-en="virtue">virtude</span></li>
+                <li><code>c&gt;=</code><span data-pt="custo" data-en="cost">custo</span></li>
+                <li><code>atk&gt;=</code><span data-pt="ataque" data-en="attack">ataque</span></li>
+                <li><code>res&gt;=</code><span data-pt="resistência" data-en="resistance">resistência</span></li>
+                <li><code>fn:</code><span data-pt="função" data-en="function">função</span></li>
+                <li><code>role:</code><span data-pt="role" data-en="role">role</span></li>
                 <li><code>set:</code><span data-pt="coleção" data-en="collection">coleção</span></li>
                 <li><code>cn:</code><span data-pt="número" data-en="number">número</span></li>
                 <li><code>id:</code><span data-pt="identificação" data-en="identification">identificação</span></li>
-                <li><code>cost&gt;=</code><span data-pt="custo" data-en="cost">custo</span></li>
-                <li><code>attack&gt;=</code><span data-pt="ataque" data-en="attack">ataque</span>
-                </li>
-                <li><code>res&gt;=</code><span data-pt="resistência" data-en="resistance">resistência</span></li>
                 <li><code>rating&gt;=</code><span data-pt="avaliação" data-en="rating">avaliação</span></li>
                 <li><code>decks&gt;=</code><span data-pt="decks usando" data-en="decks using it">decks usando</span>
                 </li>

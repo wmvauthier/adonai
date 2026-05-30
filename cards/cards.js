@@ -116,14 +116,19 @@ const state = {
   currentPage: 1,
   itemsPerPage: 24,
   name: "",
+  cardNumber: "",
   number: "",
   set: "all",
   type: "all",
   subtype: "all",
   function: "all",
+  role: "all",
   virtue: "all",
+  minCost: null,
   maxCost: null,
+  minAttack: null,
   maxAttack: null,
+  minResistance: null,
   maxResistance: null,
   text: "",
   query: "",
@@ -142,17 +147,22 @@ const els = {
   activeFilters: document.getElementById("activeFilters"),
   pagination: document.getElementById("pagination"),
   nameFilter: document.getElementById("nameFilter"),
+  cardNumberFilter: document.getElementById("cardNumberFilter"),
   numberFilter: document.getElementById("numberFilter"),
   setFilter: document.getElementById("setFilter"),
   typeFilter: document.getElementById("typeFilter"),
   subtypeFilter: document.getElementById("subtypeFilter"),
   functionFilter: document.getElementById("functionFilter"),
+  roleFilter: document.getElementById("roleFilter"),
   virtueFilter: document.getElementById("virtueFilter"),
-  costFilter: document.getElementById("costFilter"),
+  minCostFilter: document.getElementById("minCostFilter"),
+  maxCostFilter: document.getElementById("maxCostFilter"),
   costValue: document.getElementById("costValue"),
-  attackFilter: document.getElementById("attackFilter"),
+  minAttackFilter: document.getElementById("minAttackFilter"),
+  maxAttackFilter: document.getElementById("maxAttackFilter"),
   attackValue: document.getElementById("attackValue"),
-  resistanceFilter: document.getElementById("resistanceFilter"),
+  minResistanceFilter: document.getElementById("minResistanceFilter"),
+  maxResistanceFilter: document.getElementById("maxResistanceFilter"),
   resistanceValue: document.getElementById("resistanceValue"),
   textFilter: document.getElementById("textFilter"),
   queryFilter: document.getElementById("queryFilter"),
@@ -578,14 +588,19 @@ function setCatalogMessage(kind, title, body) {
 function serializeUiState() {
   return {
     name: state.name,
+    cardNumber: state.cardNumber,
     number: state.number,
     set: state.set,
     type: state.type,
     subtype: state.subtype,
     function: state.function,
+    role: state.role,
     virtue: state.virtue,
+    minCost: state.minCost,
     maxCost: state.maxCost,
+    minAttack: state.minAttack,
     maxAttack: state.maxAttack,
+    minResistance: state.minResistance,
     maxResistance: state.maxResistance,
     text: state.text,
     query: state.query,
@@ -756,6 +771,7 @@ function getQueryValueOptions(key, fullQuery) {
   if (["t", "type", "types"].includes(key)) return getUniqueValues("type");
   if (["st", "subtype", "subtypes"].includes(key)) return subtypeOptionsByTypeContext(fullQuery);
   if (["fn", "function", "functions", "funcao", "funcoes"].includes(key)) return getUniqueValues("function");
+  if (["role", "roles"].includes(key)) return getUniqueValues("role");
   if (["v", "virtue", "virtudes", "virtude", "virtues"].includes(key)) return getUniqueValues("virtue");
   if (["set", "collection", "collections", "e"].includes(key)) return getUniqueValues("set");
   if (["ref", "reference", "flavor"].includes(key)) return getReferenceOptions();
@@ -931,6 +947,7 @@ function queryFieldValue(card, key) {
     id: getCardCode(card),
     code: getCardCode(card),
     role: card.role,
+    roles: card.role,
     is: allText
   };
 
@@ -939,6 +956,7 @@ function queryFieldValue(card, key) {
 
 function matchesQueryToken(card, token) {
   const numericFields = {
+    c: card.cost,
     cost: card.cost,
     mana: card.cost,
     mv: card.cost,
@@ -977,6 +995,7 @@ function matchesAdvancedQuery(card, query) {
 
 function getFilteredCards() {
   const name = normalizeSearch(state.name.trim());
+  const cardNumber = normalizeSearch(state.cardNumber.trim());
   const number = normalizeSearch(state.number.trim());
   const text = normalizeSearch(state.text.trim());
 
@@ -984,23 +1003,28 @@ function getFilteredCards() {
     const typeLabels = formatList(card.type);
     const subtypeLabels = formatList(card.subtype);
     const functionLabels = formatFunctions(card);
+    const roleLabel = labelForValue(card.role);
     const virtueLabels = formatVirtues(card);
     const matchesName = !name || normalizeSearch(card.name).includes(name);
-    const matchesNumber = !number || normalizeSearch([card.number, getCardCode(card)]).includes(number);
+    const matchesCardNumber = !cardNumber || normalizeSearch(card.number).includes(cardNumber);
+    const matchesNumber = !number || normalizeSearch(getCardCode(card)).includes(number);
     const matchesSet = state.set === "all" || getCollectionLabel(card) === state.set;
     const matchesType = state.type === "all" || typeLabels.includes(state.type);
     const matchesSubtype = state.subtype === "all" || subtypeLabels.includes(state.subtype);
     const matchesFunction = state.function === "all" || functionLabels.includes(state.function);
+    const matchesRole = state.role === "all" || roleLabel === state.role;
     const matchesVirtue = state.virtue === "all"
       || (state.virtue === "__none" && virtueLabels.length === 0)
       || virtueLabels.includes(state.virtue);
-    const matchesCost = state.maxCost === null || card.cost === null || card.cost <= state.maxCost;
-    const matchesAttack = state.maxAttack === null || card.stats?.attack === null || typeof card.stats?.attack === "undefined" || Number(card.stats.attack) <= state.maxAttack;
-    const matchesResistance = state.maxResistance === null || card.stats?.resistance === null || typeof card.stats?.resistance === "undefined" || Number(card.stats.resistance) <= state.maxResistance;
+    const matchesCost = card.cost === null || ((state.minCost === null || card.cost >= state.minCost) && (state.maxCost === null || card.cost <= state.maxCost));
+    const attack = card.stats?.attack;
+    const resistance = card.stats?.resistance;
+    const matchesAttack = attack === null || typeof attack === "undefined" || ((state.minAttack === null || Number(attack) >= state.minAttack) && (state.maxAttack === null || Number(attack) <= state.maxAttack));
+    const matchesResistance = resistance === null || typeof resistance === "undefined" || ((state.minResistance === null || Number(resistance) >= state.minResistance) && (state.maxResistance === null || Number(resistance) <= state.maxResistance));
     const matchesText = !text || normalizeSearch([card.text, card.rulings, formatReference(card), card.virtues]).includes(text);
     const matchesQuery = matchesAdvancedQuery(card, state.query);
 
-    return matchesName && matchesNumber && matchesSet && matchesType && matchesSubtype && matchesFunction && matchesVirtue && matchesCost && matchesAttack && matchesResistance && matchesText && matchesQuery;
+    return matchesName && matchesCardNumber && matchesNumber && matchesSet && matchesType && matchesSubtype && matchesFunction && matchesRole && matchesVirtue && matchesCost && matchesAttack && matchesResistance && matchesText && matchesQuery;
   }));
 }
 
@@ -1014,6 +1038,7 @@ function getUniqueValues(field) {
   }
   if (field === "subtype") return uniqueSorted(cardsData.flatMap((card) => formatList(card.subtype)));
   if (field === "function") return uniqueSorted(cardsData.flatMap(formatFunctions));
+  if (field === "role") return uniqueSorted(cardsData.map((card) => labelForValue(card.role)));
   if (field === "virtue") return uniqueSorted(cardsData.flatMap(formatVirtues));
   if (field === "set") return uniqueSorted(cardsData.map(getCollectionLabel));
   return uniqueSorted(cardsData.map((card) => labelForValue(card[field])));
@@ -1047,12 +1072,15 @@ function setupCostFilter() {
 
   if (!hasCosts) {
     costBounds = { min: null, max: null };
+    state.minCost = null;
     state.maxCost = null;
-    els.costFilter.min = "0";
-    els.costFilter.max = "0";
-    els.costFilter.value = "0";
-    els.costFilter.disabled = true;
-    els.costFilter.closest(".filter-group")?.classList.add("is-disabled");
+    [els.minCostFilter, els.maxCostFilter].forEach((input) => {
+      input.min = "0";
+      input.max = "0";
+      input.value = "0";
+      input.disabled = true;
+      input.closest(".filter-group")?.classList.add("is-disabled");
+    });
     els.costValue.textContent = t("noCost");
     return;
   }
@@ -1060,13 +1088,17 @@ function setupCostFilter() {
   const min = Math.min(...costs);
   const max = Math.max(...costs);
   costBounds = { min, max };
+  state.minCost = state.minCost ?? min;
   state.maxCost = state.maxCost ?? max;
-  els.costFilter.min = String(min);
-  els.costFilter.max = String(max);
-  els.costFilter.value = String(state.maxCost);
-  els.costFilter.disabled = false;
-  els.costFilter.closest(".filter-group")?.classList.remove("is-disabled");
-  els.costValue.textContent = String(state.maxCost);
+  [els.minCostFilter, els.maxCostFilter].forEach((input) => {
+    input.min = String(min);
+    input.max = String(max);
+    input.disabled = false;
+    input.closest(".filter-group")?.classList.remove("is-disabled");
+  });
+  els.minCostFilter.value = String(state.minCost);
+  els.maxCostFilter.value = String(state.maxCost);
+  els.costValue.textContent = `${state.minCost}-${state.maxCost}`;
 }
 
 function setupAttackFilter() {
@@ -1075,12 +1107,15 @@ function setupAttackFilter() {
 
   if (!hasAttack) {
     attackBounds = { min: null, max: null };
+    state.minAttack = null;
     state.maxAttack = null;
-    els.attackFilter.min = "0";
-    els.attackFilter.max = "0";
-    els.attackFilter.value = "0";
-    els.attackFilter.disabled = true;
-    els.attackFilter.closest(".filter-group")?.classList.add("is-disabled");
+    [els.minAttackFilter, els.maxAttackFilter].forEach((input) => {
+      input.min = "0";
+      input.max = "0";
+      input.value = "0";
+      input.disabled = true;
+      input.closest(".filter-group")?.classList.add("is-disabled");
+    });
     els.attackValue.textContent = t("noData");
     return;
   }
@@ -1088,13 +1123,17 @@ function setupAttackFilter() {
   const min = Math.min(...attacks);
   const max = Math.max(...attacks);
   attackBounds = { min, max };
+  state.minAttack = state.minAttack ?? min;
   state.maxAttack = state.maxAttack ?? max;
-  els.attackFilter.min = String(min);
-  els.attackFilter.max = String(max);
-  els.attackFilter.value = String(state.maxAttack);
-  els.attackFilter.disabled = false;
-  els.attackFilter.closest(".filter-group")?.classList.remove("is-disabled");
-  els.attackValue.textContent = String(state.maxAttack);
+  [els.minAttackFilter, els.maxAttackFilter].forEach((input) => {
+    input.min = String(min);
+    input.max = String(max);
+    input.disabled = false;
+    input.closest(".filter-group")?.classList.remove("is-disabled");
+  });
+  els.minAttackFilter.value = String(state.minAttack);
+  els.maxAttackFilter.value = String(state.maxAttack);
+  els.attackValue.textContent = `${state.minAttack}-${state.maxAttack}`;
 }
 
 function setupResistanceFilter() {
@@ -1103,12 +1142,15 @@ function setupResistanceFilter() {
 
   if (!hasResistance) {
     resistanceBounds = { min: null, max: null };
+    state.minResistance = null;
     state.maxResistance = null;
-    els.resistanceFilter.min = "0";
-    els.resistanceFilter.max = "0";
-    els.resistanceFilter.value = "0";
-    els.resistanceFilter.disabled = true;
-    els.resistanceFilter.closest(".filter-group")?.classList.add("is-disabled");
+    [els.minResistanceFilter, els.maxResistanceFilter].forEach((input) => {
+      input.min = "0";
+      input.max = "0";
+      input.value = "0";
+      input.disabled = true;
+      input.closest(".filter-group")?.classList.add("is-disabled");
+    });
     els.resistanceValue.textContent = t("noData");
     return;
   }
@@ -1116,13 +1158,17 @@ function setupResistanceFilter() {
   const min = Math.min(...resistances);
   const max = Math.max(...resistances);
   resistanceBounds = { min, max };
+  state.minResistance = state.minResistance ?? min;
   state.maxResistance = state.maxResistance ?? max;
-  els.resistanceFilter.min = String(min);
-  els.resistanceFilter.max = String(max);
-  els.resistanceFilter.value = String(state.maxResistance);
-  els.resistanceFilter.disabled = false;
-  els.resistanceFilter.closest(".filter-group")?.classList.remove("is-disabled");
-  els.resistanceValue.textContent = String(state.maxResistance);
+  [els.minResistanceFilter, els.maxResistanceFilter].forEach((input) => {
+    input.min = String(min);
+    input.max = String(max);
+    input.disabled = false;
+    input.closest(".filter-group")?.classList.remove("is-disabled");
+  });
+  els.minResistanceFilter.value = String(state.minResistance);
+  els.maxResistanceFilter.value = String(state.maxResistance);
+  els.resistanceValue.textContent = `${state.minResistance}-${state.maxResistance}`;
 }
 
 function populateFilters() {
@@ -1130,6 +1176,7 @@ function populateFilters() {
   populateSelect(els.typeFilter, getUniqueValues("type"), t("all"));
   populateSelect(els.subtypeFilter, getUniqueValues("subtype"), t("allFeminine"));
   populateSelect(els.functionFilter, getUniqueValues("function"), t("allFeminine"));
+  populateSelect(els.roleFilter, getUniqueValues("role"), t("all"));
   populateVirtueFilter();
   setupCostFilter();
   setupAttackFilter();
@@ -1198,20 +1245,29 @@ function getMaxRange(field) {
   return null;
 }
 
+function getMinRange(field) {
+  if (field === "cost") return costBounds.min;
+  if (field === "attack") return attackBounds.min;
+  if (field === "resistance") return resistanceBounds.min;
+  return null;
+}
+
 function activeFilterChips() {
   const chips = [];
   if (state.name.trim()) chips.push({ key: "name", label: "Nome", value: state.name.trim() });
-  if (state.number.trim()) chips.push({ key: "number", label: "ID", value: state.number.trim() });
+  if (state.cardNumber.trim()) chips.push({ key: "cardNumber", label: "Número", value: state.cardNumber.trim() });
+  if (state.number.trim()) chips.push({ key: "number", label: "Identificação", value: state.number.trim() });
   if (state.text.trim()) chips.push({ key: "text", label: "Texto", value: state.text.trim() });
   if (state.set !== "all") chips.push({ key: "set", label: "Coleção", value: state.set });
   if (state.type !== "all") chips.push({ key: "type", label: "Tipo", value: state.type });
   if (state.subtype !== "all") chips.push({ key: "subtype", label: "Subtipo", value: state.subtype });
   if (state.function !== "all") chips.push({ key: "function", label: "Função", value: state.function });
+  if (state.role !== "all") chips.push({ key: "role", label: "Role", value: state.role });
   if (state.virtue !== "all") chips.push({ key: "virtue", label: "Virtude", value: state.virtue === "__none" ? t("noVirtues") : state.virtue });
   if (state.query.trim()) chips.push({ key: "query", label: "Query", value: state.query.trim() });
-  if (state.maxCost !== null && getMaxRange("cost") !== null && state.maxCost !== getMaxRange("cost")) chips.push({ key: "cost", label: "Custo", value: `<= ${state.maxCost}` });
-  if (state.maxAttack !== null && getMaxRange("attack") !== null && state.maxAttack !== getMaxRange("attack")) chips.push({ key: "attack", label: "Ataque", value: `<= ${state.maxAttack}` });
-  if (state.maxResistance !== null && getMaxRange("resistance") !== null && state.maxResistance !== getMaxRange("resistance")) chips.push({ key: "resistance", label: "Resistência", value: `<= ${state.maxResistance}` });
+  if (state.minCost !== null && state.maxCost !== null && (state.minCost !== getMinRange("cost") || state.maxCost !== getMaxRange("cost"))) chips.push({ key: "cost", label: "Custo", value: `${state.minCost}-${state.maxCost}` });
+  if (state.minAttack !== null && state.maxAttack !== null && (state.minAttack !== getMinRange("attack") || state.maxAttack !== getMaxRange("attack"))) chips.push({ key: "attack", label: "Ataque", value: `${state.minAttack}-${state.maxAttack}` });
+  if (state.minResistance !== null && state.maxResistance !== null && (state.minResistance !== getMinRange("resistance") || state.maxResistance !== getMaxRange("resistance"))) chips.push({ key: "resistance", label: "Resistência", value: `${state.minResistance}-${state.maxResistance}` });
   return chips;
 }
 
@@ -1299,19 +1355,24 @@ function syncUrlFromState() {
   if (isApplyingUrlState) return;
   const params = new URLSearchParams();
   if (state.name.trim()) params.set("name", state.name.trim());
+  if (state.cardNumber.trim()) params.set("cn", state.cardNumber.trim());
   if (state.number.trim()) params.set("id", state.number.trim());
   if (state.text.trim()) params.set("text", state.text.trim());
   if (state.set !== "all") params.set("set", state.set);
   if (state.type !== "all") params.set("type", state.type);
   if (state.subtype !== "all") params.set("subtype", state.subtype);
   if (state.function !== "all") params.set("fn", state.function);
+  if (state.role !== "all") params.set("role", state.role);
   if (state.virtue !== "all") params.set("virtue", state.virtue);
   if (state.query.trim()) params.set("q", state.query.trim());
   if (state.sort !== "rating-desc") params.set("sort", state.sort);
   if (state.viewMode !== "standard") params.set("view", state.viewMode);
 
+  if (state.minCost !== null && costBounds.min !== null && state.minCost !== costBounds.min) params.set("costMin", String(state.minCost));
   if (state.maxCost !== null && costBounds.max !== null && state.maxCost !== costBounds.max) params.set("costMax", String(state.maxCost));
+  if (state.minAttack !== null && attackBounds.min !== null && state.minAttack !== attackBounds.min) params.set("atkMin", String(state.minAttack));
   if (state.maxAttack !== null && attackBounds.max !== null && state.maxAttack !== attackBounds.max) params.set("atkMax", String(state.maxAttack));
+  if (state.minResistance !== null && resistanceBounds.min !== null && state.minResistance !== resistanceBounds.min) params.set("resMin", String(state.minResistance));
   if (state.maxResistance !== null && resistanceBounds.max !== null && state.maxResistance !== resistanceBounds.max) params.set("resMax", String(state.maxResistance));
   if (state.currentPage > 1) params.set("page", String(state.currentPage));
 
@@ -1331,6 +1392,7 @@ function applyUrlStateToControls() {
   };
 
   els.nameFilter.value = params.get("name") || "";
+  if (els.cardNumberFilter) els.cardNumberFilter.value = params.get("cn") || "";
   els.numberFilter.value = params.get("id") || "";
   els.textFilter.value = params.get("text") || "";
   if (els.queryFilter) els.queryFilter.value = params.get("q") || "";
@@ -1338,32 +1400,33 @@ function applyUrlStateToControls() {
   assignSelectValue(els.typeFilter, params.get("type"));
   assignSelectValue(els.subtypeFilter, params.get("subtype"));
   assignSelectValue(els.functionFilter, params.get("fn"));
+  assignSelectValue(els.roleFilter, params.get("role"));
   assignSelectValue(els.virtueFilter, params.get("virtue"));
   assignSelectValue(els.sortSelect, params.get("sort"), "rating-desc");
   const viewMode = params.get("view");
   state.viewMode = viewMode === "compact" ? "compact" : "standard";
   applyViewMode();
 
-  if (!els.costFilter.disabled && costBounds.max !== null) {
-    const min = Number(els.costFilter.min);
-    const max = Number(els.costFilter.max);
-    const value = params.get("costMax");
-    els.costFilter.value = String(value ? clampRange(value, min, max) : max);
-    els.costValue.textContent = els.costFilter.value;
+  if (!els.maxCostFilter.disabled && costBounds.max !== null) {
+    const min = Number(els.minCostFilter.min);
+    const max = Number(els.maxCostFilter.max);
+    els.minCostFilter.value = String(params.get("costMin") ? clampRange(params.get("costMin"), min, max) : min);
+    els.maxCostFilter.value = String(params.get("costMax") ? clampRange(params.get("costMax"), min, max) : max);
+    els.costValue.textContent = `${els.minCostFilter.value}-${els.maxCostFilter.value}`;
   }
-  if (!els.attackFilter.disabled && attackBounds.max !== null) {
-    const min = Number(els.attackFilter.min);
-    const max = Number(els.attackFilter.max);
-    const value = params.get("atkMax");
-    els.attackFilter.value = String(value ? clampRange(value, min, max) : max);
-    els.attackValue.textContent = els.attackFilter.value;
+  if (!els.maxAttackFilter.disabled && attackBounds.max !== null) {
+    const min = Number(els.minAttackFilter.min);
+    const max = Number(els.maxAttackFilter.max);
+    els.minAttackFilter.value = String(params.get("atkMin") ? clampRange(params.get("atkMin"), min, max) : min);
+    els.maxAttackFilter.value = String(params.get("atkMax") ? clampRange(params.get("atkMax"), min, max) : max);
+    els.attackValue.textContent = `${els.minAttackFilter.value}-${els.maxAttackFilter.value}`;
   }
-  if (!els.resistanceFilter.disabled && resistanceBounds.max !== null) {
-    const min = Number(els.resistanceFilter.min);
-    const max = Number(els.resistanceFilter.max);
-    const value = params.get("resMax");
-    els.resistanceFilter.value = String(value ? clampRange(value, min, max) : max);
-    els.resistanceValue.textContent = els.resistanceFilter.value;
+  if (!els.maxResistanceFilter.disabled && resistanceBounds.max !== null) {
+    const min = Number(els.minResistanceFilter.min);
+    const max = Number(els.maxResistanceFilter.max);
+    els.minResistanceFilter.value = String(params.get("resMin") ? clampRange(params.get("resMin"), min, max) : min);
+    els.maxResistanceFilter.value = String(params.get("resMax") ? clampRange(params.get("resMax"), min, max) : max);
+    els.resistanceValue.textContent = `${els.minResistanceFilter.value}-${els.maxResistanceFilter.value}`;
   }
 
   const requestedPage = Number(params.get("page"));
@@ -1387,6 +1450,7 @@ function applyStoredStateToControls() {
 
   isApplyingUrlState = true;
   els.nameFilter.value = String(saved.name || "");
+  if (els.cardNumberFilter) els.cardNumberFilter.value = String(saved.cardNumber || "");
   els.numberFilter.value = String(saved.number || "");
   els.textFilter.value = String(saved.text || "");
   if (els.queryFilter) els.queryFilter.value = String(saved.query || "");
@@ -1394,31 +1458,38 @@ function applyStoredStateToControls() {
   assignSelectValue(els.typeFilter, saved.type);
   assignSelectValue(els.subtypeFilter, saved.subtype);
   assignSelectValue(els.functionFilter, saved.function);
+  assignSelectValue(els.roleFilter, saved.role);
   assignSelectValue(els.virtueFilter, saved.virtue);
   assignSelectValue(els.sortSelect, saved.sort, "rating-desc");
   state.viewMode = saved.viewMode === "compact" ? "compact" : "standard";
   applyViewMode();
 
-  if (!els.costFilter.disabled && costBounds.max !== null) {
-    const min = Number(els.costFilter.min);
-    const max = Number(els.costFilter.max);
-    const value = Number(saved.maxCost);
-    els.costFilter.value = String(Number.isFinite(value) ? clampRange(value, min, max) : max);
-    els.costValue.textContent = els.costFilter.value;
+  if (!els.maxCostFilter.disabled && costBounds.max !== null) {
+    const min = Number(els.minCostFilter.min);
+    const max = Number(els.maxCostFilter.max);
+    const minValue = Number(saved.minCost);
+    const maxValue = Number(saved.maxCost);
+    els.minCostFilter.value = String(Number.isFinite(minValue) ? clampRange(minValue, min, max) : min);
+    els.maxCostFilter.value = String(Number.isFinite(maxValue) ? clampRange(maxValue, min, max) : max);
+    els.costValue.textContent = `${els.minCostFilter.value}-${els.maxCostFilter.value}`;
   }
-  if (!els.attackFilter.disabled && attackBounds.max !== null) {
-    const min = Number(els.attackFilter.min);
-    const max = Number(els.attackFilter.max);
-    const value = Number(saved.maxAttack);
-    els.attackFilter.value = String(Number.isFinite(value) ? clampRange(value, min, max) : max);
-    els.attackValue.textContent = els.attackFilter.value;
+  if (!els.maxAttackFilter.disabled && attackBounds.max !== null) {
+    const min = Number(els.minAttackFilter.min);
+    const max = Number(els.maxAttackFilter.max);
+    const minValue = Number(saved.minAttack);
+    const maxValue = Number(saved.maxAttack);
+    els.minAttackFilter.value = String(Number.isFinite(minValue) ? clampRange(minValue, min, max) : min);
+    els.maxAttackFilter.value = String(Number.isFinite(maxValue) ? clampRange(maxValue, min, max) : max);
+    els.attackValue.textContent = `${els.minAttackFilter.value}-${els.maxAttackFilter.value}`;
   }
-  if (!els.resistanceFilter.disabled && resistanceBounds.max !== null) {
-    const min = Number(els.resistanceFilter.min);
-    const max = Number(els.resistanceFilter.max);
-    const value = Number(saved.maxResistance);
-    els.resistanceFilter.value = String(Number.isFinite(value) ? clampRange(value, min, max) : max);
-    els.resistanceValue.textContent = els.resistanceFilter.value;
+  if (!els.maxResistanceFilter.disabled && resistanceBounds.max !== null) {
+    const min = Number(els.minResistanceFilter.min);
+    const max = Number(els.maxResistanceFilter.max);
+    const minValue = Number(saved.minResistance);
+    const maxValue = Number(saved.maxResistance);
+    els.minResistanceFilter.value = String(Number.isFinite(minValue) ? clampRange(minValue, min, max) : min);
+    els.maxResistanceFilter.value = String(Number.isFinite(maxValue) ? clampRange(maxValue, min, max) : max);
+    els.resistanceValue.textContent = `${els.minResistanceFilter.value}-${els.maxResistanceFilter.value}`;
   }
 
   updateStateFromControls();
@@ -1465,17 +1536,28 @@ function showHoverPreview(cardCode, event) {
 
 function removeActiveFilter(key) {
   if (key === "name") els.nameFilter.value = "";
+  if (key === "cardNumber" && els.cardNumberFilter) els.cardNumberFilter.value = "";
   if (key === "number") els.numberFilter.value = "";
   if (key === "text") els.textFilter.value = "";
   if (key === "set") els.setFilter.value = "all";
   if (key === "type") els.typeFilter.value = "all";
   if (key === "subtype") els.subtypeFilter.value = "all";
   if (key === "function") els.functionFilter.value = "all";
+  if (key === "role" && els.roleFilter) els.roleFilter.value = "all";
   if (key === "virtue" && els.virtueFilter) els.virtueFilter.value = "all";
   if (key === "query" && els.queryFilter) els.queryFilter.value = "";
-  if (key === "cost" && !els.costFilter.disabled && costBounds.max !== null) els.costFilter.value = String(costBounds.max);
-  if (key === "attack" && !els.attackFilter.disabled && attackBounds.max !== null) els.attackFilter.value = String(attackBounds.max);
-  if (key === "resistance" && !els.resistanceFilter.disabled && resistanceBounds.max !== null) els.resistanceFilter.value = String(resistanceBounds.max);
+  if (key === "cost" && !els.maxCostFilter.disabled && costBounds.max !== null) {
+    els.minCostFilter.value = String(costBounds.min);
+    els.maxCostFilter.value = String(costBounds.max);
+  }
+  if (key === "attack" && !els.maxAttackFilter.disabled && attackBounds.max !== null) {
+    els.minAttackFilter.value = String(attackBounds.min);
+    els.maxAttackFilter.value = String(attackBounds.max);
+  }
+  if (key === "resistance" && !els.maxResistanceFilter.disabled && resistanceBounds.max !== null) {
+    els.minResistanceFilter.value = String(resistanceBounds.min);
+    els.maxResistanceFilter.value = String(resistanceBounds.max);
+  }
   updateStateFromControls();
 }
 
@@ -1560,6 +1642,17 @@ function normalizedIncludes(haystack, needle) {
   return normalizeRuleText(haystack).includes(target);
 }
 
+function normalizedEquals(left, right) {
+  return normalizeRuleText(left) === normalizeRuleText(right);
+}
+
+function normalizedHasPhrase(haystack, needle) {
+  const source = ` ${normalizeRuleText(haystack)} `;
+  const target = normalizeRuleText(needle);
+  if (!target) return false;
+  return source.includes(` ${target} `);
+}
+
 function keywordForms(keyword) {
   const normalized = normalizeRuleText(keyword);
   const forms = [keyword];
@@ -1583,21 +1676,24 @@ function keywordForms(keyword) {
 }
 
 function cardRulingText(card) {
-  return [card.text, card.rulings, card.functions, formatReference(card)].map(flattenValue).join(" ");
+  return flattenValue(card.text);
 }
 
 function matchingRulingEntries(card, kind) {
   const typeValues = normalizeList(card.type).flatMap((value) => [localize(value), structuralValue(value), flattenValue(value)]);
   const subtypeValues = normalizeList(card.subtype).flatMap((value) => [localize(value), structuralValue(value), flattenValue(value)]);
   const text = cardRulingText(card);
+  const primaryType = normalizeSearch(getPrimaryType(card));
+  const identityTypes = [normalizeSearch("Campeão"), normalizeSearch("Campeao"), normalizeSearch("Templo"), normalizeSearch("Território"), normalizeSearch("Territorio")];
 
   return normalizeRulingEntries(kind).filter((entry) => {
-    if (kind === "type") return typeValues.some((value) => normalizedIncludes(value, entry.key));
-    if (kind === "subtype") return subtypeValues.some((value) => normalizedIncludes(value, entry.key));
-    if (kind === "effect") return normalizedIncludes(text, entry.key);
+    if (kind === "type") return typeValues.some((value) => normalizedEquals(value, entry.key));
+    if (kind === "subtype") return subtypeValues.some((value) => normalizedEquals(value, entry.key));
+    if (identityTypes.includes(primaryType)) return false;
+    if (kind === "effect") return normalizedHasPhrase(text, entry.key);
     if (kind === "keyword") {
       const forms = [...entry.forms, ...keywordForms(entry.keyword || entry.key)];
-      return forms.some((form) => normalizedIncludes(text, form));
+      return forms.some((form) => normalizedHasPhrase(text, form));
     }
     return false;
   });
@@ -1739,23 +1835,28 @@ function bindTilt() {
 
 function updateStateFromControls() {
   state.name = els.nameFilter.value;
+  state.cardNumber = els.cardNumberFilter?.value || "";
   state.number = els.numberFilter.value;
   state.set = els.setFilter.value;
   state.type = els.typeFilter.value;
   state.subtype = els.subtypeFilter.value;
   state.function = els.functionFilter.value;
+  state.role = els.roleFilter?.value || "all";
   state.virtue = els.virtueFilter?.value || "all";
-  state.maxCost = els.costFilter.disabled ? null : Number(els.costFilter.value);
-  state.maxAttack = els.attackFilter.disabled ? null : Number(els.attackFilter.value);
-  state.maxResistance = els.resistanceFilter.disabled ? null : Number(els.resistanceFilter.value);
+  state.minCost = els.minCostFilter.disabled ? null : Math.min(Number(els.minCostFilter.value), Number(els.maxCostFilter.value));
+  state.maxCost = els.maxCostFilter.disabled ? null : Math.max(Number(els.minCostFilter.value), Number(els.maxCostFilter.value));
+  state.minAttack = els.minAttackFilter.disabled ? null : Math.min(Number(els.minAttackFilter.value), Number(els.maxAttackFilter.value));
+  state.maxAttack = els.maxAttackFilter.disabled ? null : Math.max(Number(els.minAttackFilter.value), Number(els.maxAttackFilter.value));
+  state.minResistance = els.minResistanceFilter.disabled ? null : Math.min(Number(els.minResistanceFilter.value), Number(els.maxResistanceFilter.value));
+  state.maxResistance = els.maxResistanceFilter.disabled ? null : Math.max(Number(els.minResistanceFilter.value), Number(els.maxResistanceFilter.value));
   state.text = els.textFilter.value;
   state.query = els.queryFilter?.value || "";
   state.sort = els.sortSelect.value;
   state.viewMode = els.viewCompactBtn?.classList.contains("is-active") ? "compact" : "standard";
   state.currentPage = 1;
-  els.costValue.textContent = els.costFilter.disabled ? t("noCost") : String(state.maxCost);
-  els.attackValue.textContent = els.attackFilter.disabled ? t("noData") : String(state.maxAttack);
-  els.resistanceValue.textContent = els.resistanceFilter.disabled ? t("noData") : String(state.maxResistance);
+  els.costValue.textContent = els.maxCostFilter.disabled ? t("noCost") : `${state.minCost}-${state.maxCost}`;
+  els.attackValue.textContent = els.maxAttackFilter.disabled ? t("noData") : `${state.minAttack}-${state.maxAttack}`;
+  els.resistanceValue.textContent = els.maxResistanceFilter.disabled ? t("noData") : `${state.minResistance}-${state.maxResistance}`;
   renderCards();
   applyViewMode();
   syncUrlFromState();
@@ -1765,42 +1866,52 @@ function updateStateFromControls() {
 
 function resetFilters() {
   state.name = "";
+  state.cardNumber = "";
   state.number = "";
   state.set = "all";
   state.type = "all";
   state.subtype = "all";
   state.function = "all";
+  state.role = "all";
   state.virtue = "all";
   state.text = "";
   state.query = "";
   state.sort = "rating-desc";
   state.currentPage = 1;
+  state.minCost = costBounds.min;
   state.maxCost = costBounds.max;
+  state.minAttack = attackBounds.min;
   state.maxAttack = attackBounds.max;
+  state.minResistance = resistanceBounds.min;
   state.maxResistance = resistanceBounds.max;
 
   els.nameFilter.value = "";
+  if (els.cardNumberFilter) els.cardNumberFilter.value = "";
   els.numberFilter.value = "";
   els.setFilter.value = "all";
   els.typeFilter.value = "all";
   els.subtypeFilter.value = "all";
   els.functionFilter.value = "all";
+  if (els.roleFilter) els.roleFilter.value = "all";
   if (els.virtueFilter) els.virtueFilter.value = "all";
   els.textFilter.value = "";
   if (els.queryFilter) els.queryFilter.value = "";
   els.sortSelect.value = "rating-desc";
 
-  if (!els.costFilter.disabled && costBounds.max !== null) {
-    els.costFilter.value = String(costBounds.max);
-    els.costValue.textContent = String(costBounds.max);
+  if (!els.maxCostFilter.disabled && costBounds.max !== null) {
+    els.minCostFilter.value = String(costBounds.min);
+    els.maxCostFilter.value = String(costBounds.max);
+    els.costValue.textContent = `${costBounds.min}-${costBounds.max}`;
   }
-  if (!els.attackFilter.disabled && attackBounds.max !== null) {
-    els.attackFilter.value = String(attackBounds.max);
-    els.attackValue.textContent = String(attackBounds.max);
+  if (!els.maxAttackFilter.disabled && attackBounds.max !== null) {
+    els.minAttackFilter.value = String(attackBounds.min);
+    els.maxAttackFilter.value = String(attackBounds.max);
+    els.attackValue.textContent = `${attackBounds.min}-${attackBounds.max}`;
   }
-  if (!els.resistanceFilter.disabled && resistanceBounds.max !== null) {
-    els.resistanceFilter.value = String(resistanceBounds.max);
-    els.resistanceValue.textContent = String(resistanceBounds.max);
+  if (!els.maxResistanceFilter.disabled && resistanceBounds.max !== null) {
+    els.minResistanceFilter.value = String(resistanceBounds.min);
+    els.maxResistanceFilter.value = String(resistanceBounds.max);
+    els.resistanceValue.textContent = `${resistanceBounds.min}-${resistanceBounds.max}`;
   }
 
   renderCards();
@@ -1833,9 +1944,14 @@ function applyLanguage(lang) {
   state.type = els.typeFilter.value;
   state.subtype = els.subtypeFilter.value;
   state.function = els.functionFilter.value;
+  state.role = els.roleFilter?.value || "all";
   state.virtue = els.virtueFilter?.value || "all";
-  state.maxAttack = els.attackFilter.disabled ? null : Number(els.attackFilter.value);
-  state.maxResistance = els.resistanceFilter.disabled ? null : Number(els.resistanceFilter.value);
+  state.minCost = els.minCostFilter.disabled ? null : Number(els.minCostFilter.value);
+  state.maxCost = els.maxCostFilter.disabled ? null : Number(els.maxCostFilter.value);
+  state.minAttack = els.minAttackFilter.disabled ? null : Number(els.minAttackFilter.value);
+  state.maxAttack = els.maxAttackFilter.disabled ? null : Number(els.maxAttackFilter.value);
+  state.minResistance = els.minResistanceFilter.disabled ? null : Number(els.minResistanceFilter.value);
+  state.maxResistance = els.maxResistanceFilter.disabled ? null : Number(els.maxResistanceFilter.value);
   if (els.copyQueryBtn) {
     els.copyQueryBtn.textContent = t("copyQuery");
     els.copyQueryBtn.classList.remove("is-copied");
@@ -1898,15 +2014,20 @@ els.primaryNav?.querySelectorAll("a").forEach((link) => {
 
 [
   els.nameFilter,
+  els.cardNumberFilter,
   els.numberFilter,
   els.setFilter,
   els.typeFilter,
   els.subtypeFilter,
   els.functionFilter,
+  els.roleFilter,
   els.virtueFilter,
-  els.costFilter,
-  els.attackFilter,
-  els.resistanceFilter,
+  els.minCostFilter,
+  els.maxCostFilter,
+  els.minAttackFilter,
+  els.maxAttackFilter,
+  els.minResistanceFilter,
+  els.maxResistanceFilter,
   els.textFilter,
   els.queryFilter,
   els.sortSelect

@@ -1,62 +1,69 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-05-29",
+  "updatedAt": "2026-05-30",
   "rulings": {
     "type": [
       {
         "type": "Artefato",
         "title": "Artefato",
         "rulings": [
-          "Artefatos permanecem em jogo enquanto não forem removidos por uma regra ou efeito.",
-          "Quando um artefato estiver associado a outra carta, remova-o se a carta associada deixar o jogo."
+          "Artefatos são permanentes duradouras e permanecem no campo de batalha após resolverem, salvo se seu texto ou outro efeito disser o contrário.",
+          "Artefatos que também sejam Equipamentos seguem as regras de anexar, desanexar e EQUIPÁVEL.",
+          "Se um artefato não estiver anexado a nada, ele ainda permanece no campo de batalha, mas não modifica nenhum personagem por estar desanexado."
         ]
       },
       {
         "type": "Campeão",
         "title": "Campeão",
         "rulings": [
-          "Campeões representam cartas centrais e seguem suas próprias condições de entrada.",
-          "Campeões com custo “-” não são pagos por custo numérico."
+          "Campeões começam a partida na zona de Identidade e não são permanentes do campo de batalha.",
+          "Um campeão não pode atacar, bloquear, ser alvo de cartas ou habilidades, mudar de controlador ou sair da zona de Identidade pelas regras gerais.",
+          "Cada jogador pode ativar apenas uma habilidade de seu campeão por rodada, e os requisitos de Virtude ou Desvirtude são verificados apenas no momento da ativação."
         ]
       },
       {
         "type": "Milagre",
         "title": "Milagre",
         "rulings": [
-          "Milagres resolvem seu efeito e depois deixam a zona de resolução.",
-          "Um milagre pode ser usado como resposta quando sua janela de uso permitir."
+          "Milagres podem ser jogados em qualquer momento em que seu controlador tenha prioridade, salvo restrição específica.",
+          "Um Milagre Momentâneo resolve, aplica seus efeitos, aplica suas alterações morais associadas e depois vai ao cemitério de seu dono.",
+          "Se um Milagre for anulado ou deixar a pilha sem resolver, seus efeitos e alterações morais associadas não são aplicados."
         ]
       },
       {
         "type": "Pecado",
         "title": "Pecado",
         "rulings": [
-          "Pecados aplicam efeitos de risco ou disrupção conforme indicado pela carta.",
-          "Se um pecado for anulado, trate-o como não resolvido."
+          "Pecados, por regra geral, só podem ser jogados durante a etapa de Preparação do próprio jogador, salvo permissão específica.",
+          "Custos de Pecado são pagos causando dano ao próprio território do controlador, salvo custo alternativo ou modificação específica.",
+          "Um Pecado Momentâneo resolve, aplica seus efeitos, aplica suas alterações morais associadas e depois vai ao cemitério de seu dono."
         ]
       },
       {
         "type": "Personagem",
         "title": "Personagem",
         "rulings": [
-          "Personagens permanecem em jogo e podem participar de interações de presença.",
-          "Efeitos contínuos sobre personagens duram enquanto a fonte determinar."
+          "Personagens são permanentes com poder e resistência e podem atacar, bloquear, receber dano e receber equipamentos conforme as regras gerais.",
+          "Todos os personagens possuem haste por regra geral do jogo, podendo atacar ou usar habilidades com {T} no turno em que entram no campo de batalha, se estiverem ativados.",
+          "Dano marcado em personagens não é removido no fim do turno, salvo se uma regra ou efeito específico remover esse dano."
         ]
       },
       {
         "type": "Templo",
         "title": "Templo",
         "rulings": [
-          "Templos são permanentes de suporte e não usam custo numérico nesta versão.",
-          "Cada jogador deve seguir os limites de construção definidos para Templos."
+          "Templos começam a partida na zona de Identidade e não são permanentes do campo de batalha.",
+          "Templos modificam regras de Consagração e Profanação conforme seu próprio texto.",
+          "Se o texto de um Templo contradisser a regra geral de Consagração ou Profanação, o texto do Templo prevalece dentro de seu alcance específico."
         ]
       },
       {
         "type": "Território",
         "title": "Território",
         "rulings": [
-          "Territórios são bases de jogo e não usam custo numérico nesta versão.",
-          "Territórios podem modificar recursos e condições de partida enquanto estiverem ativos."
+          "Territórios começam a partida na zona de Identidade e sua resistência define a condição de derrota de seu controlador.",
+          "Dano marcado em um território não reduz sua resistência; o jogador perde se o dano marcado nele for igual ou superior à resistência do território.",
+          "Territórios podem receber dano ou ser curados apenas quando uma regra ou efeito permitir isso."
         ]
       }
     ],
@@ -65,89 +72,397 @@
         "subtype": "Equipamento",
         "title": "Equipamento",
         "rulings": [
-          "Equipamentos podem ser associados a cartas elegíveis conforme indicado pelo efeito.",
-          "Se a carta equipada deixar o jogo, o equipamento deve seguir a regra de descarte ou permanência indicada."
+          "Equipamentos são artefatos que podem ser anexados a personagens válidos.",
+          "Quando um equipamento entra anexado, seu alvo deve ser legal no momento apropriado; se o alvo se tornar inválido antes da resolução, o equipamento entra desanexado.",
+          "Se o personagem equipado deixar o campo de batalha, o equipamento permanece no campo de batalha desanexado, salvo se um efeito disser o contrário."
         ]
       },
       {
         "subtype": "Momentâneo",
         "title": "Momentâneo",
         "rulings": [
-          "Cartas momentâneas resolvem uma única vez e não permanecem em jogo.",
-          "Depois de resolver, uma carta momentânea deve ir para a zona apropriada."
-        ]
-      },
-      {
-        "subtype": "Aliado",
-        "title": "Aliado",
-        "rulings": [
-          "Aliados contam como personagens para efeitos que verificam presença em jogo."
-        ]
-      },
-      {
-        "subtype": "Profeta",
-        "title": "Profeta",
-        "rulings": [
-          "Profetas podem interagir com efeitos de revelação, preparação ou previsão quando uma carta mencionar esse subtipo."
-        ]
-      },
-      {
-        "subtype": "Sacerdote",
-        "title": "Sacerdote",
-        "rulings": [
-          "Sacerdotes podem interagir com efeitos de cura, templo ou restauração quando uma carta mencionar esse subtipo."
+          "Cartas Momentâneas não permanecem no campo de batalha após resolverem.",
+          "Após resolver, uma carta Momentânea vai ao cemitério de seu dono, salvo se uma regra ou efeito disser o contrário."
         ]
       },
       {
         "subtype": "Guerreiro",
         "title": "Guerreiro",
         "rulings": [
-          "Guerreiros podem interagir com efeitos de combate, ataque ou defesa quando uma carta mencionar esse subtipo."
+          "Guerreiro não possui regra própria por si só, mas pode ser verificado por cartas que se importem com subtipos de combate.",
+          "Um personagem pode possuir Guerreiro junto de outros subtipos, como Rei ou Gigante."
         ]
       },
       {
-        "subtype": "Governante",
-        "title": "Governante",
+        "subtype": "Rei",
+        "title": "Rei",
         "rulings": [
-          "Governantes podem interagir com efeitos de liderança, ordem ou comando quando uma carta mencionar esse subtipo."
+          "Rei não possui regra própria por si só, mas pode habilitar cartas ou efeitos que verifiquem se você controla um Rei.",
+          "Um personagem com subtipo Rei ainda é um personagem comum para dano, combate e remoções, salvo se outro efeito disser o contrário."
+        ]
+      },
+      {
+        "subtype": "Gigante",
+        "title": "Gigante",
+        "rulings": [
+          "Gigante não possui regra própria por si só, mas costuma representar personagens de alto poder e pode ser citado por efeitos específicos.",
+          "Efeitos que mencionem Gigante verificam o subtipo, não o poder atual do personagem."
+        ]
+      },
+      {
+        "subtype": "Profeta",
+        "title": "Profeta",
+        "rulings": [
+          "Profeta não possui regra própria por si só, mas pode interagir com efeitos de revelação, previsão, compra ou manipulação de topo.",
+          "Efeitos que verificam Profeta procuram o subtipo Profeta no objeto afetado."
+        ]
+      },
+      {
+        "subtype": "Sacerdote",
+        "title": "Sacerdote",
+        "rulings": [
+          "Sacerdote não possui regra própria por si só, mas pode interagir com efeitos de cura, templo, restauração ou Consagração.",
+          "Efeitos que verificam Sacerdote procuram o subtipo Sacerdote no objeto afetado."
+        ]
+      },
+      {
+        "subtype": "Cidadão",
+        "title": "Cidadão",
+        "rulings": [
+          "Cidadão não possui regra própria por si só e normalmente representa personagens utilitários ou de suporte.",
+          "Um Cidadão ainda pode atacar, bloquear, receber equipamentos e ser alvo de efeitos como qualquer personagem."
+        ]
+      },
+      {
+        "subtype": "Animal",
+        "title": "Animal",
+        "rulings": [
+          "Animal não possui regra própria por si só, mas cartas podem restringir equipamentos ou interações com esse subtipo.",
+          "Se um efeito impedir que um Animal tenha equipamentos anexados, equipamentos anexados ilegalmente a ele tornam-se desanexados como ação baseada no estado."
+        ]
+      },
+      {
+        "subtype": "Soldado",
+        "title": "Soldado",
+        "rulings": [
+          "Soldado aparece principalmente em fichas criadas por efeitos de Foundations.",
+          "Fichas de Soldado são personagens e seguem as regras normais de personagens, combate, dano e morte."
+        ]
+      },
+      {
+        "subtype": "Rebelde",
+        "title": "Rebelde",
+        "rulings": [
+          "Rebelde aparece principalmente em fichas criadas por efeitos de Foundations.",
+          "Fichas de Rebelde são personagens e seguem as regras normais de personagens, combate, dano e morte."
+        ]
+      },
+      {
+        "subtype": "Incenso",
+        "title": "Incenso",
+        "rulings": [
+          "Uma ficha de Incenso é uma ficha de artefato com a habilidade de gerar {E} ao ser desativada e sacrificada.",
+          "Sacrificar uma ficha de Incenso é parte do custo de sua própria habilidade; se esse custo não puder ser pago integralmente, a habilidade não pode ser ativada."
         ]
       }
     ],
     "effect": [
       {
-        "effect": "anexe",
+        "effect": "anexar",
         "title": "Anexar",
         "rulings": [
-          "Anexar cria uma associação entre duas cartas.",
-          "Uma carta anexada deixa de estar solta e passa a seguir a carta à qual está associada."
+          "Anexar um equipamento a um personagem significa equipá-lo àquele personagem.",
+          "Um equipamento anexado permanece no campo de batalha e modifica apenas o personagem ao qual está anexado."
         ]
       },
       {
-        "effect": "responder",
-        "title": "Responder",
+        "effect": "desanexar",
+        "title": "Desanexar",
         "rulings": [
-          "Responder permite agir durante a resolução ou preparação de outro efeito.",
-          "A resposta deve resolver antes do efeito que a originou, salvo regra específica em contrário."
+          "Desanexar remove a relação entre o equipamento e o personagem equipado.",
+          "Um equipamento desanexado permanece no campo de batalha, mas não aplica seus efeitos de EQUIPÁVEL a nenhum personagem."
         ]
       },
       {
-        "effect": "removido",
-        "title": "Remover",
+        "effect": "buscar",
+        "title": "Buscar",
         "rulings": [
-          "Remover tira uma carta da zona em que ela estava.",
-          "Uma carta removida não conta mais para presença naquela zona."
+          "Buscar em uma zona permite localizar uma carta que satisfaça as instruções do efeito.",
+          "Quando uma busca no baralho ou na Reserva exigir revelação, a carta encontrada deve ser revelada antes de ser movida para a zona indicada."
         ]
       },
       {
-        "effect": "recurso",
-        "title": "Recurso",
+        "effect": "comprar",
+        "title": "Comprar",
         "rulings": [
-          "Recursos representam meios de pagar custos ou habilitar efeitos.",
-          "Se um efeito preparar recurso, ele deve indicar quando esse recurso pode ser usado."
+          "Comprar uma carta move a carta do topo do baralho do jogador para sua mão.",
+          "Se um jogador tentar comprar mais cartas do que possui no baralho, aplica-se a regra de dano ao próprio território por cada carta não comprada."
+        ]
+      },
+      {
+        "effect": "curar",
+        "title": "Curar",
+        "rulings": [
+          "Curar remove dano marcado do objeto ou território indicado.",
+          "Curar não pode reduzir o dano marcado abaixo de 0."
+        ]
+      },
+      {
+        "effect": "causar dano",
+        "title": "Causar dano",
+        "rulings": [
+          "Dano causado a personagens ou territórios é marcado sobre eles.",
+          "Dano marcado permanece até ser removido ou até o objeto deixar a zona, salvo se uma regra disser o contrário."
+        ]
+      },
+      {
+        "effect": "prevenir dano",
+        "title": "Prevenir dano",
+        "rulings": [
+          "Prevenir dano impede que aquele dano seja causado e marcado.",
+          "Se todo o dano for prevenido, nenhum evento de dano causado ocorre para aquele dano."
+        ]
+      },
+      {
+        "effect": "destruir",
+        "title": "Destruir",
+        "rulings": [
+          "Destruir tenta mover uma permanente do campo de batalha para o cemitério.",
+          "Destruir não é o mesmo que sacrificar, exilar ou devolver à mão."
+        ]
+      },
+      {
+        "effect": "anular",
+        "title": "Anular",
+        "rulings": [
+          "Anular uma jogada remove essa jogada da pilha antes que ela resolva.",
+          "Uma jogada anulada não aplica seus efeitos nem suas alterações morais associadas."
+        ]
+      },
+      {
+        "effect": "sacrificar",
+        "title": "Sacrificar",
+        "rulings": [
+          "Sacrificar uma permanente move essa permanente do campo de batalha para o cemitério de seu dono.",
+          "Sacrificar não é destruir, mas uma permanente sacrificada morre se for para o cemitério a partir do campo."
+        ]
+      },
+      {
+        "effect": "lutar",
+        "title": "Lutar",
+        "rulings": [
+          "Dois personagens lutam quando cada um causa ao outro dano igual ao seu poder.",
+          "Dano causado por luta não é dano de combate."
+        ]
+      },
+      {
+        "effect": "retornar à mão",
+        "title": "Retornar à mão",
+        "rulings": [
+          "Retornar uma carta à mão move aquela carta para a mão de seu dono, salvo se o efeito indicar outro jogador.",
+          "Se uma ficha seria retornada à mão, ela deixa de existir após deixar o campo de batalha."
+        ]
+      },
+      {
+        "effect": "ganhar controle",
+        "title": "Ganhar controle",
+        "rulings": [
+          "Ganhar controle altera o controlador de um objeto pelo período indicado.",
+          "Quando o efeito de controle termina, o objeto retorna ao controlador anterior se ainda estiver na zona apropriada."
+        ]
+      },
+      {
+        "effect": "criar ficha",
+        "title": "Criar ficha",
+        "rulings": [
+          "Criar uma ficha coloca um objeto de ficha no campo de batalha sob controle do jogador indicado pelo efeito.",
+          "Fichas deixam de existir se saírem do campo de batalha."
+        ]
+      },
+      {
+        "effect": "gerar Essência",
+        "title": "Gerar Essência",
+        "rulings": [
+          "Gerar {E} adiciona 1 recurso de Essência ao pool do jogador.",
+          "Recurso de Essência não utilizado esvazia-se no fim do turno."
+        ]
+      },
+      {
+        "effect": "reduzir custo",
+        "title": "Reduzir custo",
+        "rulings": [
+          "Reduções de custo são aplicadas depois de aumentos e custos adicionais.",
+          "O custo total de uma carta nunca pode ser reduzido abaixo de 0."
+        ]
+      },
+      {
+        "effect": "alterar característica",
+        "title": "Alterar característica",
+        "rulings": [
+          "Alterar uma característica move o eixo moral correspondente em direção ao polo indicado.",
+          "Uma alteração pode neutralizar o polo oposto e, se houver excedente, ativar o polo indicado."
+        ]
+      },
+      {
+        "effect": "consagrar",
+        "title": "Consagrar",
+        "rulings": [
+          "Consagrar move uma carta da mão para a zona de Essência durante a etapa de Consagração.",
+          "Após o efeito por tipo da carta consagrada, aplica-se o ajuste de eixo moral da Consagração."
+        ]
+      },
+      {
+        "effect": "profanar",
+        "title": "Profanar",
+        "rulings": [
+          "Profanar move uma carta da zona de Essência de volta para a mão durante a etapa de Consagração.",
+          "Após a Profanação, aplica-se o ajuste de eixo moral da Profanação."
+        ]
+      },
+      {
+        "effect": "revelar",
+        "title": "Revelar",
+        "rulings": [
+          "Revelar uma carta torna essa carta visível a todos os jogadores pelo período necessário para cumprir o efeito.",
+          "Uma carta revelada que permanece em zona privada volta a ser privada depois que o efeito terminar, salvo se o efeito disser o contrário."
+        ]
+      },
+      {
+        "effect": "descartar",
+        "title": "Descartar",
+        "rulings": [
+          "Descartar move uma carta da mão de um jogador para seu cemitério.",
+          "Se um efeito manda descartar uma carta e o jogador não possui cartas na mão, ele descarta o máximo possível, que pode ser zero."
+        ]
+      },
+      {
+        "effect": "ativar",
+        "title": "Ativar",
+        "rulings": [
+          "Ativar uma permanente significa retorná-la ao estado verticalizado e apto a ser usada.",
+          "Ativar um personagem já declarado atacante não o remove do combate nem permite que ataque novamente na mesma declaração de atacantes."
+        ]
+      },
+      {
+        "effect": "desativar",
+        "title": "Desativar",
+        "rulings": [
+          "Desativar uma permanente significa colocá-la no estado horizontalizado ou usado.",
+          "Um personagem desativado pode ser alvo de ataque por regras gerais do combate."
         ]
       }
     ],
     "keyword": [
+      {
+        "keyword": "ENTRADA",
+        "title": "Entrada",
+        "forms": [
+          "ENTRADA",
+          "entrada",
+          "entra",
+          "entrar",
+          "entrou"
+        ],
+        "rulings": [
+          "ENTRADA significa que a habilidade desencadeia quando a permanente entra no campo de batalha.",
+          "A habilidade de ENTRADA vai para a pilha na próxima vez em que um jogador receberia prioridade."
+        ]
+      },
+      {
+        "keyword": "SAÍDA",
+        "title": "Saída",
+        "forms": [
+          "SAÍDA",
+          "saída",
+          "sair",
+          "deixa",
+          "deixar"
+        ],
+        "rulings": [
+          "SAÍDA significa que a habilidade desencadeia quando a permanente deixa o campo de batalha.",
+          "Uma habilidade de SAÍDA pode resolver mesmo que a permanente que a gerou não esteja mais no campo de batalha."
+        ]
+      },
+      {
+        "keyword": "ATAQUE",
+        "title": "Ataque",
+        "forms": [
+          "ATAQUE",
+          "ataque",
+          "atacar",
+          "atacando",
+          "atacante"
+        ],
+        "rulings": [
+          "ATAQUE significa que a habilidade desencadeia quando o personagem é declarado atacante.",
+          "Um personagem que entra no campo de batalha já atacando não foi declarado atacante e não desencadeia habilidades de ATAQUE."
+        ]
+      },
+      {
+        "keyword": "INESPERADO",
+        "title": "Inesperado",
+        "forms": [
+          "INESPERADO",
+          "inesperado"
+        ],
+        "rulings": [
+          "INESPERADO significa que a carta pode ser jogada a qualquer momento em que seu controlador tenha prioridade.",
+          "INESPERADO não altera custos, alvos ou demais restrições da carta."
+        ]
+      },
+      {
+        "keyword": "INDESTRUTÍVEL",
+        "title": "Indestrutível",
+        "forms": [
+          "INDESTRUTÍVEL",
+          "indestrutível",
+          "indestrutivel"
+        ],
+        "rulings": [
+          "Um personagem indestrutível não pode ser destruído por efeitos e não é colocado no cemitério por dano letal.",
+          "Se dano seria causado a um personagem indestrutível, previna esse dano.",
+          "INDESTRUTÍVEL não impede exílio, retorno à mão, sacrifício ou ser colocado no cemitério por ter resistência 0 ou menos."
+        ]
+      },
+      {
+        "keyword": "IMBLOQUEÁVEL",
+        "title": "Imbloqueável",
+        "forms": [
+          "IMBLOQUEÁVEL",
+          "imbloqueável",
+          "imbloqueavel"
+        ],
+        "rulings": [
+          "Um personagem imbloqueável não pode ser bloqueado.",
+          "IMBLOQUEÁVEL não impede que o personagem seja alvo de efeitos antes da atribuição de dano."
+        ]
+      },
+      {
+        "keyword": "SOBREPUJAR",
+        "title": "Sobrepujar",
+        "forms": [
+          "SOBREPUJAR",
+          "sobrepujar"
+        ],
+        "rulings": [
+          "SOBREPUJAR permite que dano excedente de combate de um atacante bloqueado seja atribuído ao alvo original do ataque.",
+          "Se o alvo original era um território, o excedente pode ser atribuído àquele território; se era um personagem, o excedente pode ser atribuído àquele personagem.",
+          "SOBREPUJAR nunca redireciona excedente para outro alvo que não fosse o alvo original do ataque."
+        ]
+      },
+      {
+        "keyword": "EQUIPÁVEL",
+        "title": "Equipável",
+        "forms": [
+          "EQUIPÁVEL",
+          "equipável",
+          "equipavel"
+        ],
+        "rulings": [
+          "EQUIPÁVEL indica o texto que o equipamento concede ao personagem equipado.",
+          "Se o texto de EQUIPÁVEL inclui uma habilidade com {T}, o personagem equipado é desativado para pagar esse custo, não o equipamento."
+        ]
+      },
       {
         "keyword": "anular",
         "title": "Anular",
@@ -156,14 +471,12 @@
           "anulado",
           "anulada",
           "anulação",
-          "anulações",
           "anule",
-          "anulei",
           "anulando"
         ],
         "rulings": [
-          "Anular impede que o efeito ou carta resolva.",
-          "Uma carta anulada não aplica seus efeitos de resolução."
+          "Anular impede que uma jogada ou habilidade resolva.",
+          "Uma carta anulada não aplica seus efeitos de resolução nem suas alterações morais associadas."
         ]
       },
       {
@@ -179,8 +492,8 @@
           "destrua"
         ],
         "rulings": [
-          "Destruir move a carta afetada para a zona apropriada de descarte ou perda.",
-          "Algo destruído deixa de gerar efeitos contínuos, salvo se outra regra disser o contrário."
+          "Destruir tenta mover uma permanente do campo de batalha para o cemitério.",
+          "Destruir não afeta objetos que não possam ser destruídos ou que não sejam permanentes válidas."
         ]
       },
       {
@@ -195,8 +508,8 @@
           "compre"
         ],
         "rulings": [
-          "Comprar adiciona a carta do topo do deck à mão do jogador.",
-          "Se não houver cartas suficientes para comprar, aplique a regra de deck vazio."
+          "Comprar move uma carta do topo do baralho para a mão.",
+          "Compras múltiplas são realizadas uma a uma para efeitos de baralho vazio."
         ]
       },
       {
@@ -211,8 +524,128 @@
           "cure"
         ],
         "rulings": [
-          "Curar remove dano ou recupera um valor indicado por uma carta.",
-          "Cura não pode ultrapassar limites máximos definidos pela carta ou pelo jogador."
+          "Curar remove dano marcado.",
+          "Cura não aumenta resistência e não pode reduzir dano abaixo de 0."
+        ]
+      },
+      {
+        "keyword": "sacrificar",
+        "title": "Sacrificar",
+        "forms": [
+          "sacrificar",
+          "sacrifica",
+          "sacrifique",
+          "sacrificado",
+          "sacrificada"
+        ],
+        "rulings": [
+          "Apenas o controlador de uma permanente pode sacrificá-la, salvo se uma regra ou efeito disser o contrário.",
+          "Sacrificar não é destruir, mas uma permanente sacrificada morre se for para o cemitério a partir do campo."
+        ]
+      },
+      {
+        "keyword": "lutar",
+        "title": "Lutar",
+        "forms": [
+          "lutar",
+          "lutam",
+          "luta",
+          "lutando"
+        ],
+        "rulings": [
+          "Dois personagens lutam quando cada um causa ao outro dano igual ao seu poder.",
+          "Dano de luta não é dano de combate."
+        ]
+      },
+      {
+        "keyword": "buscar",
+        "title": "Buscar",
+        "forms": [
+          "buscar",
+          "busque",
+          "busca",
+          "buscado",
+          "buscada"
+        ],
+        "rulings": [
+          "Buscar permite localizar uma carta em uma zona especificada.",
+          "Após buscar no baralho, o jogador embaralha o baralho se o efeito ou a regra da busca exigir."
+        ]
+      },
+      {
+        "keyword": "descartar",
+        "title": "Descartar",
+        "forms": [
+          "descartar",
+          "descarte",
+          "descarta",
+          "descartado",
+          "descartada"
+        ],
+        "rulings": [
+          "Descartar move uma carta da mão para o cemitério.",
+          "Se um jogador deve descartar mais cartas do que possui, ele descarta todas as cartas possíveis."
+        ]
+      },
+      {
+        "keyword": "revelar",
+        "title": "Revelar",
+        "forms": [
+          "revelar",
+          "revele",
+          "revela",
+          "revelado",
+          "revelada"
+        ],
+        "rulings": [
+          "Revelar uma carta torna essa carta pública temporariamente.",
+          "Cartas reveladas de zonas privadas voltam a ser privadas depois que o efeito terminar, salvo instrução contrária."
+        ]
+      },
+      {
+        "keyword": "ficha",
+        "title": "Ficha",
+        "forms": [
+          "ficha",
+          "fichas",
+          "crie",
+          "criar"
+        ],
+        "rulings": [
+          "Uma ficha existe apenas no campo de batalha.",
+          "Se uma ficha deixar o campo de batalha, ela deixa de existir na próxima verificação de ações baseadas no estado."
+        ]
+      },
+      {
+        "keyword": "Consagração",
+        "title": "Consagração",
+        "forms": [
+          "Consagração",
+          "consagração",
+          "consagrar",
+          "consagre",
+          "consagrada",
+          "consagrado"
+        ],
+        "rulings": [
+          "Consagração é uma ação formal da etapa de Consagração.",
+          "A Consagração aplica o efeito por tipo da carta consagrada e depois ajusta o eixo moral conforme as regras do jogo."
+        ]
+      },
+      {
+        "keyword": "Profanação",
+        "title": "Profanação",
+        "forms": [
+          "Profanação",
+          "profanação",
+          "profanar",
+          "profane",
+          "profanada",
+          "profanado"
+        ],
+        "rulings": [
+          "Profanação é uma ação formal da etapa de Consagração.",
+          "Profanar recupera uma carta da zona de Essência para a mão e depois ajusta o eixo moral conforme as regras do jogo."
         ]
       }
     ]

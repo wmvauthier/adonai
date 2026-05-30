@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-05-29",
+  "updatedAt": "2026-05-30",
   "subtypes": [
     {
       "id": 1,
@@ -26,36 +26,71 @@
     {
       "id": 4,
       "name": {
-        "pt": "Aliado",
-        "en": "Ally"
+        "pt": "Guerreiro",
+        "en": "Warrior"
       }
     },
     {
       "id": 5,
+      "name": {
+        "pt": "Rei",
+        "en": "King"
+      }
+    },
+    {
+      "id": 6,
+      "name": {
+        "pt": "Gigante",
+        "en": "Giant"
+      }
+    },
+    {
+      "id": 7,
       "name": {
         "pt": "Profeta",
         "en": "Prophet"
       }
     },
     {
-      "id": 6,
+      "id": 8,
       "name": {
         "pt": "Sacerdote",
         "en": "Priest"
       }
     },
     {
-      "id": 7,
+      "id": 9,
       "name": {
-        "pt": "Guerreiro",
-        "en": "Warrior"
+        "pt": "Cidadão",
+        "en": "Citizen"
       }
     },
     {
-      "id": 8,
+      "id": 10,
       "name": {
-        "pt": "Governante",
-        "en": "Ruler"
+        "pt": "Animal",
+        "en": "Animal"
+      }
+    },
+    {
+      "id": 11,
+      "name": {
+        "pt": "Soldado",
+        "en": "Soldier"
+      }
+    },
+    {
+      "id": 12,
+      "name": {
+        "pt": "Rebelde",
+        "en": "Rebel"
+      }
+    },
+    {
+      "id": 13,
+      "name": {
+        "pt": "Incenso",
+        "en": "Incense"
       }
     }
   ]

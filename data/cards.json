@@ -1,12 +1,12 @@
 {
   "schemaVersion": 4,
-  "updatedAt": "2026-05-29",
+  "updatedAt": "2026-05-30",
   "meta": {
     "collection": 1,
-    "cardCount": 54,
+    "cardCount": 52,
     "referencePattern": {
       "pt": "Use COD 1:1 ou COD 1:1-3 (ex.: GEN 1:1, EXD 1:2-3)",
-      "en": "Use COD 1:1 or COD 1:1-3 (e.g. GEN 1:1, EXD 1:2-3)"
+      "en": "Use COD 1:1 or COD 1:1-3 (e.g., GEN 1:1, EXD 1:2-3)"
     }
   },
   "defaults": {
@@ -38,1320 +38,46 @@
       "number": "001",
       "collection": 1,
       "type": [
-        1
-      ],
-      "subtype": [
-        2
-      ],
-      "name": {
-        "pt": "Artefato - Foundations 1",
-        "en": "Artifact - Foundations 1"
-      },
-      "images": {
-        "card": "../assets/cards/Artefato - Foundations-1.webp",
-        "art": "../assets/imgs/Artefato - Foundations-1 - img.webp"
-      },
-      "virtues": [
-        1,
-        6
-      ],
-      "cost": 3,
-      "stats": {
-        "attack": null,
-        "resistance": null
-      },
-      "rating": 5.5,
-      "functions": [
-        1,
-        2
-      ],
-      "usage": {
-        "deckCount": 19,
-        "inclusion": 62,
-        "archetypes": [
-          {
-            "pt": "Midrange",
-            "en": "Midrange"
-          },
-          {
-            "pt": "Combo",
-            "en": "Combo"
-          }
-        ]
-      },
-      "role": 1,
-      "reference": "HEB 11:1",
-      "text": "Zooboomafoo.",
-      "rulings": [
-        "Este artefato usa a regra específica impressa nesta carta antes de qualquer ajuste por tipo ou subtipo.",
-        "Se este artefato estiver anexado, mantenha seus modificadores enquanto a carta permanecer em jogo."
-      ]
-    },
-    {
-      "number": "002",
-      "collection": 1,
-      "type": [
-        1
-      ],
-      "subtype": [
-        2
-      ],
-      "name": {
-        "pt": "Artefato - Foundations 2",
-        "en": "Artifact - Foundations 2"
-      },
-      "images": {
-        "card": "../assets/cards/Artefato - Foundations-2.webp",
-        "art": "../assets/imgs/Artefato - Foundations-2 - img.webp"
-      },
-      "virtues": [
-        3,
-        8
-      ],
-      "cost": 4,
-      "stats": {
-        "attack": null,
-        "resistance": null
-      },
-      "rating": 4.0,
-      "functions": [
-        1,
-        2
-      ],
-      "usage": {
-        "deckCount": 21,
-        "inclusion": 70,
-        "archetypes": [
-          {
-            "pt": "Midrange",
-            "en": "Midrange"
-          },
-          {
-            "pt": "Combo",
-            "en": "Combo"
-          }
-        ]
-      },
-      "role": 1,
-      "reference": "PRO 3:5",
-      "text": "Anexe este artefato para fortalecer uma presença e criar valor ao longo da partida.",
-      "rulings": [
-        "Este artefato usa a regra específica impressa nesta carta antes de qualquer ajuste por tipo ou subtipo.",
-        "Se este artefato estiver anexado, mantenha seus modificadores enquanto a carta permanecer em jogo."
-      ]
-    },
-    {
-      "number": "003",
-      "collection": 1,
-      "type": [
-        1
-      ],
-      "subtype": [
-        2
-      ],
-      "name": {
-        "pt": "Artefato - Foundations 3",
-        "en": "Artifact - Foundations 3"
-      },
-      "images": {
-        "card": "../assets/cards/Artefato - Foundations-3.webp",
-        "art": "../assets/imgs/Artefato - Foundations-3 - img.webp"
-      },
-      "virtues": [
-        5,
-        10
-      ],
-      "cost": 2,
-      "stats": {
-        "attack": null,
-        "resistance": null
-      },
-      "rating": 4.0,
-      "functions": [
-        1,
-        2
-      ],
-      "usage": {
-        "deckCount": 23,
-        "inclusion": 74,
-        "archetypes": [
-          {
-            "pt": "Midrange",
-            "en": "Midrange"
-          },
-          {
-            "pt": "Combo",
-            "en": "Combo"
-          }
-        ]
-      },
-      "role": 1,
-      "reference": "PSA 23:1",
-      "text": "Anexe este artefato para fortalecer uma presença e criar valor ao longo da partida.",
-      "rulings": [
-        "Este artefato usa a regra específica impressa nesta carta antes de qualquer ajuste por tipo ou subtipo.",
-        "Se este artefato estiver anexado, mantenha seus modificadores enquanto a carta permanecer em jogo."
-      ]
-    },
-    {
-      "number": "004",
-      "collection": 1,
-      "type": [
-        1
-      ],
-      "subtype": [
-        2
-      ],
-      "name": {
-        "pt": "Artefato - Foundations 4",
-        "en": "Artifact - Foundations 4"
-      },
-      "images": {
-        "card": "../assets/cards/Artefato - Foundations-4.webp",
-        "art": "../assets/imgs/Artefato - Foundations-4 - img.webp"
-      },
-      "virtues": [
-        7,
-        12
-      ],
-      "cost": 3,
-      "stats": {
-        "attack": null,
-        "resistance": null
-      },
-      "rating": 3.5,
-      "functions": [
-        1,
-        2
-      ],
-      "usage": {
-        "deckCount": 25,
-        "inclusion": 76,
-        "archetypes": [
-          {
-            "pt": "Midrange",
-            "en": "Midrange"
-          },
-          {
-            "pt": "Combo",
-            "en": "Combo"
-          }
-        ]
-      },
-      "role": 1,
-      "reference": "JOS 1:9",
-      "text": "Anexe este artefato para fortalecer uma presença e criar valor ao longo da partida.",
-      "rulings": [
-        "Este artefato usa a regra específica impressa nesta carta antes de qualquer ajuste por tipo ou subtipo.",
-        "Se este artefato estiver anexado, mantenha seus modificadores enquanto a carta permanecer em jogo."
-      ]
-    },
-    {
-      "number": "001",
-      "collection": 1,
-      "type": [
-        2
-      ],
-      "subtype": [
-        1
-      ],
-      "name": {
-        "pt": "Campeão - Foundations 1",
-        "en": "Champion - Foundations 1"
-      },
-      "images": {
-        "card": "../assets/cards/Campeão - Foundations-1.webp",
-        "art": "../assets/imgs/Campeão - Foundations-1 - img.webp"
-      },
-      "virtues": [
-        9,
-        14
-      ],
-      "cost": [
-        "-"
-      ],
-      "stats": {
-        "attack": 5,
-        "resistance": 6
-      },
-      "rating": 4.0,
-      "functions": [
-        3,
-        4
-      ],
-      "usage": {
-        "deckCount": 23,
-        "inclusion": 74,
-        "archetypes": [
-          {
-            "pt": "Midrange",
-            "en": "Midrange"
-          },
-          {
-            "pt": "Controle",
-            "en": "Control"
-          }
-        ]
-      },
-      "role": 2,
-      "reference": "ROM 8:28",
-      "text": "Este campeão pressiona a mesa e recompensa escolhas firmes no caminho da vitória.",
-      "rulings": [
-        "Este campeão usa a regra específica impressa nesta carta enquanto estiver disponível ao jogador.",
-        "Campeões sem custo não são pagos como cartas comuns e devem seguir a regra própria de entrada em jogo."
-      ]
-    },
-    {
-      "number": "002",
-      "collection": 1,
-      "type": [
-        2
-      ],
-      "subtype": [
-        1
-      ],
-      "name": {
-        "pt": "Golias, o Gigante Profano",
-        "en": "Champion - Foundations 2"
-      },
-      "images": {
-        "card": "../assets/cards/Campeão - Foundations-2.webp",
-        "art": "../assets/imgs/Campeão - Foundations-2 - img.webp"
-      },
-      "virtues": [
-        11,
-        2
-      ],
-      "cost": [
-        "-"
-      ],
-      "stats": {
-        "attack": 6,
-        "resistance": 7
-      },
-      "rating": 4.5,
-      "functions": [
-        3,
-        4
-      ],
-      "usage": {
-        "deckCount": 25,
-        "inclusion": 82,
-        "archetypes": [
-          {
-            "pt": "Midrange",
-            "en": "Midrange"
-          },
-          {
-            "pt": "Controle",
-            "en": "Control"
-          }
-        ]
-      },
-      "role": 2,
-      "reference": "JAS 1:5",
-      "text": "Este campeão pressiona a mesa e recompensa escolhas firmes no caminho da vitória.",
-      "rulings": [
-        "Este campeão usa a regra específica impressa nesta carta enquanto estiver disponível ao jogador.",
-        "Campeões sem custo não são pagos como cartas comuns e devem seguir a regra própria de entrada em jogo."
-      ]
-    },
-    {
-      "number": "003",
-      "collection": 1,
-      "type": [
-        2
-      ],
-      "subtype": [
-        1
-      ],
-      "name": {
-        "pt": "Campeão - Foundations 3",
-        "en": "Champion - Foundations 3"
-      },
-      "images": {
-        "card": "../assets/cards/Campeão - Foundations-3.webp",
-        "art": "../assets/imgs/Campeão - Foundations-3 - img.webp"
-      },
-      "virtues": [
-        13,
-        4
-      ],
-      "cost": [
-        "-"
-      ],
-      "stats": {
-        "attack": 7,
-        "resistance": 8
-      },
-      "rating": 4.5,
-      "functions": [
-        3,
-        4
-      ],
-      "usage": {
-        "deckCount": 27,
-        "inclusion": 86,
-        "archetypes": [
-          {
-            "pt": "Midrange",
-            "en": "Midrange"
-          },
-          {
-            "pt": "Controle",
-            "en": "Control"
-          }
-        ]
-      },
-      "role": 2,
-      "reference": "PHP 4:13",
-      "text": "Este campeão pressiona a mesa e recompensa escolhas firmes no caminho da vitória.",
-      "rulings": [
-        "Este campeão usa a regra específica impressa nesta carta enquanto estiver disponível ao jogador.",
-        "Campeões sem custo não são pagos como cartas comuns e devem seguir a regra própria de entrada em jogo."
-      ]
-    },
-    {
-      "number": "004",
-      "collection": 1,
-      "type": [
-        2
-      ],
-      "subtype": [
-        1
-      ],
-      "name": {
-        "pt": "Campeão - Foundations 4",
-        "en": "Champion - Foundations 4"
-      },
-      "images": {
-        "card": "../assets/cards/Campeão - Foundations-4.webp",
-        "art": "../assets/imgs/Campeão - Foundations-4 - img.webp"
-      },
-      "virtues": [
-        1,
-        6
-      ],
-      "cost": [
-        "-"
-      ],
-      "stats": {
-        "attack": 8,
-        "resistance": 9
-      },
-      "rating": 4.0,
-      "functions": [
-        3,
-        4
-      ],
-      "usage": {
-        "deckCount": 29,
-        "inclusion": 87,
-        "archetypes": [
-          {
-            "pt": "Midrange",
-            "en": "Midrange"
-          },
-          {
-            "pt": "Controle",
-            "en": "Control"
-          }
-        ]
-      },
-      "role": 2,
-      "reference": "ISA 41:10",
-      "text": "Este campeão pressiona a mesa e recompensa escolhas firmes no caminho da vitória.",
-      "rulings": [
-        "Este campeão usa a regra específica impressa nesta carta enquanto estiver disponível ao jogador.",
-        "Campeões sem custo não são pagos como cartas comuns e devem seguir a regra própria de entrada em jogo."
-      ]
-    },
-    {
-      "number": "001",
-      "collection": 1,
-      "type": [
-        3
-      ],
-      "subtype": [
-        3
-      ],
-      "name": {
-        "pt": "Milagre - Foundations 1",
-        "en": "Miracle - Foundations 1"
-      },
-      "images": {
-        "card": "../assets/cards/Milagre - Foundations-1.webp",
-        "art": "../assets/imgs/Milagre - Foundations-1 - img.webp"
-      },
-      "virtues": [
-        3,
-        8
-      ],
-      "cost": 3,
-      "stats": {
-        "attack": null,
-        "resistance": null
-      },
-      "rating": 4.0,
-      "functions": [
-        5,
-        6
-      ],
-      "usage": {
-        "deckCount": 27,
-        "inclusion": 83,
-        "archetypes": [
-          {
-            "pt": "Controle",
-            "en": "Control"
-          },
-          {
-            "pt": "Tempo",
-            "en": "Tempo"
-          }
-        ]
-      },
-      "role": 3,
-      "reference": "MAT 5:16",
-      "text": "Resolva este milagre para responder a uma ameaça e virar o ritmo do turno.",
-      "rulings": [
-        "Este milagre resolve seu efeito e depois segue para a zona apropriada indicada pelas regras.",
-        "Se este milagre responder a outro efeito, resolva-o antes de continuar a pilha de ações."
-      ]
-    },
-    {
-      "number": "002",
-      "collection": 1,
-      "type": [
-        3
-      ],
-      "subtype": [
-        3
-      ],
-      "name": {
-        "pt": "Milagre - Foundations 2",
-        "en": "Miracle - Foundations 2"
-      },
-      "images": {
-        "card": "../assets/cards/Milagre - Foundations-2.webp",
-        "art": "../assets/imgs/Milagre - Foundations-2 - img.webp"
-      },
-      "virtues": [
-        5,
-        10
-      ],
-      "cost": 4,
-      "stats": {
-        "attack": null,
-        "resistance": null
-      },
-      "rating": 4.0,
-      "functions": [
-        5,
-        6
-      ],
-      "usage": {
-        "deckCount": 29,
-        "inclusion": 87,
-        "archetypes": [
-          {
-            "pt": "Controle",
-            "en": "Control"
-          },
-          {
-            "pt": "Tempo",
-            "en": "Tempo"
-          }
-        ]
-      },
-      "role": 3,
-      "reference": "EPH 6:11",
-      "text": "Resolva este milagre para responder a uma ameaça e virar o ritmo do turno.",
-      "rulings": [
-        "Este milagre resolve seu efeito e depois segue para a zona apropriada indicada pelas regras.",
-        "Se este milagre responder a outro efeito, resolva-o antes de continuar a pilha de ações."
-      ]
-    },
-    {
-      "number": "003",
-      "collection": 1,
-      "type": [
-        3
-      ],
-      "subtype": [
-        3
-      ],
-      "name": {
-        "pt": "Milagre - Foundations 3",
-        "en": "Miracle - Foundations 3"
-      },
-      "images": {
-        "card": "../assets/cards/Milagre - Foundations-3.webp",
-        "art": "../assets/imgs/Milagre - Foundations-3 - img.webp"
-      },
-      "virtues": [
-        7,
-        12
-      ],
-      "cost": 2,
-      "stats": {
-        "attack": null,
-        "resistance": null
-      },
-      "rating": 4.5,
-      "functions": [
-        5,
-        6
-      ],
-      "usage": {
-        "deckCount": 31,
-        "inclusion": 92,
-        "archetypes": [
-          {
-            "pt": "Controle",
-            "en": "Control"
-          },
-          {
-            "pt": "Tempo",
-            "en": "Tempo"
-          }
-        ]
-      },
-      "role": 3,
-      "reference": "PSA 119:105",
-      "text": "Resolva este milagre para responder a uma ameaça e virar o ritmo do turno.",
-      "rulings": [
-        "Este milagre resolve seu efeito e depois segue para a zona apropriada indicada pelas regras.",
-        "Se este milagre responder a outro efeito, resolva-o antes de continuar a pilha de ações."
-      ]
-    },
-    {
-      "number": "004",
-      "collection": 1,
-      "type": [
-        3
-      ],
-      "subtype": [
-        3
-      ],
-      "name": {
-        "pt": "Milagre - Foundations 4",
-        "en": "Miracle - Foundations 4"
-      },
-      "images": {
-        "card": "../assets/cards/Milagre - Foundations-4.webp",
-        "art": "../assets/imgs/Milagre - Foundations-4 - img.webp"
-      },
-      "virtues": [
-        9,
-        14
-      ],
-      "cost": 3,
-      "stats": {
-        "attack": null,
-        "resistance": null
-      },
-      "rating": 3.5,
-      "functions": [
-        5,
-        6
-      ],
-      "usage": {
-        "deckCount": 9,
-        "inclusion": 40,
-        "archetypes": [
-          {
-            "pt": "Controle",
-            "en": "Control"
-          },
-          {
-            "pt": "Tempo",
-            "en": "Tempo"
-          }
-        ]
-      },
-      "role": 3,
-      "reference": "1CO 13:13",
-      "text": "Resolva este milagre para responder a uma ameaça e virar o ritmo do turno.",
-      "rulings": [
-        "Este milagre resolve seu efeito e depois segue para a zona apropriada indicada pelas regras.",
-        "Se este milagre responder a outro efeito, resolva-o antes de continuar a pilha de ações."
-      ]
-    },
-    {
-      "number": "005",
-      "collection": 1,
-      "type": [
-        3
-      ],
-      "subtype": [
-        3
-      ],
-      "name": {
-        "pt": "Milagre - Foundations 5",
-        "en": "Miracle - Foundations 5"
-      },
-      "images": {
-        "card": "../assets/cards/Milagre - Foundations-5.webp",
-        "art": "../assets/imgs/Milagre - Foundations-5 - img.webp"
-      },
-      "virtues": [
-        11,
-        2
-      ],
-      "cost": 4,
-      "stats": {
-        "attack": null,
-        "resistance": null
-      },
-      "rating": 4.0,
-      "functions": [
-        5,
-        6
-      ],
-      "usage": {
-        "deckCount": 11,
-        "inclusion": 48,
-        "archetypes": [
-          {
-            "pt": "Controle",
-            "en": "Control"
-          },
-          {
-            "pt": "Tempo",
-            "en": "Tempo"
-          }
-        ]
-      },
-      "role": 3,
-      "reference": "HEB 11:1",
-      "text": "Resolva este milagre para responder a uma ameaça e virar o ritmo do turno.",
-      "rulings": [
-        "Este milagre resolve seu efeito e depois segue para a zona apropriada indicada pelas regras.",
-        "Se este milagre responder a outro efeito, resolva-o antes de continuar a pilha de ações."
-      ]
-    },
-    {
-      "number": "006",
-      "collection": 1,
-      "type": [
-        3
-      ],
-      "subtype": [
-        3
-      ],
-      "name": {
-        "pt": "Milagre - Foundations 6",
-        "en": "Miracle - Foundations 6"
-      },
-      "images": {
-        "card": "../assets/cards/Milagre - Foundations-6.webp",
-        "art": "../assets/imgs/Milagre - Foundations-6 - img.webp"
-      },
-      "virtues": [
-        13,
-        4
-      ],
-      "cost": 2,
-      "stats": {
-        "attack": null,
-        "resistance": null
-      },
-      "rating": 4.0,
-      "functions": [
-        5,
-        6
-      ],
-      "usage": {
-        "deckCount": 13,
-        "inclusion": 52,
-        "archetypes": [
-          {
-            "pt": "Controle",
-            "en": "Control"
-          },
-          {
-            "pt": "Tempo",
-            "en": "Tempo"
-          }
-        ]
-      },
-      "role": 3,
-      "reference": "PRO 3:5",
-      "text": "Resolva este milagre para responder a uma ameaça e virar o ritmo do turno.",
-      "rulings": [
-        "Este milagre resolve seu efeito e depois segue para a zona apropriada indicada pelas regras.",
-        "Se este milagre responder a outro efeito, resolva-o antes de continuar a pilha de ações."
-      ]
-    },
-    {
-      "number": "007",
-      "collection": 1,
-      "type": [
-        3
-      ],
-      "subtype": [
-        3
-      ],
-      "name": {
-        "pt": "Milagre - Foundations 7",
-        "en": "Miracle - Foundations 7"
-      },
-      "images": {
-        "card": "../assets/cards/Milagre - Foundations-7.webp",
-        "art": "../assets/imgs/Milagre - Foundations-7 - img.webp"
-      },
-      "virtues": [
-        1,
-        6
-      ],
-      "cost": 3,
-      "stats": {
-        "attack": null,
-        "resistance": null
-      },
-      "rating": 4.5,
-      "functions": [
-        5,
-        6
-      ],
-      "usage": {
-        "deckCount": 15,
-        "inclusion": 60,
-        "archetypes": [
-          {
-            "pt": "Controle",
-            "en": "Control"
-          },
-          {
-            "pt": "Tempo",
-            "en": "Tempo"
-          }
-        ]
-      },
-      "role": 3,
-      "reference": "PSA 23:1",
-      "text": "Resolva este milagre para responder a uma ameaça e virar o ritmo do turno.",
-      "rulings": [
-        "Este milagre resolve seu efeito e depois segue para a zona apropriada indicada pelas regras.",
-        "Se este milagre responder a outro efeito, resolva-o antes de continuar a pilha de ações."
-      ]
-    },
-    {
-      "number": "008",
-      "collection": 1,
-      "type": [
-        3
-      ],
-      "subtype": [
-        3
-      ],
-      "name": {
-        "pt": "Milagre - Foundations 8",
-        "en": "Miracle - Foundations 8"
-      },
-      "images": {
-        "card": "../assets/cards/Milagre - Foundations-8.webp",
-        "art": "../assets/imgs/Milagre - Foundations-8 - img.webp"
-      },
-      "virtues": [
-        3,
-        8
-      ],
-      "cost": 4,
-      "stats": {
-        "attack": null,
-        "resistance": null
-      },
-      "rating": 3.5,
-      "functions": [
-        5,
-        6
-      ],
-      "usage": {
-        "deckCount": 17,
-        "inclusion": 58,
-        "archetypes": [
-          {
-            "pt": "Controle",
-            "en": "Control"
-          },
-          {
-            "pt": "Tempo",
-            "en": "Tempo"
-          }
-        ]
-      },
-      "role": 3,
-      "reference": "JOS 1:9",
-      "text": "Resolva este milagre para responder a uma ameaça e virar o ritmo do turno.",
-      "rulings": [
-        "Este milagre resolve seu efeito e depois segue para a zona apropriada indicada pelas regras.",
-        "Se este milagre responder a outro efeito, resolva-o antes de continuar a pilha de ações."
-      ]
-    },
-    {
-      "number": "001",
-      "collection": 1,
-      "type": [
-        4
-      ],
-      "subtype": [
-        3
-      ],
-      "name": {
-        "pt": "Pecado - Foundations 1",
-        "en": "Sin - Foundations 1"
-      },
-      "images": {
-        "card": "../assets/cards/Pecado - Foundations-1.webp",
-        "art": "../assets/imgs/Pecado - Foundations-1 - img.webp"
-      },
-      "virtues": [
-        5,
-        10
-      ],
-      "cost": 3,
-      "stats": {
-        "attack": null,
-        "resistance": null
-      },
-      "rating": 3.5,
-      "functions": [
-        7,
-        8
-      ],
-      "usage": {
-        "deckCount": 11,
-        "inclusion": 45,
-        "archetypes": [
-          {
-            "pt": "Disrupção",
-            "en": "Disruption"
-          },
-          {
-            "pt": "Controle",
-            "en": "Control"
-          }
-        ]
-      },
-      "role": 4,
-      "reference": "ROM 8:28",
-      "text": "Jogue este pecado para interromper a estratégia rival, assumindo o risco de sua consequência.",
-      "rulings": [
-        "Este pecado aplica sua consequência assim que seu efeito terminar de resolver.",
-        "Se um pecado for anulado, nenhuma consequência adicional desse pecado é aplicada."
-      ]
-    },
-    {
-      "number": "002",
-      "collection": 1,
-      "type": [
-        4
-      ],
-      "subtype": [
-        3
-      ],
-      "name": {
-        "pt": "Pecado - Foundations 2",
-        "en": "Sin - Foundations 2"
-      },
-      "images": {
-        "card": "../assets/cards/Pecado - Foundations-2.webp",
-        "art": "../assets/imgs/Pecado - Foundations-2 - img.webp"
-      },
-      "virtues": [
-        7,
-        12
-      ],
-      "cost": 4,
-      "stats": {
-        "attack": null,
-        "resistance": null
-      },
-      "rating": 3.5,
-      "functions": [
-        7,
-        8
-      ],
-      "usage": {
-        "deckCount": 13,
-        "inclusion": 49,
-        "archetypes": [
-          {
-            "pt": "Disrupção",
-            "en": "Disruption"
-          },
-          {
-            "pt": "Controle",
-            "en": "Control"
-          }
-        ]
-      },
-      "role": 4,
-      "reference": "JAS 1:5",
-      "text": "Jogue este pecado para interromper a estratégia rival, assumindo o risco de sua consequência.",
-      "rulings": [
-        "Este pecado aplica sua consequência assim que seu efeito terminar de resolver.",
-        "Se um pecado for anulado, nenhuma consequência adicional desse pecado é aplicada."
-      ]
-    },
-    {
-      "number": "003",
-      "collection": 1,
-      "type": [
-        4
-      ],
-      "subtype": [
-        3
-      ],
-      "name": {
-        "pt": "Pecado - Foundations 3",
-        "en": "Sin - Foundations 3"
-      },
-      "images": {
-        "card": "../assets/cards/Pecado - Foundations-3.webp",
-        "art": "../assets/imgs/Pecado - Foundations-3 - img.webp"
-      },
-      "virtues": [
-        9,
-        14
-      ],
-      "cost": 2,
-      "stats": {
-        "attack": null,
-        "resistance": null
-      },
-      "rating": 4.0,
-      "functions": [
-        7,
-        8
-      ],
-      "usage": {
-        "deckCount": 15,
-        "inclusion": 57,
-        "archetypes": [
-          {
-            "pt": "Disrupção",
-            "en": "Disruption"
-          },
-          {
-            "pt": "Controle",
-            "en": "Control"
-          }
-        ]
-      },
-      "role": 4,
-      "reference": "PHP 4:13",
-      "text": "Jogue este pecado para interromper a estratégia rival, assumindo o risco de sua consequência.",
-      "rulings": [
-        "Este pecado aplica sua consequência assim que seu efeito terminar de resolver.",
-        "Se um pecado for anulado, nenhuma consequência adicional desse pecado é aplicada."
-      ]
-    },
-    {
-      "number": "004",
-      "collection": 1,
-      "type": [
-        4
-      ],
-      "subtype": [
-        3
-      ],
-      "name": {
-        "pt": "Pecado - Foundations 4",
-        "en": "Sin - Foundations 4"
-      },
-      "images": {
-        "card": "../assets/cards/Pecado - Foundations-4.webp",
-        "art": "../assets/imgs/Pecado - Foundations-4 - img.webp"
-      },
-      "virtues": [
-        11,
-        2
-      ],
-      "cost": 3,
-      "stats": {
-        "attack": null,
-        "resistance": null
-      },
-      "rating": 3.0,
-      "functions": [
-        7,
-        8
-      ],
-      "usage": {
-        "deckCount": 17,
-        "inclusion": 55,
-        "archetypes": [
-          {
-            "pt": "Disrupção",
-            "en": "Disruption"
-          },
-          {
-            "pt": "Controle",
-            "en": "Control"
-          }
-        ]
-      },
-      "role": 4,
-      "reference": "ISA 41:10",
-      "text": "Jogue este pecado para interromper a estratégia rival, assumindo o risco de sua consequência.",
-      "rulings": [
-        "Este pecado aplica sua consequência assim que seu efeito terminar de resolver.",
-        "Se um pecado for anulado, nenhuma consequência adicional desse pecado é aplicada."
-      ]
-    },
-    {
-      "number": "005",
-      "collection": 1,
-      "type": [
-        4
-      ],
-      "subtype": [
-        3
-      ],
-      "name": {
-        "pt": "Pecado - Foundations 5",
-        "en": "Sin - Foundations 5"
-      },
-      "images": {
-        "card": "../assets/cards/Pecado - Foundations-5.webp",
-        "art": "../assets/imgs/Pecado - Foundations-5 - img.webp"
-      },
-      "virtues": [
-        13,
-        4
-      ],
-      "cost": 4,
-      "stats": {
-        "attack": null,
-        "resistance": null
-      },
-      "rating": 3.5,
-      "functions": [
-        7,
-        8
-      ],
-      "usage": {
-        "deckCount": 19,
-        "inclusion": 62,
-        "archetypes": [
-          {
-            "pt": "Disrupção",
-            "en": "Disruption"
-          },
-          {
-            "pt": "Controle",
-            "en": "Control"
-          }
-        ]
-      },
-      "role": 4,
-      "reference": "MAT 5:16",
-      "text": "Jogue este pecado para interromper a estratégia rival, assumindo o risco de sua consequência.",
-      "rulings": [
-        "Este pecado aplica sua consequência assim que seu efeito terminar de resolver.",
-        "Se um pecado for anulado, nenhuma consequência adicional desse pecado é aplicada."
-      ]
-    },
-    {
-      "number": "006",
-      "collection": 1,
-      "type": [
-        4
-      ],
-      "subtype": [
-        3
-      ],
-      "name": {
-        "pt": "Pecado - Foundations 6",
-        "en": "Sin - Foundations 6"
-      },
-      "images": {
-        "card": "../assets/cards/Pecado - Foundations-6.webp",
-        "art": "../assets/imgs/Pecado - Foundations-6 - img.webp"
-      },
-      "virtues": [
-        1,
-        6
-      ],
-      "cost": 2,
-      "stats": {
-        "attack": null,
-        "resistance": null
-      },
-      "rating": 3.5,
-      "functions": [
-        7,
-        8
-      ],
-      "usage": {
-        "deckCount": 21,
-        "inclusion": 67,
-        "archetypes": [
-          {
-            "pt": "Disrupção",
-            "en": "Disruption"
-          },
-          {
-            "pt": "Controle",
-            "en": "Control"
-          }
-        ]
-      },
-      "role": 4,
-      "reference": "EPH 6:11",
-      "text": "Jogue este pecado para interromper a estratégia rival, assumindo o risco de sua consequência.",
-      "rulings": [
-        "Este pecado aplica sua consequência assim que seu efeito terminar de resolver.",
-        "Se um pecado for anulado, nenhuma consequência adicional desse pecado é aplicada."
-      ]
-    },
-    {
-      "number": "007",
-      "collection": 1,
-      "type": [
-        4
-      ],
-      "subtype": [
-        3
-      ],
-      "name": {
-        "pt": "Pecado - Foundations 7",
-        "en": "Sin - Foundations 7"
-      },
-      "images": {
-        "card": "../assets/cards/Pecado - Foundations-7.webp",
-        "art": "../assets/imgs/Pecado - Foundations-7 - img.webp"
-      },
-      "virtues": [
-        3,
-        8
-      ],
-      "cost": 3,
-      "stats": {
-        "attack": null,
-        "resistance": null
-      },
-      "rating": 4.0,
-      "functions": [
-        7,
-        8
-      ],
-      "usage": {
-        "deckCount": 23,
-        "inclusion": 74,
-        "archetypes": [
-          {
-            "pt": "Disrupção",
-            "en": "Disruption"
-          },
-          {
-            "pt": "Controle",
-            "en": "Control"
-          }
-        ]
-      },
-      "role": 4,
-      "reference": "PSA 119:105",
-      "text": "Jogue este pecado para interromper a estratégia rival, assumindo o risco de sua consequência.",
-      "rulings": [
-        "Este pecado aplica sua consequência assim que seu efeito terminar de resolver.",
-        "Se um pecado for anulado, nenhuma consequência adicional desse pecado é aplicada."
-      ]
-    },
-    {
-      "number": "008",
-      "collection": 1,
-      "type": [
-        4
-      ],
-      "subtype": [
-        3
-      ],
-      "name": {
-        "pt": "Pecado - Foundations 8",
-        "en": "Sin - Foundations 8"
-      },
-      "images": {
-        "card": "../assets/cards/Pecado - Foundations-8.webp",
-        "art": "../assets/imgs/Pecado - Foundations-8 - img.webp"
-      },
-      "virtues": [
-        5,
-        10
-      ],
-      "cost": 4,
-      "stats": {
-        "attack": null,
-        "resistance": null
-      },
-      "rating": 3.0,
-      "functions": [
-        7,
-        8
-      ],
-      "usage": {
-        "deckCount": 25,
-        "inclusion": 73,
-        "archetypes": [
-          {
-            "pt": "Disrupção",
-            "en": "Disruption"
-          },
-          {
-            "pt": "Controle",
-            "en": "Control"
-          }
-        ]
-      },
-      "role": 4,
-      "reference": "1CO 13:13",
-      "text": "Jogue este pecado para interromper a estratégia rival, assumindo o risco de sua consequência.",
-      "rulings": [
-        "Este pecado aplica sua consequência assim que seu efeito terminar de resolver.",
-        "Se um pecado for anulado, nenhuma consequência adicional desse pecado é aplicada."
-      ]
-    },
-    {
-      "number": "001",
-      "collection": 1,
-      "type": [
         5
       ],
       "subtype": [
         4
       ],
       "name": {
-        "pt": "Personagem - Foundations 1",
-        "en": "Character - Foundations 1"
+        "pt": "Davi, Ungido do Senhor",
+        "en": "David, Anointed of the Lord"
       },
       "images": {
         "card": "../assets/cards/Personagem - Foundations-1.webp",
         "art": "../assets/imgs/Personagem - Foundations-1 - img.webp"
       },
       "virtues": [
+        1,
         7,
         12
       ],
-      "cost": 2,
+      "cost": 3,
       "stats": {
-        "attack": 2,
-        "resistance": 3
+        "attack": 3,
+        "resistance": 2
       },
-      "rating": 3.5,
+      "rating": 0,
       "functions": [
         9,
-        10
+        4,
+        17,
+        18,
+        19,
+        37,
+        76
       ],
       "usage": {
-        "deckCount": 19,
-        "inclusion": 62,
+        "deckCount": 0,
+        "inclusion": 0,
         "archetypes": [
           {
-            "pt": "Aggro",
-            "en": "Aggro"
+            "pt": "Voltron",
+            "en": "Voltron"
           },
           {
             "pt": "Midrange",
@@ -1359,12 +85,13 @@
           }
         ]
       },
-      "role": 5,
-      "reference": "HEB 11:1",
-      "text": "Coloque este personagem em jogo para ampliar sua presença e ativar novas sinergias.",
+      "role": 32,
+      "reference": "1SA 17:45-49",
+      "text": "Se um Animal ou Gigante fosse causar dano a este personagem, em vez disso, previna esse dano.\nSe este personagem estiver equipado, ele recebe +1/+0.\nATAQUE: Se este personagem estiver equipado, ele causa 1 de dano a até um personagem alvo.",
       "rulings": [
-        "Este personagem permanece em jogo enquanto não for removido por combate, efeito ou regra específica.",
-        "Personagens podem receber modificadores de artefatos e outros efeitos contínuos."
+        "A prevenção contra Animal ou Gigante se aplica a qualquer dano que seria causado por esse personagem, não apenas dano de combate.",
+        "A habilidade de ATAQUE só desencadeia quando Davi é declarado atacante; se ele entrar já atacando, ela não desencadeia.",
+        "A condição de estar equipado é verificada quando a habilidade de ATAQUE desencadeia. Se Davi não estiver equipado nesse momento, essa habilidade não é colocada na pilha."
       ]
     },
     {
@@ -1374,37 +101,47 @@
         5
       ],
       "subtype": [
-        5
+        5,
+        4
       ],
       "name": {
-        "pt": "Personagem - Foundations 2",
-        "en": "Character - Foundations 2"
+        "pt": "Davi, Rei de Israel",
+        "en": "David, King of Israel"
       },
       "images": {
         "card": "../assets/cards/Personagem - Foundations-2.webp",
         "art": "../assets/imgs/Personagem - Foundations-2 - img.webp"
       },
       "virtues": [
-        9,
-        14
+        1,
+        7,
+        12,
+        6
       ],
-      "cost": 3,
+      "cost": 6,
       "stats": {
-        "attack": 3,
+        "attack": 4,
         "resistance": 4
       },
-      "rating": 4.0,
+      "rating": 0,
       "functions": [
-        9,
-        10
+        3,
+        4,
+        28,
+        38,
+        75,
+        79,
+        83,
+        89,
+        90
       ],
       "usage": {
-        "deckCount": 21,
-        "inclusion": 70,
+        "deckCount": 0,
+        "inclusion": 0,
         "archetypes": [
           {
-            "pt": "Aggro",
-            "en": "Aggro"
+            "pt": "Go-wide",
+            "en": "Go-wide"
           },
           {
             "pt": "Midrange",
@@ -1412,12 +149,13 @@
           }
         ]
       },
-      "role": 5,
-      "reference": "PRO 3:5-6",
-      "text": "Coloque este personagem em jogo para ampliar sua presença e ativar novas sinergias.",
+      "role": 35,
+      "reference": "2SA 5:3",
+      "text": "Os outros personagens que você controla recebem +1/+1.\nATAQUE: Crie uma ficha de personagem Soldado Israelita 0/2 desativada e atacando o mesmo alvo que este personagem.",
       "rulings": [
-        "Este personagem permanece em jogo enquanto não for removido por combate, efeito ou regra específica.",
-        "Personagens podem receber modificadores de artefatos e outros efeitos contínuos."
+        "A ficha criada pela habilidade de ATAQUE está atacando, mas não foi declarada atacante; habilidades de ATAQUE dela não desencadeariam.",
+        "A ficha deve atacar o mesmo alvo que Davi ainda estiver atacando. Se esse alvo não existir mais quando a habilidade resolver, crie a ficha desativada, mas ela não estará atacando.",
+        "Davi não concede +1/+1 a si mesmo, apenas aos outros personagens que você controla."
       ]
     },
     {
@@ -1427,37 +165,45 @@
         5
       ],
       "subtype": [
-        6
+        6,
+        4
       ],
       "name": {
-        "pt": "Personagem - Foundations 3",
-        "en": "Character - Foundations 3"
+        "pt": "Golias de Gate",
+        "en": "Goliath of Gath"
       },
       "images": {
         "card": "../assets/cards/Personagem - Foundations-3.webp",
         "art": "../assets/imgs/Personagem - Foundations-3 - img.webp"
       },
       "virtues": [
-        11,
-        2
+        2,
+        2,
+        2,
+        12,
+        12
       ],
-      "cost": 1,
+      "cost": 4,
       "stats": {
-        "attack": 4,
-        "resistance": 5
+        "attack": 6,
+        "resistance": 6
       },
-      "rating": 4.0,
+      "rating": 0,
       "functions": [
-        9,
-        10
+        4,
+        32,
+        34,
+        47,
+        64,
+        79
       ],
       "usage": {
-        "deckCount": 23,
-        "inclusion": 74,
+        "deckCount": 0,
+        "inclusion": 0,
         "archetypes": [
           {
-            "pt": "Aggro",
-            "en": "Aggro"
+            "pt": "Stompy",
+            "en": "Stompy"
           },
           {
             "pt": "Midrange",
@@ -1465,16 +211,134 @@
           }
         ]
       },
-      "role": 5,
-      "reference": "PSA 23:1",
-      "text": "Coloque este personagem em jogo para ampliar sua presença e ativar novas sinergias.",
+      "role": 2,
+      "reference": "1SA 17:4",
+      "text": "SOBREPUJAR\nENTRADA: Desative todos os personagens com poder 2 ou menos que seus oponentes controlam.",
       "rulings": [
-        "Este personagem permanece em jogo enquanto não for removido por combate, efeito ou regra específica.",
-        "Personagens podem receber modificadores de artefatos e outros efeitos contínuos."
+        "A habilidade de ENTRADA verifica o poder dos personagens quando resolve.",
+        "Personagens com poder 2 ou menos que já estejam desativados continuam desativados.",
+        "SOBREPUJAR permite atribuir dano excedente ao alvo original do ataque se Golias for bloqueado."
       ]
     },
     {
       "number": "004",
+      "collection": 1,
+      "type": [
+        5
+      ],
+      "subtype": [
+        4
+      ],
+      "name": {
+        "pt": "Jônatas, Amigo Verdadeiro",
+        "en": "Jonathan, True Friend"
+      },
+      "images": {
+        "card": "../assets/cards/Personagem - Foundations-4.webp",
+        "art": "../assets/imgs/Personagem - Foundations-4 - img.webp"
+      },
+      "virtues": [
+        13,
+        12
+      ],
+      "cost": 3,
+      "stats": {
+        "attack": 2,
+        "resistance": 2
+      },
+      "rating": 0,
+      "functions": [
+        5,
+        18,
+        19,
+        67,
+        69
+      ],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": [
+          {
+            "pt": "Tempo",
+            "en": "Tempo"
+          },
+          {
+            "pt": "Proteção",
+            "en": "Protection"
+          }
+        ]
+      },
+      "role": 14,
+      "reference": "1SA 18:3",
+      "text": "INESPERADO\nENTRADA: Outro personagem alvo que você controla ganha INDESTRUTÍVEL até o fim do turno.",
+      "rulings": [
+        "Jônatas não pode escolher a si mesmo como alvo da própria habilidade de ENTRADA porque o texto exige outro personagem.",
+        "O personagem que ganha INDESTRUTÍVEL também tem todo dano que seria causado a ele prevenido enquanto o efeito durar.",
+        "INESPERADO permite jogar Jônatas em qualquer janela de prioridade, inclusive durante combate."
+      ]
+    },
+    {
+      "number": "005",
+      "collection": 1,
+      "type": [
+        5
+      ],
+      "subtype": [
+        5,
+        4
+      ],
+      "name": {
+        "pt": "Saul, Rei Caído",
+        "en": "Saul, Fallen King"
+      },
+      "images": {
+        "card": "../assets/cards/Personagem - Foundations-5.webp",
+        "art": "../assets/imgs/Personagem - Foundations-5 - img.webp"
+      },
+      "virtues": [
+        7,
+        2,
+        12,
+        6
+      ],
+      "cost": 5,
+      "stats": {
+        "attack": 4,
+        "resistance": 4
+      },
+      "rating": 0,
+      "functions": [
+        4,
+        17,
+        39,
+        40,
+        83
+      ],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": [
+          {
+            "pt": "Controle",
+            "en": "Control"
+          },
+          {
+            "pt": "Midrange",
+            "en": "Midrange"
+          }
+        ]
+      },
+      "role": 4,
+      "reference": "1SA 15:26",
+      "text": "Toda vez que um personagem entrar no campo de batalha sob controle de um oponente, este personagem causa 1 de dano àquele personagem.\nSAÍDA: Cause 2 de dano ao território de cada oponente.",
+      "rulings": [
+        "A primeira habilidade desencadeia para cada personagem que entrar sob controle de um oponente, incluindo fichas.",
+        "Se Saul deixar o campo antes da habilidade de entrada resolver, a habilidade ainda causa dano usando Saul como fonte conforme existia no campo.",
+        "A habilidade de SAÍDA causa dano aos territórios de todos os oponentes que ainda estejam na partida quando ela resolver."
+      ]
+    },
+    {
+      "number": "006",
       "collection": 1,
       "type": [
         5
@@ -1483,153 +347,50 @@
         7
       ],
       "name": {
-        "pt": "Personagem - Foundations 4",
-        "en": "Character - Foundations 4"
-      },
-      "images": {
-        "card": "../assets/cards/Personagem - Foundations-4.webp",
-        "art": "../assets/imgs/Personagem - Foundations-4 - img.webp"
-      },
-      "virtues": [
-        13,
-        4
-      ],
-      "cost": 2,
-      "stats": {
-        "attack": 5,
-        "resistance": 6
-      },
-      "rating": 3.0,
-      "functions": [
-        9,
-        10
-      ],
-      "usage": {
-        "deckCount": 25,
-        "inclusion": 73,
-        "archetypes": [
-          {
-            "pt": "Aggro",
-            "en": "Aggro"
-          },
-          {
-            "pt": "Midrange",
-            "en": "Midrange"
-          }
-        ]
-      },
-      "role": 5,
-      "reference": "JOS 1:9",
-      "text": "Coloque este personagem em jogo para ampliar sua presença e ativar novas sinergias.",
-      "rulings": [
-        "Este personagem permanece em jogo enquanto não for removido por combate, efeito ou regra específica.",
-        "Personagens podem receber modificadores de artefatos e outros efeitos contínuos."
-      ]
-    },
-    {
-      "number": "005",
-      "collection": 1,
-      "type": [
-        5
-      ],
-      "subtype": [
-        8
-      ],
-      "name": {
-        "pt": "Personagem - Foundations 5",
-        "en": "Character - Foundations 5"
-      },
-      "images": {
-        "card": "../assets/cards/Personagem - Foundations-5.webp",
-        "art": "../assets/imgs/Personagem - Foundations-5 - img.webp"
-      },
-      "virtues": [
-        1,
-        6
-      ],
-      "cost": 3,
-      "stats": {
-        "attack": 6,
-        "resistance": 7
-      },
-      "rating": 3.5,
-      "functions": [
-        9,
-        10
-      ],
-      "usage": {
-        "deckCount": 27,
-        "inclusion": 80,
-        "archetypes": [
-          {
-            "pt": "Aggro",
-            "en": "Aggro"
-          },
-          {
-            "pt": "Midrange",
-            "en": "Midrange"
-          }
-        ]
-      },
-      "role": 5,
-      "reference": "ROM 8:28",
-      "text": "Coloque este personagem em jogo para ampliar sua presença e ativar novas sinergias.",
-      "rulings": [
-        "Este personagem permanece em jogo enquanto não for removido por combate, efeito ou regra específica.",
-        "Personagens podem receber modificadores de artefatos e outros efeitos contínuos."
-      ]
-    },
-    {
-      "number": "006",
-      "collection": 1,
-      "type": [
-        5
-      ],
-      "subtype": [
-        4
-      ],
-      "name": {
-        "pt": "Personagem - Foundations 6",
-        "en": "Character - Foundations 6"
+        "pt": "Natã, Profeta",
+        "en": "Nathan, Prophet"
       },
       "images": {
         "card": "../assets/cards/Personagem - Foundations-6.webp",
         "art": "../assets/imgs/Personagem - Foundations-6 - img.webp"
       },
       "virtues": [
-        3,
-        8
+        5
       ],
-      "cost": 1,
+      "cost": 3,
       "stats": {
-        "attack": 7,
+        "attack": 2,
         "resistance": 2
       },
-      "rating": 4.0,
+      "rating": 0,
       "functions": [
-        9,
-        10
+        22,
+        23,
+        43,
+        44,
+        86
       ],
       "usage": {
-        "deckCount": 29,
-        "inclusion": 87,
+        "deckCount": 0,
+        "inclusion": 0,
         "archetypes": [
           {
-            "pt": "Aggro",
-            "en": "Aggro"
+            "pt": "Controle",
+            "en": "Control"
           },
           {
-            "pt": "Midrange",
-            "en": "Midrange"
+            "pt": "Combo",
+            "en": "Combo"
           }
         ]
       },
-      "role": 5,
-      "reference": "JAS 1:5",
-      "text": "Coloque este personagem em jogo para ampliar sua presença e ativar novas sinergias.",
+      "role": 12,
+      "reference": "2SA 12:7",
+      "text": "ENTRADA: Busque um Milagre ou Pecado em seu baralho, revele-o, embaralhe seu baralho e coloque aquela carta no topo dele.",
       "rulings": [
-        "Este personagem permanece em jogo enquanto não for removido por combate, efeito ou regra específica.",
-        "Personagens podem receber modificadores de artefatos e outros efeitos contínuos."
+        "Você deve revelar a carta encontrada para demonstrar que ela é um Milagre ou Pecado.",
+        "O baralho é embaralhado antes de a carta encontrada ser colocada no topo dele.",
+        "Se não houver Milagre ou Pecado no baralho, nada é revelado e o baralho ainda deve ser embaralhado se foi buscado."
       ]
     },
     {
@@ -1639,37 +400,42 @@
         5
       ],
       "subtype": [
-        5
+        4
       ],
       "name": {
-        "pt": "Personagem - Foundations 7",
-        "en": "Character - Foundations 7"
+        "pt": "Joabe, General",
+        "en": "Joab, General"
       },
       "images": {
         "card": "../assets/cards/Personagem - Foundations-7.webp",
         "art": "../assets/imgs/Personagem - Foundations-7 - img.webp"
       },
       "virtues": [
-        5,
-        10
+        7,
+        1,
+        6,
+        14
       ],
-      "cost": 2,
+      "cost": 3,
       "stats": {
-        "attack": 1,
+        "attack": 2,
         "resistance": 3
       },
-      "rating": 4.0,
+      "rating": 0,
       "functions": [
-        9,
-        10
+        21,
+        72,
+        77,
+        78,
+        85
       ],
       "usage": {
-        "deckCount": 31,
-        "inclusion": 92,
+        "deckCount": 0,
+        "inclusion": 0,
         "archetypes": [
           {
-            "pt": "Aggro",
-            "en": "Aggro"
+            "pt": "Aristocratas",
+            "en": "Aristocrats"
           },
           {
             "pt": "Midrange",
@@ -1677,12 +443,13 @@
           }
         ]
       },
-      "role": 5,
-      "reference": "PHP 4:13",
-      "text": "Coloque este personagem em jogo para ampliar sua presença e ativar novas sinergias.",
+      "role": 6,
+      "reference": "2SA 8:16",
+      "text": "A primeira vez em cada turno que outro personagem morrer, compre 1 carta e cause 1 de dano ao seu território.",
       "rulings": [
-        "Este personagem permanece em jogo enquanto não for removido por combate, efeito ou regra específica.",
-        "Personagens podem receber modificadores de artefatos e outros efeitos contínuos."
+        "A habilidade não desencadeia quando o próprio Joabe morre, porque o texto exige outro personagem.",
+        "A habilidade só desencadeia uma vez por turno, mesmo que múltiplos personagens morram ao mesmo tempo.",
+        "Comprar a carta e causar dano ao próprio território fazem parte da mesma resolução."
       ]
     },
     {
@@ -1692,11 +459,11 @@
         5
       ],
       "subtype": [
-        6
+        4
       ],
       "name": {
-        "pt": "Personagem - Foundations 8",
-        "en": "Character - Foundations 8"
+        "pt": "Absalão, Rebelde",
+        "en": "Absalom, Rebel"
       },
       "images": {
         "card": "../assets/cards/Personagem - Foundations-8.webp",
@@ -1704,38 +471,44 @@
       },
       "virtues": [
         7,
+        14,
+        12,
+        12,
         12
       ],
-      "cost": 3,
+      "cost": 5,
       "stats": {
-        "attack": 2,
-        "resistance": 4
+        "attack": 4,
+        "resistance": 3
       },
-      "rating": 3.0,
+      "rating": 0,
       "functions": [
-        9,
-        10
+        30,
+        33,
+        68,
+        94
       ],
       "usage": {
-        "deckCount": 9,
-        "inclusion": 37,
+        "deckCount": 0,
+        "inclusion": 0,
         "archetypes": [
+          {
+            "pt": "Tempo",
+            "en": "Tempo"
+          },
           {
             "pt": "Aggro",
             "en": "Aggro"
-          },
-          {
-            "pt": "Midrange",
-            "en": "Midrange"
           }
         ]
       },
-      "role": 5,
-      "reference": "ISA 41:10",
-      "text": "Coloque este personagem em jogo para ampliar sua presença e ativar novas sinergias.",
+      "role": 21,
+      "reference": "2SA 15:6",
+      "text": "Este personagem não pode ser bloqueado exceto por dois ou mais personagens.\nENTRADA: Ganhe controle de um personagem alvo até o fim do turno e ative-o.",
       "rulings": [
-        "Este personagem permanece em jogo enquanto não for removido por combate, efeito ou regra específica.",
-        "Personagens podem receber modificadores de artefatos e outros efeitos contínuos."
+        "Absalão pode ser bloqueado por dois ou mais personagens normalmente; um único bloqueador não pode ser declarado para bloqueá-lo.",
+        "Ativar o personagem ganho não o concede permissão especial para atacar fora das regras normais de combate.",
+        "Quando o efeito de controle termina, o personagem volta ao controlador anterior se ainda estiver no campo de batalha."
       ]
     },
     {
@@ -1745,37 +518,38 @@
         5
       ],
       "subtype": [
-        7
+        4
       ],
       "name": {
-        "pt": "Personagem - Foundations 9",
-        "en": "Character - Foundations 9"
+        "pt": "Urias, Guerreiro Fiel",
+        "en": "Uriah, Faithful Warrior"
       },
       "images": {
         "card": "../assets/cards/Personagem - Foundations-9.webp",
         "art": "../assets/imgs/Personagem - Foundations-9 - img.webp"
       },
       "virtues": [
-        9,
-        14
+        5
       ],
-      "cost": 1,
+      "cost": 3,
       "stats": {
-        "attack": 3,
-        "resistance": 5
+        "attack": 4,
+        "resistance": 4
       },
-      "rating": 3.5,
+      "rating": 0,
       "functions": [
-        9,
-        10
+        69,
+        73,
+        80,
+        85
       ],
       "usage": {
-        "deckCount": 11,
-        "inclusion": 45,
+        "deckCount": 0,
+        "inclusion": 0,
         "archetypes": [
           {
-            "pt": "Aggro",
-            "en": "Aggro"
+            "pt": "Defesa",
+            "en": "Defense"
           },
           {
             "pt": "Midrange",
@@ -1783,12 +557,13 @@
           }
         ]
       },
-      "role": 5,
-      "reference": "MAT 5:16",
-      "text": "Coloque este personagem em jogo para ampliar sua presença e ativar novas sinergias.",
+      "role": 31,
+      "reference": "2SA 11:11",
+      "text": "Quando este personagem for atacado, se ele estiver desativado, sua resistência base torna-se 1 até o fim do turno.",
       "rulings": [
-        "Este personagem permanece em jogo enquanto não for removido por combate, efeito ou regra específica.",
-        "Personagens podem receber modificadores de artefatos e outros efeitos contínuos."
+        "A habilidade desencadeia quando Urias é escolhido como alvo de um ataque direto.",
+        "A resistência base tornar-se 1 não remove dano já marcado nele.",
+        "Modificadores posteriores de resistência ainda são aplicados sobre a resistência base alterada."
       ]
     },
     {
@@ -1798,50 +573,54 @@
         5
       ],
       "subtype": [
-        8
+        4
       ],
       "name": {
-        "pt": "Personagem - Foundations 10",
-        "en": "Character - Foundations 10"
+        "pt": "Benaia, Matador de Gigantes",
+        "en": "Benaiah, Giant Slayer"
       },
       "images": {
         "card": "../assets/cards/Personagem - Foundations-10.webp",
         "art": "../assets/imgs/Personagem - Foundations-10 - img.webp"
       },
       "virtues": [
-        11,
-        2
+        7,
+        7
       ],
-      "cost": 2,
+      "cost": 5,
       "stats": {
-        "attack": 4,
-        "resistance": 6
+        "attack": 3,
+        "resistance": 3
       },
-      "rating": 4.0,
+      "rating": 0,
       "functions": [
-        9,
-        10
+        15,
+        46,
+        69,
+        73,
+        85
       ],
       "usage": {
-        "deckCount": 13,
-        "inclusion": 52,
+        "deckCount": 0,
+        "inclusion": 0,
         "archetypes": [
-          {
-            "pt": "Aggro",
-            "en": "Aggro"
-          },
           {
             "pt": "Midrange",
             "en": "Midrange"
+          },
+          {
+            "pt": "Resposta",
+            "en": "Answer"
           }
         ]
       },
-      "role": 5,
-      "reference": "EPH 6:11",
-      "text": "Coloque este personagem em jogo para ampliar sua presença e ativar novas sinergias.",
+      "role": 36,
+      "reference": "2SA 23:20",
+      "text": "Se um personagem com poder 4 ou mais fosse causar dano a este personagem, em vez disso, destrua aquele personagem.",
       "rulings": [
-        "Este personagem permanece em jogo enquanto não for removido por combate, efeito ou regra específica.",
-        "Personagens podem receber modificadores de artefatos e outros efeitos contínuos."
+        "O efeito de substituição se aplica antes que o dano seja causado a Benaia.",
+        "O personagem que seria a fonte do dano é destruído, mas isso não conta como Benaia causando dano.",
+        "Se a fonte tiver INDESTRUTÍVEL ou não puder ser destruída, ela não é destruída, mas o dano ainda é substituído."
       ]
     },
     {
@@ -1851,50 +630,53 @@
         5
       ],
       "subtype": [
-        4
+        8
       ],
       "name": {
-        "pt": "Personagem - Foundations 11",
-        "en": "Character - Foundations 11"
+        "pt": "Aimeleque, Sacerdote",
+        "en": "Ahimelech, Priest"
       },
       "images": {
         "card": "../assets/cards/Personagem - Foundations-11.webp",
         "art": "../assets/imgs/Personagem - Foundations-11 - img.webp"
       },
       "virtues": [
-        13,
-        4
+        9
       ],
       "cost": 3,
       "stats": {
-        "attack": 5,
-        "resistance": 7
+        "attack": 1,
+        "resistance": 2
       },
-      "rating": 4.0,
+      "rating": 0,
       "functions": [
-        9,
-        10
+        11,
+        20,
+        21,
+        82,
+        87
       ],
       "usage": {
-        "deckCount": 15,
-        "inclusion": 57,
+        "deckCount": 0,
+        "inclusion": 0,
         "archetypes": [
           {
-            "pt": "Aggro",
-            "en": "Aggro"
+            "pt": "Controle",
+            "en": "Control"
           },
           {
-            "pt": "Midrange",
-            "en": "Midrange"
+            "pt": "Valor",
+            "en": "Value"
           }
         ]
       },
-      "role": 5,
-      "reference": "PSA 119:105",
-      "text": "Coloque este personagem em jogo para ampliar sua presença e ativar novas sinergias.",
+      "role": 1,
+      "reference": "1SA 21:6",
+      "text": "ENTRADA: Compre 1 carta e cure 2 de dano do seu território.",
       "rulings": [
-        "Este personagem permanece em jogo enquanto não for removido por combate, efeito ou regra específica.",
-        "Personagens podem receber modificadores de artefatos e outros efeitos contínuos."
+        "Você compra a carta antes de curar o território.",
+        "Se seu território não tiver dano marcado, a parte de cura não remove nada.",
+        "A habilidade ainda resolve parcialmente se uma das instruções não puder ser executada."
       ]
     },
     {
@@ -1904,50 +686,49 @@
         5
       ],
       "subtype": [
-        5
+        9
       ],
       "name": {
-        "pt": "Personagem - Foundations 12",
-        "en": "Character - Foundations 12"
+        "pt": "Mulher Sábia de Tecoa",
+        "en": "Wise Woman of Tekoa"
       },
       "images": {
         "card": "../assets/cards/Personagem - Foundations-12.webp",
         "art": "../assets/imgs/Personagem - Foundations-12 - img.webp"
       },
-      "virtues": [
-        1,
-        6
-      ],
-      "cost": 1,
+      "virtues": [],
+      "cost": 3,
       "stats": {
-        "attack": 6,
-        "resistance": 2
+        "attack": 1,
+        "resistance": 1
       },
-      "rating": 3.0,
+      "rating": 0,
       "functions": [
-        9,
-        10
+        24,
+        45,
+        82
       ],
       "usage": {
-        "deckCount": 17,
-        "inclusion": 55,
+        "deckCount": 0,
+        "inclusion": 0,
         "archetypes": [
           {
-            "pt": "Aggro",
-            "en": "Aggro"
+            "pt": "Valor",
+            "en": "Value"
           },
           {
-            "pt": "Midrange",
-            "en": "Midrange"
+            "pt": "Recursão",
+            "en": "Recursion"
           }
         ]
       },
-      "role": 5,
-      "reference": "1CO 13:13",
-      "text": "Coloque este personagem em jogo para ampliar sua presença e ativar novas sinergias.",
+      "role": 18,
+      "reference": "2SA 14:2",
+      "text": "ENTRADA: Retorne um personagem alvo do seu cemitério para a sua mão.",
       "rulings": [
-        "Este personagem permanece em jogo enquanto não for removido por combate, efeito ou regra específica.",
-        "Personagens podem receber modificadores de artefatos e outros efeitos contínuos."
+        "O alvo deve ser uma carta de personagem no seu cemitério no momento em que a habilidade é colocada na pilha.",
+        "Se o alvo deixar o cemitério antes da resolução, a habilidade é anulada pelas regras por não ter alvo válido.",
+        "Retornar a carta para a mão não conta como jogar aquela carta."
       ]
     },
     {
@@ -1957,50 +738,49 @@
         5
       ],
       "subtype": [
-        6
+        9
       ],
       "name": {
-        "pt": "Personagem - Foundations 13",
-        "en": "Character - Foundations 13"
+        "pt": "Pastor de Belém",
+        "en": "Shepherd of Bethlehem"
       },
       "images": {
         "card": "../assets/cards/Personagem - Foundations-13.webp",
         "art": "../assets/imgs/Personagem - Foundations-13 - img.webp"
       },
-      "virtues": [
-        3,
-        8
-      ],
-      "cost": 2,
+      "virtues": [],
+      "cost": 1,
       "stats": {
-        "attack": 7,
-        "resistance": 3
+        "attack": 1,
+        "resistance": 1
       },
-      "rating": 3.5,
+      "rating": 0,
       "functions": [
-        9,
-        10
+        14,
+        27,
+        66
       ],
       "usage": {
-        "deckCount": 19,
-        "inclusion": 62,
+        "deckCount": 0,
+        "inclusion": 0,
         "archetypes": [
           {
-            "pt": "Aggro",
-            "en": "Aggro"
+            "pt": "Ramp",
+            "en": "Ramp"
           },
           {
-            "pt": "Midrange",
-            "en": "Midrange"
+            "pt": "Base",
+            "en": "Base"
           }
         ]
       },
-      "role": 5,
-      "reference": "HEB 11:1",
-      "text": "Coloque este personagem em jogo para ampliar sua presença e ativar novas sinergias.",
+      "role": 13,
+      "reference": "1SA 16:11",
+      "text": "{T}: Gere {E}.",
       "rulings": [
-        "Este personagem permanece em jogo enquanto não for removido por combate, efeito ou regra específica.",
-        "Personagens podem receber modificadores de artefatos e outros efeitos contínuos."
+        "Como todos os personagens possuem haste por regra geral, Pastor de Belém pode ser desativado para gerar {E} no turno em que entra, se estiver ativado.",
+        "O {E} gerado entra no pool de Essência e se esvazia no fim do turno se não for usado.",
+        "Desativar o Pastor para pagar o custo impede que ele seja declarado atacante enquanto permanecer desativado."
       ]
     },
     {
@@ -2010,33 +790,31 @@
         5
       ],
       "subtype": [
-        7
+        10
       ],
       "name": {
-        "pt": "Personagem - Foundations 14",
-        "en": "Character - Foundations 14"
+        "pt": "Leão do Deserto",
+        "en": "Desert Lion"
       },
       "images": {
         "card": "../assets/cards/Personagem - Foundations-14.webp",
         "art": "../assets/imgs/Personagem - Foundations-14 - img.webp"
       },
-      "virtues": [
-        5,
-        10
-      ],
+      "virtues": [],
       "cost": 3,
       "stats": {
-        "attack": 1,
-        "resistance": 4
+        "attack": 3,
+        "resistance": 3
       },
-      "rating": 4.0,
+      "rating": 0,
       "functions": [
         9,
-        10
+        65,
+        88
       ],
       "usage": {
-        "deckCount": 21,
-        "inclusion": 70,
+        "deckCount": 0,
+        "inclusion": 0,
         "archetypes": [
           {
             "pt": "Aggro",
@@ -2049,11 +827,12 @@
         ]
       },
       "role": 5,
-      "reference": "PRO 3:5",
-      "text": "Coloque este personagem em jogo para ampliar sua presença e ativar novas sinergias.",
+      "reference": "1SA 17:34",
+      "text": "Este personagem não pode ter equipamentos anexados a ele.",
       "rulings": [
-        "Este personagem permanece em jogo enquanto não for removido por combate, efeito ou regra específica.",
-        "Personagens podem receber modificadores de artefatos e outros efeitos contínuos."
+        "Se um equipamento estiver anexado ao Leão do Deserto ilegalmente, ele se torna desanexado como ação baseada no estado.",
+        "O Leão ainda pode ser alvo de habilidades de equipamentos se essas habilidades não tentarem anexar o equipamento a ele.",
+        "Esta restrição não impede outros efeitos que não sejam equipamentos."
       ]
     },
     {
@@ -2063,33 +842,31 @@
         5
       ],
       "subtype": [
-        8
+        10
       ],
       "name": {
-        "pt": "Personagem - Foundations 15",
-        "en": "Character - Foundations 15"
+        "pt": "Urso das Colinas",
+        "en": "Hill Bear"
       },
       "images": {
         "card": "../assets/cards/Personagem - Foundations-15.webp",
         "art": "../assets/imgs/Personagem - Foundations-15 - img.webp"
       },
-      "virtues": [
-        7,
-        12
-      ],
-      "cost": 1,
+      "virtues": [],
+      "cost": 2,
       "stats": {
         "attack": 2,
-        "resistance": 5
+        "resistance": 2
       },
-      "rating": 4.0,
+      "rating": 0,
       "functions": [
         9,
-        10
+        65,
+        88
       ],
       "usage": {
-        "deckCount": 23,
-        "inclusion": 74,
+        "deckCount": 0,
+        "inclusion": 0,
         "archetypes": [
           {
             "pt": "Aggro",
@@ -2102,11 +879,12 @@
         ]
       },
       "role": 5,
-      "reference": "PSA 23:1",
-      "text": "Coloque este personagem em jogo para ampliar sua presença e ativar novas sinergias.",
+      "reference": "1SA 17:34",
+      "text": "Este personagem não pode ter equipamentos anexados a ele.",
       "rulings": [
-        "Este personagem permanece em jogo enquanto não for removido por combate, efeito ou regra específica.",
-        "Personagens podem receber modificadores de artefatos e outros efeitos contínuos."
+        "Se um equipamento estiver anexado ao Urso das Colinas ilegalmente, ele se torna desanexado como ação baseada no estado.",
+        "O Urso ainda pode atacar, bloquear e ser alvo de efeitos que não dependam de equipamento.",
+        "Esta restrição se aplica mesmo que o equipamento tenha entrado anexado por outro efeito."
       ]
     },
     {
@@ -2119,34 +897,34 @@
         4
       ],
       "name": {
-        "pt": "Personagem - Foundations 16",
-        "en": "Character - Foundations 16"
+        "pt": "Capitão Israelita",
+        "en": "Israelite Captain"
       },
       "images": {
         "card": "../assets/cards/Personagem - Foundations-16.webp",
         "art": "../assets/imgs/Personagem - Foundations-16 - img.webp"
       },
-      "virtues": [
-        9,
-        14
-      ],
-      "cost": 2,
+      "virtues": [],
+      "cost": 3,
       "stats": {
-        "attack": 3,
-        "resistance": 6
+        "attack": 2,
+        "resistance": 2
       },
-      "rating": 3.0,
+      "rating": 0,
       "functions": [
-        9,
-        10
+        28,
+        75,
+        85,
+        89,
+        90
       ],
       "usage": {
-        "deckCount": 25,
-        "inclusion": 73,
+        "deckCount": 0,
+        "inclusion": 0,
         "archetypes": [
           {
-            "pt": "Aggro",
-            "en": "Aggro"
+            "pt": "Go-wide",
+            "en": "Go-wide"
           },
           {
             "pt": "Midrange",
@@ -2154,12 +932,13 @@
           }
         ]
       },
-      "role": 5,
-      "reference": "JOS 1:9",
-      "text": "Coloque este personagem em jogo para ampliar sua presença e ativar novas sinergias.",
+      "role": 15,
+      "reference": "2SA 8:16",
+      "text": "ENTRADA: Crie uma ficha de personagem Soldado Israelita 0/2.",
       "rulings": [
-        "Este personagem permanece em jogo enquanto não for removido por combate, efeito ou regra específica.",
-        "Personagens podem receber modificadores de artefatos e outros efeitos contínuos."
+        "A ficha entra no campo de batalha sob seu controle, salvo se outro efeito disser o contrário.",
+        "A ficha é um personagem e pode bloquear normalmente se estiver ativada.",
+        "Criar a ficha não é jogar uma carta e não usa a pilha separadamente."
       ]
     },
     {
@@ -2169,50 +948,53 @@
         5
       ],
       "subtype": [
-        5
+        4
       ],
       "name": {
-        "pt": "Personagem - Foundations 17",
-        "en": "Character - Foundations 17"
+        "pt": "Capitão Filisteu",
+        "en": "Philistine Captain"
       },
       "images": {
         "card": "../assets/cards/Personagem - Foundations-17.webp",
         "art": "../assets/imgs/Personagem - Foundations-17 - img.webp"
       },
       "virtues": [
-        11,
         2
       ],
       "cost": 3,
       "stats": {
-        "attack": 4,
-        "resistance": 7
+        "attack": 2,
+        "resistance": 2
       },
-      "rating": 3.5,
+      "rating": 0,
       "functions": [
-        9,
-        10
+        28,
+        75,
+        85,
+        89,
+        90
       ],
       "usage": {
-        "deckCount": 27,
-        "inclusion": 80,
+        "deckCount": 0,
+        "inclusion": 0,
         "archetypes": [
+          {
+            "pt": "Go-wide",
+            "en": "Go-wide"
+          },
           {
             "pt": "Aggro",
             "en": "Aggro"
-          },
-          {
-            "pt": "Midrange",
-            "en": "Midrange"
           }
         ]
       },
-      "role": 5,
-      "reference": "ROM 8:28",
-      "text": "Coloque este personagem em jogo para ampliar sua presença e ativar novas sinergias.",
+      "role": 15,
+      "reference": "1SA 17:1",
+      "text": "ENTRADA: Crie uma ficha de personagem Soldado Filisteu 1/1.",
       "rulings": [
-        "Este personagem permanece em jogo enquanto não for removido por combate, efeito ou regra específica.",
-        "Personagens podem receber modificadores de artefatos e outros efeitos contínuos."
+        "A ficha entra no campo de batalha sob seu controle, salvo se outro efeito disser o contrário.",
+        "A ficha é um personagem 1/1 e pode atacar no turno em que entra se estiver ativada e for legal declará-la atacante.",
+        "A alteração moral associada ao Capitão é aplicada depois que a habilidade de ENTRADA terminar de resolver."
       ]
     },
     {
@@ -2222,50 +1004,51 @@
         5
       ],
       "subtype": [
-        6
+        9
       ],
       "name": {
-        "pt": "Personagem - Foundations 18",
-        "en": "Character - Foundations 18"
+        "pt": "Conselheiro Real",
+        "en": "Royal Counselor"
       },
       "images": {
         "card": "../assets/cards/Personagem - Foundations-18.webp",
         "art": "../assets/imgs/Personagem - Foundations-18 - img.webp"
       },
-      "virtues": [
-        13,
-        4
-      ],
-      "cost": 1,
+      "virtues": [],
+      "cost": 3,
       "stats": {
-        "attack": 5,
+        "attack": 0,
         "resistance": 2
       },
-      "rating": 4.0,
+      "rating": 0,
       "functions": [
-        9,
-        10
+        21,
+        22,
+        43,
+        81,
+        82
       ],
       "usage": {
-        "deckCount": 29,
-        "inclusion": 87,
+        "deckCount": 0,
+        "inclusion": 0,
         "archetypes": [
           {
-            "pt": "Aggro",
-            "en": "Aggro"
+            "pt": "Controle",
+            "en": "Control"
           },
           {
-            "pt": "Midrange",
-            "en": "Midrange"
+            "pt": "Valor",
+            "en": "Value"
           }
         ]
       },
-      "role": 5,
-      "reference": "JAS 1:5",
-      "text": "Coloque este personagem em jogo para ampliar sua presença e ativar novas sinergias.",
+      "role": 6,
+      "reference": "2SA 15:12",
+      "text": "ENTRADA: Compre 1 carta. Olhe as duas cartas do topo do seu baralho e devolva-as ao topo em qualquer ordem.",
       "rulings": [
-        "Este personagem permanece em jogo enquanto não for removido por combate, efeito ou regra específica.",
-        "Personagens podem receber modificadores de artefatos e outros efeitos contínuos."
+        "Você compra antes de olhar as duas cartas do topo.",
+        "Se houver menos de duas cartas no baralho, olhe o máximo possível.",
+        "Devolver as cartas ao topo em qualquer ordem não embaralha o baralho."
       ]
     },
     {
@@ -2275,50 +1058,49 @@
         5
       ],
       "subtype": [
-        7
+        9
       ],
       "name": {
-        "pt": "Personagem - Foundations 19",
-        "en": "Character - Foundations 19"
+        "pt": "Traidor do Reino",
+        "en": "Traitor of the Kingdom"
       },
       "images": {
         "card": "../assets/cards/Personagem - Foundations-19.webp",
         "art": "../assets/imgs/Personagem - Foundations-19 - img.webp"
       },
-      "virtues": [
-        1,
-        6
-      ],
+      "virtues": [],
       "cost": 2,
       "stats": {
-        "attack": 6,
-        "resistance": 3
+        "attack": 1,
+        "resistance": 1
       },
-      "rating": 4.0,
+      "rating": 0,
       "functions": [
-        9,
-        10
+        7,
+        41,
+        42
       ],
       "usage": {
-        "deckCount": 31,
-        "inclusion": 92,
+        "deckCount": 0,
+        "inclusion": 0,
         "archetypes": [
           {
-            "pt": "Aggro",
-            "en": "Aggro"
+            "pt": "Disrupção",
+            "en": "Disruption"
           },
           {
-            "pt": "Midrange",
-            "en": "Midrange"
+            "pt": "Controle",
+            "en": "Control"
           }
         ]
       },
-      "role": 5,
-      "reference": "PHP 4:13",
-      "text": "Coloque este personagem em jogo para ampliar sua presença e ativar novas sinergias.",
+      "role": 19,
+      "reference": "2SA 15:12",
+      "text": "ENTRADA: Cada oponente revela a própria mão e descarta 1 carta.",
       "rulings": [
-        "Este personagem permanece em jogo enquanto não for removido por combate, efeito ou regra específica.",
-        "Personagens podem receber modificadores de artefatos e outros efeitos contínuos."
+        "Cada oponente escolhe qual carta descarta, salvo se outro efeito disser o contrário.",
+        "Se um oponente não tiver cartas na mão, ele revela a mão vazia e não descarta nada.",
+        "As mãos reveladas voltam a ser privadas depois que a habilidade terminar de resolver."
       ]
     },
     {
@@ -2328,37 +1110,1108 @@
         5
       ],
       "subtype": [
-        8
+        9
       ],
       "name": {
-        "pt": "Personagem - Foundations 20",
-        "en": "Character - Foundations 20"
+        "pt": "Ancião de Israel",
+        "en": "Elder of Israel"
       },
       "images": {
         "card": "../assets/cards/Personagem - Foundations-20.webp",
         "art": "../assets/imgs/Personagem - Foundations-20 - img.webp"
       },
+      "virtues": [],
+      "cost": 1,
+      "stats": {
+        "attack": 0,
+        "resistance": 1
+      },
+      "rating": 0,
+      "functions": [
+        22,
+        43,
+        81
+      ],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": [
+          {
+            "pt": "Valor",
+            "en": "Value"
+          },
+          {
+            "pt": "Setup",
+            "en": "Setup"
+          }
+        ]
+      },
+      "role": 1,
+      "reference": "2SA 5:3",
+      "text": "ENTRADA: Olhe as 2 cartas do topo do seu baralho. Coloque uma delas na sua mão e o restante no fundo do seu baralho.",
+      "rulings": [
+        "Se houver apenas uma carta no baralho, você a coloca na mão e não coloca nada no fundo.",
+        "As cartas olhadas não são reveladas aos oponentes.",
+        "O restante vai para o fundo do baralho em qualquer ordem se houver mais de uma carta restante."
+      ]
+    },
+    {
+      "number": "021",
+      "collection": 1,
+      "type": [
+        4
+      ],
+      "subtype": [
+        3
+      ],
+      "name": {
+        "pt": "Sacrifício de Saul",
+        "en": "Saul's Sacrifice"
+      },
+      "images": {
+        "card": "../assets/cards/Pecado - Foundations-1.webp",
+        "art": "../assets/imgs/Pecado - Foundations-1 - img.webp"
+      },
       "virtues": [
-        3,
+        12,
+        12,
+        10,
+        10
+      ],
+      "cost": 5,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [
+        8,
+        23,
+        60,
+        61,
+        77,
+        82
+      ],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": [
+          {
+            "pt": "Combo",
+            "en": "Combo"
+          },
+          {
+            "pt": "Controle",
+            "en": "Control"
+          }
+        ]
+      },
+      "role": 12,
+      "reference": "1SA 13:9",
+      "text": "Busque uma carta em seu baralho ou em sua Reserva, revele-a e coloque-a em sua mão. Se buscou em seu baralho, embaralhe-o.",
+      "rulings": [
+        "A carta encontrada deve ser revelada independentemente de ter sido buscada no baralho ou na Reserva.",
+        "Se você buscar no baralho, embaralhe o baralho depois da busca.",
+        "As alterações morais associadas ao Pecado são aplicadas depois que a busca terminar de resolver."
+      ]
+    },
+    {
+      "number": "022",
+      "collection": 1,
+      "type": [
+        4
+      ],
+      "subtype": [
+        3
+      ],
+      "name": {
+        "pt": "Assassinato de Urias",
+        "en": "Murder of Uriah"
+      },
+      "images": {
+        "card": "../assets/cards/Pecado - Foundations-2.webp",
+        "art": "../assets/imgs/Pecado - Foundations-2 - img.webp"
+      },
+      "virtues": [
+        14,
+        14,
+        6,
+        6
+      ],
+      "cost": 3,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [
+        7,
+        15,
+        29,
+        77
+      ],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": [
+          {
+            "pt": "Controle",
+            "en": "Control"
+          },
+          {
+            "pt": "Disrupção",
+            "en": "Disruption"
+          }
+        ]
+      },
+      "role": 8,
+      "reference": "2SA 11:15",
+      "text": "Destrua o personagem alvo desativado.",
+      "rulings": [
+        "O alvo deve ser um personagem desativado tanto ao jogar este Pecado quanto quando ele resolver.",
+        "Se o personagem alvo estiver ativado na resolução, o Pecado é anulado pelas regras por não ter alvo válido.",
+        "Destruir o personagem não conta como sacrificá-lo."
+      ]
+    },
+    {
+      "number": "023",
+      "collection": 1,
+      "type": [
+        4
+      ],
+      "subtype": [
+        3
+      ],
+      "name": {
+        "pt": "Orgulho do Rei",
+        "en": "King's Pride"
+      },
+      "images": {
+        "card": "../assets/cards/Pecado - Foundations-3.webp",
+        "art": "../assets/imgs/Pecado - Foundations-3 - img.webp"
+      },
+      "virtues": [
+        2,
+        10
+      ],
+      "cost": 3,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [
+        7,
+        42,
+        77
+      ],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": [
+          {
+            "pt": "Controle",
+            "en": "Control"
+          },
+          {
+            "pt": "Disrupção",
+            "en": "Disruption"
+          }
+        ]
+      },
+      "role": 19,
+      "reference": "2SA 24:10",
+      "text": "Cada oponente descarta 2 cartas.",
+      "rulings": [
+        "Cada oponente descarta até 2 cartas; se tiver menos de 2, descarta todas as cartas da mão.",
+        "O controlador do Pecado não descarta cartas por este efeito.",
+        "As alterações morais associadas são aplicadas depois que todos os descartes terminarem."
+      ]
+    },
+    {
+      "number": "024",
+      "collection": 1,
+      "type": [
+        4
+      ],
+      "subtype": [
+        3
+      ],
+      "name": {
+        "pt": "Censo Proibido",
+        "en": "Forbidden Census"
+      },
+      "images": {
+        "card": "../assets/cards/Pecado - Foundations-4.webp",
+        "art": "../assets/imgs/Pecado - Foundations-4 - img.webp"
+      },
+      "virtues": [
+        6
+      ],
+      "cost": 2,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [
+        8,
+        17,
+        21,
+        40,
+        77,
+        78
+      ],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": [
+          {
+            "pt": "Controle",
+            "en": "Control"
+          },
+          {
+            "pt": "Risco",
+            "en": "Risk"
+          }
+        ]
+      },
+      "role": 39,
+      "reference": "2SA 24:1-10",
+      "text": "Cause 3 de dano a cada território. Cada jogador compra 1 carta.",
+      "rulings": [
+        "O dano é causado a todos os territórios antes de qualquer jogador comprar carta.",
+        "Se o dano fizer um ou mais jogadores perderem, as ações baseadas no estado serão verificadas antes que jogadores recebam prioridade.",
+        "Cada jogador compra em ordem de turno se a ordem importar."
+      ]
+    },
+    {
+      "number": "025",
+      "collection": 1,
+      "type": [
+        4
+      ],
+      "subtype": [
+        3
+      ],
+      "name": {
+        "pt": "Rebelião de Absalão",
+        "en": "Absalom's Rebellion"
+      },
+      "images": {
+        "card": "../assets/cards/Pecado - Foundations-5.webp",
+        "art": "../assets/imgs/Pecado - Foundations-5 - img.webp"
+      },
+      "virtues": [
+        14,
+        14,
+        8,
         8
       ],
       "cost": 3,
       "stats": {
-        "attack": 7,
-        "resistance": 4
+        "attack": null,
+        "resistance": null
       },
-      "rating": 3.0,
+      "rating": 0,
       "functions": [
-        9,
-        10
+        7,
+        28,
+        29,
+        75,
+        77,
+        90
       ],
       "usage": {
-        "deckCount": 9,
-        "inclusion": 37,
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": [
+          {
+            "pt": "Aristocratas",
+            "en": "Aristocrats"
+          },
+          {
+            "pt": "Go-wide",
+            "en": "Go-wide"
+          }
+        ]
+      },
+      "role": 20,
+      "reference": "2SA 15:10",
+      "text": "Cada jogador sacrifica um personagem. Crie duas fichas de personagem Rebelde 1/1.",
+      "rulings": [
+        "Cada jogador escolhe o próprio personagem a sacrificar.",
+        "Se um jogador não controla personagens, ele não sacrifica nada.",
+        "As fichas de Rebelde entram sob seu controle depois dos sacrifícios."
+      ]
+    },
+    {
+      "number": "026",
+      "collection": 1,
+      "type": [
+        4
+      ],
+      "subtype": [
+        3
+      ],
+      "name": {
+        "pt": "Idolatria em Israel",
+        "en": "Idolatry in Israel"
+      },
+      "images": {
+        "card": "../assets/cards/Pecado - Foundations-6.webp",
+        "art": "../assets/imgs/Pecado - Foundations-6 - img.webp"
+      },
+      "virtues": [
+        2,
+        2,
+        2,
+        10,
+        10
+      ],
+      "cost": 6,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [
+        7,
+        8,
+        16,
+        62,
+        77
+      ],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": [
+          {
+            "pt": "Controle",
+            "en": "Control"
+          },
+          {
+            "pt": "Risco",
+            "en": "Risk"
+          }
+        ]
+      },
+      "role": 9,
+      "reference": "1SA 15:23",
+      "text": "Destrua todos os personagens.",
+      "rulings": [
+        "Todos os personagens são destruídos simultaneamente.",
+        "Personagens indestrutíveis não são destruídos por este efeito.",
+        "Equipamentos anexados aos personagens destruídos tornam-se desanexados e permanecem no campo de batalha, salvo se outro efeito disser o contrário."
+      ]
+    },
+    {
+      "number": "027",
+      "collection": 1,
+      "type": [
+        4
+      ],
+      "subtype": [
+        3
+      ],
+      "name": {
+        "pt": "Traição no Reino",
+        "en": "Treachery in the Kingdom"
+      },
+      "images": {
+        "card": "../assets/cards/Pecado - Foundations-7.webp",
+        "art": "../assets/imgs/Pecado - Foundations-7 - img.webp"
+      },
+      "virtues": [
+        14,
+        14,
+        6,
+        6
+      ],
+      "cost": 3,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [
+        7,
+        30,
+        68,
+        77
+      ],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": [
+          {
+            "pt": "Tempo",
+            "en": "Tempo"
+          },
+          {
+            "pt": "Disrupção",
+            "en": "Disruption"
+          }
+        ]
+      },
+      "role": 16,
+      "reference": "2SA 15:12",
+      "text": "Ganhe controle do personagem alvo até o fim do turno e ative-o.",
+      "rulings": [
+        "Ativar o personagem não o remove de combate se ele já estiver em combate.",
+        "Ganhar controle de um personagem atacante não muda automaticamente o jogador ou objeto que ele está atacando.",
+        "O personagem volta ao controlador anterior no fim do turno se ainda estiver no campo de batalha."
+      ]
+    },
+    {
+      "number": "028",
+      "collection": 1,
+      "type": [
+        4
+      ],
+      "subtype": [
+        3
+      ],
+      "name": {
+        "pt": "Zombar de Deus",
+        "en": "Mocking God"
+      },
+      "images": {
+        "card": "../assets/cards/Pecado - Foundations-8.webp",
+        "art": "../assets/imgs/Pecado - Foundations-8 - img.webp"
+      },
+      "virtues": [
+        2,
+        12
+      ],
+      "cost": 1,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [
+        7,
+        32,
+        47,
+        68,
+        77
+      ],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": [
+          {
+            "pt": "Tempo",
+            "en": "Tempo"
+          },
+          {
+            "pt": "Controle",
+            "en": "Control"
+          }
+        ]
+      },
+      "role": 17,
+      "reference": "GAL 6:7",
+      "text": "Desative todos os personagens com poder 2 ou menos.",
+      "rulings": [
+        "O poder dos personagens é verificado quando o Pecado resolve.",
+        "Personagens já desativados permanecem desativados.",
+        "Este efeito afeta personagens de todos os jogadores, inclusive os seus."
+      ]
+    },
+    {
+      "number": "029",
+      "collection": 1,
+      "type": [
+        3
+      ],
+      "subtype": [
+        3
+      ],
+      "name": {
+        "pt": "Pedra da Funda",
+        "en": "Sling Stone"
+      },
+      "images": {
+        "card": "../assets/cards/Milagre - Foundations-1.webp",
+        "art": "../assets/imgs/Milagre - Foundations-1 - img.webp"
+      },
+      "virtues": [
+        1
+      ],
+      "cost": 3,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [
+        5,
+        15,
+        17,
+        92
+      ],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": [
+          {
+            "pt": "Tempo",
+            "en": "Tempo"
+          },
+          {
+            "pt": "Remoção",
+            "en": "Removal"
+          }
+        ]
+      },
+      "role": 8,
+      "reference": "1SA 17:49",
+      "text": "Cause 4 de dano a um personagem alvo.",
+      "rulings": [
+        "O dano é causado ao personagem alvo quando o Milagre resolve.",
+        "Se o personagem alvo for indestrutível, esse dano é prevenido pelas regras de INDESTRUTÍVEL.",
+        "Dano causado por Pedra da Funda não é dano de combate."
+      ]
+    },
+    {
+      "number": "030",
+      "collection": 1,
+      "type": [
+        3
+      ],
+      "subtype": [
+        3
+      ],
+      "name": {
+        "pt": "Proteção Divina",
+        "en": "Divine Protection"
+      },
+      "images": {
+        "card": "../assets/cards/Milagre - Foundations-2.webp",
+        "art": "../assets/imgs/Milagre - Foundations-2 - img.webp"
+      },
+      "virtues": [
+        9
+      ],
+      "cost": 2,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [
+        5,
+        18,
+        19,
+        20,
+        69
+      ],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": [
+          {
+            "pt": "Proteção",
+            "en": "Protection"
+          },
+          {
+            "pt": "Controle",
+            "en": "Control"
+          }
+        ]
+      },
+      "role": 14,
+      "reference": "PSA 91:4",
+      "text": "Previna todo o dano que seria causado ao personagem alvo neste turno. Cure 1 de dano do seu território.",
+      "rulings": [
+        "A prevenção dura até o fim do turno e se aplica a qualquer dano que seria causado ao personagem alvo.",
+        "A cura do território acontece quando o Milagre resolve, não quando o dano seria prevenido.",
+        "Se o alvo se tornar inválido antes da resolução, o Milagre é anulado pelas regras e a cura não ocorre."
+      ]
+    },
+    {
+      "number": "031",
+      "collection": 1,
+      "type": [
+        3
+      ],
+      "subtype": [
+        3
+      ],
+      "name": {
+        "pt": "Fuga de Davi",
+        "en": "David's Escape"
+      },
+      "images": {
+        "card": "../assets/cards/Milagre - Foundations-3.webp",
+        "art": "../assets/imgs/Milagre - Foundations-3 - img.webp"
+      },
+      "virtues": [
+        9
+      ],
+      "cost": 3,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [
+        5,
+        25,
+        68,
+        92
+      ],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": [
+          {
+            "pt": "Tempo",
+            "en": "Tempo"
+          },
+          {
+            "pt": "Resposta",
+            "en": "Answer"
+          }
+        ]
+      },
+      "role": 16,
+      "reference": "1SA 19:10",
+      "text": "Retorne o personagem alvo para a mão de seu dono.",
+      "rulings": [
+        "Se uma ficha for retornada à mão desta forma, ela deixa de existir após deixar o campo de batalha.",
+        "Retornar um personagem remove todo dano marcado nele.",
+        "Equipamentos anexados ao personagem retornado tornam-se desanexados e permanecem no campo de batalha."
+      ]
+    },
+    {
+      "number": "032",
+      "collection": 1,
+      "type": [
+        3
+      ],
+      "subtype": [
+        3
+      ],
+      "name": {
+        "pt": "Conselho do Profeta",
+        "en": "Prophet's Counsel"
+      },
+      "images": {
+        "card": "../assets/cards/Milagre - Foundations-4.webp",
+        "art": "../assets/imgs/Milagre - Foundations-4 - img.webp"
+      },
+      "virtues": [
+        11
+      ],
+      "cost": 3,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [
+        5,
+        26,
+        63,
+        84,
+        86,
+        92
+      ],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": [
+          {
+            "pt": "Controle",
+            "en": "Control"
+          },
+          {
+            "pt": "Resposta",
+            "en": "Answer"
+          }
+        ]
+      },
+      "role": 3,
+      "reference": "2SA 12:7",
+      "text": "Anule a jogada alvo a menos que seu controlador pague {3}. Se você controla um Rei, em vez disso, anule aquela jogada.",
+      "rulings": [
+        "Se você controla um Rei quando Conselho do Profeta resolve, o controlador da jogada alvo não recebe a opção de pagar {3}.",
+        "Se você não controla um Rei na resolução, o controlador da jogada alvo pode pagar {3} para impedir a anulação.",
+        "A verificação de controlar um Rei é feita na resolução, não no momento em que o Milagre é jogado."
+      ]
+    },
+    {
+      "number": "033",
+      "collection": 1,
+      "type": [
+        3
+      ],
+      "subtype": [
+        3
+      ],
+      "name": {
+        "pt": "Força do Senhor",
+        "en": "Strength of the Lord"
+      },
+      "images": {
+        "card": "../assets/cards/Milagre - Foundations-5.webp",
+        "art": "../assets/imgs/Milagre - Foundations-5 - img.webp"
+      },
+      "virtues": [
+        7
+      ],
+      "cost": 2,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [
+        5,
+        35,
+        36,
+        69
+      ],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
         "archetypes": [
           {
             "pt": "Aggro",
             "en": "Aggro"
+          },
+          {
+            "pt": "Tempo",
+            "en": "Tempo"
+          }
+        ]
+      },
+      "role": 10,
+      "reference": "JDG 16:28",
+      "text": "O personagem alvo recebe +3/+3 até o fim do turno.",
+      "rulings": [
+        "O bônus altera poder e resistência até o fim do turno.",
+        "Se o aumento de resistência fizer um personagem sobreviver a dano já marcado, ele pode morrer quando o bônus expirar se o dano marcado for novamente letal.",
+        "Este Milagre pode ser jogado durante combate se você tiver prioridade."
+      ]
+    },
+    {
+      "number": "034",
+      "collection": 1,
+      "type": [
+        3
+      ],
+      "subtype": [
+        3
+      ],
+      "name": {
+        "pt": "Defesa de Jônatas",
+        "en": "Jonathan's Defense"
+      },
+      "images": {
+        "card": "../assets/cards/Milagre - Foundations-6.webp",
+        "art": "../assets/imgs/Milagre - Foundations-6 - img.webp"
+      },
+      "virtues": [
+        7,
+        9
+      ],
+      "cost": 3,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [
+        5,
+        18,
+        35,
+        36,
+        69
+      ],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": [
+          {
+            "pt": "Proteção",
+            "en": "Protection"
+          },
+          {
+            "pt": "Tempo",
+            "en": "Tempo"
+          }
+        ]
+      },
+      "role": 14,
+      "reference": "1SA 20:4",
+      "text": "Até o fim do turno, o personagem alvo recebe +1/+1 e não pode ser alvo de jogadas ou habilidades que seus oponentes controlam.",
+      "rulings": [
+        "O personagem pode continuar sendo afetado por efeitos que não usem a palavra alvo.",
+        "O bônus +1/+1 e a proteção contra alvos duram até o fim do turno.",
+        "Jogadas ou habilidades de seus próprios efeitos ainda podem escolher o personagem como alvo."
+      ]
+    },
+    {
+      "number": "035",
+      "collection": 1,
+      "type": [
+        3
+      ],
+      "subtype": [
+        3
+      ],
+      "name": {
+        "pt": "Cura Divina",
+        "en": "Divine Healing"
+      },
+      "images": {
+        "card": "../assets/cards/Milagre - Foundations-7.webp",
+        "art": "../assets/imgs/Milagre - Foundations-7 - img.webp"
+      },
+      "virtues": [
+        9
+      ],
+      "cost": 2,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [
+        5,
+        20,
+        55,
+        80
+      ],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": [
+          {
+            "pt": "Controle",
+            "en": "Control"
+          },
+          {
+            "pt": "Defesa",
+            "en": "Defense"
+          }
+        ]
+      },
+      "role": 3,
+      "reference": "PSA 103:3",
+      "text": "Cure 5 de dano do seu território.",
+      "rulings": [
+        "Cura Divina remove até 5 de dano marcado no seu território.",
+        "Se seu território tiver menos de 5 de dano marcado, remova todo o dano possível.",
+        "Curar o território não altera sua resistência impressa."
+      ]
+    },
+    {
+      "number": "036",
+      "collection": 1,
+      "type": [
+        3
+      ],
+      "subtype": [
+        3
+      ],
+      "name": {
+        "pt": "Sabedoria Celestial",
+        "en": "Heavenly Wisdom"
+      },
+      "images": {
+        "card": "../assets/cards/Milagre - Foundations-8.webp",
+        "art": "../assets/imgs/Milagre - Foundations-8 - img.webp"
+      },
+      "virtues": [
+        11,
+        11
+      ],
+      "cost": 3,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [
+        5,
+        21,
+        82
+      ],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": [
+          {
+            "pt": "Controle",
+            "en": "Control"
+          },
+          {
+            "pt": "Valor",
+            "en": "Value"
+          }
+        ]
+      },
+      "role": 11,
+      "reference": "PRO 2:6",
+      "text": "Compre 2 cartas.",
+      "rulings": [
+        "As duas compras são realizadas uma de cada vez.",
+        "Se você não tiver cartas suficientes no baralho, aplique a regra de dano ao território para cada carta que não puder comprar.",
+        "As alterações morais associadas são aplicadas depois que as compras terminarem."
+      ]
+    },
+    {
+      "number": "037",
+      "collection": 1,
+      "type": [
+        1
+      ],
+      "subtype": [
+        2
+      ],
+      "name": {
+        "pt": "Funda de Davi",
+        "en": "David's Sling"
+      },
+      "images": {
+        "card": "../assets/cards/Artefato - Foundations-1.webp",
+        "art": "../assets/imgs/Artefato - Foundations-1 - img.webp"
+      },
+      "virtues": [],
+      "cost": 3,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [
+        1,
+        15,
+        17,
+        37,
+        46,
+        76
+      ],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": [
+          {
+            "pt": "Voltron",
+            "en": "Voltron"
+          },
+          {
+            "pt": "Equipamentos",
+            "en": "Equipment"
+          }
+        ]
+      },
+      "role": 32,
+      "reference": "1SA 17:40",
+      "text": "EQUIPÁVEL: {T}: Cause 1 de dano a um personagem alvo. Se aquele personagem tiver poder 6 ou mais, em vez disso, destrua-o.",
+      "rulings": [
+        "A habilidade com {T} é concedida ao personagem equipado; o personagem equipado é desativado para pagar o custo.",
+        "Se o alvo tiver poder 6 ou mais na resolução, ele é destruído em vez de receber 1 de dano.",
+        "Se o personagem equipado deixar de estar equipado antes da habilidade resolver, a habilidade na pilha ainda resolve normalmente."
+      ]
+    },
+    {
+      "number": "038",
+      "collection": 1,
+      "type": [
+        1
+      ],
+      "subtype": [
+        2
+      ],
+      "name": {
+        "pt": "Harpa Real",
+        "en": "Royal Harp"
+      },
+      "images": {
+        "card": "../assets/cards/Artefato - Foundations-2.webp",
+        "art": "../assets/imgs/Artefato - Foundations-2 - img.webp"
+      },
+      "virtues": [],
+      "cost": 1,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [
+        1,
+        32,
+        50,
+        76
+      ],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": [
+          {
+            "pt": "Tempo",
+            "en": "Tempo"
+          },
+          {
+            "pt": "Equipamentos",
+            "en": "Equipment"
+          }
+        ]
+      },
+      "role": 1,
+      "reference": "1SA 16:23",
+      "text": "EQUIPÁVEL: {T}: Desative um personagem alvo que um oponente controla. Escolha uma Virtude com valor inferior a 4 daquele oponente. Aquele oponente aplica +1 à Virtude escolhida.",
+      "rulings": [
+        "O controlador da habilidade escolhe qual Virtude do oponente será aumentada.",
+        "Você não pode escolher uma Virtude daquele oponente que já esteja no Nv4.",
+        "O aumento da Virtude segue as regras de eixos morais, podendo reduzir primeiro a Desvirtude oposta se ela estiver ativa."
+      ]
+    },
+    {
+      "number": "039",
+      "collection": 1,
+      "type": [
+        1
+      ],
+      "subtype": [
+        2
+      ],
+      "name": {
+        "pt": "Espada de Golias",
+        "en": "Goliath's Sword"
+      },
+      "images": {
+        "card": "../assets/cards/Artefato - Foundations-3.webp",
+        "art": "../assets/imgs/Artefato - Foundations-3 - img.webp"
+      },
+      "virtues": [],
+      "cost": 1,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [
+        1,
+        34,
+        35,
+        46,
+        70,
+        76
+      ],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": [
+          {
+            "pt": "Voltron",
+            "en": "Voltron"
           },
           {
             "pt": "Midrange",
@@ -2366,224 +2219,73 @@
           }
         ]
       },
-      "role": 5,
-      "reference": "ISA 41:10",
-      "text": "Coloque este personagem em jogo para ampliar sua presença e ativar novas sinergias.",
+      "role": 22,
+      "reference": "1SA 21:9",
+      "text": "Este equipamento só pode ser anexado a personagens com poder 4 ou mais.\nSe o personagem equipado tiver poder 3 ou menos, desanexe este equipamento dele.\nEQUIPÁVEL: O personagem equipado recebe +2/+0 e SOBREPUJAR.",
       "rulings": [
-        "Este personagem permanece em jogo enquanto não for removido por combate, efeito ou regra específica.",
-        "Personagens podem receber modificadores de artefatos e outros efeitos contínuos."
+        "A restrição de poder é verificada para anexar o equipamento e também pela instrução que pode desanexá-lo.",
+        "O próprio bônus +2/+0 da Espada pode ajudar o personagem equipado a permanecer com poder 4 ou mais enquanto estiver anexada.",
+        "Se a Espada for desanexada, o personagem perde imediatamente o bônus e SOBREPUJAR concedidos por ela."
       ]
     },
     {
-      "number": "001",
+      "number": "040",
       "collection": 1,
       "type": [
-        6
-      ],
-      "subtype": [
         1
       ],
+      "subtype": [
+        2
+      ],
       "name": {
-        "pt": "Templo - Foundations 1",
-        "en": "Temple - Foundations 1"
+        "pt": "Coroa de Israel",
+        "en": "Crown of Israel"
       },
       "images": {
-        "card": "../assets/cards/Templo - Foundations-1.webp",
-        "art": "../assets/imgs/Templo - Foundations-1 - img.webp"
+        "card": "../assets/cards/Artefato - Foundations-4.webp",
+        "art": "../assets/imgs/Artefato - Foundations-4 - img.webp"
       },
       "virtues": [],
-      "cost": [
-        "-"
-      ],
+      "cost": 3,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 4.0,
+      "rating": 0,
       "functions": [
-        11,
-        12
+        1,
+        35,
+        38,
+        48,
+        70,
+        76,
+        84
       ],
       "usage": {
-        "deckCount": 18,
-        "inclusion": 63,
+        "deckCount": 0,
+        "inclusion": 0,
         "archetypes": [
           {
-            "pt": "Controle",
-            "en": "Control"
+            "pt": "Voltron",
+            "en": "Voltron"
           },
           {
-            "pt": "Valor",
-            "en": "Value"
+            "pt": "Equipamentos",
+            "en": "Equipment"
           }
         ]
       },
-      "role": 6,
-      "reference": "1CO 13:13",
-      "text": "Este templo sustenta sua estratégia e transforma recursos em vantagem contínua.",
+      "role": 22,
+      "reference": "2SA 12:30",
+      "text": "Toda vez que um personagem entrar no campo de batalha sob seu controle, anexe este equipamento a ele, se puder.\nEQUIPÁVEL: O personagem equipado recebe +2/+2.",
       "rulings": [
-        "Este templo representa uma estrutura permanente e segue as regras específicas de permanentes de suporte.",
-        "Templos sem custo entram em jogo apenas por efeitos ou procedimentos que permitam sua inclusão."
+        "A habilidade desencadeia para cada personagem que entrar sob seu controle, incluindo fichas.",
+        "Se a Coroa não puder ser anexada ao personagem que entrou, ela permanece onde está.",
+        "Anexar a Coroa a um novo personagem a desanexa do personagem anterior."
       ]
     },
     {
-      "number": "002",
-      "collection": 1,
-      "type": [
-        6
-      ],
-      "subtype": [
-        1
-      ],
-      "name": {
-        "pt": "Templo - Foundations 2",
-        "en": "Temple - Foundations 2"
-      },
-      "images": {
-        "card": "../assets/cards/Templo - Foundations-2.webp",
-        "art": "../assets/imgs/Templo - Foundations-2 - img.webp"
-      },
-      "virtues": [],
-      "cost": [
-        "-"
-      ],
-      "stats": {
-        "attack": null,
-        "resistance": null
-      },
-      "rating": 4.0,
-      "functions": [
-        11,
-        12
-      ],
-      "usage": {
-        "deckCount": 20,
-        "inclusion": 68,
-        "archetypes": [
-          {
-            "pt": "Controle",
-            "en": "Control"
-          },
-          {
-            "pt": "Valor",
-            "en": "Value"
-          }
-        ]
-      },
-      "role": 6,
-      "reference": "HEB 11:1",
-      "text": "Este templo sustenta sua estratégia e transforma recursos em vantagem contínua.",
-      "rulings": [
-        "Este templo representa uma estrutura permanente e segue as regras específicas de permanentes de suporte.",
-        "Templos sem custo entram em jogo apenas por efeitos ou procedimentos que permitam sua inclusão."
-      ]
-    },
-    {
-      "number": "003",
-      "collection": 1,
-      "type": [
-        6
-      ],
-      "subtype": [
-        1
-      ],
-      "name": {
-        "pt": "Templo - Foundations 3",
-        "en": "Temple - Foundations 3"
-      },
-      "images": {
-        "card": "../assets/cards/Templo - Foundations-3.webp",
-        "art": "../assets/imgs/Templo - Foundations-3 - img.webp"
-      },
-      "virtues": [],
-      "cost": [
-        "-"
-      ],
-      "stats": {
-        "attack": null,
-        "resistance": null
-      },
-      "rating": 4.5,
-      "functions": [
-        11,
-        12
-      ],
-      "usage": {
-        "deckCount": 22,
-        "inclusion": 75,
-        "archetypes": [
-          {
-            "pt": "Controle",
-            "en": "Control"
-          },
-          {
-            "pt": "Valor",
-            "en": "Value"
-          }
-        ]
-      },
-      "role": 6,
-      "reference": "PRO 3:5",
-      "text": "Este templo sustenta sua estratégia e transforma recursos em vantagem contínua.",
-      "rulings": [
-        "Este templo representa uma estrutura permanente e segue as regras específicas de permanentes de suporte.",
-        "Templos sem custo entram em jogo apenas por efeitos ou procedimentos que permitam sua inclusão."
-      ]
-    },
-    {
-      "number": "004",
-      "collection": 1,
-      "type": [
-        6
-      ],
-      "subtype": [
-        1
-      ],
-      "name": {
-        "pt": "Templo - Foundations 4",
-        "en": "Temple - Foundations 4"
-      },
-      "images": {
-        "card": "../assets/cards/Templo - Foundations-4.webp",
-        "art": "../assets/imgs/Templo - Foundations-4 - img.webp"
-      },
-      "virtues": [],
-      "cost": [
-        "-"
-      ],
-      "stats": {
-        "attack": null,
-        "resistance": null
-      },
-      "rating": 3.5,
-      "functions": [
-        11,
-        12
-      ],
-      "usage": {
-        "deckCount": 24,
-        "inclusion": 73,
-        "archetypes": [
-          {
-            "pt": "Controle",
-            "en": "Control"
-          },
-          {
-            "pt": "Valor",
-            "en": "Value"
-          }
-        ]
-      },
-      "role": 6,
-      "reference": "PSA 23:1",
-      "text": "Este templo sustenta sua estratégia e transforma recursos em vantagem contínua.",
-      "rulings": [
-        "Este templo representa uma estrutura permanente e segue as regras específicas de permanentes de suporte.",
-        "Templos sem custo entram em jogo apenas por efeitos ou procedimentos que permitam sua inclusão."
-      ]
-    },
-    {
-      "number": "001",
+      "number": "041",
       "collection": 1,
       "type": [
         7
@@ -2592,8 +2294,8 @@
         1
       ],
       "name": {
-        "pt": "Território - Foundations 1",
-        "en": "Territory - Foundations 1"
+        "pt": "Belém, Campo do Pastor",
+        "en": "Bethlehem, Field of the Shepherd"
       },
       "images": {
         "card": "../assets/cards/Território - Foundations-1.webp",
@@ -2607,35 +2309,39 @@
         "attack": null,
         "resistance": 18
       },
-      "rating": 3.5,
+      "rating": 0,
       "functions": [
         13,
-        14
+        22,
+        43,
+        44,
+        53
       ],
       "usage": {
-        "deckCount": 22,
-        "inclusion": 69,
+        "deckCount": 0,
+        "inclusion": 0,
         "archetypes": [
           {
-            "pt": "Base",
-            "en": "Base"
+            "pt": "Valor",
+            "en": "Value"
           },
           {
-            "pt": "Ramp",
-            "en": "Ramp"
+            "pt": "Criaturas",
+            "en": "Creatures"
           }
         ]
       },
-      "role": 7,
-      "reference": "JOS 1:9",
-      "text": "Este território estabelece base espiritual e prepara recursos para turnos decisivos.",
+      "role": 25,
+      "reference": "1SA 16:1",
+      "text": "No início do seu combate, você pode revelar 2 cartas do topo do seu baralho. Se fizer isso, escolha uma carta de personagem com menor custo entre as cartas de personagem reveladas desta forma, coloque-a na sua mão e coloque as demais no fundo do seu baralho em qualquer ordem.",
       "rulings": [
-        "Este território define uma base de jogo e pode alterar a forma como recursos são preparados.",
-        "Territórios sem custo não são pagos como cartas comuns e seguem sua regra própria de implantação."
+        "Se nenhuma carta de personagem for revelada, todas as cartas reveladas vão para o fundo do baralho em qualquer ordem.",
+        "Se houver empate entre personagens de menor custo revelados, você escolhe um deles.",
+        "As cartas são reveladas antes de qualquer escolha ser feita."
       ]
     },
     {
-      "number": "002",
+      "number": "042",
       "collection": 1,
       "type": [
         7
@@ -2644,8 +2350,8 @@
         1
       ],
       "name": {
-        "pt": "Território - Foundations 2",
-        "en": "Territory - Foundations 2"
+        "pt": "Jerusalém, Trono de Sangue",
+        "en": "Jerusalem, Throne of Blood"
       },
       "images": {
         "card": "../assets/cards/Território - Foundations-2.webp",
@@ -2659,35 +2365,40 @@
         "attack": null,
         "resistance": 24
       },
-      "rating": 4.0,
+      "rating": 0,
       "functions": [
-        13,
-        14
+        20,
+        40,
+        54,
+        55,
+        56,
+        77
       ],
       "usage": {
-        "deckCount": 24,
-        "inclusion": 76,
+        "deckCount": 0,
+        "inclusion": 0,
         "archetypes": [
           {
-            "pt": "Base",
-            "en": "Base"
+            "pt": "Midrange",
+            "en": "Midrange"
           },
           {
-            "pt": "Ramp",
-            "en": "Ramp"
+            "pt": "Risco",
+            "en": "Risk"
           }
         ]
       },
-      "role": 7,
-      "reference": "ROM 8:28",
-      "text": "Este território estabelece base espiritual e prepara recursos para turnos decisivos.",
+      "role": 24,
+      "reference": "2SA 5:6-9",
+      "text": "Se, durante o combate, dano seria causado ao seu território, em vez disso, aquela quantidade de dano +1 é causada ao seu território.\nDurante o combate, toda vez que um ou mais personagens que você controla causarem dano de combate a um território oponente, cure 2 de dano do seu território.",
       "rulings": [
-        "Este território define uma base de jogo e pode alterar a forma como recursos são preparados.",
-        "Territórios sem custo não são pagos como cartas comuns e seguem sua regra própria de implantação."
+        "O primeiro efeito é um efeito de substituição e não desencadeia repetidamente sobre o próprio dano aumentado.",
+        "A habilidade de cura desencadeia uma vez para cada evento em que um ou mais personagens que você controla causam dano de combate a um território oponente.",
+        "Dano não combatente causado a território oponente não desencadeia a segunda habilidade."
       ]
     },
     {
-      "number": "003",
+      "number": "043",
       "collection": 1,
       "type": [
         7
@@ -2696,8 +2407,8 @@
         1
       ],
       "name": {
-        "pt": "Território - Foundations 3",
-        "en": "Territory - Foundations 3"
+        "pt": "Vale de Elá",
+        "en": "Valley of Elah"
       },
       "images": {
         "card": "../assets/cards/Território - Foundations-3.webp",
@@ -2711,35 +2422,37 @@
         "attack": null,
         "resistance": 16
       },
-      "rating": 4.0,
+      "rating": 0,
       "functions": [
-        13,
-        14
+        35,
+        54,
+        74
       ],
       "usage": {
-        "deckCount": 26,
-        "inclusion": 81,
+        "deckCount": 0,
+        "inclusion": 0,
         "archetypes": [
           {
-            "pt": "Base",
-            "en": "Base"
+            "pt": "Aggro",
+            "en": "Aggro"
           },
           {
-            "pt": "Ramp",
-            "en": "Ramp"
+            "pt": "Ataque solo",
+            "en": "Solo attack"
           }
         ]
       },
-      "role": 7,
-      "reference": "JAS 1:5",
-      "text": "Este território estabelece base espiritual e prepara recursos para turnos decisivos.",
+      "role": 23,
+      "reference": "1SA 17:2",
+      "text": "Toda vez que você declarar ataque com exatamente um personagem, aquele personagem recebe +2/+0 até o fim do turno.",
       "rulings": [
-        "Este território define uma base de jogo e pode alterar a forma como recursos são preparados.",
-        "Territórios sem custo não são pagos como cartas comuns e seguem sua regra própria de implantação."
+        "A habilidade verifica quantos personagens foram declarados atacantes naquela declaração de atacantes.",
+        "Personagens que entram já atacando depois da declaração não alteram se a habilidade desencadeou.",
+        "O bônus dura até o fim do turno e se aplica apenas ao personagem declarado atacante."
       ]
     },
     {
-      "number": "004",
+      "number": "044",
       "collection": 1,
       "type": [
         7
@@ -2748,8 +2461,8 @@
         1
       ],
       "name": {
-        "pt": "Território - Foundations 4",
-        "en": "Territory - Foundations 4"
+        "pt": "Deserto da Provação",
+        "en": "Desert of Trial"
       },
       "images": {
         "card": "../assets/cards/Território - Foundations-4.webp",
@@ -2761,33 +2474,505 @@
       ],
       "stats": {
         "attack": null,
-        "resistance": 18
+        "resistance": 20
       },
-      "rating": 3.5,
+      "rating": 0,
       "functions": [
-        13,
-        14
+        8,
+        20,
+        21,
+        56,
+        77,
+        78
       ],
       "usage": {
-        "deckCount": 28,
-        "inclusion": 82,
+        "deckCount": 0,
+        "inclusion": 0,
         "archetypes": [
           {
-            "pt": "Base",
-            "en": "Base"
+            "pt": "Valor",
+            "en": "Value"
           },
           {
-            "pt": "Ramp",
-            "en": "Ramp"
+            "pt": "Risco",
+            "en": "Risk"
           }
         ]
       },
-      "role": 7,
-      "reference": "PHP 4:13",
-      "text": "Este território estabelece base espiritual e prepara recursos para turnos decisivos.",
+      "role": 25,
+      "reference": "1SA 23:14",
+      "text": "No início do seu combate, escolha um —\n(a) descarte uma carta e cure 2 de dano do seu território; ou\n(b) compre 1 carta e cause 2 de dano ao seu território.",
       "rulings": [
-        "Este território define uma base de jogo e pode alterar a forma como recursos são preparados.",
-        "Territórios sem custo não são pagos como cartas comuns e seguem sua regra própria de implantação."
+        "Você escolhe o modo quando a habilidade vai para a pilha.",
+        "Se escolher o primeiro modo e não tiver cartas na mão, você ainda cura 2 de dano do território se possível.",
+        "Se escolher o segundo modo, compre antes de causar dano ao próprio território."
+      ]
+    },
+    {
+      "number": "045",
+      "collection": 1,
+      "type": [
+        2
+      ],
+      "subtype": [
+        1
+      ],
+      "name": {
+        "pt": "Davi, Ungido e Rei",
+        "en": "David, Anointed and King"
+      },
+      "images": {
+        "card": "../assets/cards/Campeão - Foundations-1.webp",
+        "art": "../assets/imgs/Campeão - Foundations-1 - img.webp"
+      },
+      "virtues": [
+        1,
+        1,
+        1,
+        6
+      ],
+      "cost": [
+        "-"
+      ],
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [
+        35,
+        50,
+        51,
+        52,
+        53,
+        77,
+        82
+      ],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": [
+          {
+            "pt": "Midrange",
+            "en": "Midrange"
+          },
+          {
+            "pt": "Valor",
+            "en": "Value"
+          }
+        ]
+      },
+      "role": 26,
+      "reference": "1SA 16:13",
+      "text": "Fé Nv3 — Até o fim do turno, um personagem alvo que você controla recebe +1/+1. Reduza em 1 uma Desvirtude à sua escolha.\nIniquidade Nv1 — Compre 2 cartas e cause 4 de dano ao seu território.",
+      "rulings": [
+        "A habilidade de Fé exige que você tenha Fé Nv3 ou maior no momento da ativação.",
+        "Reduzir uma Desvirtude em 1 move o eixo moral na direção da Virtude correspondente.",
+        "A habilidade de Iniquidade compra duas cartas antes de causar 4 de dano ao seu território."
+      ]
+    },
+    {
+      "number": "046",
+      "collection": 1,
+      "type": [
+        2
+      ],
+      "subtype": [
+        1
+      ],
+      "name": {
+        "pt": "Golias, o Gigante Profano",
+        "en": "Goliath, the Profane Giant"
+      },
+      "images": {
+        "card": "../assets/cards/Campeão - Foundations-2.webp",
+        "art": "../assets/imgs/Campeão - Foundations-2 - img.webp"
+      },
+      "virtues": [
+        2,
+        12,
+        12
+      ],
+      "cost": [
+        "-"
+      ],
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [
+        31,
+        32,
+        47,
+        52,
+        53
+      ],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": [
+          {
+            "pt": "Controle",
+            "en": "Control"
+          },
+          {
+            "pt": "Midrange",
+            "en": "Midrange"
+          }
+        ]
+      },
+      "role": 27,
+      "reference": "1SA 17:10",
+      "text": "Dúvida Nv1 — Desative um personagem alvo com poder 2 ou menos.\nInsensatez Nv2 — Escolha um personagem que você controla e outro personagem alvo. Esses personagens lutam entre si.",
+      "rulings": [
+        "A habilidade de Dúvida verifica o poder do alvo tanto na ativação quanto na resolução.",
+        "Na habilidade de Insensatez, o personagem que você controla e o outro personagem alvo causam dano igual ao próprio poder um ao outro.",
+        "Dano causado por luta não é dano de combate."
+      ]
+    },
+    {
+      "number": "047",
+      "collection": 1,
+      "type": [
+        2
+      ],
+      "subtype": [
+        1
+      ],
+      "name": {
+        "pt": "Samuel, Profeta do Ungido",
+        "en": "Samuel, Prophet of the Anointed"
+      },
+      "images": {
+        "card": "../assets/cards/Campeão - Foundations-3.webp",
+        "art": "../assets/imgs/Campeão - Foundations-3 - img.webp"
+      },
+      "virtues": [
+        1,
+        9,
+        9,
+        9
+      ],
+      "cost": [
+        "-"
+      ],
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [
+        18,
+        20,
+        51,
+        53,
+        86
+      ],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": [
+          {
+            "pt": "Controle",
+            "en": "Control"
+          },
+          {
+            "pt": "Suporte",
+            "en": "Support"
+          }
+        ]
+      },
+      "role": 28,
+      "reference": "1SA 16:12",
+      "text": "Fé Nv1 — Você pode revelar da sua mão uma carta de personagem com custo menor que o custo de um personagem que você controla. Se fizer isso, cure 2 de dano do seu território.\nEsperança Nv3 — Cure 1 de dano de cada personagem que você controla.",
+      "rulings": [
+        "A habilidade de Fé compara o custo da carta revelada com o custo de um personagem que você controla no momento da resolução.",
+        "Você só cura 2 de dano do território se revelar uma carta que satisfaça a condição.",
+        "A habilidade de Esperança cura simultaneamente cada personagem que você controla até o máximo de 1 dano de cada um."
+      ]
+    },
+    {
+      "number": "048",
+      "collection": 1,
+      "type": [
+        2
+      ],
+      "subtype": [
+        1
+      ],
+      "name": {
+        "pt": "Saul, Rei Rejeitado",
+        "en": "Saul, Rejected King"
+      },
+      "images": {
+        "card": "../assets/cards/Campeão - Foundations-4.webp",
+        "art": "../assets/imgs/Campeão - Foundations-4 - img.webp"
+      },
+      "virtues": [
+        7,
+        7,
+        10
+      ],
+      "cost": [
+        "-"
+      ],
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [
+        29,
+        33,
+        34,
+        35,
+        51,
+        52,
+        53,
+        94
+      ],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": [
+          {
+            "pt": "Aggro",
+            "en": "Aggro"
+          },
+          {
+            "pt": "Midrange",
+            "en": "Midrange"
+          }
+        ]
+      },
+      "role": 26,
+      "reference": "1SA 15:26",
+      "text": "Fortaleza Nv2 — O personagem alvo recebe +2/+0 e SOBREPUJAR até o fim do turno.\nDesespero Nv1 — Sacrifique um personagem: um personagem alvo recebe +3/+0 e IMBLOQUEÁVEL até o fim do turno.",
+      "rulings": [
+        "A habilidade de Fortaleza concede SOBREPUJAR apenas até o fim do turno.",
+        "Na habilidade de Desespero, sacrificar um personagem faz parte do custo da habilidade.",
+        "O personagem sacrificado para pagar o custo não precisa ser o personagem que receberá +3/+0 e IMBLOQUEÁVEL."
+      ]
+    },
+    {
+      "number": "049",
+      "collection": 1,
+      "type": [
+        6
+      ],
+      "subtype": [
+        1
+      ],
+      "name": {
+        "pt": "Altar da Aliança Renovada",
+        "en": "Altar of the Renewed Covenant"
+      },
+      "images": {
+        "card": "../assets/cards/Templo - Foundations-1.webp",
+        "art": "../assets/imgs/Templo - Foundations-1 - img.webp"
+      },
+      "virtues": [],
+      "cost": [
+        "-"
+      ],
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [
+        50,
+        57,
+        95
+      ],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": [
+          {
+            "pt": "Valor",
+            "en": "Value"
+          },
+          {
+            "pt": "Consagração",
+            "en": "Consecration"
+          }
+        ]
+      },
+      "role": 29,
+      "reference": "JOS 24:25",
+      "text": "Durante sua etapa de Consagração, além de Consagrar, Profanar ou não realizar nenhuma dessas ações, você pode colocar três cartas da sua mão no fundo do seu baralho. Se fizer isso, escolha uma característica e aplique +1 ou -1 a ela.",
+      "rulings": [
+        "Esta é uma ação adicional da etapa de Consagração; ela não substitui Consagrar, Profanar ou não realizar nenhuma dessas ações.",
+        "A característica escolhida segue as regras de eixos morais; aplicar +1 a uma Virtude pode reduzir primeiro a Desvirtude oposta.",
+        "Você não pode escolher uma alteração que não possa modificar legalmente nenhum eixo moral."
+      ]
+    },
+    {
+      "number": "050",
+      "collection": 1,
+      "type": [
+        6
+      ],
+      "subtype": [
+        1
+      ],
+      "name": {
+        "pt": "Santuário do Julgamento",
+        "en": "Sanctuary of Judgment"
+      },
+      "images": {
+        "card": "../assets/cards/Templo - Foundations-2.webp",
+        "art": "../assets/imgs/Templo - Foundations-2 - img.webp"
+      },
+      "virtues": [],
+      "cost": [
+        "-"
+      ],
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [
+        50,
+        57,
+        59
+      ],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": [
+          {
+            "pt": "Consagração",
+            "en": "Consecration"
+          },
+          {
+            "pt": "Valor",
+            "en": "Value"
+          }
+        ]
+      },
+      "role": 29,
+      "reference": "PSA 9:7",
+      "text": "Quando você consagrar uma carta de personagem, você pode colocar uma carta da sua mão no fundo do seu baralho. Se fizer isso, a alteração de característica da Consagração é de 2 em vez de 1.",
+      "rulings": [
+        "Este efeito substitui apenas o valor da alteração de característica da Consagração, não o efeito por tipo da carta consagrada.",
+        "Se a alteração de 2 mover o eixo além do Nv4 no polo escolhido, o polo fica em Nv4 e o excedente é ignorado.",
+        "A carta colocada no fundo do baralho é escolhida e movida quando a habilidade resolve."
+      ]
+    },
+    {
+      "number": "051",
+      "collection": 1,
+      "type": [
+        6
+      ],
+      "subtype": [
+        1
+      ],
+      "name": {
+        "pt": "Tenda da Presença",
+        "en": "Tent of the Presence"
+      },
+      "images": {
+        "card": "../assets/cards/Templo - Foundations-3.webp",
+        "art": "../assets/imgs/Templo - Foundations-3 - img.webp"
+      },
+      "virtues": [],
+      "cost": [
+        "-"
+      ],
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [
+        21,
+        42,
+        57,
+        59,
+        81,
+        95
+      ],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": [
+          {
+            "pt": "Consagração",
+            "en": "Consecration"
+          },
+          {
+            "pt": "Filtro",
+            "en": "Filtering"
+          }
+        ]
+      },
+      "role": 29,
+      "reference": "EXD 33:7",
+      "text": "Quando você consagrar uma carta, você pode escolher não aplicar o efeito correspondente ao tipo daquela carta. Se fizer isso, compre 1 carta, depois descarte 1 carta.",
+      "rulings": [
+        "Você ainda coloca a carta consagrada na zona de Essência normalmente.",
+        "Apenas o efeito correspondente ao tipo da carta é substituído; o ajuste moral da Consagração ainda acontece.",
+        "Você compra antes de descartar."
+      ]
+    },
+    {
+      "number": "052",
+      "collection": 1,
+      "type": [
+        6
+      ],
+      "subtype": [
+        1
+      ],
+      "name": {
+        "pt": "Altar do Pecado Oculto",
+        "en": "Altar of Hidden Sin"
+      },
+      "images": {
+        "card": "../assets/cards/Templo - Foundations-4.webp",
+        "art": "../assets/imgs/Templo - Foundations-4 - img.webp"
+      },
+      "virtues": [],
+      "cost": [
+        "-"
+      ],
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [
+        49,
+        58,
+        77,
+        78
+      ],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": [
+          {
+            "pt": "Profanação",
+            "en": "Profanation"
+          },
+          {
+            "pt": "Risco",
+            "en": "Risk"
+          }
+        ]
+      },
+      "role": 30,
+      "reference": "PSA 19:12",
+      "text": "Sempre que você Profanar durante sua etapa de Consagração, cause 3 de dano ao seu território. A próxima carta que você jogar neste turno custa {3} a menos.",
+      "rulings": [
+        "A habilidade é obrigatória sempre que você Profanar durante sua etapa de Consagração.",
+        "O dano ao território acontece antes da redução de custo ser criada.",
+        "A redução é consumida pela próxima carta que você jogar neste turno, mesmo que essa carta seja anulada."
       ]
     }
   ]

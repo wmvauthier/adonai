@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-05-29",
+  "updatedAt": "2026-05-30",
   "roles": [
     {
       "id": 1,
@@ -49,6 +49,237 @@
       "name": {
         "pt": "Base de recursos",
         "en": "Resource base"
+      }
+    },
+    {
+      "id": 8,
+      "name": {
+        "pt": "Remoção pontual",
+        "en": "Spot removal"
+      }
+    },
+    {
+      "id": 9,
+      "name": {
+        "pt": "Limpeza de mesa",
+        "en": "Board wipe"
+      }
+    },
+    {
+      "id": 10,
+      "name": {
+        "pt": "Bomba de combate",
+        "en": "Combat trick"
+      }
+    },
+    {
+      "id": 11,
+      "name": {
+        "pt": "Motor de compra",
+        "en": "Draw engine"
+      }
+    },
+    {
+      "id": 12,
+      "name": {
+        "pt": "Tutor",
+        "en": "Tutor"
+      }
+    },
+    {
+      "id": 13,
+      "name": {
+        "pt": "Acelerador de recursos",
+        "en": "Resource accelerator"
+      }
+    },
+    {
+      "id": 14,
+      "name": {
+        "pt": "Protetor",
+        "en": "Protector"
+      }
+    },
+    {
+      "id": 15,
+      "name": {
+        "pt": "Gerador de fichas",
+        "en": "Token maker"
+      }
+    },
+    {
+      "id": 16,
+      "name": {
+        "pt": "Peça de tempo",
+        "en": "Tempo piece"
+      }
+    },
+    {
+      "id": 17,
+      "name": {
+        "pt": "Peça de controle",
+        "en": "Control piece"
+      }
+    },
+    {
+      "id": 18,
+      "name": {
+        "pt": "Recursão",
+        "en": "Recursion"
+      }
+    },
+    {
+      "id": 19,
+      "name": {
+        "pt": "Disruptor de mão",
+        "en": "Hand disruptor"
+      }
+    },
+    {
+      "id": 20,
+      "name": {
+        "pt": "Peça de sacrifício",
+        "en": "Sacrifice piece"
+      }
+    },
+    {
+      "id": 21,
+      "name": {
+        "pt": "Ameaça evasiva",
+        "en": "Evasive threat"
+      }
+    },
+    {
+      "id": 22,
+      "name": {
+        "pt": "Ameaça Voltron",
+        "en": "Voltron threat"
+      }
+    },
+    {
+      "id": 23,
+      "name": {
+        "pt": "Território agressivo",
+        "en": "Aggressive territory"
+      }
+    },
+    {
+      "id": 24,
+      "name": {
+        "pt": "Território defensivo",
+        "en": "Defensive territory"
+      }
+    },
+    {
+      "id": 25,
+      "name": {
+        "pt": "Território de valor",
+        "en": "Value territory"
+      }
+    },
+    {
+      "id": 26,
+      "name": {
+        "pt": "Campeão de pressão",
+        "en": "Pressure champion"
+      }
+    },
+    {
+      "id": 27,
+      "name": {
+        "pt": "Campeão de controle",
+        "en": "Control champion"
+      }
+    },
+    {
+      "id": 28,
+      "name": {
+        "pt": "Campeão de suporte",
+        "en": "Support champion"
+      }
+    },
+    {
+      "id": 29,
+      "name": {
+        "pt": "Motor de Consagração",
+        "en": "Consecration engine"
+      }
+    },
+    {
+      "id": 30,
+      "name": {
+        "pt": "Motor de Profanação",
+        "en": "Profanation engine"
+      }
+    },
+    {
+      "id": 31,
+      "name": {
+        "pt": "Estabilizador de mesa",
+        "en": "Board stabilizer"
+      }
+    },
+    {
+      "id": 32,
+      "name": {
+        "pt": "Payoff de equipamento",
+        "en": "Equipment payoff"
+      }
+    },
+    {
+      "id": 33,
+      "name": {
+        "pt": "Peça de combo",
+        "en": "Combo piece"
+      }
+    },
+    {
+      "id": 34,
+      "name": {
+        "pt": "Slot flexível",
+        "en": "Flex slot"
+      }
+    },
+    {
+      "id": 35,
+      "name": {
+        "pt": "Payoff de estratégia larga",
+        "en": "Go-wide payoff"
+      }
+    },
+    {
+      "id": 36,
+      "name": {
+        "pt": "Ódio a criatura grande",
+        "en": "Big-creature hoser"
+      }
+    },
+    {
+      "id": 37,
+      "name": {
+        "pt": "Ódio a criatura pequena",
+        "en": "Small-creature hoser"
+      }
+    },
+    {
+      "id": 38,
+      "name": {
+        "pt": "Habilitador moral",
+        "en": "Moral enabler"
+      }
+    },
+    {
+      "id": 39,
+      "name": {
+        "pt": "Conversor de risco",
+        "en": "Risk converter"
+      }
+    },
+    {
+      "id": 40,
+      "name": {
+        "pt": "Peça de identidade",
+        "en": "Identity piece"
       }
     }
   ]
