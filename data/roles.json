@@ -68,7 +68,7 @@
     {
       "id": 10,
       "name": {
-        "pt": "Bomba de combate",
+        "pt": "Truque de combate",
         "en": "Combat trick"
       }
     },
@@ -124,8 +124,8 @@
     {
       "id": 18,
       "name": {
-        "pt": "Recursão",
-        "en": "Recursion"
+        "pt": "Peça de recursão",
+        "en": "Recursion piece"
       }
     },
     {
@@ -152,8 +152,8 @@
     {
       "id": 22,
       "name": {
-        "pt": "Ameaça Voltron",
-        "en": "Voltron threat"
+        "pt": "Ameaça equipada",
+        "en": "Equipment threat"
       }
     },
     {
@@ -229,57 +229,50 @@
     {
       "id": 33,
       "name": {
-        "pt": "Peça de combo",
-        "en": "Combo piece"
-      }
-    },
-    {
-      "id": 34,
-      "name": {
-        "pt": "Slot flexível",
-        "en": "Flex slot"
-      }
-    },
-    {
-      "id": 35,
-      "name": {
-        "pt": "Payoff de estratégia larga",
-        "en": "Go-wide payoff"
-      }
-    },
-    {
-      "id": 36,
-      "name": {
-        "pt": "Ódio a criatura grande",
-        "en": "Big-creature hoser"
-      }
-    },
-    {
-      "id": 37,
-      "name": {
-        "pt": "Ódio a criatura pequena",
-        "en": "Small-creature hoser"
-      }
-    },
-    {
-      "id": 38,
-      "name": {
         "pt": "Habilitador moral",
         "en": "Moral enabler"
       }
     },
     {
-      "id": 39,
+      "id": 34,
       "name": {
         "pt": "Conversor de risco",
         "en": "Risk converter"
       }
     },
     {
-      "id": 40,
+      "id": 35,
       "name": {
         "pt": "Peça de identidade",
         "en": "Identity piece"
+      }
+    },
+    {
+      "id": 36,
+      "name": {
+        "pt": "Resposta a ameaça grande",
+        "en": "Large-threat answer"
+      }
+    },
+    {
+      "id": 37,
+      "name": {
+        "pt": "Resposta a ameaça pequena",
+        "en": "Small-threat answer"
+      }
+    },
+    {
+      "id": 38,
+      "name": {
+        "pt": "Ameaça grande",
+        "en": "Large threat"
+      }
+    },
+    {
+      "id": 39,
+      "name": {
+        "pt": "Ameaça eficiente",
+        "en": "Efficient threat"
       }
     }
   ]

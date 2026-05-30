@@ -40,8 +40,8 @@
     {
       "id": 6,
       "name": {
-        "pt": "Virada",
-        "en": "Swing"
+        "pt": "Virada de tempo",
+        "en": "Tempo swing"
       }
     },
     {
@@ -61,8 +61,8 @@
     {
       "id": 9,
       "name": {
-        "pt": "Presença",
-        "en": "Presence"
+        "pt": "Presença de mesa",
+        "en": "Board presence"
       }
     },
     {
@@ -89,43 +89,43 @@
     {
       "id": 13,
       "name": {
-        "pt": "Base",
-        "en": "Base"
+        "pt": "Base de recursos",
+        "en": "Resource base"
       }
     },
     {
       "id": 14,
       "name": {
-        "pt": "Recursos",
-        "en": "Resources"
+        "pt": "Geração de recurso",
+        "en": "Resource generation"
       }
     },
     {
       "id": 15,
+      "name": {
+        "pt": "Aceleração de recurso",
+        "en": "Ramp"
+      }
+    },
+    {
+      "id": 16,
       "name": {
         "pt": "Remoção pontual",
         "en": "Spot removal"
       }
     },
     {
-      "id": 16,
+      "id": 17,
       "name": {
         "pt": "Remoção em massa",
         "en": "Board wipe"
       }
     },
     {
-      "id": 17,
+      "id": 18,
       "name": {
         "pt": "Dano direto",
         "en": "Direct damage"
-      }
-    },
-    {
-      "id": 18,
-      "name": {
-        "pt": "Proteção",
-        "en": "Protection"
       }
     },
     {
@@ -138,176 +138,176 @@
     {
       "id": 20,
       "name": {
+        "pt": "Proteção",
+        "en": "Protection"
+      }
+    },
+    {
+      "id": 21,
+      "name": {
         "pt": "Cura",
         "en": "Healing"
       }
     },
     {
-      "id": 21,
+      "id": 22,
       "name": {
         "pt": "Compra de cartas",
         "en": "Card draw"
       }
     },
     {
-      "id": 22,
+      "id": 23,
       "name": {
         "pt": "Seleção de cartas",
         "en": "Card selection"
       }
     },
     {
-      "id": 23,
+      "id": 24,
       "name": {
         "pt": "Tutor",
         "en": "Tutor"
       }
     },
     {
-      "id": 24,
+      "id": 25,
+      "name": {
+        "pt": "Acesso à Reserva",
+        "en": "Reserve access"
+      }
+    },
+    {
+      "id": 26,
       "name": {
         "pt": "Recursão",
         "en": "Recursion"
       }
     },
     {
-      "id": 25,
+      "id": 27,
       "name": {
         "pt": "Retorno à mão",
         "en": "Bounce"
       }
     },
     {
-      "id": 26,
+      "id": 28,
       "name": {
         "pt": "Anulação",
         "en": "Counterspell"
       }
     },
     {
-      "id": 27,
-      "name": {
-        "pt": "Aceleração de recursos",
-        "en": "Ramp"
-      }
-    },
-    {
-      "id": 28,
+      "id": 29,
       "name": {
         "pt": "Geração de fichas",
         "en": "Token generation"
       }
     },
     {
-      "id": 29,
+      "id": 30,
       "name": {
         "pt": "Sacrifício",
         "en": "Sacrifice"
       }
     },
     {
-      "id": 30,
+      "id": 31,
       "name": {
         "pt": "Controle temporário",
         "en": "Temporary control"
       }
     },
     {
-      "id": 31,
+      "id": 32,
       "name": {
         "pt": "Luta",
         "en": "Fight"
       }
     },
     {
-      "id": 32,
+      "id": 33,
       "name": {
         "pt": "Desativação",
         "en": "Tapdown"
       }
     },
     {
-      "id": 33,
+      "id": 34,
       "name": {
         "pt": "Evasão",
         "en": "Evasion"
       }
     },
     {
-      "id": 34,
+      "id": 35,
       "name": {
         "pt": "Sobrepujar",
         "en": "Trample"
       }
     },
     {
-      "id": 35,
+      "id": 36,
       "name": {
         "pt": "Aumento de poder/resistência",
         "en": "Pump"
       }
     },
     {
-      "id": 36,
+      "id": 37,
       "name": {
         "pt": "Truque de combate",
         "en": "Combat trick"
       }
     },
     {
-      "id": 37,
-      "name": {
-        "pt": "Sinergia com equipamentos",
-        "en": "Equipment synergy"
-      }
-    },
-    {
       "id": 38,
       "name": {
-        "pt": "Antífona",
-        "en": "Anthem"
+        "pt": "Sinergia com equipamento",
+        "en": "Equipment synergy"
       }
     },
     {
       "id": 39,
       "name": {
-        "pt": "Punição de entrada",
-        "en": "Enter-the-battlefield punishment"
+        "pt": "Fortalecimento global",
+        "en": "Anthem"
       }
     },
     {
       "id": 40,
       "name": {
-        "pt": "Punição de território",
-        "en": "Territory punishment"
+        "pt": "Punição de entrada",
+        "en": "Entry punishment"
       }
     },
     {
       "id": 41,
+      "name": {
+        "pt": "Dano a território",
+        "en": "Territory damage"
+      }
+    },
+    {
+      "id": 42,
       "name": {
         "pt": "Revelação de mão",
         "en": "Hand reveal"
       }
     },
     {
-      "id": 42,
+      "id": 43,
       "name": {
         "pt": "Descarte",
         "en": "Discard"
       }
     },
     {
-      "id": 43,
+      "id": 44,
       "name": {
         "pt": "Manipulação do topo",
         "en": "Topdeck manipulation"
-      }
-    },
-    {
-      "id": 44,
-      "name": {
-        "pt": "Preparação de compra",
-        "en": "Draw setup"
       }
     },
     {
@@ -320,15 +320,15 @@
     {
       "id": 46,
       "name": {
-        "pt": "Ódio a ameaças grandes",
-        "en": "Big-creature hate"
+        "pt": "Resposta a ameaça grande",
+        "en": "Large-threat answer"
       }
     },
     {
       "id": 47,
       "name": {
-        "pt": "Ódio a ameaças pequenas",
-        "en": "Small-creature hate"
+        "pt": "Resposta a ameaça pequena",
+        "en": "Small-threat answer"
       }
     },
     {
@@ -376,8 +376,8 @@
     {
       "id": 54,
       "name": {
-        "pt": "Agressão de território",
-        "en": "Territory aggression"
+        "pt": "Pressão de território",
+        "en": "Territory pressure"
       }
     },
     {
@@ -418,260 +418,127 @@
     {
       "id": 60,
       "name": {
-        "pt": "Acesso à Reserva",
-        "en": "Reserve access"
-      }
-    },
-    {
-      "id": 61,
-      "name": {
-        "pt": "Tutor universal",
-        "en": "Universal tutor"
-      }
-    },
-    {
-      "id": 62,
-      "name": {
-        "pt": "Limpeza de campo",
-        "en": "Field reset"
-      }
-    },
-    {
-      "id": 63,
-      "name": {
         "pt": "Taxação",
         "en": "Taxing"
       }
     },
     {
-      "id": 64,
+      "id": 61,
       "name": {
         "pt": "Ameaça grande",
         "en": "Large threat"
       }
     },
     {
-      "id": 65,
+      "id": 62,
       "name": {
         "pt": "Ameaça eficiente",
         "en": "Efficient threat"
       }
     },
     {
-      "id": 66,
-      "name": {
-        "pt": "Geração de Essência",
-        "en": "Essence generation"
-      }
-    },
-    {
-      "id": 67,
+      "id": 63,
       "name": {
         "pt": "Velocidade aberta",
         "en": "Open-speed play"
       }
     },
     {
-      "id": 68,
-      "name": {
-        "pt": "Tempo",
-        "en": "Tempo"
-      }
-    },
-    {
-      "id": 69,
-      "name": {
-        "pt": "Defesa",
-        "en": "Defense"
-      }
-    },
-    {
-      "id": 70,
-      "name": {
-        "pt": "Voltron",
-        "en": "Voltron"
-      }
-    },
-    {
-      "id": 71,
-      "name": {
-        "pt": "Recompensa de sacrifício",
-        "en": "Sacrifice payoff"
-      }
-    },
-    {
-      "id": 72,
-      "name": {
-        "pt": "Recompensa de morte",
-        "en": "Death payoff"
-      }
-    },
-    {
-      "id": 73,
+      "id": 64,
       "name": {
         "pt": "Controle de combate",
         "en": "Combat control"
       }
     },
     {
-      "id": 74,
+      "id": 65,
       "name": {
         "pt": "Ataque solo",
         "en": "Solo attack"
       }
     },
     {
-      "id": 75,
-      "name": {
-        "pt": "Estratégia larga",
-        "en": "Go-wide"
-      }
-    },
-    {
-      "id": 76,
-      "name": {
-        "pt": "Payoff de equipamento",
-        "en": "Equipment payoff"
-      }
-    },
-    {
-      "id": 77,
+      "id": 66,
       "name": {
         "pt": "Dano próprio",
         "en": "Self-damage"
       }
     },
     {
-      "id": 78,
+      "id": 67,
       "name": {
         "pt": "Compra com risco",
         "en": "Risk draw"
       }
     },
     {
-      "id": 79,
-      "name": {
-        "pt": "Finisher",
-        "en": "Finisher"
-      }
-    },
-    {
-      "id": 80,
+      "id": 68,
       "name": {
         "pt": "Estabilização",
         "en": "Stabilization"
       }
     },
     {
-      "id": 81,
+      "id": 69,
       "name": {
         "pt": "Filtro",
         "en": "Filtering"
       }
     },
     {
-      "id": 82,
+      "id": 70,
       "name": {
         "pt": "Vantagem de cartas",
         "en": "Card advantage"
       }
     },
     {
-      "id": 83,
+      "id": 71,
       "name": {
         "pt": "Comando de mesa",
         "en": "Board command"
       }
     },
     {
-      "id": 84,
+      "id": 72,
       "name": {
-        "pt": "Sinergia de Rei",
-        "en": "King synergy"
-      }
-    },
-    {
-      "id": 85,
-      "name": {
-        "pt": "Sinergia de Guerreiro",
-        "en": "Warrior synergy"
-      }
-    },
-    {
-      "id": 86,
-      "name": {
-        "pt": "Sinergia de Profeta",
-        "en": "Prophet synergy"
-      }
-    },
-    {
-      "id": 87,
-      "name": {
-        "pt": "Sinergia de Sacerdote",
-        "en": "Priest synergy"
-      }
-    },
-    {
-      "id": 88,
-      "name": {
-        "pt": "Sinergia de Animal",
-        "en": "Animal synergy"
-      }
-    },
-    {
-      "id": 89,
-      "name": {
-        "pt": "Sinergia de Soldado",
-        "en": "Soldier synergy"
-      }
-    },
-    {
-      "id": 90,
-      "name": {
-        "pt": "Sinergia de ficha",
+        "pt": "Sinergia com fichas",
         "en": "Token synergy"
       }
     },
     {
-      "id": 91,
-      "name": {
-        "pt": "Incenso",
-        "en": "Incense"
-      }
-    },
-    {
-      "id": 92,
+      "id": 73,
       "name": {
         "pt": "Resposta condicional",
         "en": "Conditional answer"
       }
     },
     {
-      "id": 93,
+      "id": 74,
       "name": {
-        "pt": "Ameaça inevitável",
-        "en": "Inevitable threat"
+        "pt": "Ameaça evasiva",
+        "en": "Evasive threat"
       }
     },
     {
-      "id": 94,
-      "name": {
-        "pt": "Pressão evasiva",
-        "en": "Evasive pressure"
-      }
-    },
-    {
-      "id": 95,
+      "id": 75,
       "name": {
         "pt": "Reorganização de mão",
         "en": "Hand smoothing"
       }
     },
     {
-      "id": 96,
+      "id": 76,
       "name": {
-        "pt": "Setup de cemitério",
-        "en": "Graveyard setup"
+        "pt": "Restrição de equipamento",
+        "en": "Equipment restriction"
+      }
+    },
+    {
+      "id": 77,
+      "name": {
+        "pt": "Restrição de bloqueio",
+        "en": "Blocking restriction"
       }
     }
   ]
