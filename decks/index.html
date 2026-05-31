@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adonai Card Game — Decks</title>
+  <meta name="description"
+    content="Catálogo dinâmico de decks de Adonai Card Game com filtros, paginação, listas e análises de metagame." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../shared/generic.css" />
+  <link rel="stylesheet" href="./decks.css" />
+</head>
+
+<body>
+  <div class="page-noise" aria-hidden="true"></div>
+
+  <header class="site-header" id="siteHeader">
+    <a href="../index.html" class="brand" aria-label="Adonai Card Game">
+      <img src="../assets/logo/adonai_logo_base-4.webp" alt="Adonai Logo" class="brand-logo" />
+    </a>
+
+    <button class="mobile-toggle" id="mobileToggle" aria-expanded="false" aria-controls="primaryNav">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="site-nav" id="primaryNav">
+      <a href="../index.html" data-pt="Início" data-en="Home">Início</a>
+      <a href="../how-to-play/how-to-play.html" data-pt="Como Jogar" data-en="How to Play">Como Jogar</a>
+      <a href="../cards/" data-pt="Cartas" data-en="Cards">Cartas</a>
+      <a href="./" data-pt="Decks" data-en="Decks">Decks</a>
+      <a href="../index.html#deckbuilder" data-pt="Deckbuilder" data-en="Deckbuilder">Deckbuilder</a>
+      <a href="../how-to-play/how-to-play.html#manual" data-pt="Manual" data-en="Rulebook">Manual</a>
+      <a href="../gallery.html" data-pt="Galeria" data-en="Gallery">Galeria</a>
+      <a href="../lore.html" data-pt="Lore" data-en="Lore">Lore</a>
+      <a href="../index.html#shop" data-pt="Loja" data-en="Shop">Loja</a>
+    </nav>
+
+    <div class="header-actions">
+      <div class="lang-switch" aria-label="Alternar idioma">
+        <button class="lang-btn is-active" data-lang="pt">PT</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <main><br><br><br>
+    <section class="section decks-shell" id="decksCatalog">
+      <div class="container decks-heading reveal">
+        <span class="section-kicker" data-pt="Catálogo de Decks" data-en="Deck Catalog">Catálogo de Decks</span>
+      </div>
+
+      <div class="container decks-layout">
+        <aside class="filters-panel reveal">
+          <div class="filters-panel-head">
+            <span class="section-kicker" data-pt="Filtros" data-en="Filters">Filtros</span>
+          </div>
+
+          <div class="filter-actions">
+            <button class="btn btn-primary" id="clearFilters" data-pt="Limpar filtros" data-en="Clear filters">Limpar
+              filtros</button>
+          </div>
+
+          <div class="search-box">
+            <label for="nameFilter" data-pt="Nome do deck" data-en="Deck name">Nome do deck</label>
+            <input id="nameFilter" type="search" placeholder="Insira aqui o nome" data-pt="Insira aqui o nome"
+              data-en="Type name here" />
+          </div>
+
+          <div class="search-box">
+            <label for="creatorFilter" data-pt="Criador" data-en="Creator">Criador</label>
+            <input id="creatorFilter" type="search" placeholder="Insira aqui o criador" data-pt="Insira aqui o criador"
+              data-en="Type creator here" />
+          </div>
+
+          <div class="filter-group">
+            <label for="championFilter" data-pt="Campeão" data-en="Champion">Campeão</label>
+            <select id="championFilter">
+              <option value="all">Todos</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="territoryFilter" data-pt="Território" data-en="Territory">Território</label>
+            <select id="territoryFilter">
+              <option value="all">Todos</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="templeFilter" data-pt="Templo" data-en="Temple">Templo</label>
+            <select id="templeFilter">
+              <option value="all">Todos</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label data-pt="Custo médio" data-en="Average cost">Custo médio</label>
+            <div class="range-pair">
+              <input id="minAvgCostFilter" type="range" min="0" max="10" step="0.1" value="0" />
+              <input id="maxAvgCostFilter" type="range" min="0" max="10" step="0.1" value="10" />
+            </div>
+            <div class="range-value"><span data-pt="Entre" data-en="Between">Entre</span> <strong
+                id="avgCostValue">0-10</strong></div>
+          </div>
+
+          <div class="filter-group">
+            <label data-pt="Poder médio" data-en="Average power">Poder médio</label>
+            <div class="range-pair">
+              <input id="minAvgPowerFilter" type="range" min="0" max="10" step="0.1" value="0" />
+              <input id="maxAvgPowerFilter" type="range" min="0" max="10" step="0.1" value="10" />
+            </div>
+            <div class="range-value"><span data-pt="Entre" data-en="Between">Entre</span> <strong
+                id="avgPowerValue">0-10</strong></div>
+          </div>
+
+          <div class="filter-group">
+            <label data-pt="Resistência média" data-en="Average resistance">Resistência média</label>
+            <div class="range-pair">
+              <input id="minAvgResistanceFilter" type="range" min="0" max="10" step="0.1" value="0" />
+              <input id="maxAvgResistanceFilter" type="range" min="0" max="10" step="0.1" value="10" />
+            </div>
+            <div class="range-value"><span data-pt="Entre" data-en="Between">Entre</span> <strong
+                id="avgResistanceValue">0-10</strong></div>
+          </div>
+
+          <div class="filter-group virtue-pip-filters">
+            <label data-pt="Pips por característica" data-en="Trait pips">Pips por característica</label>
+            <div class="virtue-pip-filter" data-virtue-pip-filter="0">
+              <img class="virtue-filter-icon" id="virtuePipIcon0" src="../assets/icons/00.webp" alt="" />
+              <select id="virtuePipSelect0">
+                <option value="all">Escolha uma característica</option>
+              </select>
+              <div class="range-pair">
+                <input id="minVirtuePipFilter0" type="range" min="0" max="20" step="1" value="0" />
+                <input id="maxVirtuePipFilter0" type="range" min="0" max="20" step="1" value="20" />
+              </div>
+              <strong id="virtuePipValue0">0-20</strong>
+            </div>
+            <div class="virtue-pip-filter" data-virtue-pip-filter="1">
+              <img class="virtue-filter-icon" id="virtuePipIcon1" src="../assets/icons/00.webp" alt="" />
+              <select id="virtuePipSelect1">
+                <option value="all">Escolha uma característica</option>
+              </select>
+              <div class="range-pair">
+                <input id="minVirtuePipFilter1" type="range" min="0" max="20" step="1" value="0" />
+                <input id="maxVirtuePipFilter1" type="range" min="0" max="20" step="1" value="20" />
+              </div>
+              <strong id="virtuePipValue1">0-20</strong>
+            </div>
+            <div class="virtue-pip-filter" data-virtue-pip-filter="2">
+              <img class="virtue-filter-icon" id="virtuePipIcon2" src="../assets/icons/00.webp" alt="" />
+              <select id="virtuePipSelect2">
+                <option value="all">Escolha uma característica</option>
+              </select>
+              <div class="range-pair">
+                <input id="minVirtuePipFilter2" type="range" min="0" max="20" step="1" value="0" />
+                <input id="maxVirtuePipFilter2" type="range" min="0" max="20" step="1" value="20" />
+              </div>
+              <strong id="virtuePipValue2">0-20</strong>
+            </div>
+          </div>
+        </aside>
+
+        <div class="decks-main">
+          <section class="decks-tools reveal" aria-label="Resumo dos decks">
+            <div class="decks-tools-top">
+              <div class="decks-tools-summary">
+                <div class="results-count" id="resultsCount"></div>
+                <div class="active-filters" id="activeFilters"></div>
+              </div>
+              <div class="decks-tools-controls">
+                <div class="decks-tools-control">
+                  <label for="sortSelect" data-pt="Ordenação" data-en="Sort">Ordenação</label>
+                  <select id="sortSelect">
+                    <option value="name-asc" data-pt="Nome A-Z" data-en="Name A-Z">Nome A-Z</option>
+                    <option value="cards-desc" data-pt="Mais cartas" data-en="Most cards">Mais cartas</option>
+                    <option value="cost-asc" data-pt="Menor custo médio" data-en="Lowest avg cost">Menor custo médio</option>
+                    <option value="cost-desc" data-pt="Maior custo médio" data-en="Highest avg cost">Maior custo médio</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div class="decks-grid" id="decksGrid"></div>
+
+          <div class="pagination-shell reveal" id="pagination"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <aside class="deck-drawer" id="deckDrawer" aria-hidden="true">
+    <div class="drawer-backdrop" id="drawerBackdrop"></div>
+    <div class="drawer-panel">
+      <button class="drawer-close" id="drawerClose" aria-label="Fechar detalhes">×</button>
+      <div class="drawer-inner" id="drawerContent"></div>
+    </div>
+  </aside>
+  <div class="hover-preview" id="hoverPreview" aria-hidden="true"></div>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="footer-brand-wrap">
+          <img src="../assets/logo/adonai_logo_base-4.webp" alt="Adonai Logo" class="footer-logo" />
+          <span class="footer-brand">Adonai Card Game</span>
+        </div>
+        <p data-pt="Um card game bíblico competitivo sobre escolhas, alianças, consequências e caminhos estratégicos."
+          data-en="A competitive biblical card game about choices, alliances, consequences, and strategic paths.">
+          Um card game bíblico competitivo sobre escolhas, alianças, consequências e caminhos estratégicos.
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <a href="../index.html" data-pt="Início" data-en="Home">Início</a>
+        <a href="../how-to-play/how-to-play.html" data-pt="Como Jogar" data-en="How to Play">Como Jogar</a>
+        <a href="../cards/" data-pt="Cartas" data-en="Cards">Cartas</a>
+        <a href="./" data-pt="Decks" data-en="Decks">Decks</a>
+        <a href="../index.html#deckbuilder" data-pt="Deckbuilder" data-en="Deckbuilder">Deckbuilder</a>
+        <a href="../how-to-play/how-to-play.html#manual" data-pt="Manual" data-en="Rulebook">Manual</a>
+        <a href="../gallery.html" data-pt="Galeria" data-en="Gallery">Galeria</a>
+        <a href="../lore.html" data-pt="Lore" data-en="Lore">Lore</a>
+        <a href="../index.html#shop" data-pt="Loja" data-en="Shop">Loja</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./decks.js"></script>
+</body>
+
+</html>
