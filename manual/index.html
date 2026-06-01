@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adonai Card Game — Manual Completo</title>
+  <meta name="description"
+    content="Manual completo de regras de Adonai Card Game com busca, índice navegável e assistente de regras." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../shared/generic.css" />
+  <link rel="stylesheet" href="./manual.css" />
+</head>
+
+<body>
+  <div class="page-noise" aria-hidden="true"></div>
+
+  <header class="site-header" id="siteHeader">
+    <a href="../index.html" class="brand" aria-label="Adonai Card Game">
+      <img src="../assets/logo/adonai_logo_base-4.webp" alt="Adonai Logo" class="brand-logo" />
+    </a>
+
+    <button class="mobile-toggle" id="mobileToggle" aria-expanded="false" aria-controls="primaryNav"
+      aria-label="Abrir menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="site-nav" id="primaryNav">
+      <a href="../index.html" data-pt="Início" data-en="Home">Início</a>
+      <a href="../how-to-play/how-to-play.html" data-pt="Como Jogar" data-en="How to Play">Como Jogar</a>
+      <a href="../cards/" data-pt="Cartas" data-en="Cards">Cartas</a>
+      <a href="../decks/" data-pt="Decks" data-en="Decks">Decks</a>
+      <a href="../index.html#deckbuilder" data-pt="Deckbuilder" data-en="Deckbuilder">Deckbuilder</a>
+      <a href="./" data-pt="Manual" data-en="Rulebook">Manual</a>
+      <a href="../gallery.html" data-pt="Galeria" data-en="Gallery">Galeria</a>
+      <a href="../lore.html" data-pt="Lore" data-en="Lore">Lore</a>
+      <a href="../index.html#shop" data-pt="Loja" data-en="Shop">Loja</a>
+    </nav>
+
+    <div class="header-actions">
+      <div class="lang-switch" aria-label="Alternar idioma">
+        <button class="lang-btn is-active" data-lang="pt">PT</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section manual-shell">
+      <div class="container manual-heading reveal">
+        <span class="section-kicker" data-pt="Manual Completo" data-en="Complete Rulebook">Manual Completo</span>
+        <!-- <h1 data-pt="Comprehensive Rules" data-en="Comprehensive Rules">Comprehensive Rules</h1> -->
+      </div>
+
+      <div class="container manual-search-panel reveal">
+        <div class="manual-search-main">
+          <div class="manual-query-head">
+            <label for="manualSearch" data-pt="Consulta ao manual" data-en="Rulebook query">Consulta ao manual</label>
+            <div class="manual-mode-toggle" aria-label="Modo de consulta">
+              <button class="manual-mode-btn is-active" id="modeSearch" type="button" data-mode="search"
+                data-pt="Busca" data-en="Search">Busca</button>
+              <button class="manual-mode-btn" id="modeAsk" type="button" data-mode="ask"
+                data-pt="Pergunta" data-en="Ask">Pergunta</button>
+            </div>
+          </div>
+          <div class="manual-search-row">
+            <input id="manualSearch" type="search" placeholder="Busque ou pergunte sobre uma regra..."
+              data-pt="Busque ou pergunte sobre uma regra..."
+              data-en="Search or ask about a rule..." autocomplete="off" />
+            <button class="btn btn-secondary" id="askRules" type="button" data-pt="Consultar" data-en="Ask">Consultar</button>
+            <button class="btn btn-primary" id="clearSearch" type="button" data-pt="Limpar" data-en="Clear">Limpar</button>
+          </div>
+          <p id="manualSummary">Carregando regras...</p>
+        </div>
+      </div>
+
+      <div class="container manual-layout">
+        <aside class="manual-toc reveal" aria-label="Índice do manual">
+          <div class="manual-toc-head">
+            <span class="section-kicker" data-pt="Índice" data-en="Contents">Índice</span>
+          </div>
+          <nav id="manualToc"></nav>
+        </aside>
+
+        <section class="manual-content-shell reveal">
+          <div class="assistant-results" id="assistantResults" hidden></div>
+          <div class="manual-content" id="manualContent" aria-live="polite"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="footer-brand-wrap">
+          <img src="../assets/logo/adonai_logo_base-4.webp" alt="Adonai Logo" class="footer-logo" />
+          <span class="footer-brand">Adonai Card Game</span>
+        </div>
+        <p data-pt="Um card game bíblico competitivo sobre escolhas, alianças, consequências e caminhos estratégicos."
+          data-en="A competitive biblical card game about choices, alliances, consequences, and strategic paths.">
+          Um card game bíblico competitivo sobre escolhas, alianças, consequências e caminhos estratégicos.
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <a href="../index.html" data-pt="Início" data-en="Home">Início</a>
+        <a href="../how-to-play/how-to-play.html" data-pt="Como Jogar" data-en="How to Play">Como Jogar</a>
+        <a href="../cards/" data-pt="Cartas" data-en="Cards">Cartas</a>
+        <a href="../decks/" data-pt="Decks" data-en="Decks">Decks</a>
+        <a href="../index.html#deckbuilder" data-pt="Deckbuilder" data-en="Deckbuilder">Deckbuilder</a>
+        <a href="./" data-pt="Manual" data-en="Rulebook">Manual</a>
+        <a href="../gallery.html" data-pt="Galeria" data-en="Gallery">Galeria</a>
+        <a href="../lore.html" data-pt="Lore" data-en="Lore">Lore</a>
+        <a href="../index.html#shop" data-pt="Loja" data-en="Shop">Loja</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./manual.js"></script>
+</body>
+
+</html>
