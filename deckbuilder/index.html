@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adonai Card Game — Deckbuilder</title>
+  <meta name="description" content="Monte, importe, exporte, gere e analise decks de Adonai Card Game." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../shared/generic.css" />
+  <link rel="stylesheet" href="./deckbuilder.css" />
+</head>
+
+<body>
+  <div class="page-noise" aria-hidden="true"></div>
+
+  <header class="site-header" id="siteHeader">
+    <a href="../index.html" class="brand" aria-label="Adonai Card Game">
+      <img src="../assets/logo/adonai_logo_base-4.webp" alt="Adonai Logo" class="brand-logo" />
+    </a>
+
+    <button class="mobile-toggle" id="mobileToggle" aria-expanded="false" aria-controls="primaryNav"
+      aria-label="Abrir menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="site-nav" id="primaryNav">
+      <a href="../index.html" data-pt="Início" data-en="Home">Início</a>
+      <a href="../how-to-play/" data-pt="Como Jogar" data-en="How to Play">Como Jogar</a>
+      <a href="../cards/" data-pt="Cartas" data-en="Cards">Cartas</a>
+      <a href="../decks/" data-pt="Decks" data-en="Decks">Decks</a>
+      <a href="./" data-pt="Deckbuilder" data-en="Deckbuilder">Deckbuilder</a>
+      <a href="../manual/" data-pt="Manual" data-en="Rulebook">Manual</a>
+      <a href="../gallery/" data-pt="Galeria" data-en="Gallery">Galeria</a>
+      <a href="../lore/" data-pt="Lore" data-en="Lore">Lore</a>
+      <a href="../index.html#shop" data-pt="Loja" data-en="Shop">Loja</a>
+    </nav>
+
+    <div class="header-actions">
+      <div class="lang-switch" aria-label="Alternar idioma">
+        <button class="lang-btn is-active" data-lang="pt">PT</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="deckbuilder-shell">
+    <section class="container deckbuilder-toolbar reveal">
+      <div>
+        <span class="section-kicker" data-pt="Deckbuilder" data-en="Deckbuilder">Deckbuilder</span>
+      </div>
+    </section>
+
+    <section class="container deckbuilder-layout reveal">
+      <aside class="builder-panel catalog-panel">
+        <div class="panel-head">
+          <span class="section-kicker" data-pt="Cartas" data-en="Cards">Cartas</span>
+          <span id="catalogCount">0</span>
+        </div>
+
+        <div class="catalog-filters">
+          <input id="cardSearch" type="search" placeholder="Buscar carta ou texto" data-pt="Buscar carta ou texto"
+            data-en="Search card or text" />
+          <select id="typeFilter"></select>
+          <select id="functionFilter"></select>
+        </div>
+
+        <div class="card-catalog" id="cardCatalog" aria-live="polite"></div>
+      </aside>
+
+      <section class="builder-panel deck-panel">
+        <section class="deck-analysis-board">
+          <div class="analysis-column">
+            <div class="analysis-section">
+              <span class="section-kicker">Análise</span>
+              <div class="analysis-grid" id="analysisGrid"></div>
+            </div>
+
+            <div class="analysis-section">
+              <span class="section-kicker">Curva</span>
+              <div class="curve-chart" id="curveChart"></div>
+            </div>
+          </div>
+
+          <div class="analysis-section function-section">
+            <span class="section-kicker">Funções</span>
+            <div class="function-analysis" id="functionAnalysis"></div>
+          </div>
+        </section>
+
+        <div class="panel-head">
+          <span class="section-kicker" data-pt="Deck Atual" data-en="Current Deck">Deck Atual</span>
+          <span id="mainCount">0/40</span>
+        </div>
+        <div class="identity-grid">
+          <button class="identity-slot" type="button" data-remove-identity="champions">
+            <span>Campeão</span>
+            <strong id="championSlot">-</strong>
+          </button>
+          <button class="identity-slot" type="button" data-remove-identity="territories">
+            <span>Território</span>
+            <strong id="territorySlot">-</strong>
+          </button>
+          <button class="identity-slot" type="button" data-remove-identity="temples">
+            <span>Templo</span>
+            <strong id="templeSlot">-</strong>
+          </button>
+        </div>
+
+        <div class="deck-list" id="deckList"></div>
+
+        <div class="deck-actions">
+          <button type="button" id="exportDeck">Exportar TXT</button>
+          <button type="button" id="importDeck">Importar TXT</button>
+          <button type="button" id="clearDeck">Limpar</button>
+        </div>
+
+        <textarea id="deckText" placeholder="Cole ou copie a lista TXT aqui"></textarea>
+      </section>
+
+      <aside class="builder-panel assistant-panel">
+        <div class="panel-head">
+          <span class="section-kicker" data-pt="Assistente" data-en="Assistant">Assistente</span>
+        </div>
+        <div class="deck-status" id="deckStatus"></div>
+
+        <div class="assistant-grid">
+          <label>
+            Velocidade
+            <select id="speedPreference">
+              <option value="fast">Rápido</option>
+              <option value="mid" selected>Mediano</option>
+              <option value="slow">Lento</option>
+            </select>
+          </label>
+          <label>
+            Mecânica
+            <select id="mechanicPreference"></select>
+          </label>
+          <label>
+            Obrigatórias
+            <textarea id="requiredCards" placeholder="IDs, um por linha"></textarea>
+          </label>
+          <div class="pick-list" id="requiredList"></div>
+          <label>
+            Proibidas
+            <textarea id="bannedCards" placeholder="IDs, um por linha"></textarea>
+          </label>
+          <div class="pick-list" id="bannedList"></div>
+        </div>
+
+        <div class="deck-actions">
+          <button type="button" id="generateDeck">Gerar deck</button>
+          <button type="button" id="completeDeck">Completar deck</button>
+          <button type="button" id="improveDeck">Melhorar deck</button>
+        </div>
+
+        <section class="analysis-section">
+          <span class="section-kicker">Sugestões</span>
+          <div class="suggestion-list" id="suggestionList"></div>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="footer-brand-wrap">
+          <img src="../assets/logo/adonai_logo_base-4.webp" alt="Adonai Logo" class="footer-logo" />
+          <span class="footer-brand">Adonai Card Game</span>
+        </div>
+        <p data-pt="Um card game bíblico competitivo sobre escolhas, alianças, consequências e caminhos estratégicos."
+          data-en="A competitive biblical card game about choices, alliances, consequences, and strategic paths.">
+          Um card game bíblico competitivo sobre escolhas, alianças, consequências e caminhos estratégicos.
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <a href="../index.html" data-pt="Início" data-en="Home">Início</a>
+        <a href="../how-to-play/" data-pt="Como Jogar" data-en="How to Play">Como Jogar</a>
+        <a href="../cards/" data-pt="Cartas" data-en="Cards">Cartas</a>
+        <a href="../decks/" data-pt="Decks" data-en="Decks">Decks</a>
+        <a href="./" data-pt="Deckbuilder" data-en="Deckbuilder">Deckbuilder</a>
+        <a href="../manual/" data-pt="Manual" data-en="Rulebook">Manual</a>
+        <a href="../gallery/" data-pt="Galeria" data-en="Gallery">Galeria</a>
+        <a href="../lore/" data-pt="Lore" data-en="Lore">Lore</a>
+        <a href="../index.html#shop" data-pt="Loja" data-en="Shop">Loja</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./deckbuilder.js"></script>
+</body>
+
+</html>

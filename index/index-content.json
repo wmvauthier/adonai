@@ -161,7 +161,7 @@
           "pt": "Como Jogar",
           "en": "How to Play"
         },
-        "href": "./how-to-play/how-to-play.html"
+        "href": "./how-to-play/"
       },
       {
         "label": {
@@ -182,7 +182,7 @@
           "pt": "Deckbuilder",
           "en": "Deckbuilder"
         },
-        "href": "./index.html#deckbuilder"
+        "href": "./deckbuilder/"
       },
       {
         "label": {
