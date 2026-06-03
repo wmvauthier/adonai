@@ -64,7 +64,6 @@
       <aside class="builder-panel catalog-panel" data-drop-zone="remove">
         <div class="panel-head">
           <span class="section-kicker" data-pt="Cartas" data-en="Cards">Cartas</span>
-          <span id="catalogCount">0</span>
         </div>
 
         <div class="catalog-filters">
@@ -140,12 +139,17 @@
         <div class="panel-head">
           <span class="section-kicker" data-pt="Assistente" data-en="Assistant">Assistente</span>
         </div>
+        <section class="analysis-section suggestion-section">
+          <span class="section-kicker">Sugestões</span>
+          <div class="suggestion-list" id="suggestionList"></div>
+        </section>
         <div class="deck-status" id="deckStatus"></div>
 
         <div class="assistant-grid">
           <label>
             Velocidade
             <select id="speedPreference">
+              <option value="any">Qualquer uma</option>
               <option value="fast">Rápido</option>
               <option value="mid" selected>Mediano</option>
               <option value="slow">Lento</option>
@@ -176,11 +180,6 @@
         </div>
 
         <textarea id="deckText" placeholder="Cole ou copie a lista TXT aqui"></textarea>
-
-        <section class="analysis-section">
-          <span class="section-kicker">Sugestões</span>
-          <div class="suggestion-list" id="suggestionList"></div>
-        </section>
       </aside>
     </section>
   </main>

@@ -21,7 +21,6 @@ const els = {
   primaryNav: document.getElementById("primaryNav"),
   langButtons: document.querySelectorAll(".lang-btn"),
   deckStatus: document.getElementById("deckStatus"),
-  catalogCount: document.getElementById("catalogCount"),
   cardSearch: document.getElementById("cardSearch"),
   typeFilter: document.getElementById("typeFilter"),
   functionFilter: document.getElementById("functionFilter"),
@@ -110,6 +109,7 @@ let fieldAverages = {
   virtueCounts: new Map()
 };
 let deckFrequency = new Map();
+let activeDragPayload = null;
 
 function escapeHtml(value) {
   return String(value === null || typeof value === "undefined" ? "" : value)
@@ -250,6 +250,18 @@ function renderRangeValues() {
   els.attackMaxValue.textContent = state.attackMax;
   els.resistanceMinValue.textContent = state.resistanceMin;
   els.resistanceMaxValue.textContent = state.resistanceMax;
+  renderRangeFill(els.costMinFilter, els.costMaxFilter, 6);
+  renderRangeFill(els.attackMinFilter, els.attackMaxFilter, 10);
+  renderRangeFill(els.resistanceMinFilter, els.resistanceMaxFilter, 10);
+}
+
+function renderRangeFill(minInput, maxInput, max) {
+  const control = minInput.closest(".range-control");
+  if (!control) return;
+  const left = (Number(minInput.value) / max) * 100;
+  const right = (Number(maxInput.value) / max) * 100;
+  control.style.setProperty("--range-left", `${left}%`);
+  control.style.setProperty("--range-right", `${right}%`);
 }
 
 function syncRangePair(changedKey, minKey, maxKey) {
@@ -454,9 +466,11 @@ function handleDropAction(payload, zone) {
 
 function setDragPayload(event, id, source) {
   if (!event.dataTransfer || !id) return false;
+  activeDragPayload = { id, source };
   event.dataTransfer.setData("application/json", JSON.stringify({ id, source }));
   event.dataTransfer.setData("text/plain", id);
   event.dataTransfer.effectAllowed = source === "catalog" ? "copyMove" : "move";
+  document.body.classList.add("is-dragging-card");
   return true;
 }
 
@@ -469,6 +483,12 @@ function getDragPayload(event) {
     return { id: event.dataTransfer.getData("text/plain"), source: "" };
   }
   return { id: event.dataTransfer.getData("text/plain"), source: "" };
+}
+
+function clearDragPayload() {
+  activeDragPayload = null;
+  document.body.classList.remove("is-dragging-card");
+  document.querySelectorAll(".is-drag-over").forEach((item) => item.classList.remove("is-drag-over"));
 }
 
 function removeCard(id) {
@@ -557,8 +577,13 @@ function getFilteredCards() {
 
 function renderCatalog() {
   const filtered = getFilteredCards();
-  els.catalogCount.textContent = `${filtered.length}`;
   renderRangeValues();
+  if (!filtered.length) {
+    els.cardCatalog.innerHTML = `<div class="lore-empty"><p>Nenhuma carta encontrada.</p><span>Reduza os filtros ou altere os valores de custo, ATK, RES e virtudes.</span></div>`;
+    renderVirtueFilters();
+    if (cards.length) saveState();
+    return;
+  }
   els.cardCatalog.innerHTML = filtered.map((card) => {
     const id = getCardId(card);
     const isActive = state.activeCatalogId === id;
@@ -765,7 +790,7 @@ function formatDelta(delta) {
 }
 
 function getSweetSpot() {
-  if (els.speedPreference.value === "fast") return [1, 3];
+  if (els.speedPreference.value === "fast") return [0, 3];
   if (els.speedPreference.value === "slow") return [3, 6];
   return [2, 4];
 }
@@ -1126,9 +1151,25 @@ function bindEvents() {
       const payload = getDragPayload(event);
       if (!payload.id) return;
       handleDropAction(payload, zone.dataset.dropZone);
+      clearDragPayload();
       renderAll();
     });
   });
+  document.addEventListener("dragover", (event) => {
+    if (!activeDragPayload) return;
+    event.preventDefault();
+  });
+  document.addEventListener("drop", (event) => {
+    if (!activeDragPayload) return;
+    if (event.target.closest("[data-drop-zone]")) return;
+    event.preventDefault();
+    if (["deck", "identity"].includes(activeDragPayload.source)) {
+      removeCard(activeDragPayload.id);
+      renderAll();
+    }
+    clearDragPayload();
+  });
+  document.addEventListener("dragend", clearDragPayload);
   els.deckList.addEventListener("click", (event) => {
     const button = event.target.closest("[data-remove-card]");
     if (!button) return;

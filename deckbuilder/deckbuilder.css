@@ -134,6 +134,16 @@
   margin-bottom:14px;
 }
 
+.assistant-grid{
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+}
+
+.assistant-grid > input,
+.assistant-grid > span,
+.assistant-grid > .pick-list{
+  grid-column:1 / -1;
+}
+
 .catalog-filters{
   grid-template-columns:1fr;
 }
@@ -188,19 +198,24 @@
 .range-control{
   position:relative;
   grid-column:1 / -1;
-  height:24px;
+  height:18px;
   display:block;
   border-radius:999px;
   background:
-    linear-gradient(90deg, transparent 0 6px, rgba(255,255,255,.12) 6px calc(100% - 6px), transparent calc(100% - 6px));
+    linear-gradient(90deg,
+      transparent 0 5px,
+      rgba(255,255,255,.12) 5px var(--range-left, 0%),
+      rgba(215,193,139,.72) var(--range-left, 0%) var(--range-right, 100%),
+      rgba(255,255,255,.12) var(--range-right, 100%) calc(100% - 5px),
+      transparent calc(100% - 5px));
 }
 
 .catalog-filters .range-control input[type="range"]{
   position:absolute;
   inset:0;
   width:100%;
-  min-height:24px;
-  height:24px;
+  min-height:18px;
+  height:18px;
   padding:0;
   border:0;
   background:transparent;
@@ -209,8 +224,8 @@
 }
 
 .catalog-filters .range-control input[type="range"]::-webkit-slider-thumb{
-  width:16px;
-  height:16px;
+  width:12px;
+  height:12px;
   border-radius:999px;
   border:1px solid rgba(255,255,255,.36);
   background:var(--gold-strong);
@@ -220,8 +235,8 @@
 }
 
 .catalog-filters .range-control input[type="range"]::-moz-range-thumb{
-  width:16px;
-  height:16px;
+  width:12px;
+  height:12px;
   border-radius:999px;
   border:1px solid rgba(255,255,255,.36);
   background:var(--gold-strong);
@@ -230,12 +245,12 @@
 }
 
 .catalog-filters .range-control input[type="range"]::-webkit-slider-runnable-track{
-  height:6px;
+  height:3px;
   background:transparent;
 }
 
 .catalog-filters .range-control input[type="range"]::-moz-range-track{
-  height:6px;
+  height:3px;
   background:transparent;
 }
 
@@ -353,6 +368,12 @@
 
 .catalog-card-actions button[data-card-action="ban"]{
   border-color:rgba(239,107,107,.22);
+}
+
+.catalog-card-actions button[data-card-action="close"]{
+  border-color:rgba(239,107,107,.48);
+  background:rgba(239,107,107,.18);
+  color:#ffd8d8;
 }
 
 .identity-grid{
@@ -905,7 +926,7 @@
 
 .virtue-affinity{
   display:grid;
-  grid-template-columns:repeat(6, 32px);
+  grid-template-columns:repeat(6, minmax(0, 1fr));
   gap:10px;
   align-items:center;
 }
@@ -918,6 +939,7 @@
   min-height:32px;
   align-items:center;
   justify-content:center;
+  justify-self:center;
   padding:0;
   border-radius:999px;
   border:1px solid rgba(255,255,255,.08);
