@@ -53,10 +53,15 @@
       <div>
         <span class="section-kicker" data-pt="Deckbuilder" data-en="Deckbuilder">Deckbuilder</span>
       </div>
+      <div class="deckbuilder-view-actions">
+        <button class="assistant-toggle" type="button" id="filtersToggle" aria-expanded="true">Ocultar filtros</button>
+        <button class="assistant-toggle" type="button" id="chartsToggle" aria-expanded="true">Ocultar gráficos</button>
+        <button class="assistant-toggle" type="button" id="assistantToggle" aria-expanded="true">Ocultar assistente</button>
+      </div>
     </section>
 
     <section class="container deckbuilder-layout reveal">
-      <aside class="builder-panel catalog-panel">
+      <aside class="builder-panel catalog-panel" data-drop-zone="remove">
         <div class="panel-head">
           <span class="section-kicker" data-pt="Cartas" data-en="Cards">Cartas</span>
           <span id="catalogCount">0</span>
@@ -67,26 +72,43 @@
             data-en="Search card or text" />
           <select id="typeFilter"></select>
           <select id="functionFilter"></select>
+          <div class="catalog-range-grid">
+            <label>Custo <span>De <strong id="costMinValue">0</strong> até <strong id="costMaxValue">6+</strong></span><span class="range-control"><input id="costMinFilter" type="range" min="0" max="6" value="0" aria-label="Custo mínimo" /><input id="costMaxFilter" type="range" min="0" max="6" value="6" aria-label="Custo máximo" /></span></label>
+            <label>ATK <span>De <strong id="attackMinValue">0</strong> até <strong id="attackMaxValue">10</strong></span><span class="range-control"><input id="attackMinFilter" type="range" min="0" max="10" value="0" aria-label="Ataque mínimo" /><input id="attackMaxFilter" type="range" min="0" max="10" value="10" aria-label="Ataque máximo" /></span></label>
+            <label>RES <span>De <strong id="resistanceMinValue">0</strong> até <strong id="resistanceMaxValue">10</strong></span><span class="range-control"><input id="resistanceMinFilter" type="range" min="0" max="10" value="0" aria-label="Resistência mínima" /><input id="resistanceMaxFilter" type="range" min="0" max="10" value="10" aria-label="Resistência máxima" /></span></label>
+          </div>
+          <div class="virtue-filter-list" id="virtueFilterList" aria-label="Filtrar por virtudes"></div>
         </div>
 
         <div class="card-catalog" id="cardCatalog" aria-live="polite"></div>
       </aside>
 
-      <section class="builder-panel deck-panel">
+      <section class="builder-panel deck-panel" data-drop-zone="deck">
         <section class="deck-analysis-board">
-          <div class="analysis-column">
-            <div class="analysis-section">
-              <span class="section-kicker">Análise</span>
-              <div class="analysis-grid" id="analysisGrid"></div>
-            </div>
+          <div class="analysis-section analysis-area-main">
+            <span class="section-kicker">Análise</span>
+            <div class="analysis-grid" id="analysisGrid"></div>
+          </div>
 
-            <div class="analysis-section">
-              <span class="section-kicker">Curva</span>
-              <div class="curve-chart" id="curveChart"></div>
+          <div class="analysis-section analysis-area-virtues">
+            <span class="section-kicker">Virtudes</span>
+            <div class="virtue-affinity" id="virtueAffinity"></div>
+          </div>
+
+          <div class="analysis-section analysis-area-curve">
+            <span class="section-kicker">Curva</span>
+            <div class="curve-summary" id="curveSummary"></div>
+            <div class="curve-chart" id="curveChart"></div>
+            <div class="curve-legend" aria-label="Legenda da curva de custo">
+              <span><i class="curve-dot personagem"></i>Personagem</span>
+              <span><i class="curve-dot milagre"></i>Milagre</span>
+              <span><i class="curve-dot artefato"></i>Artefato</span>
+              <span><i class="curve-dot pecado"></i>Pecado</span>
+              <span><i class="curve-dot outro"></i>Outro</span>
             </div>
           </div>
 
-          <div class="analysis-section function-section">
+          <div class="analysis-section function-section analysis-area-functions">
             <span class="section-kicker">Funções</span>
             <div class="function-analysis" id="functionAnalysis"></div>
           </div>
@@ -94,18 +116,17 @@
 
         <div class="panel-head">
           <span class="section-kicker" data-pt="Deck Atual" data-en="Current Deck">Deck Atual</span>
-          <span id="mainCount">0/40</span>
         </div>
         <div class="identity-grid">
-          <button class="identity-slot" type="button" data-remove-identity="champions">
+          <button class="identity-slot" type="button" data-remove-identity="champions" data-drop-zone="identity-champions">
             <span>Campeão</span>
             <strong id="championSlot">-</strong>
           </button>
-          <button class="identity-slot" type="button" data-remove-identity="territories">
+          <button class="identity-slot" type="button" data-remove-identity="territories" data-drop-zone="identity-territories">
             <span>Território</span>
             <strong id="territorySlot">-</strong>
           </button>
-          <button class="identity-slot" type="button" data-remove-identity="temples">
+          <button class="identity-slot" type="button" data-remove-identity="temples" data-drop-zone="identity-temples">
             <span>Templo</span>
             <strong id="templeSlot">-</strong>
           </button>
@@ -113,13 +134,6 @@
 
         <div class="deck-list" id="deckList"></div>
 
-        <div class="deck-actions">
-          <button type="button" id="exportDeck">Exportar TXT</button>
-          <button type="button" id="importDeck">Importar TXT</button>
-          <button type="button" id="clearDeck">Limpar</button>
-        </div>
-
-        <textarea id="deckText" placeholder="Cole ou copie a lista TXT aqui"></textarea>
       </section>
 
       <aside class="builder-panel assistant-panel">
@@ -141,16 +155,12 @@
             Mecânica
             <select id="mechanicPreference"></select>
           </label>
-          <label>
-            Obrigatórias
-            <textarea id="requiredCards" placeholder="IDs, um por linha"></textarea>
-          </label>
-          <div class="pick-list" id="requiredList"></div>
-          <label>
-            Proibidas
-            <textarea id="bannedCards" placeholder="IDs, um por linha"></textarea>
-          </label>
-          <div class="pick-list" id="bannedList"></div>
+          <input id="requiredCards" type="hidden" />
+          <span class="section-kicker section-kicker--sub">Obrigatórias</span>
+          <div class="pick-list" id="requiredList" data-drop-zone="required"></div>
+          <input id="bannedCards" type="hidden" />
+          <span class="section-kicker section-kicker--sub">Proibidas</span>
+          <div class="pick-list" id="bannedList" data-drop-zone="banned"></div>
         </div>
 
         <div class="deck-actions">
@@ -158,6 +168,14 @@
           <button type="button" id="completeDeck">Completar deck</button>
           <button type="button" id="improveDeck">Melhorar deck</button>
         </div>
+
+        <div class="deck-actions">
+          <button type="button" id="exportDeck">Exportar TXT</button>
+          <button type="button" id="importDeck">Importar TXT</button>
+          <button type="button" id="clearDeck">Limpar</button>
+        </div>
+
+        <textarea id="deckText" placeholder="Cole ou copie a lista TXT aqui"></textarea>
 
         <section class="analysis-section">
           <span class="section-kicker">Sugestões</span>

@@ -3,7 +3,8 @@ const DATA_URLS = {
   decks: "../data/decks.json",
   types: "../data/types.json",
   functions: "../data/functions.json",
-  collections: "../data/collections.json"
+  collections: "../data/collections.json",
+  virtues: "../data/virtues.json"
 };
 
 const STORAGE_KEY = "adonai.deckbuilder.v1";
@@ -24,6 +25,19 @@ const els = {
   cardSearch: document.getElementById("cardSearch"),
   typeFilter: document.getElementById("typeFilter"),
   functionFilter: document.getElementById("functionFilter"),
+  costMinFilter: document.getElementById("costMinFilter"),
+  costMaxFilter: document.getElementById("costMaxFilter"),
+  attackMinFilter: document.getElementById("attackMinFilter"),
+  attackMaxFilter: document.getElementById("attackMaxFilter"),
+  resistanceMinFilter: document.getElementById("resistanceMinFilter"),
+  resistanceMaxFilter: document.getElementById("resistanceMaxFilter"),
+  costMinValue: document.getElementById("costMinValue"),
+  costMaxValue: document.getElementById("costMaxValue"),
+  attackMinValue: document.getElementById("attackMinValue"),
+  attackMaxValue: document.getElementById("attackMaxValue"),
+  resistanceMinValue: document.getElementById("resistanceMinValue"),
+  resistanceMaxValue: document.getElementById("resistanceMaxValue"),
+  virtueFilterList: document.getElementById("virtueFilterList"),
   cardCatalog: document.getElementById("cardCatalog"),
   mainCount: document.getElementById("mainCount"),
   championSlot: document.getElementById("championSlot"),
@@ -43,9 +57,14 @@ const els = {
   generateDeck: document.getElementById("generateDeck"),
   completeDeck: document.getElementById("completeDeck"),
   improveDeck: document.getElementById("improveDeck"),
+  filtersToggle: document.getElementById("filtersToggle"),
+  chartsToggle: document.getElementById("chartsToggle"),
+  assistantToggle: document.getElementById("assistantToggle"),
   analysisGrid: document.getElementById("analysisGrid"),
   functionAnalysis: document.getElementById("functionAnalysis"),
   curveChart: document.getElementById("curveChart"),
+  curveSummary: document.getElementById("curveSummary"),
+  virtueAffinity: document.getElementById("virtueAffinity"),
   suggestionList: document.getElementById("suggestionList")
 };
 
@@ -54,13 +73,24 @@ const state = {
   search: "",
   type: "all",
   functionId: "all",
+  costMin: "0",
+  costMax: "6",
+  attackMin: "0",
+  attackMax: "10",
+  resistanceMin: "0",
+  resistanceMax: "10",
+  virtues: [],
+  filtersHidden: false,
+  chartsHidden: false,
+  assistantHidden: false,
   identity: {
     champions: [],
     territories: [],
     temples: []
   },
   main: [],
-  suggestions: []
+  suggestions: [],
+  activeCatalogId: ""
 };
 
 let cards = [];
@@ -68,14 +98,16 @@ let decks = [];
 let references = {
   types: new Map(),
   functions: new Map(),
-  collections: new Map()
+  collections: new Map(),
+  virtues: new Map()
 };
 let cardById = new Map();
 let fieldAverages = {
   avgCost: 0,
   avgAttack: 0,
   avgResistance: 0,
-  functionCounts: new Map()
+  functionCounts: new Map(),
+  virtueCounts: new Map()
 };
 let deckFrequency = new Map();
 
@@ -177,6 +209,55 @@ function getFunctionLabels(card) {
     .map((item) => localize(item.name));
 }
 
+function getVirtue(card) {
+  return (card.virtues || []).map((id) => references.virtues.get(Number(id))).filter(Boolean);
+}
+
+function countVirtues(list) {
+  const counts = new Map();
+  list.forEach((card) => {
+    (card.virtues || []).forEach((id) => counts.set(Number(id), (counts.get(Number(id)) || 0) + 1));
+  });
+  return counts;
+}
+
+function passesNumericRange(value, min, max) {
+  if (min !== "all" && value < Number(min)) return false;
+  if (max !== "all" && value > Number(max)) return false;
+  return true;
+}
+
+function formatCostBucket(value) {
+  return Number(value) >= 6 ? "6+" : String(value);
+}
+
+function clampRangeValue(value, fallback, max) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return fallback;
+  return String(Math.max(0, Math.min(max, number)));
+}
+
+function renderRangeValues() {
+  els.costMinFilter.value = state.costMin;
+  els.costMaxFilter.value = state.costMax;
+  els.attackMinFilter.value = state.attackMin;
+  els.attackMaxFilter.value = state.attackMax;
+  els.resistanceMinFilter.value = state.resistanceMin;
+  els.resistanceMaxFilter.value = state.resistanceMax;
+  els.costMinValue.textContent = formatCostBucket(state.costMin);
+  els.costMaxValue.textContent = formatCostBucket(state.costMax);
+  els.attackMinValue.textContent = state.attackMin;
+  els.attackMaxValue.textContent = state.attackMax;
+  els.resistanceMinValue.textContent = state.resistanceMin;
+  els.resistanceMaxValue.textContent = state.resistanceMax;
+}
+
+function syncRangePair(changedKey, minKey, maxKey) {
+  if (Number(state[minKey]) <= Number(state[maxKey])) return;
+  if (changedKey === minKey) state[maxKey] = state[minKey];
+  else state[minKey] = state[maxKey];
+}
+
 function isIdentityCard(card) {
   const code = getTypeCode(card);
   return code === TYPE_CODES.champion || code === TYPE_CODES.territory || code === TYPE_CODES.temple;
@@ -198,6 +279,10 @@ function getIdentityCards() {
   return [].concat(state.identity.champions, state.identity.territories, state.identity.temples)
     .map((id) => cardById.get(id))
     .filter(Boolean);
+}
+
+function getAnalysisCards() {
+  return getIdentityCards().concat(getMainCards());
 }
 
 function isSelected(id) {
@@ -231,6 +316,21 @@ function removeTextId(textarea, id) {
 
 function saveState() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify({
+    filters: {
+      search: els.cardSearch.value,
+      type: state.type,
+      functionId: state.functionId,
+      costMin: state.costMin,
+      costMax: state.costMax,
+      attackMin: state.attackMin,
+      attackMax: state.attackMax,
+      resistanceMin: state.resistanceMin,
+      resistanceMax: state.resistanceMax,
+      virtues: state.virtues
+    },
+    filtersHidden: state.filtersHidden,
+    chartsHidden: state.chartsHidden,
+    assistantHidden: state.assistantHidden,
     identity: state.identity,
     main: state.main,
     speed: els.speedPreference.value,
@@ -257,6 +357,30 @@ function restoreState() {
     if (saved.mechanic) els.mechanicPreference.value = saved.mechanic;
     if (saved.required) els.requiredCards.value = saved.required;
     if (saved.banned) els.bannedCards.value = saved.banned;
+    if (saved.filters) {
+      state.search = normalizeSearch(saved.filters.search || "");
+      state.type = saved.filters.type || "all";
+      state.functionId = saved.filters.functionId || "all";
+      state.costMin = clampRangeValue(saved.filters.costMin, "0", 6);
+      state.costMax = clampRangeValue(saved.filters.costMax, "6", 6);
+      state.attackMin = clampRangeValue(saved.filters.attackMin, "0", 10);
+      state.attackMax = clampRangeValue(saved.filters.attackMax, "10", 10);
+      state.resistanceMin = clampRangeValue(saved.filters.resistanceMin, "0", 10);
+      state.resistanceMax = clampRangeValue(saved.filters.resistanceMax, "10", 10);
+      state.virtues = Array.isArray(saved.filters.virtues) ? saved.filters.virtues.map(String) : [];
+      els.cardSearch.value = saved.filters.search || "";
+      els.typeFilter.value = state.type;
+      els.functionFilter.value = state.functionId;
+      els.costMinFilter.value = state.costMin;
+      els.costMaxFilter.value = state.costMax;
+      els.attackMinFilter.value = state.attackMin;
+      els.attackMaxFilter.value = state.attackMax;
+      els.resistanceMinFilter.value = state.resistanceMin;
+      els.resistanceMaxFilter.value = state.resistanceMax;
+    }
+    state.filtersHidden = Boolean(saved.filtersHidden);
+    state.chartsHidden = Boolean(saved.chartsHidden);
+    state.assistantHidden = Boolean(saved.assistantHidden);
   } catch (error) {
     localStorage.removeItem(STORAGE_KEY);
   }
@@ -273,11 +397,104 @@ function addCard(card) {
   state.main.push(id);
 }
 
+function handleCardAction(id, action) {
+  const card = cardById.get(id);
+  if (!card) return;
+  if (action === "ban") {
+    removeCard(id);
+    addTextId(els.bannedCards, id);
+    removeTextId(els.requiredCards, id);
+    return;
+  }
+  if (action === "required") {
+    addTextId(els.requiredCards, id);
+    removeTextId(els.bannedCards, id);
+    addCard(card);
+    return;
+  }
+  addCard(card);
+}
+
+function handleDropAction(payload, zone) {
+  const id = payload.id;
+  const source = payload.source || "";
+  const card = cardById.get(id);
+  if (!card) return;
+  if (zone === "remove") {
+    if (source === "required") removeTextId(els.requiredCards, id);
+    else if (source === "banned") removeTextId(els.bannedCards, id);
+    else removeCard(id);
+    return;
+  }
+  if (zone === "required") {
+    removeTextId(els.bannedCards, id);
+    handleCardAction(id, "required");
+    return;
+  }
+  if (zone === "banned") {
+    removeTextId(els.requiredCards, id);
+    handleCardAction(id, "ban");
+    return;
+  }
+  if (zone && zone.startsWith("identity-")) {
+    const key = zone.replace("identity-", "");
+    if (getIdentityKey(card) === key) {
+      removeTextId(els.bannedCards, id);
+      state.identity[key] = [id];
+    }
+    return;
+  }
+  if (zone === "deck") {
+    if (source === "banned") removeTextId(els.bannedCards, id);
+    addCard(card);
+    return;
+  }
+  handleCardAction(id, "deck");
+}
+
+function setDragPayload(event, id, source) {
+  if (!event.dataTransfer || !id) return false;
+  event.dataTransfer.setData("application/json", JSON.stringify({ id, source }));
+  event.dataTransfer.setData("text/plain", id);
+  event.dataTransfer.effectAllowed = source === "catalog" ? "copyMove" : "move";
+  return true;
+}
+
+function getDragPayload(event) {
+  if (!event.dataTransfer) return { id: "", source: "" };
+  try {
+    const parsed = JSON.parse(event.dataTransfer.getData("application/json") || "{}");
+    if (parsed && parsed.id) return parsed;
+  } catch (error) {
+    return { id: event.dataTransfer.getData("text/plain"), source: "" };
+  }
+  return { id: event.dataTransfer.getData("text/plain"), source: "" };
+}
+
 function removeCard(id) {
   state.main = state.main.filter((item) => item !== id);
   Object.keys(state.identity).forEach((key) => {
     state.identity[key] = state.identity[key].filter((item) => item !== id);
   });
+}
+
+function renderAssistantState() {
+  const layout = document.querySelector(".deckbuilder-layout");
+  if (layout) layout.classList.toggle("is-assistant-hidden", state.assistantHidden);
+  document.body.classList.toggle("is-filters-hidden", state.filtersHidden);
+  document.body.classList.toggle("is-charts-hidden", state.chartsHidden);
+  if (els.filtersToggle) {
+    els.filtersToggle.textContent = state.filtersHidden ? "Mostrar filtros" : "Ocultar filtros";
+    els.filtersToggle.setAttribute("aria-expanded", String(!state.filtersHidden));
+  }
+  if (els.chartsToggle) {
+    els.chartsToggle.textContent = state.chartsHidden ? "Mostrar gráficos" : "Ocultar gráficos";
+    els.chartsToggle.setAttribute("aria-expanded", String(!state.chartsHidden));
+  }
+  if (els.assistantToggle) {
+    els.assistantToggle.textContent = state.assistantHidden ? "Mostrar assistente" : "Ocultar assistente";
+    els.assistantToggle.setAttribute("aria-expanded", String(!state.assistantHidden));
+  }
 }
 
 function renderFilters() {
@@ -291,6 +508,21 @@ function renderFilters() {
     .join("");
   els.functionFilter.innerHTML = `<option value="all">Todas as funções</option>${functionOptions}`;
   els.mechanicPreference.innerHTML = `<option value="all">Qualquer mecânica</option>${functionOptions}`;
+
+  els.costMinFilter.value = state.costMin;
+  els.costMaxFilter.value = state.costMax;
+  els.attackMinFilter.value = state.attackMin;
+  els.attackMaxFilter.value = state.attackMax;
+  els.resistanceMinFilter.value = state.resistanceMin;
+  els.resistanceMaxFilter.value = state.resistanceMax;
+  renderRangeValues();
+
+  els.virtueFilterList.innerHTML = Array.from(references.virtues.values()).map((virtue) => `
+    <button class="virtue-filter" type="button" data-virtue-filter="${virtue.id}" title="${escapeHtml(localize(virtue.name))}">
+      <img src="${escapeHtml(virtue.images && virtue.images.icon ? virtue.images.icon : "../assets/icons/00.webp")}" alt="" loading="lazy" />
+      <span>${escapeHtml(localize(virtue.name))}</span>
+    </button>
+  `).join("");
 }
 
 function getFilteredCards() {
@@ -301,13 +533,21 @@ function getFilteredCards() {
     if (bannedIds.includes(id)) return false;
     if (state.type !== "all" && String((card.type || [])[0]) !== state.type) return false;
     if (state.functionId !== "all" && !(card.functions || []).map(String).includes(state.functionId)) return false;
+    if (!passesNumericRange(Math.min(6, getCost(card)), state.costMin, state.costMax)) return false;
+    if (!passesNumericRange(getAttack(card), state.attackMin, state.attackMax)) return false;
+    if (!passesNumericRange(getResistance(card), state.resistanceMin, state.resistanceMax)) return false;
+    if (state.virtues.length) {
+      const cardVirtues = (card.virtues || []).map(String);
+      if (!state.virtues.every((id) => cardVirtues.includes(id))) return false;
+    }
     if (state.search) {
       const haystack = [
         getCardId(card),
         getCardName(card),
         card.text || "",
         getTypeLabel(card),
-        getFunctionLabels(card).join(" ")
+        getFunctionLabels(card).join(" "),
+        getVirtue(card).map((item) => localize(item.name)).join(" ")
       ].join(" ");
       if (!normalizeSearch(haystack).includes(state.search)) return false;
     }
@@ -318,26 +558,36 @@ function getFilteredCards() {
 function renderCatalog() {
   const filtered = getFilteredCards();
   els.catalogCount.textContent = `${filtered.length}`;
+  renderRangeValues();
   els.cardCatalog.innerHTML = filtered.map((card) => {
     const id = getCardId(card);
+    const isActive = state.activeCatalogId === id;
     return `
-      <article class="catalog-card" data-card-id="${escapeHtml(id)}">
+      <article class="catalog-card ${isActive ? "is-actions-open" : ""}" data-card-id="${escapeHtml(id)}" draggable="true" title="${escapeHtml(getCardName(card))}">
         <img src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" loading="lazy" />
-        <strong>${escapeHtml(getCardName(card))}</strong>
-        <span>${escapeHtml(id)} · ${escapeHtml(getTypeLabel(card))}</span>
-        <div class="catalog-card-actions">
+        <div class="catalog-card-actions" aria-hidden="${isActive ? "false" : "true"}">
           <button type="button" data-card-action="deck" data-card-id="${escapeHtml(id)}">Deck</button>
           <button type="button" data-card-action="required" data-card-id="${escapeHtml(id)}">Fixar</button>
           <button type="button" data-card-action="ban" data-card-id="${escapeHtml(id)}">Banir</button>
+          <button type="button" data-card-action="close" data-card-id="${escapeHtml(id)}">Fechar</button>
         </div>
       </article>
     `;
   }).join("");
+  renderVirtueFilters();
+  if (cards.length) saveState();
+}
+
+function renderVirtueFilters() {
+  els.virtueFilterList.querySelectorAll("[data-virtue-filter]").forEach((button) => {
+    button.classList.toggle("is-active", state.virtues.includes(button.dataset.virtueFilter));
+  });
 }
 
 function renderCardTiny(card, fallback) {
   if (!card) return `<span>${escapeHtml(fallback || "-")}</span>`;
-  return `<img src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" loading="lazy" /><span>${escapeHtml(getCardName(card))}</span>`;
+  const imageClass = getTypeCode(card) === TYPE_CODES.territory || getTypeCode(card) === TYPE_CODES.temple ? " class=\"is-landscape\"" : "";
+  return `<img${imageClass} src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" loading="lazy" /><span>${escapeHtml(getCardName(card))}</span>`;
 }
 
 function renderIdentity() {
@@ -347,10 +597,13 @@ function renderIdentity() {
   els.championSlot.innerHTML = renderCardTiny(champion, "-");
   els.territorySlot.innerHTML = renderCardTiny(territory, "-");
   els.templeSlot.innerHTML = renderCardTiny(temple, "-");
+  document.querySelector('[data-remove-identity="champions"]').dataset.cardId = champion ? getCardId(champion) : "";
+  document.querySelector('[data-remove-identity="territories"]').dataset.cardId = territory ? getCardId(territory) : "";
+  document.querySelector('[data-remove-identity="temples"]').dataset.cardId = temple ? getCardId(temple) : "";
 }
 
 function renderDeckList() {
-  els.mainCount.textContent = `${state.main.length}/${MAIN_DECK_SIZE}`;
+  if (els.mainCount) els.mainCount.textContent = `${state.main.length}/${MAIN_DECK_SIZE}`;
   const groups = new Map();
   getMainCards()
     .sort((a, b) => getTypeLabel(a).localeCompare(getTypeLabel(b), "pt-BR") || getCost(a) - getCost(b) || getCardName(a).localeCompare(getCardName(b), "pt-BR"))
@@ -372,7 +625,7 @@ function renderDeckList() {
       ${group.map((card) => {
         const id = getCardId(card);
         return `
-          <button class="deck-row" type="button" data-remove-card="${escapeHtml(id)}">
+          <button class="deck-row" type="button" data-remove-card="${escapeHtml(id)}" draggable="true">
             <img src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" loading="lazy" />
             <div>
               <strong>${escapeHtml(getCardName(card))}</strong>
@@ -388,7 +641,7 @@ function renderDeckList() {
 }
 
 function analyzeDeck(cardList) {
-  const list = cardList || getMainCards();
+  const list = cardList || getAnalysisCards();
   const total = list.length || 1;
   const functionCounts = new Map();
   const typeCounts = new Map();
@@ -410,6 +663,7 @@ function analyzeDeck(cardList) {
     avgAttack: round(attack / total),
     avgResistance: round(resistance / total),
     curve: buildCurve(list),
+    virtueCounts: countVirtues(list),
     typeCounts,
     functionCounts
   };
@@ -418,7 +672,7 @@ function analyzeDeck(cardList) {
 function buildCurve(list) {
   const curve = new Map();
   list.forEach((card) => {
-    const cost = Math.max(0, Math.min(9, Math.floor(getCost(card))));
+    const cost = Math.max(0, Math.min(6, Math.floor(getCost(card))));
     if (!curve.has(cost)) curve.set(cost, new Map());
     const type = normalizeSearch(getTypeLabel(card)).split(" ")[0] || "outro";
     curve.get(cost).set(type, (curve.get(cost).get(type) || 0) + 1);
@@ -433,15 +687,22 @@ function calculateFieldAverages() {
       .forEach((id) => deckFrequency.set(id, (deckFrequency.get(id) || 0) + 1));
   });
 
-  const analyses = decks.map((deck) => analyzeDeck((deck.cards || []).map((id) => cardById.get(id)).filter(Boolean)));
+  const analyses = decks.map((deck) => analyzeDeck((deck.cards || [])
+    .concat(deck.identity ? [].concat(deck.identity.champions || [], deck.identity.territories || [], deck.identity.temples || []) : [])
+    .map((id) => cardById.get(id))
+    .filter(Boolean)));
   const total = analyses.length || 1;
   fieldAverages.avgCost = round(analyses.reduce((sum, item) => sum + item.avgCost, 0) / total);
   fieldAverages.avgAttack = round(analyses.reduce((sum, item) => sum + item.avgAttack, 0) / total);
   fieldAverages.avgResistance = round(analyses.reduce((sum, item) => sum + item.avgResistance, 0) / total);
   fieldAverages.functionCounts = new Map();
+  fieldAverages.virtueCounts = new Map();
   analyses.forEach((analysis) => {
     analysis.functionCounts.forEach((value, key) => {
       fieldAverages.functionCounts.set(key, (fieldAverages.functionCounts.get(key) || 0) + value / total);
+    });
+    analysis.virtueCounts.forEach((value, key) => {
+      fieldAverages.virtueCounts.set(key, (fieldAverages.virtueCounts.get(key) || 0) + value / total);
     });
   });
 }
@@ -461,11 +722,9 @@ function renderStatus() {
 
 function renderAnalysis() {
   const analysis = analyzeDeck();
-  const diffCost = round(analysis.avgCost - fieldAverages.avgCost);
   const diffAtk = round(analysis.avgAttack - fieldAverages.avgAttack);
   const diffRes = round(analysis.avgResistance - fieldAverages.avgResistance);
   els.analysisGrid.innerHTML = `
-    <article class="analysis-card"><span>Custo médio</span><strong>${renderCompareIndicator(diffCost, "lower")} ◆ ${analysis.avgCost}</strong><span>vs média ${formatDelta(diffCost)}</span></article>
     <article class="analysis-card"><span>ATK médio</span><strong>${renderCompareIndicator(diffAtk, "higher")} ⚔ ${analysis.avgAttack}</strong><span>vs média ${formatDelta(diffAtk)}</span></article>
     <article class="analysis-card"><span>RES média</span><strong>${renderCompareIndicator(diffRes, "higher")} ⬟ ${analysis.avgResistance}</strong><span>vs média ${formatDelta(diffRes)}</span></article>
   `;
@@ -481,12 +740,13 @@ function renderAnalysis() {
     .slice(0, 18);
 
   els.functionAnalysis.innerHTML = rows.length ? rows.map((row) => `
-    <div class="function-row">
+    <span class="function-chip" title="${escapeHtml(row.label)}">
       <strong>${escapeHtml(row.label)}</strong>
       <span>${renderCompareIndicator(round(row.value - row.avg), "higher")} ${row.value}</span>
-    </div>
-  `).join("") : `<div class="function-row"><strong>Sem funções no deck</strong><span>0</span></div>`;
-  renderCurve(analysis.curve);
+    </span>
+  `).join("") : `<span class="function-chip"><strong>Sem funções</strong><span>0</span></span>`;
+  renderCurve(analysis.curve, analysis.avgCost);
+  renderVirtueAffinity(analysis.virtueCounts);
 }
 
 function renderIndicator(tone, symbol) {
@@ -504,11 +764,23 @@ function formatDelta(delta) {
   return `${delta > 0 ? "+" : ""}${delta}`;
 }
 
-function renderCurve(curve) {
+function getSweetSpot() {
+  if (els.speedPreference.value === "fast") return [1, 3];
+  if (els.speedPreference.value === "slow") return [3, 6];
+  return [2, 4];
+}
+
+function renderCurve(curve, avgCost) {
   const totals = Array.from(curve.values()).map((typeMap) => Array.from(typeMap.values()).reduce((sum, value) => sum + value, 0));
   const max = Math.max.apply(null, [1].concat(totals));
   const rows = [];
-  for (let cost = 0; cost <= 9; cost += 1) {
+  const sweetSpot = getSweetSpot();
+  const averageBucket = Math.max(0, Math.min(6, Math.round(avgCost)));
+  els.curveSummary.innerHTML = `
+    <span>Média: <strong>${escapeHtml(avgCost)}</strong></span>
+    <span>Sweet spot: <strong>${sweetSpot[0]}-${sweetSpot[1] === 6 ? "6+" : sweetSpot[1]}</strong></span>
+  `;
+  for (let cost = 0; cost <= 6; cost += 1) {
     const typeMap = curve.get(cost) || new Map();
     const total = Array.from(typeMap.values()).reduce((sum, value) => sum + value, 0);
     const segments = Array.from(typeMap.entries()).map(([type, value]) => {
@@ -517,14 +789,38 @@ function renderCurve(curve) {
       return `<span class="curve-segment ${cls}" style="height:${height}%" title="${escapeHtml(type)} ${value}"></span>`;
     }).join("");
     rows.push(`
-      <div class="curve-row">
-        <strong>${cost}</strong>
+      <div class="curve-row ${cost >= sweetSpot[0] && cost <= sweetSpot[1] ? "is-sweetspot" : ""} ${cost === averageBucket ? "is-average" : ""}">
+        <strong>${cost === 6 ? "6+" : cost}</strong>
         <div class="curve-track">${segments}</div>
+        ${cost === averageBucket ? '<em class="curve-average-marker">média</em>' : ""}
         <span>${total}</span>
       </div>
     `);
   }
   els.curveChart.innerHTML = rows.join("");
+}
+
+function renderVirtueAffinity(counts) {
+  const rows = Array.from(references.virtues.values()).map((virtue) => ({
+    id: Number(virtue.id),
+    label: localize(virtue.name),
+    icon: virtue.images && virtue.images.icon ? virtue.images.icon : "../assets/icons/00.webp",
+    value: counts.get(Number(virtue.id)) || 0,
+    avg: round(fieldAverages.virtueCounts.get(Number(virtue.id)) || 0)
+  })).filter((item) => item.value > 0)
+    .sort((a, b) => b.value - a.value || a.label.localeCompare(b.label, "pt-BR"));
+  els.virtueAffinity.innerHTML = rows.length ? rows.map((item) => `
+    <span class="virtue-mark-compact" title="${escapeHtml(item.label)} · média ${escapeHtml(item.avg)}">
+      <img src="${escapeHtml(item.icon)}" alt="${escapeHtml(item.label)}" loading="lazy" />
+      <span class="pip-badge pip-badge--${escapeHtml(toneForValue(item.value, item.avg))}">${escapeHtml(item.value)}</span>
+    </span>
+  `).join("") : `<span class="function-chip"><strong>Sem pips</strong><span>0</span></span>`;
+}
+
+function toneForValue(value, avg) {
+  if (value > avg) return "positive";
+  if (value < avg) return "negative";
+  return "neutral";
 }
 
 function renderPickLists() {
@@ -536,13 +832,13 @@ function renderPickList(target, ids, kind) {
   target.innerHTML = ids.length ? ids.map((id) => {
     const card = cardById.get(id);
     return `
-      <div class="pick-item">
+      <div class="pick-item" draggable="true" data-pick-source="${escapeHtml(kind)}" data-pick-card="${escapeHtml(id)}">
         ${card ? `<img src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" loading="lazy" />` : "<span></span>"}
         <strong>${escapeHtml(card ? getCardName(card) : id)}</strong>
         <button type="button" data-remove-pick="${escapeHtml(kind)}" data-card-id="${escapeHtml(id)}">×</button>
       </div>
     `;
-  }).join("") : `<div class="pick-item"><strong>${kind === "required" ? "Nenhuma obrigatória" : "Nenhuma proibida"}</strong><span></span></div>`;
+  }).join("") : `<div class="pick-item is-empty"><strong>${kind === "required" ? "Nenhuma obrigatória" : "Nenhuma proibida"}</strong></div>`;
 }
 
 function parseIds(text) {
@@ -694,7 +990,7 @@ function renderSuggestions() {
         <button type="button" data-apply-suggestion="${index}">Aplicar</button>
       </div>
     `;
-  }).join("") : `<div class="suggestion-row"><strong>Nenhuma sugestão gerada</strong><span>-</span></div>`;
+  }).join("") : `<div class="suggestion-row is-empty"><strong>Nenhuma sugestão gerada</strong></div>`;
 }
 
 function renderAll() {
@@ -706,6 +1002,7 @@ function renderAll() {
   renderAnalysis();
   renderPickLists();
   renderSuggestions();
+  renderAssistantState();
   handleReveal();
   saveState();
 }
@@ -746,23 +1043,91 @@ function bindEvents() {
     state.functionId = els.functionFilter.value;
     renderCatalog();
   });
+  [
+    ["costMin", els.costMinFilter, "costMin", "costMax"],
+    ["costMax", els.costMaxFilter, "costMin", "costMax"],
+    ["attackMin", els.attackMinFilter, "attackMin", "attackMax"],
+    ["attackMax", els.attackMaxFilter, "attackMin", "attackMax"],
+    ["resistanceMin", els.resistanceMinFilter, "resistanceMin", "resistanceMax"],
+    ["resistanceMax", els.resistanceMaxFilter, "resistanceMin", "resistanceMax"]
+  ].forEach(([key, input, minKey, maxKey]) => {
+    input.addEventListener("input", () => {
+      state[key] = input.value;
+      if (minKey && maxKey) syncRangePair(key, minKey, maxKey);
+      renderRangeValues();
+      renderCatalog();
+    });
+    input.addEventListener("change", () => {
+      state[key] = input.value;
+      if (minKey && maxKey) syncRangePair(key, minKey, maxKey);
+      renderRangeValues();
+      renderCatalog();
+    });
+  });
+  els.virtueFilterList.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-virtue-filter]");
+    if (!button) return;
+    const id = button.dataset.virtueFilter;
+    state.virtues = state.virtues.includes(id) ? state.virtues.filter((item) => item !== id) : state.virtues.concat(id);
+    renderCatalog();
+  });
   els.cardCatalog.addEventListener("click", (event) => {
     const actionButton = event.target.closest("[data-card-action]");
     const cardElement = event.target.closest("[data-card-id]");
     if (!cardElement) return;
     const id = cardElement.dataset.cardId;
-    const card = cardById.get(id);
-    if (!card) return;
     const action = actionButton ? actionButton.dataset.cardAction : "deck";
-    if (action === "ban") {
-      removeCard(id);
-      addTextId(els.bannedCards, id);
-      removeTextId(els.requiredCards, id);
-    } else {
-      if (action === "required") addTextId(els.requiredCards, id);
-      addCard(card);
+    if (!actionButton) {
+      state.activeCatalogId = state.activeCatalogId === id ? "" : id;
+      renderCatalog();
+      return;
     }
+    if (action === "close") {
+      state.activeCatalogId = "";
+      renderCatalog();
+      return;
+    }
+    handleCardAction(id, action);
+    state.activeCatalogId = "";
     renderAll();
+  });
+  els.cardCatalog.addEventListener("dragstart", (event) => {
+    const cardElement = event.target.closest("[data-card-id]");
+    if (!cardElement || !event.dataTransfer) return;
+    setDragPayload(event, cardElement.dataset.cardId, "catalog");
+  });
+  els.deckList.addEventListener("dragstart", (event) => {
+    const row = event.target.closest("[data-remove-card]");
+    if (!row || !event.dataTransfer) return;
+    setDragPayload(event, row.dataset.removeCard, "deck");
+  });
+  document.querySelectorAll("[data-remove-identity]").forEach((button) => {
+    button.setAttribute("draggable", "true");
+    button.addEventListener("dragstart", (event) => {
+      if (!setDragPayload(event, button.dataset.cardId, "identity")) {
+        event.preventDefault();
+        return;
+      }
+    });
+  });
+  document.querySelectorAll("[data-drop-zone]").forEach((zone) => {
+    zone.addEventListener("dragover", (event) => {
+      event.preventDefault();
+      zone.classList.add("is-drag-over");
+      if (event.dataTransfer) event.dataTransfer.dropEffect = "copy";
+    });
+    zone.addEventListener("dragleave", () => {
+      zone.classList.remove("is-drag-over");
+    });
+    zone.addEventListener("drop", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      zone.classList.remove("is-drag-over");
+      const payload = getDragPayload(event);
+      if (!payload.id) return;
+      handleDropAction(payload, zone.dataset.dropZone);
+      renderAll();
+    });
   });
   els.deckList.addEventListener("click", (event) => {
     const button = event.target.closest("[data-remove-card]");
@@ -787,7 +1152,24 @@ function bindEvents() {
   els.generateDeck.addEventListener("click", generateDeck);
   els.completeDeck.addEventListener("click", completeDeck);
   els.improveDeck.addEventListener("click", improveDeck);
+  els.filtersToggle.addEventListener("click", () => {
+    state.filtersHidden = !state.filtersHidden;
+    renderAll();
+  });
+  els.chartsToggle.addEventListener("click", () => {
+    state.chartsHidden = !state.chartsHidden;
+    renderAll();
+  });
+  els.assistantToggle.addEventListener("click", () => {
+    state.assistantHidden = !state.assistantHidden;
+    renderAll();
+  });
   [els.requiredList, els.bannedList].forEach((list) => {
+    list.addEventListener("dragstart", (event) => {
+      const item = event.target.closest("[data-pick-card]");
+      if (!item) return;
+      setDragPayload(event, item.dataset.pickCard, item.dataset.pickSource);
+    });
     list.addEventListener("click", (event) => {
       const button = event.target.closest("[data-remove-pick]");
       if (!button) return;
@@ -802,8 +1184,8 @@ function bindEvents() {
     applySuggestion(Number(button.dataset.applySuggestion));
   });
   [els.speedPreference, els.mechanicPreference].forEach((input) => {
-    input.addEventListener("input", saveState);
-    input.addEventListener("change", saveState);
+    input.addEventListener("input", renderAll);
+    input.addEventListener("change", renderAll);
   });
   [els.requiredCards, els.bannedCards].forEach((input) => {
     input.addEventListener("input", renderAll);
@@ -825,23 +1207,26 @@ function bindEvents() {
 
 async function loadData() {
   els.cardCatalog.innerHTML = `<div class="lore-loading"><p>Carregando cartas...</p></div>`;
-  const [cardsResponse, decksResponse, typesResponse, functionsResponse, collectionsResponse] = await Promise.all([
+  const [cardsResponse, decksResponse, typesResponse, functionsResponse, collectionsResponse, virtuesResponse] = await Promise.all([
     fetch(DATA_URLS.cards),
     fetch(DATA_URLS.decks),
     fetch(DATA_URLS.types),
     fetch(DATA_URLS.functions),
-    fetch(DATA_URLS.collections)
+    fetch(DATA_URLS.collections),
+    fetch(DATA_URLS.virtues)
   ]);
-  const [cardsPayload, decksPayload, typesPayload, functionsPayload, collectionsPayload] = await Promise.all([
+  const [cardsPayload, decksPayload, typesPayload, functionsPayload, collectionsPayload, virtuesPayload] = await Promise.all([
     cardsResponse.json(),
     decksResponse.json(),
     typesResponse.json(),
     functionsResponse.json(),
-    collectionsResponse.json()
+    collectionsResponse.json(),
+    virtuesResponse.json()
   ]);
   references.types = toMap(typesPayload, "types");
   references.functions = toMap(functionsPayload, "functions");
   references.collections = toMap(collectionsPayload, "collections");
+  references.virtues = toMap(virtuesPayload, "virtues");
   cards = (cardsPayload.cards || []).map((card) => Object.assign({}, cardsPayload.defaults || {}, card));
   cardById = new Map(cards.map((card) => [getCardId(card), card]));
   decks = decksPayload.decks || [];
