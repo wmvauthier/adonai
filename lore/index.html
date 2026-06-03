@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adonai Card Game — Lore</title>
+  <meta name="description"
+    content="Biblioteca narrativa de Adonai Card Game, com coleções como livros e cartas como capítulos." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../shared/generic.css" />
+  <link rel="stylesheet" href="./lore.css" />
+</head>
+
+<body>
+  <div class="page-noise" aria-hidden="true"></div>
+
+  <header class="site-header" id="siteHeader">
+    <a href="../index.html" class="brand" aria-label="Adonai Card Game">
+      <img src="../assets/logo/adonai_logo_base-4.webp" alt="Adonai Logo" class="brand-logo" />
+    </a>
+
+    <button class="mobile-toggle" id="mobileToggle" aria-expanded="false" aria-controls="primaryNav"
+      aria-label="Abrir menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="site-nav" id="primaryNav">
+      <a href="../index.html" data-pt="Início" data-en="Home">Início</a>
+      <a href="../how-to-play/how-to-play.html" data-pt="Como Jogar" data-en="How to Play">Como Jogar</a>
+      <a href="../cards/" data-pt="Cartas" data-en="Cards">Cartas</a>
+      <a href="../decks/" data-pt="Decks" data-en="Decks">Decks</a>
+      <a href="../index.html#deckbuilder" data-pt="Deckbuilder" data-en="Deckbuilder">Deckbuilder</a>
+      <a href="../manual/" data-pt="Manual" data-en="Rulebook">Manual</a>
+      <a href="../gallery/" data-pt="Galeria" data-en="Gallery">Galeria</a>
+      <a href="./" data-pt="Lore" data-en="Lore">Lore</a>
+      <a href="../index.html#shop" data-pt="Loja" data-en="Shop">Loja</a>
+    </nav>
+
+    <div class="header-actions">
+      <div class="lang-switch" aria-label="Alternar idioma">
+        <button class="lang-btn is-active" data-lang="pt">PT</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="lore-shell">
+      <div class="container lore-hero reveal">
+        <div class="lore-hero-copy">
+          <span class="section-kicker" data-pt="Biblioteca de Adonar" data-en="Adonar Library">Biblioteca de
+            Adonar</span>
+          <h1 data-pt="Cada coleção é um livro. Cada carta, um capítulo."
+            data-en="Every set is a book. Every card, a chapter.">Cada coleção é um livro. Cada carta, um capítulo.</h1>
+          <p
+            data-pt="Explore a história do jogo como uma biblioteca narrativa: escolha um livro, leia seu prefácio e avance pelos capítulos ligados às cartas."
+            data-en="Explore the game's story as a narrative library: choose a book, read its preface, and move through chapters tied to cards.">
+            Explore a história do jogo como uma biblioteca narrativa: escolha um livro, leia seu prefácio e avance pelos
+            capítulos ligados às cartas.
+          </p>
+        </div>
+
+        <form class="lore-search" id="loreSearchForm" role="search">
+          <label for="loreSearch" data-pt="Buscar na biblioteca" data-en="Search the library">Buscar na biblioteca</label>
+          <div class="lore-search-row">
+            <input id="loreSearch" type="search" autocomplete="off"
+              placeholder="Nome da carta, coleção ou trecho da lore" data-pt="Nome da carta, coleção ou trecho da lore"
+              data-en="Card name, set, or lore excerpt" />
+            <button type="button" id="clearSearch" data-pt="Limpar" data-en="Clear">Limpar</button>
+          </div>
+        </form>
+      </div>
+
+      <section class="container lore-library reveal" aria-labelledby="libraryTitle">
+        <div class="lore-section-head">
+          <div>
+            <span class="section-kicker" data-pt="Estantes" data-en="Shelves">Estantes</span>
+            <h2 id="libraryTitle" data-pt="Livros da lore" data-en="Lore books">Livros da lore</h2>
+          </div>
+          <p id="librarySummary">Carregando biblioteca...</p>
+        </div>
+        <div class="book-grid" id="bookGrid"></div>
+      </section><br>
+
+    </section>
+  </main>
+
+  <aside class="lore-drawer" id="readingDrawer" aria-hidden="true">
+    <button class="drawer-backdrop" id="drawerBackdrop" type="button" aria-label="Fechar leitura"></button>
+    <div class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="chapterTitle">
+      <button class="drawer-close" id="drawerClose" type="button" aria-label="Fechar leitura">×</button>
+
+      <div class="reading-background" id="readingBackground" aria-hidden="true"></div>
+
+      <div class="reading-room" id="readingRoom" aria-live="polite">
+        <aside class="reading-side">
+          <div class="chapter-list-panel">
+            <div class="chapter-list-head">
+              <span class="section-kicker" data-pt="Capítulos" data-en="Chapters">Capítulos</span>
+              <span id="chapterCounter">0/0</span>
+            </div>
+            <div class="chapter-list" id="chapterList"></div>
+          </div>
+        </aside>
+
+        <article class="reading-main" id="readingMain">
+          <header class="reading-header">
+            <span class="section-kicker" id="activeBookLabel">Livro</span>
+            <h2 id="chapterTitle">Selecione um capítulo</h2>
+            <p id="chapterCardName"></p>
+          </header>
+
+          <section class="chapter-panel">
+            <span class="section-kicker" data-pt="Capítulo" data-en="Chapter">Capítulo</span>
+            <div id="chapterLore"></div>
+          </section>
+
+          <footer class="reading-actions">
+            <button type="button" id="prevChapter" data-pt="Anterior" data-en="Previous">Anterior</button>
+            <button type="button" id="nextChapter" data-pt="Próximo" data-en="Next">Próximo</button>
+          </footer>
+        </article>
+      </div>
+    </div>
+  </aside>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="footer-brand-wrap">
+          <img src="../assets/logo/adonai_logo_base-4.webp" alt="Adonai Logo" class="footer-logo" />
+          <span class="footer-brand">Adonai Card Game</span>
+        </div>
+        <p data-pt="Um card game bíblico competitivo sobre escolhas, alianças, consequências e caminhos estratégicos."
+          data-en="A competitive biblical card game about choices, alliances, consequences, and strategic paths.">
+          Um card game bíblico competitivo sobre escolhas, alianças, consequências e caminhos estratégicos.
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <a href="../index.html" data-pt="Início" data-en="Home">Início</a>
+        <a href="../how-to-play/how-to-play.html" data-pt="Como Jogar" data-en="How to Play">Como Jogar</a>
+        <a href="../cards/" data-pt="Cartas" data-en="Cards">Cartas</a>
+        <a href="../decks/" data-pt="Decks" data-en="Decks">Decks</a>
+        <a href="../index.html#deckbuilder" data-pt="Deckbuilder" data-en="Deckbuilder">Deckbuilder</a>
+        <a href="../manual/" data-pt="Manual" data-en="Rulebook">Manual</a>
+        <a href="../gallery/" data-pt="Galeria" data-en="Gallery">Galeria</a>
+        <a href="./" data-pt="Lore" data-en="Lore">Lore</a>
+        <a href="../index.html#shop" data-pt="Loja" data-en="Shop">Loja</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./lore.js"></script>
+</body>
+
+</html>

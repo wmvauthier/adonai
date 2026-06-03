@@ -196,14 +196,14 @@
           "pt": "Galeria",
           "en": "Gallery"
         },
-        "href": "./gallery.html"
+        "href": "./gallery/"
       },
       {
         "label": {
           "pt": "Lore",
           "en": "Lore"
         },
-        "href": "./lore.html"
+        "href": "./lore/"
       },
       {
         "label": {

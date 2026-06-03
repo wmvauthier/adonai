@@ -1,0 +1,314 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-06-02",
+  "books": [
+    {
+      "id": "fnd",
+      "collectionId": 1,
+      "releaseDate": "2026-02-06",
+      "preface": {
+        "pt": [
+          "Foundations abre os arquivos de Adonai como uma crônica de origem: reis ainda inseguros, profetas que falam antes da guerra, territórios marcados por promessa e templos onde cada escolha deixa uma cicatriz espiritual.",
+          "Este primeiro livro acompanha a tensão entre unção e queda. Davi surge como centro narrativo, mas a coleção inteira respira ao redor das consequências: amizade, traição, fé, orgulho, refúgio, julgamento e restauração."
+        ],
+        "en": [
+          "Foundations opens the Adonai archives as an origin chronicle: uncertain kings, prophets speaking before war, territories marked by promise, and temples where every choice leaves a spiritual scar.",
+          "This first book follows the tension between anointing and downfall. David stands at the narrative center, but the whole set breathes around consequence: friendship, betrayal, faith, pride, refuge, judgment, and restoration."
+        ]
+      },
+      "chapters": [
+        {
+          "cardId": "FND-PER-001",
+          "order": 1,
+          "title": {
+            "pt": "O Pastor Antes da Coroa",
+            "en": "The Shepherd Before the Crown"
+          },
+          "lore": {
+            "pt": [
+              "Antes que os salões o chamassem de rei, Davi conhecia o peso das noites abertas. A vigília sobre o rebanho ensinou-lhe que liderança começa quando ninguém está olhando e que a coragem, muitas vezes, chega sem testemunhas.",
+              "Sua unção não removeu a poeira dos pés. Ela apenas deu nome ao caminho. A partir daquele dia, cada fera enfrentada no campo se tornaria prenúncio de batalhas maiores, e cada canção tocada no silêncio guardaria a memória de uma promessa."
+            ],
+            "en": [
+              "Before halls called him king, David knew the weight of open nights. Watch over the flock taught him that leadership begins when nobody is watching, and courage often arrives without witnesses.",
+              "His anointing did not remove the dust from his feet. It only named the road. From that day on, every beast faced in the field would foreshadow greater battles, and every song played in silence would preserve the memory of a promise."
+            ]
+          }
+        },
+        {
+          "cardId": "FND-PER-003",
+          "order": 2,
+          "title": {
+            "pt": "O Nome Que Assustava Exércitos",
+            "en": "The Name That Frightened Armies"
+          },
+          "lore": {
+            "pt": [
+              "Golias caminhava como se a terra lhe devesse passagem. Sua presença não era apenas força: era discurso, propaganda e medo organizado em carne. Ele não desafiava somente soldados; desafiava a memória de quem Israel dizia ser.",
+              "Quando sua voz ecoou no vale, muitos ouviram uma sentença. Davi ouviu uma pergunta. E toda a história mudou porque um pastor decidiu responder de outro modo."
+            ],
+            "en": [
+              "Goliath walked as though the earth owed him passage. His presence was not only strength: it was speech, propaganda, and fear organized into flesh. He did not challenge only soldiers; he challenged the memory of who Israel claimed to be.",
+              "When his voice echoed through the valley, many heard a sentence. David heard a question. And all history changed because a shepherd chose to answer differently."
+            ]
+          }
+        },
+        {
+          "cardId": "FND-PER-004",
+          "order": 3,
+          "title": {
+            "pt": "A Aliança Que Sobreviveu ao Trono",
+            "en": "The Covenant That Outlived the Throne"
+          },
+          "lore": {
+            "pt": [
+              "Jônatas carregava a nobreza de quem poderia ter disputado tudo, mas escolheu reconhecer a promessa em outro. Sua amizade com Davi não foi ternura sem custo; foi renúncia consciente diante de um futuro que se deslocava.",
+              "Em Adonai, alianças verdadeiras não apagam conflito. Elas revelam quem permanece fiel quando o próprio sangue, a própria casa e o próprio direito parecem exigir outro caminho."
+            ],
+            "en": [
+              "Jonathan carried the nobility of one who could have contested everything, yet chose to recognize the promise in another. His friendship with David was not tenderness without cost; it was conscious renunciation before a future shifting away from him.",
+              "In Adonai, true covenants do not erase conflict. They reveal who remains faithful when blood, house, and rightful claim seem to demand another road."
+            ]
+          }
+        },
+        {
+          "cardId": "FND-PER-005",
+          "order": 4,
+          "title": {
+            "pt": "A Coroa Como Ferida",
+            "en": "The Crown as a Wound"
+          },
+          "lore": {
+            "pt": [
+              "Saul não caiu de uma vez. Sua ruína foi feita de pequenas defesas, justificativas repetidas e medo confundido com zelo. O rei caído ainda sabia governar, mas já não sabia escutar.",
+              "Sua tragédia é a sombra que acompanha Foundations: a lembrança de que autoridade sem arrependimento se torna prisão, e que a coroa, quando agarrada com desespero, corta a mão de quem a segura."
+            ],
+            "en": [
+              "Saul did not fall all at once. His ruin was built from small defenses, repeated justifications, and fear mistaken for zeal. The fallen king still knew how to govern, but no longer knew how to listen.",
+              "His tragedy is the shadow that follows Foundations: a reminder that authority without repentance becomes a prison, and a crown grasped in desperation cuts the hand that holds it."
+            ]
+          }
+        },
+        {
+          "cardId": "FND-PER-006",
+          "order": 5,
+          "title": {
+            "pt": "A Palavra Que Interrompe Reis",
+            "en": "The Word That Interrupts Kings"
+          },
+          "lore": {
+            "pt": [
+              "Natã entra na história como a voz que não pede licença ao poder. Seu ofício não é prever para impressionar, mas rasgar o véu das desculpas até que a verdade fique sem enfeites.",
+              "Toda corte teme um profeta que sabe contar uma parábola. Porque a parábola deixa o culpado condenar a si mesmo antes de perceber que a história era um espelho."
+            ],
+            "en": [
+              "Nathan enters the story as the voice that does not ask power for permission. His office is not to predict for spectacle, but to tear through excuses until truth stands without ornament.",
+              "Every court fears a prophet who knows how to tell a parable. A parable lets the guilty condemn himself before realizing the story was a mirror."
+            ]
+          }
+        },
+        {
+          "cardId": "FND-PER-008",
+          "order": 6,
+          "title": {
+            "pt": "A Beleza da Rebelião",
+            "en": "The Beauty of Rebellion"
+          },
+          "lore": {
+            "pt": [
+              "Absalão aprendeu cedo que aparência também é arma. Onde outros levantavam lanças, ele levantava simpatia, presença e promessa de justiça. Sua rebelião cresceu antes nos corações do que nos campos.",
+              "Mas toda sedução política cobra seu dízimo. Quanto mais o povo via nele uma resposta, mais Absalão deixava de perguntar se a resposta ainda servia à verdade."
+            ],
+            "en": [
+              "Absalom learned early that appearance is also a weapon. Where others raised spears, he raised sympathy, presence, and promises of justice. His rebellion grew in hearts before it grew in fields.",
+              "But all political seduction collects its tithe. The more people saw him as an answer, the less Absalom asked whether that answer still served truth."
+            ]
+          }
+        },
+        {
+          "cardId": "FND-MIL-029",
+          "order": 7,
+          "title": {
+            "pt": "Cinco Pedras e Uma Confissão",
+            "en": "Five Stones and a Confession"
+          },
+          "lore": {
+            "pt": [
+              "A Pedra da Funda não é lembrada por seu tamanho, mas pelo que revelou. No vale, ela atravessou mais que a testa de um gigante: atravessou a narrativa de impossibilidade que paralisava um exército inteiro.",
+              "Foundations trata milagres como decisões visíveis. A pedra só voou porque uma fé anterior já havia escolhido não se curvar ao medo."
+            ],
+            "en": [
+              "The Sling Stone is not remembered for its size, but for what it revealed. In the valley, it pierced more than a giant's forehead: it pierced the story of impossibility that had paralyzed an entire army.",
+              "Foundations treats miracles as visible decisions. The stone only flew because an earlier faith had already chosen not to bow to fear."
+            ]
+          }
+        },
+        {
+          "cardId": "FND-ART-037",
+          "order": 8,
+          "title": {
+            "pt": "A Arma Que Não Parecia Arma",
+            "en": "The Weapon That Did Not Look Like One"
+          },
+          "lore": {
+            "pt": [
+              "A Funda de Davi carrega a humildade das ferramentas comuns. Ela não brilha como espada, não impõe presença como armadura, mas recorda que o céu frequentemente escolhe instrumentos que os salões desprezam.",
+              "Nas mãos certas, simplicidade vira precisão. E precisão, quando nasce de confiança, pode derrubar aquilo que força bruta apenas alimentava."
+            ],
+            "en": [
+              "David's Sling carries the humility of common tools. It does not shine like a sword or command presence like armor, but remembers that heaven often chooses instruments halls despise.",
+              "In the right hands, simplicity becomes precision. And precision, born from trust, can bring down what brute force only fed."
+            ]
+          }
+        },
+        {
+          "cardId": "FND-TER-041",
+          "order": 9,
+          "title": {
+            "pt": "O Campo Onde a Promessa Aprendeu a Esperar",
+            "en": "The Field Where Promise Learned to Wait"
+          },
+          "lore": {
+            "pt": [
+              "Belém não é apenas origem geográfica. É o lugar onde grandeza permanece escondida até que o tempo certo a chame pelo nome. O campo do pastor guarda a pedagogia da espera.",
+              "Ali, entre poeira e ovelhas, a história aprende que preparação quase nunca parece preparação enquanto está acontecendo."
+            ],
+            "en": [
+              "Bethlehem is not merely a geographic origin. It is the place where greatness remains hidden until the right time calls it by name. The shepherd's field keeps the discipline of waiting.",
+              "There, among dust and sheep, history learns that preparation almost never looks like preparation while it is happening."
+            ]
+          }
+        },
+        {
+          "cardId": "FND-TEM-051",
+          "order": 10,
+          "title": {
+            "pt": "O Lugar Onde a Presença Pesa",
+            "en": "The Place Where Presence Has Weight"
+          },
+          "lore": {
+            "pt": [
+              "A Tenda da Presença não é cenário neutro. Ela lembra que toda estratégia de Adonai acontece diante de algo maior que vantagem, território ou vitória.",
+              "Quem entra ali descobre que consagração não é fuga do conflito; é o modo mais perigoso de entrar nele, porque obriga o coração a lutar sem mentir sobre si mesmo."
+            ],
+            "en": [
+              "The Tent of Presence is not neutral scenery. It remembers that every Adonai strategy happens before something greater than advantage, territory, or victory.",
+              "Whoever enters discovers that consecration is not escape from conflict; it is the most dangerous way to enter it, because it forces the heart to fight without lying about itself."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "fnd-ii",
+      "collectionId": 1,
+      "title": {
+        "pt": "Foundations II",
+        "en": "Foundations II"
+      },
+      "releaseDate": "2026-08-15",
+      "preface": {
+        "pt": [
+          "Foundations II é um volume fictício de teste, criado para validar a experiência de múltiplos livros na biblioteca. Ele imagina o que acontece quando os ecos da primeira unção já não cabem apenas no campo de batalha.",
+          "Aqui, a narrativa acompanha consequências tardias: sabedoria usada como arma, pecado tratado como herança, artefatos transformados em símbolos políticos e templos que deixam de ser abrigo para se tornar disputa."
+        ],
+        "en": [
+          "Foundations II is a fictional test volume created to validate the multi-book library experience. It imagines what happens when the echoes of the first anointing no longer fit only on the battlefield.",
+          "Here, the narrative follows delayed consequences: wisdom used as a weapon, sin treated as inheritance, artifacts turned into political symbols, and temples shifting from refuge into dispute."
+        ]
+      },
+      "chapters": [
+        {
+          "cardId": "FND-PER-018",
+          "order": 1,
+          "title": {
+            "pt": "A Voz Atrás do Véu",
+            "en": "The Voice Behind the Veil"
+          },
+          "lore": {
+            "pt": [
+              "O Conselheiro Real aprendeu que nem toda guerra exige espada. Algumas começam quando uma frase correta é dita no ouvido errado.",
+              "Foundations II o imagina como guardião de segredos instáveis: alguém que preserva o reino e, ao mesmo tempo, descobre que preservar também pode significar manipular."
+            ],
+            "en": [
+              "The Royal Counselor learned that not every war requires a sword. Some begin when the right sentence is spoken into the wrong ear.",
+              "Foundations II imagines him as the keeper of unstable secrets: someone who preserves the kingdom while discovering that preservation can also mean manipulation."
+            ]
+          }
+        },
+        {
+          "cardId": "FND-PEC-023",
+          "order": 2,
+          "title": {
+            "pt": "O Orgulho Que Herdou a Sala",
+            "en": "The Pride That Inherited the Room"
+          },
+          "lore": {
+            "pt": [
+              "Orgulho do Rei não chega como grito. Ele entra como protocolo, tradição e convicção de que o trono sempre sabe mais que a repreensão.",
+              "Neste volume fictício, o pecado não aparece apenas como falha individual, mas como atmosfera que ensina os próximos líderes a repetir a mesma queda com palavras mais nobres."
+            ],
+            "en": [
+              "The King's Pride does not arrive as a shout. It enters as protocol, tradition, and the conviction that the throne always knows more than rebuke.",
+              "In this fictional volume, sin appears not only as individual failure, but as an atmosphere teaching future leaders to repeat the same fall with nobler words."
+            ]
+          }
+        },
+        {
+          "cardId": "FND-MIL-036",
+          "order": 3,
+          "title": {
+            "pt": "A Sabedoria Que Corta",
+            "en": "The Wisdom That Cuts"
+          },
+          "lore": {
+            "pt": [
+              "Sabedoria Celestial não resolve a história tornando tudo simples. Ela revela o que era complexo demais para ser tratado com pressa.",
+              "Quando o reino aprende a pedir discernimento, descobre também que enxergar melhor não torna a obediência mais confortável."
+            ],
+            "en": [
+              "Heavenly Wisdom does not solve the story by making everything simple. It reveals what was too complex to be handled in haste.",
+              "When the kingdom learns to ask for discernment, it also discovers that seeing better does not make obedience more comfortable."
+            ]
+          }
+        },
+        {
+          "cardId": "FND-ART-040",
+          "order": 4,
+          "title": {
+            "pt": "O Peso da Coroa",
+            "en": "The Weight of the Crown"
+          },
+          "lore": {
+            "pt": [
+              "A Coroa de Israel repousa sobre a cabeça, mas pesa primeiro sobre a alma. Ela transforma desejo em decreto e medo em política.",
+              "Foundations II usa este artefato como espelho: quem o contempla vê não apenas autoridade, mas o tipo de pessoa que se tornará se ninguém lhe disser não."
+            ],
+            "en": [
+              "The Crown of Israel rests on the head, but weighs first upon the soul. It turns desire into decree and fear into policy.",
+              "Foundations II uses this artifact as a mirror: whoever beholds it sees not only authority, but the kind of person they will become if nobody tells them no."
+            ]
+          }
+        },
+        {
+          "cardId": "FND-TEM-052",
+          "order": 5,
+          "title": {
+            "pt": "O Altar Que Guardava o Que Ninguém Confessou",
+            "en": "The Altar That Kept What No One Confessed"
+          },
+          "lore": {
+            "pt": [
+              "O Altar do Pecado Oculto guarda uma verdade desconfortável: nem toda culpa deseja ser removida. Algumas culpas querem apenas continuar funcionando em silêncio.",
+              "Como capítulo de teste, ele aponta para uma biblioteca mais sombria, onde a santidade não é estética de luz, mas exposição do que foi escondido por tempo demais."
+            ],
+            "en": [
+              "The Altar of Hidden Sin keeps an uncomfortable truth: not every guilt wants to be removed. Some guilt only wants to keep functioning in silence.",
+              "As a test chapter, it points toward a darker library, where holiness is not an aesthetic of light, but the exposure of what has been hidden for too long."
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
