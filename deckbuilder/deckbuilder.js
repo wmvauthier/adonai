@@ -508,7 +508,7 @@ function renderAssistantState() {
     els.filtersToggle.setAttribute("aria-expanded", String(!state.filtersHidden));
   }
   if (els.chartsToggle) {
-    els.chartsToggle.textContent = state.chartsHidden ? "Mostrar gráficos" : "Ocultar gráficos";
+    els.chartsToggle.textContent = state.chartsHidden ? "Mostrar análise" : "Ocultar análise";
     els.chartsToggle.setAttribute("aria-expanded", String(!state.chartsHidden));
   }
   if (els.assistantToggle) {

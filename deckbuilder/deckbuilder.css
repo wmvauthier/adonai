@@ -45,13 +45,6 @@
   gap:8px;
 }
 
-.assistant-panel .deck-status{
-  justify-content:flex-start;
-  margin:2px 0 18px;
-  padding-bottom:16px;
-  border-bottom:1px solid var(--line);
-}
-
 .status-chip,
 .deck-pill,
 .card-tag{
@@ -115,6 +108,12 @@
   box-shadow:var(--shadow);
 }
 
+.deck-main-column{
+  display:grid;
+  gap:16px;
+  min-width:0;
+}
+
 .panel-head{
   display:flex;
   justify-content:space-between;
@@ -148,7 +147,7 @@
   grid-template-columns:1fr;
 }
 
-.is-charts-hidden .deck-analysis-board{
+.is-charts-hidden .analysis-panel{
   display:none;
 }
 
@@ -534,6 +533,14 @@
   margin-top:14px;
 }
 
+.assistant-actions-section{
+  display:grid;
+  gap:10px;
+  margin-top:18px;
+  padding-top:16px;
+  border-top:1px solid var(--line);
+}
+
 .deck-actions button{
   min-height:42px;
   border-radius:999px;
@@ -555,10 +562,17 @@
   margin-top:0;
 }
 
-.assistant-panel .analysis-section{
+.assistant-panel .analysis-section,
+.assistant-panel .assistant-grid{
   margin-top:18px;
   padding-top:16px;
   border-top:1px solid var(--line);
+}
+
+.assistant-panel .suggestion-section{
+  margin-top:0;
+  padding-top:0;
+  border-top:0;
 }
 
 .deck-analysis-board{
@@ -569,9 +583,6 @@
     "virtues curve"
     "functions functions";
   gap:12px;
-  margin-bottom:18px;
-  padding-bottom:16px;
-  border-bottom:1px solid var(--line);
 }
 
 .analysis-area-main{grid-area:analysis}
@@ -654,6 +665,14 @@
 
 .deck-analysis-board .curve-chart{
   min-height:156px;
+}
+
+.deck-current-head{
+  align-items:start;
+}
+
+.deck-current-head .deck-status{
+  max-width:58%;
 }
 
 .function-row,
@@ -934,9 +953,9 @@
 .virtue-mark-compact{
   position:relative;
   display:inline-flex;
-  width:32px;
-  height:32px;
-  min-height:32px;
+  width:42px;
+  height:42px;
+  min-height:42px;
   align-items:center;
   justify-content:center;
   justify-self:center;
@@ -948,25 +967,25 @@
 }
 
 .virtue-mark-compact img{
-  width:28px;
-  height:28px;
+  width:38px;
+  height:38px;
   border-radius:999px;
   object-fit:contain;
 }
 
 .pip-badge{
   position:absolute;
-  top:-7px;
-  right:-5px;
-  min-width:16px;
-  height:16px;
+  top:-8px;
+  right:-6px;
+  min-width:18px;
+  height:18px;
   padding:0 4px;
   border-radius:999px;
   border:1px solid rgba(255,255,255,.16);
   background:var(--gold-strong);
   color:#0e1111;
-  font-size:.6rem;
-  line-height:14px;
+  font-size:.64rem;
+  line-height:16px;
   font-weight:800;
   text-align:center;
 }
