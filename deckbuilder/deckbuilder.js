@@ -2,6 +2,7 @@ const DATA_URLS = {
   cards: "../data/cards.json",
   decks: "../data/decks.json",
   types: "../data/types.json",
+  subtypes: "../data/subtypes.json",
   functions: "../data/functions.json",
   collections: "../data/collections.json",
   virtues: "../data/virtues.json"
@@ -14,6 +15,14 @@ const TYPE_CODES = {
   territory: "TER",
   temple: "TEM"
 };
+const DECK_LANES = ["0-1", "2", "3", "4", "5", "6+"];
+const COST_LAYOUT_TYPE_ORDER = ["PEC", "ART", "MIL", "PER"];
+const TYPE_LAYOUT_LANES = {
+  PER: "0-1",
+  MIL: "2",
+  ART: "3",
+  PEC: "4"
+};
 
 const els = {
   header: document.getElementById("siteHeader"),
@@ -23,6 +32,7 @@ const els = {
   deckStatus: document.getElementById("deckStatus"),
   cardSearch: document.getElementById("cardSearch"),
   typeFilter: document.getElementById("typeFilter"),
+  subtypeFilter: document.getElementById("subtypeFilter"),
   functionFilter: document.getElementById("functionFilter"),
   costMinFilter: document.getElementById("costMinFilter"),
   costMaxFilter: document.getElementById("costMaxFilter"),
@@ -38,6 +48,7 @@ const els = {
   resistanceMaxValue: document.getElementById("resistanceMaxValue"),
   virtueFilterList: document.getElementById("virtueFilterList"),
   cardCatalog: document.getElementById("cardCatalog"),
+  cardsToggle: document.getElementById("cardsToggle"),
   mainCount: document.getElementById("mainCount"),
   championSlot: document.getElementById("championSlot"),
   territorySlot: document.getElementById("territorySlot"),
@@ -71,15 +82,17 @@ const state = {
   lang: "pt",
   search: "",
   type: "all",
+  subtype: "all",
   functionId: "all",
   costMin: "0",
   costMax: "6",
   attackMin: "0",
   attackMax: "10",
   resistanceMin: "0",
-  resistanceMax: "10",
+  resistanceMax: "30",
   virtues: [],
   filtersHidden: false,
+  cardsHidden: false,
   chartsHidden: false,
   assistantHidden: false,
   identity: {
@@ -88,7 +101,13 @@ const state = {
     temples: []
   },
   main: [],
+  deckLayout: {
+    mode: "free",
+    activeCardId: "",
+    lanes: {}
+  },
   suggestions: [],
+  selectedFunctionId: "",
   activeCatalogId: ""
 };
 
@@ -96,6 +115,7 @@ let cards = [];
 let decks = [];
 let references = {
   types: new Map(),
+  subtypes: new Map(),
   functions: new Map(),
   collections: new Map(),
   virtues: new Map()
@@ -190,8 +210,152 @@ function getCardImage(card) {
   return `../assets/cards/${getAssetTypeName(card)} - Foundations-${Number(card.number)}.webp`;
 }
 
+function cardHasFunction(card, functionId) {
+  return Boolean(functionId) && (card.functions || []).map(String).includes(String(functionId));
+}
+
+function getFunctionFocusClass(card) {
+  if (!state.selectedFunctionId || !card) return "";
+  return cardHasFunction(card, state.selectedFunctionId) ? "is-function-match" : "is-function-dimmed";
+}
+
 function getCost(card) {
   return toNumber(card.cost, 0);
+}
+
+function getCostLane(card) {
+  if (getCost(card) <= 1) return "0-1";
+  return getCost(card) >= 6 ? "6+" : String(Math.max(0, Math.floor(getCost(card))));
+}
+
+function getTypeOrder(card, order = COST_LAYOUT_TYPE_ORDER) {
+  const index = order.indexOf(getTypeCode(card));
+  return index >= 0 ? index : order.length;
+}
+
+function compareCardNames(a, b) {
+  return getCardName(a).localeCompare(getCardName(b), "pt-BR") || getCardId(a).localeCompare(getCardId(b));
+}
+
+function compareCardsByCostLaneType(aId, bId) {
+  const a = cardById.get(aId);
+  const b = cardById.get(bId);
+  if (!a || !b) return a ? -1 : b ? 1 : 0;
+  return getTypeOrder(a) - getTypeOrder(b) || getCost(a) - getCost(b) || compareCardNames(a, b);
+}
+
+function compareCardsByCostThenType(aId, bId) {
+  const a = cardById.get(aId);
+  const b = cardById.get(bId);
+  if (!a || !b) return a ? -1 : b ? 1 : 0;
+  return getCost(a) - getCost(b) || getTypeOrder(a) - getTypeOrder(b) || compareCardNames(a, b);
+}
+
+function getTypeLayoutLane(card) {
+  return TYPE_LAYOUT_LANES[getTypeCode(card)] || "5";
+}
+
+function createEmptyDeckLanes() {
+  return DECK_LANES.reduce((lanes, lane) => {
+    lanes[lane] = [];
+    return lanes;
+  }, {});
+}
+
+function normalizeDeckLayout(layout) {
+  const lanes = createEmptyDeckLanes();
+  if (layout && layout.lanes && typeof layout.lanes === "object") {
+    DECK_LANES.forEach((lane) => {
+      lanes[lane] = Array.isArray(layout.lanes[lane]) ? layout.lanes[lane].filter((id) => typeof id === "string") : [];
+    });
+  }
+  return {
+    mode: layout && layout.mode === "curve" ? "curve" : "free",
+    activeCardId: layout && typeof layout.activeCardId === "string" ? layout.activeCardId : "",
+    lanes
+  };
+}
+
+function resetDeckLayoutByCost() {
+  const lanes = createEmptyDeckLanes();
+  state.main.forEach((id) => {
+    const card = cardById.get(id);
+    if (!card) return;
+    lanes[getCostLane(card)].push(id);
+  });
+  DECK_LANES.forEach((lane) => {
+    lanes[lane].sort(compareCardsByCostLaneType);
+  });
+  state.deckLayout = {
+    mode: "curve",
+    activeCardId: "",
+    lanes
+  };
+}
+
+function resetDeckLayoutByType() {
+  const lanes = createEmptyDeckLanes();
+  state.main.forEach((id) => {
+    const card = cardById.get(id);
+    if (!card) return;
+    lanes[getTypeLayoutLane(card)].push(id);
+  });
+  DECK_LANES.forEach((lane) => {
+    lanes[lane].sort(compareCardsByCostThenType);
+  });
+  state.deckLayout = {
+    mode: "free",
+    activeCardId: "",
+    lanes
+  };
+}
+
+function syncDeckLayoutWithMain() {
+  state.deckLayout = normalizeDeckLayout(state.deckLayout);
+  const mainSet = new Set(state.main);
+  const seen = new Set();
+
+  DECK_LANES.forEach((lane) => {
+    state.deckLayout.lanes[lane] = state.deckLayout.lanes[lane].filter((id) => {
+      if (!mainSet.has(id) || seen.has(id)) return false;
+      seen.add(id);
+      return true;
+    });
+  });
+
+  state.main.forEach((id) => {
+    if (seen.has(id)) return;
+    const card = cardById.get(id);
+    if (!card) return;
+    state.deckLayout.lanes[getCostLane(card)].push(id);
+    seen.add(id);
+  });
+
+  if (!mainSet.has(state.deckLayout.activeCardId)) state.deckLayout.activeCardId = "";
+}
+
+function addCardToDeckLayout(id, preferredLane) {
+  syncDeckLayoutWithMain();
+  const card = cardById.get(id);
+  if (!card) return;
+  const lane = DECK_LANES.includes(preferredLane) ? preferredLane : getCostLane(card);
+  DECK_LANES.forEach((key) => {
+    state.deckLayout.lanes[key] = state.deckLayout.lanes[key].filter((item) => item !== id);
+  });
+  state.deckLayout.lanes[lane].push(id);
+}
+
+function moveCardInDeckLayout(id, lane, beforeId = "") {
+  if (!DECK_LANES.includes(lane) || !state.main.includes(id)) return;
+  syncDeckLayoutWithMain();
+  DECK_LANES.forEach((key) => {
+    state.deckLayout.lanes[key] = state.deckLayout.lanes[key].filter((item) => item !== id);
+  });
+  const target = state.deckLayout.lanes[lane];
+  const beforeIndex = beforeId ? target.indexOf(beforeId) : -1;
+  if (beforeIndex >= 0) target.splice(beforeIndex, 0, id);
+  else target.push(id);
+  state.deckLayout.mode = "free";
 }
 
 function getAttack(card) {
@@ -252,7 +416,7 @@ function renderRangeValues() {
   els.resistanceMaxValue.textContent = state.resistanceMax;
   renderRangeFill(els.costMinFilter, els.costMaxFilter, 6);
   renderRangeFill(els.attackMinFilter, els.attackMaxFilter, 10);
-  renderRangeFill(els.resistanceMinFilter, els.resistanceMaxFilter, 10);
+  renderRangeFill(els.resistanceMinFilter, els.resistanceMaxFilter, 30);
 }
 
 function renderRangeFill(minInput, maxInput, max) {
@@ -331,6 +495,7 @@ function saveState() {
     filters: {
       search: els.cardSearch.value,
       type: state.type,
+      subtype: state.subtype,
       functionId: state.functionId,
       costMin: state.costMin,
       costMax: state.costMax,
@@ -341,10 +506,13 @@ function saveState() {
       virtues: state.virtues
     },
     filtersHidden: state.filtersHidden,
+    cardsHidden: state.cardsHidden,
     chartsHidden: state.chartsHidden,
     assistantHidden: state.assistantHidden,
     identity: state.identity,
     main: state.main,
+    deckLayout: state.deckLayout,
+    selectedFunctionId: state.selectedFunctionId,
     speed: els.speedPreference.value,
     mechanic: els.mechanicPreference.value,
     required: els.requiredCards.value,
@@ -358,6 +526,7 @@ function enforceDeckConstraints() {
   Object.keys(state.identity).forEach((key) => {
     state.identity[key] = state.identity[key].filter((id) => !bannedIds.includes(id)).slice(0, 1);
   });
+  syncDeckLayoutWithMain();
 }
 
 function restoreState() {
@@ -365,6 +534,7 @@ function restoreState() {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
     if (saved.identity) state.identity = saved.identity;
     if (Array.isArray(saved.main)) state.main = saved.main;
+    if (saved.deckLayout) state.deckLayout = normalizeDeckLayout(saved.deckLayout);
     if (saved.speed) els.speedPreference.value = saved.speed;
     if (saved.mechanic) els.mechanicPreference.value = saved.mechanic;
     if (saved.required) els.requiredCards.value = saved.required;
@@ -372,16 +542,18 @@ function restoreState() {
     if (saved.filters) {
       state.search = normalizeSearch(saved.filters.search || "");
       state.type = saved.filters.type || "all";
+      state.subtype = saved.filters.subtype || "all";
       state.functionId = saved.filters.functionId || "all";
       state.costMin = clampRangeValue(saved.filters.costMin, "0", 6);
       state.costMax = clampRangeValue(saved.filters.costMax, "6", 6);
       state.attackMin = clampRangeValue(saved.filters.attackMin, "0", 10);
       state.attackMax = clampRangeValue(saved.filters.attackMax, "10", 10);
-      state.resistanceMin = clampRangeValue(saved.filters.resistanceMin, "0", 10);
-      state.resistanceMax = clampRangeValue(saved.filters.resistanceMax, "10", 10);
+      state.resistanceMin = clampRangeValue(saved.filters.resistanceMin, "0", 30);
+      state.resistanceMax = String(saved.filters.resistanceMax) === "10" ? "30" : clampRangeValue(saved.filters.resistanceMax, "30", 30);
       state.virtues = Array.isArray(saved.filters.virtues) ? saved.filters.virtues.map(String) : [];
       els.cardSearch.value = saved.filters.search || "";
       els.typeFilter.value = state.type;
+      els.subtypeFilter.value = state.subtype;
       els.functionFilter.value = state.functionId;
       els.costMinFilter.value = state.costMin;
       els.costMaxFilter.value = state.costMax;
@@ -391,8 +563,10 @@ function restoreState() {
       els.resistanceMaxFilter.value = state.resistanceMax;
     }
     state.filtersHidden = Boolean(saved.filtersHidden);
+    state.cardsHidden = Boolean(saved.cardsHidden);
     state.chartsHidden = Boolean(saved.chartsHidden);
     state.assistantHidden = Boolean(saved.assistantHidden);
+    state.selectedFunctionId = saved.selectedFunctionId ? String(saved.selectedFunctionId) : "";
   } catch (error) {
     localStorage.removeItem(STORAGE_KEY);
   }
@@ -407,6 +581,7 @@ function addCard(card) {
   }
   if (state.main.includes(id) || state.main.length >= MAIN_DECK_SIZE) return;
   state.main.push(id);
+  addCardToDeckLayout(id);
 }
 
 function handleCardAction(id, action) {
@@ -427,7 +602,7 @@ function handleCardAction(id, action) {
   addCard(card);
 }
 
-function handleDropAction(payload, zone) {
+function handleDropAction(payload, zone, beforeId = "") {
   const id = payload.id;
   const source = payload.source || "";
   const card = cardById.get(id);
@@ -459,6 +634,17 @@ function handleDropAction(payload, zone) {
   if (zone === "deck") {
     if (source === "banned") removeTextId(els.bannedCards, id);
     addCard(card);
+    return;
+  }
+  if (zone && zone.startsWith("deck-lane-")) {
+    const lane = zone.replace("deck-lane-", "");
+    if (isIdentityCard(card)) return;
+    if (source === "banned") removeTextId(els.bannedCards, id);
+    if (!state.main.includes(id)) {
+      if (state.main.length >= MAIN_DECK_SIZE) return;
+      state.main.push(id);
+    }
+    moveCardInDeckLayout(id, lane, beforeId);
     return;
   }
   handleCardAction(id, "deck");
@@ -493,6 +679,12 @@ function clearDragPayload() {
 
 function removeCard(id) {
   state.main = state.main.filter((item) => item !== id);
+  if (state.deckLayout && state.deckLayout.lanes) {
+    DECK_LANES.forEach((lane) => {
+      state.deckLayout.lanes[lane] = (state.deckLayout.lanes[lane] || []).filter((item) => item !== id);
+    });
+    if (state.deckLayout.activeCardId === id) state.deckLayout.activeCardId = "";
+  }
   Object.keys(state.identity).forEach((key) => {
     state.identity[key] = state.identity[key].filter((item) => item !== id);
   });
@@ -500,21 +692,36 @@ function removeCard(id) {
 
 function renderAssistantState() {
   const layout = document.querySelector(".deckbuilder-layout");
-  if (layout) layout.classList.toggle("is-assistant-hidden", state.assistantHidden);
+  const catalogPanel = document.querySelector(".catalog-panel");
+  if (layout) {
+    layout.classList.toggle("is-assistant-hidden", state.assistantHidden);
+    layout.classList.toggle("is-catalog-hidden", state.filtersHidden && state.cardsHidden);
+  }
+  if (catalogPanel) catalogPanel.classList.toggle("is-cards-hidden", state.cardsHidden);
   document.body.classList.toggle("is-filters-hidden", state.filtersHidden);
   document.body.classList.toggle("is-charts-hidden", state.chartsHidden);
   if (els.filtersToggle) {
-    els.filtersToggle.textContent = state.filtersHidden ? "Mostrar filtros" : "Ocultar filtros";
+    renderToggleButton(els.filtersToggle, state.filtersHidden, "filtros");
     els.filtersToggle.setAttribute("aria-expanded", String(!state.filtersHidden));
   }
   if (els.chartsToggle) {
-    els.chartsToggle.textContent = state.chartsHidden ? "Mostrar análise" : "Ocultar análise";
+    renderToggleButton(els.chartsToggle, state.chartsHidden, "gráficos");
     els.chartsToggle.setAttribute("aria-expanded", String(!state.chartsHidden));
   }
   if (els.assistantToggle) {
-    els.assistantToggle.textContent = state.assistantHidden ? "Mostrar assistente" : "Ocultar assistente";
+    renderToggleButton(els.assistantToggle, state.assistantHidden, "assistente");
     els.assistantToggle.setAttribute("aria-expanded", String(!state.assistantHidden));
   }
+  if (els.cardsToggle) {
+    renderToggleButton(els.cardsToggle, state.cardsHidden, "cartas");
+    els.cardsToggle.setAttribute("aria-expanded", String(!state.cardsHidden));
+  }
+}
+
+function renderToggleButton(button, isHidden, label) {
+  const action = isHidden ? "Mostrar" : "Ocultar";
+  const icon = isHidden ? "+" : "−";
+  button.innerHTML = `<span class="toggle-icon" aria-hidden="true">${icon}</span><span>${action} ${escapeHtml(label)}</span>`;
 }
 
 function renderFilters() {
@@ -522,6 +729,11 @@ function renderFilters() {
     .map((type) => `<option value="${type.id}">${escapeHtml(localize(type.name))}</option>`)
     .join("");
   els.typeFilter.innerHTML = `<option value="all">Todos os tipos</option>${typeOptions}`;
+
+  const subtypeOptions = Array.from(references.subtypes.values())
+    .map((subtype) => `<option value="${subtype.id}">${escapeHtml(localize(subtype.name))}</option>`)
+    .join("");
+  els.subtypeFilter.innerHTML = `<option value="all">Todos os subtipos</option>${subtypeOptions}`;
 
   const functionOptions = Array.from(references.functions.values())
     .map((fn) => `<option value="${fn.id}">${escapeHtml(localize(fn.name))}</option>`)
@@ -552,6 +764,7 @@ function getFilteredCards() {
     if (isSelected(id)) return false;
     if (bannedIds.includes(id)) return false;
     if (state.type !== "all" && String((card.type || [])[0]) !== state.type) return false;
+    if (state.subtype !== "all" && !(card.subtype || []).map(String).includes(state.subtype)) return false;
     if (state.functionId !== "all" && !(card.functions || []).map(String).includes(state.functionId)) return false;
     if (!passesNumericRange(Math.min(6, getCost(card)), state.costMin, state.costMax)) return false;
     if (!passesNumericRange(getAttack(card), state.attackMin, state.attackMax)) return false;
@@ -587,8 +800,9 @@ function renderCatalog() {
   els.cardCatalog.innerHTML = filtered.map((card) => {
     const id = getCardId(card);
     const isActive = state.activeCatalogId === id;
+    const functionFocusClass = getFunctionFocusClass(card);
     return `
-      <article class="catalog-card ${isActive ? "is-actions-open" : ""}" data-card-id="${escapeHtml(id)}" draggable="true" title="${escapeHtml(getCardName(card))}">
+      <article class="catalog-card ${isActive ? "is-actions-open" : ""} ${functionFocusClass}" data-card-id="${escapeHtml(id)}" draggable="true" title="${escapeHtml(getCardName(card))}">
         <img src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" loading="lazy" />
         <div class="catalog-card-actions" aria-hidden="${isActive ? "false" : "true"}">
           <button type="button" data-card-action="deck" data-card-id="${escapeHtml(id)}">Deck</button>
@@ -629,40 +843,106 @@ function renderIdentity() {
 
 function renderDeckList() {
   if (els.mainCount) els.mainCount.textContent = `${state.main.length}/${MAIN_DECK_SIZE}`;
-  const groups = new Map();
-  getMainCards()
-    .sort((a, b) => getTypeLabel(a).localeCompare(getTypeLabel(b), "pt-BR") || getCost(a) - getCost(b) || getCardName(a).localeCompare(getCardName(b), "pt-BR"))
-    .forEach((card) => {
-      const label = getTypeLabel(card);
-      if (!groups.has(label)) groups.set(label, []);
-      groups.get(label).push(card);
-    });
+  syncDeckLayoutWithMain();
+  const lanes = DECK_LANES.map((lane) => {
+    const ids = state.deckLayout.lanes[lane] || [];
+    return `
+      <section class="deck-lane" data-lane="${escapeHtml(lane)}">
+        <div class="deck-lane-stack">
+          ${ids.map((id, index) => renderDeckBoardCard(id, lane, index)).join("")}
+        </div>
+      </section>
+    `;
+  }).join("");
 
-  if (!state.main.length) {
-    els.deckList.innerHTML = `<div class="lore-empty"><p>Clique nas cartas para adicioná-las ao deck.</p></div>`;
-    return;
-  }
+  els.deckList.innerHTML = `
+    <div class="deck-board-tools">
+      <div class="deck-layout-mode" role="group" aria-label="Modo de organização do deck">
+        <button type="button" class="${state.deckLayout.mode === "free" ? "is-active" : ""}" data-deck-layout-mode="free">Livre</button>
+        <button type="button" class="${state.deckLayout.mode === "curve" ? "is-active" : ""}" data-deck-layout-mode="curve">Curva</button>
+      </div>
+      <div class="deck-layout-actions">
+        <button class="deck-layout-reset" type="button" data-deck-layout-reset>Reorganizar por custo</button>
+        <button class="deck-layout-reset" type="button" data-deck-layout-type>Reorganizar por tipo</button>
+      </div>
+    </div>
+    <div class="deck-board" aria-label="Deck principal organizado em raias">
+      ${renderIdentityLane()}
+      ${lanes}
+    </div>
+  `;
+  requestAnimationFrame(syncDeckBoardLaneHeights);
+}
 
-  els.deckList.innerHTML = Array.from(groups.entries()).map(([label, group]) => `
-    <section class="deck-group">
-      <h3>${escapeHtml(label)} · ${group.length}</h3>
-      <div class="deck-group-cards">
-      ${group.map((card) => {
-        const id = getCardId(card);
-        return `
-          <button class="deck-row" type="button" data-remove-card="${escapeHtml(id)}" draggable="true">
-            <img src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" loading="lazy" />
-            <div>
-              <strong>${escapeHtml(getCardName(card))}</strong>
-              <span>${escapeHtml(id)} · custo ${escapeHtml(getCost(card))}</span>
-            </div>
-            <span>×</span>
-          </button>
-        `;
-      }).join("")}
+function syncDeckBoardLaneHeights() {
+  const board = els.deckList.querySelector(".deck-board");
+  if (!board) return;
+  const lanes = [...board.querySelectorAll(".deck-lane")];
+  if (!lanes.length) return;
+
+  lanes.forEach((lane) => {
+    lane.style.minHeight = "";
+  });
+
+  const boardHeight = board.clientHeight || 0;
+  const maxHeight = lanes.reduce((max, lane) => {
+    const laneTop = lane.getBoundingClientRect().top;
+    const items = [...lane.querySelectorAll(".deck-board-card, .identity-board-slot")];
+    const contentBottom = items.reduce((bottom, item) => {
+      return Math.max(bottom, item.getBoundingClientRect().bottom - laneTop);
+    }, 0);
+    return Math.max(max, contentBottom + 20, boardHeight);
+  }, boardHeight);
+
+  lanes.forEach((lane) => {
+    lane.style.minHeight = `${Math.ceil(maxHeight)}px`;
+  });
+}
+
+function renderIdentityLane() {
+  return `
+    <section class="deck-lane deck-lane--identity" aria-label="Identidade">
+      <div class="identity-lane-stack">
+        ${renderIdentityLaneSlot("champions", "Campeão")}
+        ${renderIdentityLaneSlot("temples", "Templo")}
+        ${renderIdentityLaneSlot("territories", "Território")}
       </div>
     </section>
-  `).join("");
+  `;
+}
+
+function renderIdentityLaneSlot(key, label) {
+  const id = state.identity[key][0] || "";
+  const card = id ? cardById.get(id) : null;
+  const isLandscape = card && (getTypeCode(card) === TYPE_CODES.territory || getTypeCode(card) === TYPE_CODES.temple);
+  const functionFocusClass = getFunctionFocusClass(card);
+  return `
+    <button class="identity-board-slot ${card ? "is-filled" : ""} ${isLandscape ? "is-landscape" : ""} ${functionFocusClass}" type="button" data-remove-identity="${escapeHtml(key)}" data-drop-zone="identity-${escapeHtml(key)}" data-card-id="${escapeHtml(id)}">
+      <span>${escapeHtml(label)}</span>
+      ${card ? `<img src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" loading="lazy" />` : `<strong>-</strong>`}
+    </button>
+  `;
+}
+
+function renderDeckBoardCard(id, lane, index) {
+  const card = cardById.get(id);
+  if (!card) return "";
+  const isActive = state.deckLayout.activeCardId === id;
+  const functionFocusClass = getFunctionFocusClass(card);
+  return `
+    <article class="deck-board-card ${isActive ? "is-actions-open" : ""} ${functionFocusClass}" data-remove-card="${escapeHtml(id)}" data-deck-card="${escapeHtml(id)}" data-lane="${escapeHtml(lane)}" data-index="${index}" draggable="true">
+      <img src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" loading="lazy" />
+      <div class="deck-board-card-actions" aria-hidden="${isActive ? "false" : "true"}">
+        <strong>${escapeHtml(getCardName(card))}</strong>
+        <span>${escapeHtml(id)} · custo ${escapeHtml(getCost(card))}</span>
+        <div>
+          <button type="button" data-deck-card-action="remove" data-card-id="${escapeHtml(id)}">Remover</button>
+          <button type="button" data-deck-card-action="required" data-card-id="${escapeHtml(id)}">Fixar</button>
+          <button type="button" data-deck-card-action="ban" data-card-id="${escapeHtml(id)}">Banir</button>
+        </div>
+      </div>
+    </article>
+  `;
 }
 
 function analyzeDeck(cardList) {
@@ -697,7 +977,8 @@ function analyzeDeck(cardList) {
 function buildCurve(list) {
   const curve = new Map();
   list.forEach((card) => {
-    const cost = Math.max(0, Math.min(6, Math.floor(getCost(card))));
+    const cardCost = Math.max(0, Math.min(6, Math.floor(getCost(card))));
+    const cost = cardCost <= 1 ? "0-1" : cardCost;
     if (!curve.has(cost)) curve.set(cost, new Map());
     const type = normalizeSearch(getTypeLabel(card)).split(" ")[0] || "outro";
     curve.get(cost).set(type, (curve.get(cost).get(type) || 0) + 1);
@@ -713,7 +994,6 @@ function calculateFieldAverages() {
   });
 
   const analyses = decks.map((deck) => analyzeDeck((deck.cards || [])
-    .concat(deck.identity ? [].concat(deck.identity.champions || [], deck.identity.territories || [], deck.identity.temples || []) : [])
     .map((id) => cardById.get(id))
     .filter(Boolean)));
   const total = analyses.length || 1;
@@ -738,21 +1018,21 @@ function renderStatus() {
   const singletonOk = new Set(state.main).size === state.main.length;
   const valid = identityOk && mainOk && singletonOk;
   els.deckStatus.innerHTML = `
-    <span class="status-chip ${identityOk ? "is-valid" : "is-warning"}">Identidade ${identityOk ? "3/3" : `${getIdentityCards().length}/3`}</span>
-    <span class="status-chip ${mainOk ? "is-valid" : "is-warning"}">Deck ${state.main.length}/40</span>
-    <span class="status-chip ${singletonOk ? "is-valid" : "is-warning"}">Singleton ${singletonOk ? "OK" : "Erro"}</span>
-    <span class="status-chip ${valid ? "is-valid" : "is-warning"}">${valid ? "Válido" : "Incompleto"}</span>
+    ${renderStatusChip(identityOk, "Identidade", identityOk ? "3/3" : `${getIdentityCards().length}/3`)}
+    ${renderStatusChip(mainOk, "Deck", `${state.main.length}/40`)}
+    ${renderStatusChip(singletonOk, "Singleton", singletonOk ? "OK" : "Erro")}
+    ${renderStatusChip(valid, valid ? "Válido" : "Incompleto", "")}
   `;
+}
+
+function renderStatusChip(isValid, label, value) {
+  const icon = isValid ? "✓" : "!";
+  return `<span class="status-chip ${isValid ? "is-valid" : "is-warning"}"><span class="status-icon" aria-hidden="true">${icon}</span>${escapeHtml(label)}${value ? ` <strong>${escapeHtml(value)}</strong>` : ""}</span>`;
 }
 
 function renderAnalysis() {
   const analysis = analyzeDeck();
-  const diffAtk = round(analysis.avgAttack - fieldAverages.avgAttack);
-  const diffRes = round(analysis.avgResistance - fieldAverages.avgResistance);
-  els.analysisGrid.innerHTML = `
-    <article class="analysis-card"><span>ATK médio</span><strong>${renderCompareIndicator(diffAtk, "higher")} ⚔ ${analysis.avgAttack}</strong><span>vs média ${formatDelta(diffAtk)}</span></article>
-    <article class="analysis-card"><span>RES média</span><strong>${renderCompareIndicator(diffRes, "higher")} ⬟ ${analysis.avgResistance}</strong><span>vs média ${formatDelta(diffRes)}</span></article>
-  `;
+  const curveAnalysis = analyzeDeck(getMainCards());
 
   const rows = Array.from(analysis.functionCounts.entries())
     .map(([id, value]) => ({
@@ -765,12 +1045,15 @@ function renderAnalysis() {
     .slice(0, 18);
 
   els.functionAnalysis.innerHTML = rows.length ? rows.map((row) => `
-    <span class="function-chip" title="${escapeHtml(row.label)}">
+    <button class="function-chip ${String(row.id) === state.selectedFunctionId ? "is-active" : ""}" type="button" data-function-focus="${escapeHtml(String(row.id))}" title="${escapeHtml(row.label)}" aria-pressed="${String(row.id) === state.selectedFunctionId ? "true" : "false"}">
       <strong>${escapeHtml(row.label)}</strong>
       <span>${renderCompareIndicator(round(row.value - row.avg), "higher")} ${row.value}</span>
-    </span>
-  `).join("") : `<span class="function-chip"><strong>Sem funções</strong><span>0</span></span>`;
-  renderCurve(analysis.curve, analysis.avgCost);
+    </button>
+  `).join("") : `<span class="function-chip is-empty"><strong>Sem funções</strong><span>0</span></span>`;
+  renderCurve(curveAnalysis.curve, curveAnalysis.avgCost, {
+    avgAttack: curveAnalysis.avgAttack,
+    avgResistance: curveAnalysis.avgResistance
+  });
   renderVirtueAffinity(analysis.virtueCounts);
 }
 
@@ -790,22 +1073,25 @@ function formatDelta(delta) {
 }
 
 function getSweetSpot() {
+  if (els.speedPreference.value === "any") return null;
   if (els.speedPreference.value === "fast") return [0, 3];
   if (els.speedPreference.value === "slow") return [3, 6];
   return [2, 4];
 }
 
-function renderCurve(curve, avgCost) {
+function renderCurve(curve, avgCost, metrics = {}) {
   const totals = Array.from(curve.values()).map((typeMap) => Array.from(typeMap.values()).reduce((sum, value) => sum + value, 0));
   const max = Math.max.apply(null, [1].concat(totals));
   const rows = [];
   const sweetSpot = getSweetSpot();
   const averageBucket = Math.max(0, Math.min(6, Math.round(avgCost)));
   els.curveSummary.innerHTML = `
-    <span>Média: <strong>${escapeHtml(avgCost)}</strong></span>
-    <span>Sweet spot: <strong>${sweetSpot[0]}-${sweetSpot[1] === 6 ? "6+" : sweetSpot[1]}</strong></span>
+    <span>Custo: <strong>${escapeHtml(avgCost)}</strong></span>
+    <span>Poder: <strong>${escapeHtml(metrics.avgAttack ?? 0)}</strong></span>
+    <span>Resistência: <strong>${escapeHtml(metrics.avgResistance ?? 0)}</strong></span>
+    ${sweetSpot ? `<span>Sweet spot: <strong>${sweetSpot[0]}-${sweetSpot[1] === 6 ? "6+" : sweetSpot[1]}</strong></span>` : ""}
   `;
-  for (let cost = 0; cost <= 6; cost += 1) {
+  ["0-1", 2, 3, 4, 5, 6].forEach((cost) => {
     const typeMap = curve.get(cost) || new Map();
     const total = Array.from(typeMap.values()).reduce((sum, value) => sum + value, 0);
     const segments = Array.from(typeMap.entries()).map(([type, value]) => {
@@ -813,15 +1099,16 @@ function renderCurve(curve, avgCost) {
       const cls = ["personagem", "milagre", "artefato", "pecado"].includes(type) ? type : "outro";
       return `<span class="curve-segment ${cls}" style="height:${height}%" title="${escapeHtml(type)} ${value}"></span>`;
     }).join("");
+    const numericCost = cost === "0-1" ? 1 : cost;
     rows.push(`
-      <div class="curve-row ${cost >= sweetSpot[0] && cost <= sweetSpot[1] ? "is-sweetspot" : ""} ${cost === averageBucket ? "is-average" : ""}">
+      <div class="curve-row ${sweetSpot && numericCost >= sweetSpot[0] && numericCost <= sweetSpot[1] ? "is-sweetspot" : ""} ${numericCost === averageBucket ? "is-average" : ""}">
         <strong>${cost === 6 ? "6+" : cost}</strong>
         <div class="curve-track">${segments}</div>
-        ${cost === averageBucket ? '<em class="curve-average-marker">média</em>' : ""}
+        ${numericCost === averageBucket ? '<em class="curve-average-marker">média</em>' : ""}
         <span>${total}</span>
       </div>
     `);
-  }
+  });
   els.curveChart.innerHTML = rows.join("");
 }
 
@@ -891,11 +1178,13 @@ function importDeckText() {
   const ids = parseIds(els.deckText.value);
   state.identity = { champions: [], territories: [], temples: [] };
   state.main = [];
+  state.deckLayout = normalizeDeckLayout();
   ids.forEach((id) => {
     const card = cardById.get(id);
     if (!card) return;
     addCard(card);
   });
+  resetDeckLayoutByCost();
   renderAll();
 }
 
@@ -922,6 +1211,7 @@ function generateDeck() {
   const speed = els.speedPreference.value;
   state.identity = { champions: [], territories: [], temples: [] };
   state.main = [];
+  state.deckLayout = normalizeDeckLayout();
 
   requiredIds.forEach((id) => {
     const card = cardById.get(id);
@@ -937,6 +1227,7 @@ function generateDeck() {
     if (state.main.length < MAIN_DECK_SIZE) addCard(card);
   });
   state.suggestions = [];
+  resetDeckLayoutByCost();
   renderAll();
 }
 
@@ -972,6 +1263,7 @@ function completeDeck() {
   pool.forEach((card) => {
     if (state.main.length < MAIN_DECK_SIZE) addCard(card);
   });
+  resetDeckLayoutByCost();
   renderAll();
 }
 
@@ -997,25 +1289,79 @@ function improveDeck() {
 function applySuggestion(index) {
   const suggestion = state.suggestions[index];
   if (!suggestion) return;
-  state.main = state.main.filter((id) => id !== suggestion.remove);
-  if (!state.main.includes(suggestion.add) && state.main.length < MAIN_DECK_SIZE) state.main.push(suggestion.add);
+  if (suggestion.remove) removeCard(suggestion.remove);
+  const card = cardById.get(suggestion.add);
+  if (card && !state.main.includes(suggestion.add) && state.main.length < MAIN_DECK_SIZE) addCard(card);
   state.suggestions.splice(index, 1);
   renderAll();
 }
 
+function getApparentMechanicId() {
+  if (els.mechanicPreference.value !== "all") return els.mechanicPreference.value;
+  const counts = new Map();
+  getAnalysisCards().forEach((card) => {
+    (card.functions || []).forEach((id) => counts.set(String(id), (counts.get(String(id)) || 0) + 1));
+  });
+  return Array.from(counts.entries()).sort((a, b) => b[1] - a[1])[0]?.[0] || "all";
+}
+
+function getSuggestionSpeed() {
+  return els.speedPreference.value === "any" ? "mid" : els.speedPreference.value;
+}
+
+function buildIncompleteSuggestions() {
+  if (state.main.length >= MAIN_DECK_SIZE) return [];
+  const requiredIds = getRequiredIds();
+  const bannedIds = getBannedIds();
+  const mechanicId = getApparentMechanicId();
+  const speed = getSuggestionSpeed();
+  return cards
+    .filter((card) => !isIdentityCard(card))
+    .filter((card) => !state.main.includes(getCardId(card)) && !bannedIds.includes(getCardId(card)))
+    .sort((a, b) => scoreCard(b, mechanicId, speed, requiredIds, bannedIds) - scoreCard(a, mechanicId, speed, requiredIds, bannedIds))
+    .slice(0, Math.min(8, MAIN_DECK_SIZE - state.main.length))
+    .map((card) => ({
+      add: getCardId(card),
+      reason: mechanicId === "all" ? "Completa a curva" : `Sinergia: ${localize((references.functions.get(Number(mechanicId)) || {}).name) || "mecânica"}`
+    }));
+}
+
 function renderSuggestions() {
+  const bannedIds = getBannedIds();
+  state.suggestions = state.suggestions.filter((suggestion) => {
+    if (!suggestion.add || !cardById.has(suggestion.add)) return false;
+    if (state.main.length >= MAIN_DECK_SIZE && !suggestion.remove) return false;
+    if (state.main.includes(suggestion.add) || bannedIds.includes(suggestion.add)) return false;
+    return !suggestion.remove || state.main.includes(suggestion.remove);
+  });
+
+  if (!state.suggestions.length && state.main.length < MAIN_DECK_SIZE) {
+    state.suggestions = buildIncompleteSuggestions();
+  }
+
   els.suggestionList.innerHTML = state.suggestions.length ? state.suggestions.map((suggestion, index) => {
     const remove = cardById.get(suggestion.remove);
     const add = cardById.get(suggestion.add);
     return `
       <div class="suggestion-row">
-        ${remove ? `<img src="${escapeHtml(getCardImage(remove))}" alt="${escapeHtml(getCardName(remove))}" loading="lazy" />` : "<span></span>"}
-        <strong>${escapeHtml(remove ? getCardName(remove) : suggestion.remove)} → ${escapeHtml(add ? getCardName(add) : suggestion.add)}</strong>
-        ${add ? `<img src="${escapeHtml(getCardImage(add))}" alt="${escapeHtml(getCardName(add))}" loading="lazy" />` : "<span></span>"}
+        ${remove ? `<img src="${escapeHtml(getCardImage(remove))}" alt="${escapeHtml(getCardName(remove))}" loading="lazy" />` : add ? `<img src="${escapeHtml(getCardImage(add))}" alt="${escapeHtml(getCardName(add))}" loading="lazy" />` : "<span></span>"}
+        <strong>${remove ? "Trocar carta" : "Adicionar carta"}</strong>
+        ${remove && add ? `<img src="${escapeHtml(getCardImage(add))}" alt="${escapeHtml(getCardName(add))}" loading="lazy" />` : "<span></span>"}
+        <span>${escapeHtml(suggestion.reason || (remove ? "Troca sugerida" : "Inserção sugerida"))}</span>
         <button type="button" data-apply-suggestion="${index}">Aplicar</button>
       </div>
     `;
   }).join("") : `<div class="suggestion-row is-empty"><strong>Nenhuma sugestão gerada</strong></div>`;
+}
+
+function getBeforeDeckCardId(event, laneElement, draggedId) {
+  const cardsInLane = [...laneElement.querySelectorAll("[data-deck-card]")]
+    .filter((item) => item.dataset.deckCard !== draggedId);
+  const target = cardsInLane.find((item) => {
+    const rect = item.getBoundingClientRect();
+    return event.clientY < rect.top + rect.height / 2;
+  });
+  return target ? target.dataset.deckCard : "";
 }
 
 function renderAll() {
@@ -1062,6 +1408,10 @@ function bindEvents() {
   });
   els.typeFilter.addEventListener("change", () => {
     state.type = els.typeFilter.value;
+    renderCatalog();
+  });
+  els.subtypeFilter.addEventListener("change", () => {
+    state.subtype = els.subtypeFilter.value;
     renderCatalog();
   });
   els.functionFilter.addEventListener("change", () => {
@@ -1122,6 +1472,11 @@ function bindEvents() {
     setDragPayload(event, cardElement.dataset.cardId, "catalog");
   });
   els.deckList.addEventListener("dragstart", (event) => {
+    const identitySlot = event.target.closest(".identity-board-slot[data-card-id]");
+    if (identitySlot && identitySlot.dataset.cardId) {
+      if (!setDragPayload(event, identitySlot.dataset.cardId, "identity")) event.preventDefault();
+      return;
+    }
     const row = event.target.closest("[data-remove-card]");
     if (!row || !event.dataTransfer) return;
     setDragPayload(event, row.dataset.removeCard, "deck");
@@ -1170,10 +1525,108 @@ function bindEvents() {
     clearDragPayload();
   });
   document.addEventListener("dragend", clearDragPayload);
+  els.deckList.addEventListener("dragover", (event) => {
+    const identitySlot = event.target.closest(".identity-board-slot");
+    if (identitySlot && activeDragPayload) {
+      event.preventDefault();
+      event.stopPropagation();
+      identitySlot.classList.add("is-drag-over");
+      if (event.dataTransfer) event.dataTransfer.dropEffect = "move";
+      return;
+    }
+    const lane = event.target.closest(".deck-lane");
+    if (!lane || !activeDragPayload) return;
+    event.preventDefault();
+    event.stopPropagation();
+    lane.classList.add("is-drag-over");
+    if (event.dataTransfer) event.dataTransfer.dropEffect = activeDragPayload.source === "catalog" ? "copy" : "move";
+  }, true);
+  els.deckList.addEventListener("dragleave", (event) => {
+    const identitySlot = event.target.closest(".identity-board-slot");
+    if (identitySlot && !identitySlot.contains(event.relatedTarget)) {
+      event.stopPropagation();
+      identitySlot.classList.remove("is-drag-over");
+      return;
+    }
+    const lane = event.target.closest(".deck-lane");
+    if (!lane || lane.contains(event.relatedTarget)) return;
+    event.stopPropagation();
+    lane.classList.remove("is-drag-over");
+  }, true);
+  els.deckList.addEventListener("drop", (event) => {
+    const identitySlot = event.target.closest(".identity-board-slot");
+    if (identitySlot) {
+      event.preventDefault();
+      event.stopPropagation();
+      identitySlot.classList.remove("is-drag-over");
+      const payload = getDragPayload(event);
+      if (!payload.id) return;
+      handleDropAction(payload, identitySlot.dataset.dropZone);
+      clearDragPayload();
+      renderAll();
+      return;
+    }
+    const lane = event.target.closest(".deck-lane");
+    if (!lane || !lane.dataset.lane) return;
+    event.preventDefault();
+    event.stopPropagation();
+    lane.classList.remove("is-drag-over");
+    const payload = getDragPayload(event);
+    if (!payload.id) return;
+    const beforeId = getBeforeDeckCardId(event, lane, payload.id);
+    handleDropAction(payload, `deck-lane-${lane.dataset.lane}`, beforeId);
+    clearDragPayload();
+    renderAll();
+  }, true);
   els.deckList.addEventListener("click", (event) => {
-    const button = event.target.closest("[data-remove-card]");
-    if (!button) return;
-    removeCard(button.dataset.removeCard);
+    const actionButton = event.target.closest("[data-deck-card-action]");
+    if (actionButton) {
+      const id = actionButton.dataset.cardId;
+      if (actionButton.dataset.deckCardAction === "remove") removeCard(id);
+      if (actionButton.dataset.deckCardAction === "required") {
+        addTextId(els.requiredCards, id);
+        removeTextId(els.bannedCards, id);
+      }
+      if (actionButton.dataset.deckCardAction === "ban") {
+        removeCard(id);
+        addTextId(els.bannedCards, id);
+        removeTextId(els.requiredCards, id);
+      }
+      state.deckLayout.activeCardId = "";
+      renderAll();
+      return;
+    }
+
+    const modeButton = event.target.closest("[data-deck-layout-mode]");
+    if (modeButton) {
+      state.deckLayout.mode = modeButton.dataset.deckLayoutMode;
+      if (state.deckLayout.mode === "curve") resetDeckLayoutByCost();
+      renderAll();
+      return;
+    }
+
+    if (event.target.closest("[data-deck-layout-reset]")) {
+      resetDeckLayoutByCost();
+      renderAll();
+      return;
+    }
+
+    if (event.target.closest("[data-deck-layout-type]")) {
+      resetDeckLayoutByType();
+      renderAll();
+      return;
+    }
+
+    const identitySlot = event.target.closest(".identity-board-slot[data-remove-identity]");
+    if (identitySlot) {
+      state.identity[identitySlot.dataset.removeIdentity] = [];
+      renderAll();
+      return;
+    }
+
+    const card = event.target.closest("[data-deck-card]");
+    if (!card) return;
+    state.deckLayout.activeCardId = state.deckLayout.activeCardId === card.dataset.deckCard ? "" : card.dataset.deckCard;
     renderAll();
   });
   document.querySelectorAll("[data-remove-identity]").forEach((button) => {
@@ -1187,6 +1640,7 @@ function bindEvents() {
   els.clearDeck.addEventListener("click", () => {
     state.identity = { champions: [], territories: [], temples: [] };
     state.main = [];
+    state.deckLayout = normalizeDeckLayout();
     state.suggestions = [];
     renderAll();
   });
@@ -1195,6 +1649,10 @@ function bindEvents() {
   els.improveDeck.addEventListener("click", improveDeck);
   els.filtersToggle.addEventListener("click", () => {
     state.filtersHidden = !state.filtersHidden;
+    renderAll();
+  });
+  els.cardsToggle?.addEventListener("click", () => {
+    state.cardsHidden = !state.cardsHidden;
     renderAll();
   });
   els.chartsToggle.addEventListener("click", () => {
@@ -1224,13 +1682,32 @@ function bindEvents() {
     if (!button) return;
     applySuggestion(Number(button.dataset.applySuggestion));
   });
+  els.functionAnalysis.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-function-focus]");
+    if (!button) return;
+    const id = button.dataset.functionFocus;
+    state.selectedFunctionId = state.selectedFunctionId === id ? "" : id;
+    renderAll();
+  });
   [els.speedPreference, els.mechanicPreference].forEach((input) => {
-    input.addEventListener("input", renderAll);
-    input.addEventListener("change", renderAll);
+    input.addEventListener("input", () => {
+      state.suggestions = [];
+      renderAll();
+    });
+    input.addEventListener("change", () => {
+      state.suggestions = [];
+      renderAll();
+    });
   });
   [els.requiredCards, els.bannedCards].forEach((input) => {
-    input.addEventListener("input", renderAll);
-    input.addEventListener("change", renderAll);
+    input.addEventListener("input", () => {
+      state.suggestions = [];
+      renderAll();
+    });
+    input.addEventListener("change", () => {
+      state.suggestions = [];
+      renderAll();
+    });
   });
   els.langButtons.forEach((button) => {
     button.addEventListener("click", () => {
@@ -1244,27 +1721,31 @@ function bindEvents() {
     if (els.header) els.header.classList.toggle("is-scrolled", window.scrollY > 20);
     handleReveal();
   });
+  window.addEventListener("resize", syncDeckBoardLaneHeights);
 }
 
 async function loadData() {
   els.cardCatalog.innerHTML = `<div class="lore-loading"><p>Carregando cartas...</p></div>`;
-  const [cardsResponse, decksResponse, typesResponse, functionsResponse, collectionsResponse, virtuesResponse] = await Promise.all([
+  const [cardsResponse, decksResponse, typesResponse, subtypesResponse, functionsResponse, collectionsResponse, virtuesResponse] = await Promise.all([
     fetch(DATA_URLS.cards),
     fetch(DATA_URLS.decks),
     fetch(DATA_URLS.types),
+    fetch(DATA_URLS.subtypes),
     fetch(DATA_URLS.functions),
     fetch(DATA_URLS.collections),
     fetch(DATA_URLS.virtues)
   ]);
-  const [cardsPayload, decksPayload, typesPayload, functionsPayload, collectionsPayload, virtuesPayload] = await Promise.all([
+  const [cardsPayload, decksPayload, typesPayload, subtypesPayload, functionsPayload, collectionsPayload, virtuesPayload] = await Promise.all([
     cardsResponse.json(),
     decksResponse.json(),
     typesResponse.json(),
+    subtypesResponse.json(),
     functionsResponse.json(),
     collectionsResponse.json(),
     virtuesResponse.json()
   ]);
   references.types = toMap(typesPayload, "types");
+  references.subtypes = toMap(subtypesPayload, "subtypes");
   references.functions = toMap(functionsPayload, "functions");
   references.collections = toMap(collectionsPayload, "collections");
   references.virtues = toMap(virtuesPayload, "virtues");

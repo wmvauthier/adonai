@@ -1,6 +1,14 @@
 const DECKS_URL = "../data/decks.json";
 const CARDS_URL = "../data/cards.json";
 const STORAGE_KEY = "adonai.decks.filters.v1";
+const DECK_LANES = ["0-1", "2", "3", "4", "5", "6+"];
+const COST_LAYOUT_TYPE_ORDER = ["PEC", "ART", "MIL", "PER"];
+const TYPE_LAYOUT_LANES = {
+  PER: "0-1",
+  MIL: "2",
+  ART: "3",
+  PEC: "4"
+};
 const REFERENCE_URLS = {
   collections: "../data/collections.json",
   types: "../data/types.json",
@@ -45,6 +53,10 @@ const copy = {
     functionsSummary: "Funções",
     virtuePips: "Pips de característica",
     decklist: "Lista do deck",
+    lanesView: "Raias",
+    listView: "Lista",
+    organizeByCost: "Reorganizar por custo",
+    organizeByType: "Reorganizar por tipo",
     noData: "A definir"
   },
   en: {
@@ -81,6 +93,10 @@ const copy = {
     functionsSummary: "Functions",
     virtuePips: "Trait pips",
     decklist: "Decklist",
+    lanesView: "Lanes",
+    listView: "List",
+    organizeByCost: "Sort by cost",
+    organizeByType: "Sort by type",
     noData: "TBD"
   }
 };
@@ -105,6 +121,8 @@ const state = {
     { virtue: "all", min: null, max: null }
   ],
   sort: "name-asc",
+  drawerView: "lanes",
+  drawerLaneSort: "cost",
   lang: "pt"
 };
 
@@ -453,6 +471,74 @@ function getTypeSortRank(card) {
   const order = ["Personagem", "Milagre", "Artefato", "Pecado"];
   const index = order.indexOf(getPrimaryTypeLabel(card));
   return index === -1 ? 999 : index;
+}
+
+function getPrimaryTypeCode(card) {
+  return getPrimaryType(card).code || "";
+}
+
+function getCostLane(card) {
+  const cost = Number(card.cost);
+  if (!Number.isFinite(cost)) return "6+";
+  if (cost <= 1) return "0-1";
+  return cost >= 6 ? "6+" : String(Math.max(0, Math.floor(cost)));
+}
+
+function getTypeOrder(card, order = COST_LAYOUT_TYPE_ORDER) {
+  const index = order.indexOf(getPrimaryTypeCode(card));
+  return index >= 0 ? index : order.length;
+}
+
+function compareDeckCardNames(a, b) {
+  return getCardName(a).localeCompare(getCardName(b), state.lang === "pt" ? "pt-BR" : "en-US") || a.code.localeCompare(b.code);
+}
+
+function compareCardsByCostLaneType(a, b) {
+  return getTypeOrder(a) - getTypeOrder(b)
+    || toNumber(a.cost, 999) - toNumber(b.cost, 999)
+    || compareDeckCardNames(a, b);
+}
+
+function compareCardsByCostThenType(a, b) {
+  return toNumber(a.cost, 999) - toNumber(b.cost, 999)
+    || getTypeOrder(a) - getTypeOrder(b)
+    || compareDeckCardNames(a, b);
+}
+
+function getTypeLayoutLane(card) {
+  return TYPE_LAYOUT_LANES[getPrimaryTypeCode(card)] || "5";
+}
+
+function createEmptyDeckLanes(lanes = DECK_LANES) {
+  return lanes.reduce((map, lane) => {
+    map[lane] = [];
+    return map;
+  }, {});
+}
+
+function buildDeckLanes(cards, layout = "cost") {
+  const lanes = layout === "type" ? createEmptyDeckLanes(DECK_LANES.filter((lane) => lane !== "6+")) : createEmptyDeckLanes();
+  cards.forEach((card) => {
+    const lane = layout === "type" ? getTypeLayoutLane(card) : getCostLane(card);
+    if (!lanes[lane]) lanes[lane] = [];
+    lanes[lane].push(card);
+  });
+  Object.keys(lanes).forEach((lane) => {
+    lanes[lane].sort(layout === "type" ? compareCardsByCostThenType : compareCardsByCostLaneType);
+  });
+  return lanes;
+}
+
+function getLaneLabel(lane, layout = "cost") {
+  if (layout !== "type") return lane;
+  const labels = {
+    "0-1": state.lang === "pt" ? "Personagens" : "Characters",
+    "2": state.lang === "pt" ? "Milagres" : "Miracles",
+    "3": state.lang === "pt" ? "Artefatos" : "Artifacts",
+    "4": state.lang === "pt" ? "Pecados" : "Sins",
+    "5": state.lang === "pt" ? "Demais" : "Other"
+  };
+  return labels[lane] || lane;
 }
 
 function sortDeckCards(cards) {
@@ -941,20 +1027,99 @@ function renderAverageStats(deck) {
   `;
 }
 
+function renderDeckListControls() {
+  return `
+    <div class="drawer-deck-list-controls">
+      <div class="drawer-deck-view-mode" role="group" aria-label="${escapeHtml(t("decklist"))}">
+        <button type="button" class="${state.drawerView === "lanes" ? "is-active" : ""}" data-drawer-deck-view="lanes">${escapeHtml(t("lanesView"))}</button>
+        <button type="button" class="${state.drawerView === "list" ? "is-active" : ""}" data-drawer-deck-view="list">${escapeHtml(t("listView"))}</button>
+      </div>
+      ${state.drawerView === "lanes" ? `
+        <div class="drawer-deck-lane-actions">
+          <button type="button" class="${state.drawerLaneSort === "cost" ? "is-active" : ""}" data-drawer-lane-sort="cost">${escapeHtml(t("organizeByCost"))}</button>
+          <button type="button" class="${state.drawerLaneSort === "type" ? "is-active" : ""}" data-drawer-lane-sort="type">${escapeHtml(t("organizeByType"))}</button>
+        </div>
+      ` : ""}
+    </div>
+  `;
+}
+
+function renderDrawerDeckBoardCard(card) {
+  return `
+    <a class="drawer-board-card ${cardMatchesDrawerFilter(card, activeDrawerFilter) ? "" : "is-muted"}" href="../cards/?id=${encodeURIComponent(card.code)}" title="${escapeHtml(getCardName(card))}">
+      <img class="deck-card-image" data-preview-image="${escapeHtml(card.images?.card || "")}" src="${escapeHtml(card.images?.card || "")}" alt="${escapeHtml(getCardName(card))}" loading="lazy" />
+    </a>
+  `;
+}
+
+function renderDrawerIdentitySlot(card, label) {
+  return `
+    <a class="drawer-identity-slot ${card ? "is-filled" : ""} ${card && isHorizontalCard(card) ? "is-landscape" : ""} ${card && !cardMatchesDrawerFilter(card, activeDrawerFilter) ? "is-muted" : ""}" ${card ? `href="../cards/?id=${encodeURIComponent(card.code)}"` : ""} title="${escapeHtml(card ? getCardName(card) : label)}">
+      <span>${escapeHtml(label)}</span>
+      ${card ? `<img class="deck-card-image ${isHorizontalCard(card) ? "deck-card-image--horizontal" : ""}" data-preview-image="${escapeHtml(card.images?.card || "")}" src="${escapeHtml(card.images?.card || "")}" alt="${escapeHtml(getCardName(card))}" loading="lazy" />` : `<strong>-</strong>`}
+    </a>
+  `;
+}
+
+function renderDrawerIdentityLane(deck) {
+  const resolved = getDeckResolvedCards(deck);
+  const champion = resolved.champions[0] || null;
+  const temple = resolved.temples[0] || null;
+  const territory = resolved.territories[0] || null;
+  return `
+    <section class="drawer-deck-lane drawer-deck-lane--identity" aria-label="${escapeHtml(t("identity"))}">
+      <div class="drawer-identity-stack">
+        ${renderDrawerIdentitySlot(champion, t("champion"))}
+        ${renderDrawerIdentitySlot(temple, t("temple"))}
+        ${renderDrawerIdentitySlot(territory, t("territory"))}
+      </div>
+    </section>
+  `;
+}
+
+function renderDeckBoard(deck, cards) {
+  const lanes = buildDeckLanes(cards, state.drawerLaneSort);
+  const laneKeys = state.drawerLaneSort === "type" ? DECK_LANES.filter((lane) => lane !== "6+") : DECK_LANES;
+  return `
+    <div class="drawer-deck-board" aria-label="${escapeHtml(t("decklist"))}">
+      ${renderDrawerIdentityLane(deck)}
+      ${laneKeys.map((lane) => `
+        <section class="drawer-deck-lane" data-lane="${escapeHtml(lane)}">
+          <div class="drawer-deck-lane-label">
+            <strong>${escapeHtml(getLaneLabel(lane, state.drawerLaneSort))}</strong>
+            <span>${escapeHtml(String((lanes[lane] || []).length))}</span>
+          </div>
+          <div class="drawer-deck-lane-stack">
+            ${(lanes[lane] || []).map(renderDrawerDeckBoardCard).join("")}
+          </div>
+        </section>
+      `).join("")}
+    </div>
+  `;
+}
+
+function renderDeckGridList(deck, cards) {
+  return `
+    ${renderIdentitySection(deck)}
+    <div class="deck-list-grid">
+      ${cards.map((card) => `
+        <a class="deck-list-item ${cardMatchesDrawerFilter(card, activeDrawerFilter) ? "" : "is-muted"}" href="../cards/?id=${encodeURIComponent(card.code)}" title="${escapeHtml(getCardName(card))}">
+          <img class="deck-card-image" data-preview-image="${escapeHtml(card.images?.card || "")}" src="${escapeHtml(card.images?.card || "")}" alt="${escapeHtml(getCardName(card))}" loading="lazy" />
+        </a>
+      `).join("")}
+    </div>
+  `;
+}
+
 function renderDeckList(deck) {
   const cards = sortDeckCards(resolveCards(deck.cards));
-  const identitySection = renderIdentitySection(deck);
   return `
     <section class="analysis-section" data-deck-list-section>
-      <span class="section-kicker">${escapeHtml(t("decklist"))}</span>
-      ${identitySection}
-      <div class="deck-list-grid">
-        ${cards.map((card) => `
-          <a class="deck-list-item ${cardMatchesDrawerFilter(card, activeDrawerFilter) ? "" : "is-muted"}" href="../cards/?id=${encodeURIComponent(card.code)}" title="${escapeHtml(getCardName(card))}">
-            <img class="deck-card-image" data-preview-image="${escapeHtml(card.images?.card || "")}" src="${escapeHtml(card.images?.card || "")}" alt="${escapeHtml(getCardName(card))}" loading="lazy" />
-          </a>
-        `).join("")}
+      <div class="deck-list-head">
+        <span class="section-kicker">${escapeHtml(t("decklist"))}</span>
+        ${renderDeckListControls()}
       </div>
+      ${state.drawerView === "lanes" ? renderDeckBoard(deck, cards) : renderDeckGridList(deck, cards)}
     </section>
   `;
 }
@@ -1138,7 +1303,9 @@ function saveUiState() {
       minAvgResistance: state.minAvgResistance,
       maxAvgResistance: state.maxAvgResistance,
       virtuePipFilters: state.virtuePipFilters,
-      sort: state.sort
+      sort: state.sort,
+      drawerView: state.drawerView,
+      drawerLaneSort: state.drawerLaneSort
     };
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
   } catch (error) {
@@ -1153,6 +1320,8 @@ function restoreUiState() {
     const parsed = JSON.parse(raw);
     if (!parsed || typeof parsed !== "object") return;
     Object.assign(state, parsed, { currentPage: 1 });
+    state.drawerView = parsed.drawerView === "list" ? "list" : "lanes";
+    state.drawerLaneSort = parsed.drawerLaneSort === "type" ? "type" : "cost";
     state.virtuePipFilters = [0, 1, 2].map((index) => ({
       virtue: parsed.virtuePipFilters?.[index]?.virtue || "all",
       min: parsed.virtuePipFilters?.[index]?.min ?? avgBounds.virtuePips.min,
@@ -1233,6 +1402,23 @@ function bindEvents() {
   els.drawerBackdrop?.addEventListener("click", closeDrawer);
   els.drawerClose?.addEventListener("click", closeDrawer);
   els.drawerContent?.addEventListener("click", (event) => {
+    const viewButton = event.target.closest("[data-drawer-deck-view]");
+    if (viewButton) {
+      state.drawerView = viewButton.dataset.drawerDeckView === "list" ? "list" : "lanes";
+      saveUiState();
+      refreshDrawerDeckList(els.drawerContent.dataset.deckId);
+      return;
+    }
+
+    const laneSortButton = event.target.closest("[data-drawer-lane-sort]");
+    if (laneSortButton) {
+      state.drawerLaneSort = laneSortButton.dataset.drawerLaneSort === "type" ? "type" : "cost";
+      state.drawerView = "lanes";
+      saveUiState();
+      refreshDrawerDeckList(els.drawerContent.dataset.deckId);
+      return;
+    }
+
     const metric = event.target.closest("[data-analysis-kind]");
     if (!metric) return;
     const nextFilter = {
