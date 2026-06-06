@@ -15,7 +15,8 @@ const TYPE_CODES = {
   territory: "TER",
   temple: "TEM"
 };
-const DECK_LANES = ["0-1", "2", "3", "4", "5", "6+"];
+const BASE_DECK_LANES = ["0-1", "2", "3", "4", "5", "6+"];
+const DECK_LANES = BASE_DECK_LANES;
 const COST_LAYOUT_TYPE_ORDER = ["PEC", "ART", "MIL", "PER"];
 const TYPE_LAYOUT_LANES = {
   PER: "0-1",
@@ -104,6 +105,7 @@ const state = {
   deckLayout: {
     mode: "free",
     activeCardId: "",
+    laneOrder: [],
     lanes: {}
   },
   suggestions: [],
@@ -255,67 +257,159 @@ function getTypeLayoutLane(card) {
   return TYPE_LAYOUT_LANES[getTypeCode(card)] || "5";
 }
 
-function createEmptyDeckLanes() {
-  return DECK_LANES.reduce((lanes, lane) => {
+function getDefaultLaneOrder() {
+  return BASE_DECK_LANES.slice();
+}
+
+function normalizeLaneOrder(layout) {
+  const input = Array.isArray(layout && layout.laneOrder)
+    ? layout.laneOrder.map(String)
+    : getDefaultLaneOrder();
+  const seen = new Set();
+  const order = [];
+  input.forEach((lane) => {
+    if (!lane || seen.has(lane)) return;
+    seen.add(lane);
+    order.push(lane);
+  });
+  if (layout && layout.lanes && typeof layout.lanes === "object") {
+    Object.keys(layout.lanes).forEach((lane) => {
+      if (!lane || seen.has(lane) || !Array.isArray(layout.lanes[lane]) || !layout.lanes[lane].length) return;
+      seen.add(lane);
+      order.push(lane);
+    });
+  }
+  return order;
+}
+
+function getDeckLaneOrder() {
+  return normalizeLaneOrder(state.deckLayout);
+}
+
+function getDeckLaneInsertIndex(lane, laneOrder = state.deckLayout.laneOrder || []) {
+  const baseIndex = BASE_DECK_LANES.indexOf(lane);
+  if (baseIndex < 0) return laneOrder.length;
+  const nextBaseIndex = laneOrder.findIndex((item) => {
+    const itemIndex = BASE_DECK_LANES.indexOf(item);
+    return itemIndex > baseIndex;
+  });
+  return nextBaseIndex >= 0 ? nextBaseIndex : laneOrder.length;
+}
+
+function ensureDeckLane(lane, insertIndex) {
+  if (!lane) return;
+  if (!state.deckLayout || !state.deckLayout.lanes) state.deckLayout = normalizeDeckLayout(state.deckLayout);
+  if (!Array.isArray(state.deckLayout.lanes[lane])) state.deckLayout.lanes[lane] = [];
+  if (state.deckLayout.laneOrder.includes(lane)) return;
+  const rawIndex = Number(insertIndex);
+  const fallbackIndex = getDeckLaneInsertIndex(lane);
+  const index = Math.max(0, Math.min(Number.isFinite(rawIndex) ? rawIndex : fallbackIndex, state.deckLayout.laneOrder.length));
+  state.deckLayout.laneOrder.splice(index, 0, lane);
+}
+
+function pruneEmptyDeckLanes() {
+  if (!state.deckLayout || !state.deckLayout.lanes) return;
+  const laneOrder = getDeckLaneOrder();
+  state.deckLayout.laneOrder = laneOrder.filter((lane) => (state.deckLayout.lanes[lane] || []).length);
+  Object.keys(state.deckLayout.lanes).forEach((lane) => {
+    if (!state.deckLayout.laneOrder.includes(lane)) delete state.deckLayout.lanes[lane];
+  });
+}
+
+function createEmptyDeckLanes(laneOrder = getDefaultLaneOrder()) {
+  return laneOrder.reduce((lanes, lane) => {
     lanes[lane] = [];
     return lanes;
   }, {});
 }
 
 function normalizeDeckLayout(layout) {
-  const lanes = createEmptyDeckLanes();
+  const laneOrder = normalizeLaneOrder(layout);
+  const lanes = createEmptyDeckLanes(laneOrder);
   if (layout && layout.lanes && typeof layout.lanes === "object") {
-    DECK_LANES.forEach((lane) => {
+    laneOrder.forEach((lane) => {
       lanes[lane] = Array.isArray(layout.lanes[lane]) ? layout.lanes[lane].filter((id) => typeof id === "string") : [];
     });
   }
   return {
     mode: layout && layout.mode === "curve" ? "curve" : "free",
     activeCardId: layout && typeof layout.activeCardId === "string" ? layout.activeCardId : "",
+    laneOrder,
     lanes
   };
 }
 
 function resetDeckLayoutByCost() {
-  const lanes = createEmptyDeckLanes();
+  const laneOrder = getDefaultLaneOrder();
+  const lanes = createEmptyDeckLanes(laneOrder);
   state.main.forEach((id) => {
     const card = cardById.get(id);
     if (!card) return;
     lanes[getCostLane(card)].push(id);
   });
-  DECK_LANES.forEach((lane) => {
+  laneOrder.forEach((lane) => {
     lanes[lane].sort(compareCardsByCostLaneType);
   });
   state.deckLayout = {
     mode: "curve",
     activeCardId: "",
+    laneOrder,
     lanes
   };
+  pruneEmptyDeckLanes();
 }
 
 function resetDeckLayoutByType() {
-  const lanes = createEmptyDeckLanes();
+  const laneOrder = getDefaultLaneOrder();
+  const lanes = createEmptyDeckLanes(laneOrder);
   state.main.forEach((id) => {
     const card = cardById.get(id);
     if (!card) return;
     lanes[getTypeLayoutLane(card)].push(id);
   });
-  DECK_LANES.forEach((lane) => {
+  laneOrder.forEach((lane) => {
     lanes[lane].sort(compareCardsByCostThenType);
   });
   state.deckLayout = {
     mode: "free",
     activeCardId: "",
+    laneOrder,
     lanes
   };
+  pruneEmptyDeckLanes();
+}
+
+function createCustomDeckLane(insertIndex) {
+  state.deckLayout = normalizeDeckLayout(state.deckLayout);
+  const laneOrder = getDeckLaneOrder();
+  const rawIndex = Number(insertIndex);
+  const index = Math.max(0, Math.min(Number.isFinite(rawIndex) ? rawIndex : laneOrder.length, laneOrder.length));
+  const lane = `custom-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+  laneOrder.splice(index, 0, lane);
+  state.deckLayout.laneOrder = laneOrder;
+  state.deckLayout.lanes[lane] = [];
+  state.deckLayout.mode = "free";
+  return lane;
+}
+
+function getLaneInsertIndexFromPoint(event) {
+  const board = els.deckList.querySelector(".deck-board");
+  if (!board) return getDeckLaneOrder().length;
+  const lanes = [...board.querySelectorAll(".deck-lane:not(.deck-lane--identity)")];
+  const lane = lanes.find((item) => {
+    const rect = item.getBoundingClientRect();
+    return event.clientX < rect.left + rect.width / 2;
+  });
+  return lane ? Math.max(0, lanes.indexOf(lane)) : lanes.length;
 }
 
 function syncDeckLayoutWithMain() {
   state.deckLayout = normalizeDeckLayout(state.deckLayout);
+  const laneOrder = getDeckLaneOrder();
   const mainSet = new Set(state.main);
   const seen = new Set();
 
-  DECK_LANES.forEach((lane) => {
+  laneOrder.forEach((lane) => {
     state.deckLayout.lanes[lane] = state.deckLayout.lanes[lane].filter((id) => {
       if (!mainSet.has(id) || seen.has(id)) return false;
       seen.add(id);
@@ -327,7 +421,9 @@ function syncDeckLayoutWithMain() {
     if (seen.has(id)) return;
     const card = cardById.get(id);
     if (!card) return;
-    state.deckLayout.lanes[getCostLane(card)].push(id);
+    const lane = getCostLane(card);
+    ensureDeckLane(lane);
+    state.deckLayout.lanes[lane].push(id);
     seen.add(id);
   });
 
@@ -338,17 +434,21 @@ function addCardToDeckLayout(id, preferredLane) {
   syncDeckLayoutWithMain();
   const card = cardById.get(id);
   if (!card) return;
-  const lane = DECK_LANES.includes(preferredLane) ? preferredLane : getCostLane(card);
-  DECK_LANES.forEach((key) => {
+  const laneOrder = getDeckLaneOrder();
+  const lane = laneOrder.includes(preferredLane) ? preferredLane : getCostLane(card);
+  ensureDeckLane(lane);
+  laneOrder.forEach((key) => {
     state.deckLayout.lanes[key] = state.deckLayout.lanes[key].filter((item) => item !== id);
   });
   state.deckLayout.lanes[lane].push(id);
+  pruneEmptyDeckLanes();
 }
 
 function moveCardInDeckLayout(id, lane, beforeId = "") {
-  if (!DECK_LANES.includes(lane) || !state.main.includes(id)) return;
   syncDeckLayoutWithMain();
-  DECK_LANES.forEach((key) => {
+  const laneOrder = getDeckLaneOrder();
+  if (!laneOrder.includes(lane) || !state.main.includes(id)) return;
+  laneOrder.forEach((key) => {
     state.deckLayout.lanes[key] = state.deckLayout.lanes[key].filter((item) => item !== id);
   });
   const target = state.deckLayout.lanes[lane];
@@ -356,6 +456,7 @@ function moveCardInDeckLayout(id, lane, beforeId = "") {
   if (beforeIndex >= 0) target.splice(beforeIndex, 0, id);
   else target.push(id);
   state.deckLayout.mode = "free";
+  pruneEmptyDeckLanes();
 }
 
 function getAttack(card) {
@@ -636,6 +737,17 @@ function handleDropAction(payload, zone, beforeId = "") {
     addCard(card);
     return;
   }
+  if (zone && zone.startsWith("deck-new-lane-")) {
+    if (isIdentityCard(card)) return;
+    if (!state.main.includes(id)) {
+      if (state.main.length >= MAIN_DECK_SIZE) return;
+      state.main.push(id);
+    }
+    const lane = createCustomDeckLane(zone.replace("deck-new-lane-", ""));
+    if (source === "banned") removeTextId(els.bannedCards, id);
+    moveCardInDeckLayout(id, lane, beforeId);
+    return;
+  }
   if (zone && zone.startsWith("deck-lane-")) {
     const lane = zone.replace("deck-lane-", "");
     if (isIdentityCard(card)) return;
@@ -680,10 +792,11 @@ function clearDragPayload() {
 function removeCard(id) {
   state.main = state.main.filter((item) => item !== id);
   if (state.deckLayout && state.deckLayout.lanes) {
-    DECK_LANES.forEach((lane) => {
+    getDeckLaneOrder().forEach((lane) => {
       state.deckLayout.lanes[lane] = (state.deckLayout.lanes[lane] || []).filter((item) => item !== id);
     });
     if (state.deckLayout.activeCardId === id) state.deckLayout.activeCardId = "";
+    pruneEmptyDeckLanes();
   }
   Object.keys(state.identity).forEach((key) => {
     state.identity[key] = state.identity[key].filter((item) => item !== id);
@@ -807,7 +920,7 @@ function renderCatalog() {
         <div class="catalog-card-actions" aria-hidden="${isActive ? "false" : "true"}">
           <button type="button" data-card-action="deck" data-card-id="${escapeHtml(id)}">Deck</button>
           <button type="button" data-card-action="required" data-card-id="${escapeHtml(id)}">Fixar</button>
-          <button type="button" data-card-action="ban" data-card-id="${escapeHtml(id)}">Banir</button>
+          <button type="button" data-card-action="ban" data-card-id="${escapeHtml(id)}">Proibir</button>
           <button type="button" data-card-action="close" data-card-id="${escapeHtml(id)}">Fechar</button>
         </div>
       </article>
@@ -844,14 +957,18 @@ function renderIdentity() {
 function renderDeckList() {
   if (els.mainCount) els.mainCount.textContent = `${state.main.length}/${MAIN_DECK_SIZE}`;
   syncDeckLayoutWithMain();
-  const lanes = DECK_LANES.map((lane) => {
+  pruneEmptyDeckLanes();
+  const laneOrder = getDeckLaneOrder();
+  const lanes = laneOrder.map((lane, index) => {
     const ids = state.deckLayout.lanes[lane] || [];
     return `
+      ${index === 0 ? `<div class="deck-lane-insert" data-lane-insert="0" aria-label="Criar raia aqui"></div>` : ""}
       <section class="deck-lane" data-lane="${escapeHtml(lane)}">
         <div class="deck-lane-stack">
           ${ids.map((id, index) => renderDeckBoardCard(id, lane, index)).join("")}
         </div>
       </section>
+      <div class="deck-lane-insert" data-lane-insert="${index + 1}" aria-label="Criar raia aqui"></div>
     `;
   }).join("");
 
@@ -933,12 +1050,10 @@ function renderDeckBoardCard(id, lane, index) {
     <article class="deck-board-card ${isActive ? "is-actions-open" : ""} ${functionFocusClass}" data-remove-card="${escapeHtml(id)}" data-deck-card="${escapeHtml(id)}" data-lane="${escapeHtml(lane)}" data-index="${index}" draggable="true">
       <img src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" loading="lazy" />
       <div class="deck-board-card-actions" aria-hidden="${isActive ? "false" : "true"}">
-        <strong>${escapeHtml(getCardName(card))}</strong>
-        <span>${escapeHtml(id)} · custo ${escapeHtml(getCost(card))}</span>
         <div>
           <button type="button" data-deck-card-action="remove" data-card-id="${escapeHtml(id)}">Remover</button>
           <button type="button" data-deck-card-action="required" data-card-id="${escapeHtml(id)}">Fixar</button>
-          <button type="button" data-deck-card-action="ban" data-card-id="${escapeHtml(id)}">Banir</button>
+          <button type="button" data-deck-card-action="ban" data-card-id="${escapeHtml(id)}">Proibir</button>
         </div>
       </div>
     </article>
@@ -1517,6 +1632,8 @@ function bindEvents() {
   document.addEventListener("drop", (event) => {
     if (!activeDragPayload) return;
     if (event.target.closest("[data-drop-zone]")) return;
+    if (event.target.closest("[data-lane-insert]")) return;
+    if (event.target.closest(".deck-board")) return;
     event.preventDefault();
     if (["deck", "identity"].includes(activeDragPayload.source)) {
       removeCard(activeDragPayload.id);
@@ -1526,6 +1643,14 @@ function bindEvents() {
   });
   document.addEventListener("dragend", clearDragPayload);
   els.deckList.addEventListener("dragover", (event) => {
+    const insertZone = event.target.closest("[data-lane-insert]");
+    if (insertZone && activeDragPayload) {
+      event.preventDefault();
+      event.stopPropagation();
+      insertZone.classList.add("is-drag-over");
+      if (event.dataTransfer) event.dataTransfer.dropEffect = activeDragPayload.source === "catalog" ? "copy" : "move";
+      return;
+    }
     const identitySlot = event.target.closest(".identity-board-slot");
     if (identitySlot && activeDragPayload) {
       event.preventDefault();
@@ -1542,6 +1667,12 @@ function bindEvents() {
     if (event.dataTransfer) event.dataTransfer.dropEffect = activeDragPayload.source === "catalog" ? "copy" : "move";
   }, true);
   els.deckList.addEventListener("dragleave", (event) => {
+    const insertZone = event.target.closest("[data-lane-insert]");
+    if (insertZone && !insertZone.contains(event.relatedTarget)) {
+      event.stopPropagation();
+      insertZone.classList.remove("is-drag-over");
+      return;
+    }
     const identitySlot = event.target.closest(".identity-board-slot");
     if (identitySlot && !identitySlot.contains(event.relatedTarget)) {
       event.stopPropagation();
@@ -1554,6 +1685,18 @@ function bindEvents() {
     lane.classList.remove("is-drag-over");
   }, true);
   els.deckList.addEventListener("drop", (event) => {
+    const insertZone = event.target.closest("[data-lane-insert]");
+    if (insertZone) {
+      event.preventDefault();
+      event.stopPropagation();
+      insertZone.classList.remove("is-drag-over");
+      const payload = getDragPayload(event);
+      if (!payload.id) return;
+      handleDropAction(payload, `deck-new-lane-${insertZone.dataset.laneInsert}`);
+      clearDragPayload();
+      renderAll();
+      return;
+    }
     const identitySlot = event.target.closest(".identity-board-slot");
     if (identitySlot) {
       event.preventDefault();
@@ -1567,7 +1710,18 @@ function bindEvents() {
       return;
     }
     const lane = event.target.closest(".deck-lane");
-    if (!lane || !lane.dataset.lane) return;
+    if (!lane || !lane.dataset.lane) {
+      const board = event.target.closest(".deck-board");
+      if (!board) return;
+      event.preventDefault();
+      event.stopPropagation();
+      const payload = getDragPayload(event);
+      if (!payload.id) return;
+      handleDropAction(payload, `deck-new-lane-${getLaneInsertIndexFromPoint(event)}`);
+      clearDragPayload();
+      renderAll();
+      return;
+    }
     event.preventDefault();
     event.stopPropagation();
     lane.classList.remove("is-drag-over");

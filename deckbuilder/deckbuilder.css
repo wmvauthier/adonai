@@ -275,6 +275,17 @@
   font:inherit;
 }
 
+.catalog-filters select,
+.assistant-grid select{
+  color:#fff7df;
+}
+
+.catalog-filters select option,
+.assistant-grid select option{
+  background:#111515;
+  color:#fff7df;
+}
+
 .range-control{
   position:relative;
   grid-column:1 / -1;
@@ -609,7 +620,7 @@
   display:flex;
   align-items:stretch;
   width:100%;
-  gap:10px;
+  gap:4px;
   min-height:420px;
   max-height:min(64svh, 720px);
   overflow-x:auto;
@@ -710,6 +721,36 @@
     linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015)),
     rgba(0,0,0,.16);
   scroll-snap-align:start;
+}
+
+.deck-lane-insert{
+  position:relative;
+  flex:0 0 26px;
+  min-height:100%;
+  border-radius:999px;
+  scroll-snap-align:center;
+}
+
+.deck-lane-insert::before{
+  content:"";
+  position:absolute;
+  inset:12px 4px;
+  border-radius:999px;
+  border:1px dashed rgba(215,193,139,.16);
+  background:rgba(215,193,139,.025);
+  opacity:.42;
+  transition:opacity .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+
+body.is-dragging-card .deck-lane-insert::before,
+.deck-lane-insert.is-drag-over::before{
+  opacity:1;
+}
+
+.deck-lane-insert.is-drag-over::before{
+  border-color:rgba(143,228,170,.72);
+  background:rgba(143,228,170,.16);
+  box-shadow:0 0 0 2px rgba(143,228,170,.12);
 }
 
 .deck-lane--identity{

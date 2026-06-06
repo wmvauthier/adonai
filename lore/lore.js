@@ -22,6 +22,8 @@ const els = {
   drawerBackdrop: document.getElementById("drawerBackdrop"),
   drawerClose: document.getElementById("drawerClose"),
   readingBackground: document.getElementById("readingBackground"),
+  readingRoom: document.getElementById("readingRoom"),
+  readingMain: document.getElementById("readingMain"),
   chapterList: document.getElementById("chapterList"),
   chapterCounter: document.getElementById("chapterCounter"),
   activeBookLabel: document.getElementById("activeBookLabel"),
@@ -79,6 +81,7 @@ let cards = [];
 let collections = new Map();
 let types = new Map();
 let virtues = new Map();
+let pageTurnTimer = null;
 
 function t(key) {
   return copy[state.lang][key] || copy.pt[key] || key;
@@ -334,10 +337,10 @@ function renderChapterList() {
   els.chapterList.innerHTML = chapters.map((chapter) => `
     <button class="chapter-button ${chapter.cardId === (activeChapter && activeChapter.cardId) ? "is-active" : ""}" type="button"
       data-chapter-id="${escapeHtml(chapter.cardId)}">
-      <img src="${escapeHtml(getCardImage(chapter.card))}" alt="${escapeHtml(localize(chapter.card.name))}" loading="lazy" />
+      <img src="${escapeHtml(getCardArt(chapter.card))}" alt="${escapeHtml(localize(chapter.card.name))}" loading="lazy" />
       <div>
         <strong>${escapeHtml(localize(chapter.title))}</strong>
-        <span>${escapeHtml(chapter.cardId)} · ${escapeHtml(localize(chapter.card.name))}</span>
+        <span>${escapeHtml(localize(chapter.card.name))}</span>
       </div>
     </button>
   `).join("");
@@ -358,6 +361,7 @@ function renderReader() {
   const currentIndex = book.chapters.findIndex((item) => item.cardId === chapter.cardId);
 
   els.readingBackground.style.backgroundImage = `url("${cssUrl(cardArt)}")`;
+  els.readingMain.style.setProperty("--chapter-art", `url("${cssUrl(cardArt)}")`);
   els.activeBookLabel.textContent = bookTitle;
   els.chapterTitle.textContent = localize(chapter.title);
   els.chapterCardName.textContent = `${chapter.cardId} · ${localize(card.name)}`;
@@ -381,8 +385,30 @@ function setActiveChapterByOffset(offset) {
   const index = book.chapters.findIndex((chapter) => chapter.cardId === state.activeChapterId);
   const next = book.chapters[index + offset];
   if (!next) return;
-  state.activeChapterId = next.cardId;
-  renderAll();
+  setActiveChapter(next.cardId, offset >= 0 ? "next" : "prev");
+}
+
+function setActiveChapter(cardId, direction = "next") {
+  if (!cardId || cardId === state.activeChapterId) return;
+  const shouldAnimate = els.drawer.classList.contains("is-open")
+    && els.readingRoom
+    && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!shouldAnimate) {
+    state.activeChapterId = cardId;
+    renderAll();
+    return;
+  }
+  clearTimeout(pageTurnTimer);
+  els.readingRoom.classList.remove("is-turning-next", "is-turning-prev");
+  void els.readingRoom.offsetWidth;
+  els.readingRoom.classList.add(direction === "prev" ? "is-turning-prev" : "is-turning-next");
+  pageTurnTimer = setTimeout(() => {
+    state.activeChapterId = cardId;
+    renderAll();
+    requestAnimationFrame(() => {
+      els.readingRoom.classList.remove("is-turning-next", "is-turning-prev");
+    });
+  }, 170);
 }
 
 function applyLanguage(lang) {
@@ -440,8 +466,10 @@ function bindEvents() {
   els.chapterList.addEventListener("click", (event) => {
     const button = event.target.closest("[data-chapter-id]");
     if (!button) return;
-    state.activeChapterId = button.dataset.chapterId;
-    renderAll();
+    const book = getActiveBook();
+    const currentIndex = book ? book.chapters.findIndex((chapter) => chapter.cardId === state.activeChapterId) : -1;
+    const nextIndex = book ? book.chapters.findIndex((chapter) => chapter.cardId === button.dataset.chapterId) : -1;
+    setActiveChapter(button.dataset.chapterId, nextIndex < currentIndex ? "prev" : "next");
   });
 
   els.searchForm.addEventListener("submit", (event) => event.preventDefault());
