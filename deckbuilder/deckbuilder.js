@@ -16,7 +16,6 @@ const TYPE_CODES = {
   temple: "TEM"
 };
 const BASE_DECK_LANES = ["0-1", "2", "3", "4", "5", "6+"];
-const DECK_LANES = BASE_DECK_LANES;
 const COST_LAYOUT_TYPE_ORDER = ["PEC", "ART", "MIL", "PER"];
 const TYPE_LAYOUT_LANES = {
   PER: "0-1",
@@ -314,6 +313,11 @@ function pruneEmptyDeckLanes() {
   Object.keys(state.deckLayout.lanes).forEach((lane) => {
     if (!state.deckLayout.laneOrder.includes(lane)) delete state.deckLayout.lanes[lane];
   });
+}
+
+function cleanDeckLayout() {
+  syncDeckLayoutWithMain();
+  pruneEmptyDeckLanes();
 }
 
 function createEmptyDeckLanes(laneOrder = getDefaultLaneOrder()) {
@@ -627,7 +631,7 @@ function enforceDeckConstraints() {
   Object.keys(state.identity).forEach((key) => {
     state.identity[key] = state.identity[key].filter((id) => !bannedIds.includes(id)).slice(0, 1);
   });
-  syncDeckLayoutWithMain();
+  cleanDeckLayout();
 }
 
 function restoreState() {
@@ -956,8 +960,7 @@ function renderIdentity() {
 
 function renderDeckList() {
   if (els.mainCount) els.mainCount.textContent = `${state.main.length}/${MAIN_DECK_SIZE}`;
-  syncDeckLayoutWithMain();
-  pruneEmptyDeckLanes();
+  cleanDeckLayout();
   const laneOrder = getDeckLaneOrder();
   const lanes = laneOrder.map((lane, index) => {
     const ids = state.deckLayout.lanes[lane] || [];
@@ -1180,11 +1183,6 @@ function renderCompareIndicator(delta, preferredDirection) {
   if (delta === 0) return renderIndicator("neutral", "=");
   const isGood = preferredDirection === "lower" ? delta < 0 : delta > 0;
   return renderIndicator(isGood ? "good" : "bad", delta > 0 ? "↑" : "↓");
-}
-
-function formatDelta(delta) {
-  if (delta === 0) return "=";
-  return `${delta > 0 ? "+" : ""}${delta}`;
 }
 
 function getSweetSpot() {

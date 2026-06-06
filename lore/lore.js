@@ -163,11 +163,6 @@ function getAssetTypeName(card) {
   return type && type.name && type.name.pt ? type.name.pt : "Personagem";
 }
 
-function getCardImage(card) {
-  if (card && card.images && card.images.card) return card.images.card;
-  return `../assets/cards/${getAssetTypeName(card)} - Foundations-${Number(card.number)}.webp`;
-}
-
 function getCardArt(card) {
   if (card && card.images && card.images.art) return card.images.art;
   return `../assets/imgs/${getAssetTypeName(card)} - Foundations-${Number(card.number)} - img.webp`;
