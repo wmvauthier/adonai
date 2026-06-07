@@ -67,6 +67,7 @@ const els = {
   generateDeck: document.getElementById("generateDeck"),
   completeDeck: document.getElementById("completeDeck"),
   improveDeck: document.getElementById("improveDeck"),
+  playDeck: document.getElementById("playDeck"),
   filtersToggle: document.getElementById("filtersToggle"),
   chartsToggle: document.getElementById("chartsToggle"),
   assistantToggle: document.getElementById("assistantToggle"),
@@ -1799,6 +1800,10 @@ function bindEvents() {
   els.generateDeck.addEventListener("click", generateDeck);
   els.completeDeck.addEventListener("click", completeDeck);
   els.improveDeck.addEventListener("click", improveDeck);
+  els.playDeck?.addEventListener("click", () => {
+    saveState();
+    window.location.href = "../play/?source=deckbuilder";
+  });
   els.filtersToggle.addEventListener("click", () => {
     state.filtersHidden = !state.filtersHidden;
     renderAll();

@@ -462,7 +462,7 @@
 
 7.3.17. Um Campeão Encoberto não pode ativar habilidades sujeitas à limitação de uso por rodada.
 
-7.3.18. O Campeão deixa de estar Encoberto na etapa de Preparar de seu controlador.
+7.3.18. O Campeão deixa de estar Encoberto na etapa de Preparação de seu controlador.
 
 7.3.19. Encobrir um Campeão não altera sua identidade, não altera sua informação pública, não remove habilidades estáticas e serve apenas para marcar uso de habilidade por rodada.
 
@@ -544,7 +544,7 @@
 
 ## 7.10. Pecado
 
-7.10.1. Pecado é um tipo de carta que, por regra geral, só pode ser jogado durante a etapa de Preparação do próprio jogador, salvo se uma regra ou efeito permitir outro momento.
+7.10.1. Pecado é um tipo de carta que, por regra geral, só pode ser jogado durante a etapa de Alistamento do próprio jogador, salvo se uma regra ou efeito permitir outro momento.
 
 7.10.2. Pecados são pagos exclusivamente causando dano ao próprio Território, salvo custo alternativo ou modificação específica.
 
@@ -554,7 +554,7 @@
 
 7.10.5. Pecado Duradouro resolve e entra ou permanece no campo de batalha como permanente, salvo se uma regra ou efeito disser o contrário.
 
-7.10.6. Um Pecado com INESPERADO pode ser jogado em qualquer momento em que seu controlador tenha prioridade, mesmo fora da etapa de Preparação.
+7.10.6. Um Pecado com INESPERADO pode ser jogado em qualquer momento em que seu controlador tenha prioridade, mesmo fora da etapa de Alistamento.
 
 7.10.7. INESPERADO não altera o custo de um Pecado. O custo ainda é pago causando dano ao próprio Território, salvo se texto específico disser o contrário.
 
@@ -1230,13 +1230,13 @@
 
 15.1.1. Cada turno possui as seguintes etapas, nessa ordem:
 
-(a) etapa de Preparar;
+(a) etapa de Preparação;
 
 (b) etapa de Compra;
 
 (c) etapa de Consagração;
 
-(d) etapa de Preparação;
+(d) etapa de Alistamento;
 
 (e) etapa de Combate;
 
@@ -1254,11 +1254,11 @@
 
 15.2.4. Se todos os jogadores passarem prioridade em sequência com a pilha vazia, a etapa avança.
 
-## 15.3. Etapa de Preparar
+## 15.3. Etapa de Preparação
 
-15.3.1. Durante a etapa de Preparar, o jogador ativo prepara todas as suas permanentes e Essências que estejam despreparadas, salvo se regra ou efeito impedir.
+15.3.1. Durante a etapa de Preparação, o jogador ativo prepara todas as suas permanentes e Essências que estejam despreparadas, salvo se regra ou efeito impedir.
 
-15.3.2. Durante a etapa de Preparar, o Campeão do jogador ativo deixa de estar Encoberto.
+15.3.2. Durante a etapa de Preparação, o Campeão do jogador ativo deixa de estar Encoberto.
 
 15.3.3. Depois dessas ações, habilidades desencadeadas apropriadas são colocadas na pilha e o jogador ativo recebe prioridade.
 
@@ -1282,15 +1282,15 @@
 
 15.5.3. Depois que a ação estrutural da etapa for concluída, habilidades desencadeadas apropriadas são colocadas na pilha e o jogador ativo recebe prioridade.
 
-## 15.6. Etapa de Preparação
+## 15.6. Etapa de Alistamento
 
-15.6.1. A etapa de Preparação é a principal janela para jogar cartas de velocidade restrita ao próprio turno, ativar habilidades, equipar Personagens e organizar o estado de jogo antes do combate.
+15.6.1. A etapa de Alistamento é a principal janela para jogar cartas de velocidade restrita ao próprio turno, ativar habilidades, equipar Personagens e organizar o estado de jogo antes do combate.
 
-15.6.2. Pecados podem ser jogados durante a etapa de Preparação do próprio jogador, salvo se regra ou efeito permitir outro momento.
+15.6.2. Pecados podem ser jogados durante a etapa de Alistamento do próprio jogador, salvo se regra ou efeito permitir outro momento.
 
-15.6.3. Habilidades de Equipar podem ser ativadas durante a etapa de Preparação do controlador do Equipamento, salvo se a carta disser o contrário.
+15.6.3. Habilidades de Equipar podem ser ativadas durante a etapa de Alistamento do controlador do Equipamento, salvo se a carta disser o contrário.
 
-15.6.4. O jogador ativo recebe prioridade na etapa de Preparação depois de quaisquer ações automáticas e habilidades desencadeadas apropriadas.
+15.6.4. O jogador ativo recebe prioridade na etapa de Alistamento depois de quaisquer ações automáticas e habilidades desencadeadas apropriadas.
 
 ## 15.7. Etapa de Combate
 
@@ -1372,7 +1372,7 @@
 
 16.2.1. Equipar é uma habilidade ativada de um Equipamento.
 
-16.2.2. Salvo se a carta disser o contrário, a habilidade de Equipar só pode ser ativada durante a etapa de Preparação do controlador do Equipamento.
+16.2.2. Salvo se a carta disser o contrário, a habilidade de Equipar só pode ser ativada durante a etapa de Alistamento do controlador do Equipamento.
 
 16.2.3. Para ativar a habilidade de Equipar, o controlador escolhe um Personagem alvo que controla e que esteja preparado, depois desprepara esse Personagem como custo.
 
@@ -1386,7 +1386,7 @@
 
 16.2.8. Se a habilidade de Equipar for anulada, o Personagem escolhido continua despreparado, pois o custo já foi pago.
 
-16.2.9. Um jogador pode ativar habilidades de Equipar de múltiplos Equipamentos durante a mesma etapa de Preparação, desde que possa pagar os custos de cada ativação.
+16.2.9. Um jogador pode ativar habilidades de Equipar de múltiplos Equipamentos durante a mesma etapa de Alistamento, desde que possa pagar os custos de cada ativação.
 
 ## 16.3. Equipamento anexado
 
@@ -1766,7 +1766,7 @@
 
 21.5.3. INESPERADO não altera custos, alvos, tipos ou demais restrições, salvo se a carta disser o contrário.
 
-21.5.4. Um Pecado com INESPERADO pode ser jogado fora da etapa de Preparação, mas ainda é pago causando dano ao próprio Território, salvo se texto específico disser o contrário.
+21.5.4. Um Pecado com INESPERADO pode ser jogado fora da etapa de Alistamento, mas ainda é pago causando dano ao próprio Território, salvo se texto específico disser o contrário.
 
 ## 21.6. IMBLOQUEÁVEL
 
@@ -1884,7 +1884,7 @@
 
 ## 23.1. Prioridade após jogar carta
 
-23.1.1. O jogador ativo joga um Personagem durante sua etapa de Preparação. Depois de pagar custos e colocar a carta na pilha, ele é considerado como tendo passado prioridade. A prioridade passa ao próximo jogador em ordem de turno. Se todos passarem sem colocar novo objeto na pilha, o Personagem resolve.
+23.1.1. O jogador ativo joga um Personagem durante sua etapa de Alistamento. Depois de pagar custos e colocar a carta na pilha, ele é considerado como tendo passado prioridade. A prioridade passa ao próximo jogador em ordem de turno. Se todos passarem sem colocar novo objeto na pilha, o Personagem resolve.
 
 ## 23.2. Responder à própria carta
 
@@ -2018,7 +2018,7 @@
 
 **Nv1/Nv2/Nv3/Nv4:** Níveis correspondentes aos valores 1, 2, 3 e 4 de Virtude ou Desvirtude.
 
-**Pecado:** tipo de carta normalmente jogável na etapa de Preparação e pago causando dano ao próprio Território.
+**Pecado:** tipo de carta normalmente jogável na etapa de Alistamento e pago causando dano ao próprio Território.
 
 **Permanente:** objeto duradouro no campo de batalha.
 
@@ -2066,7 +2066,7 @@
 
 25.1. A terminologia de estado foi consolidada em **preparado**, **despreparado**, **preparar** e **despreparar**.
 
-25.2. A antiga etapa de restauração de cartas foi renomeada para **etapa de Preparar**, deixando “ativar” reservado para habilidades ativadas.
+25.2. A antiga etapa de Ativação foi renomeada para **etapa de Preparação**, deixando “ativar” reservado para habilidades ativadas.
 
 25.3. O atributo ofensivo de Personagens foi padronizado exclusivamente como **Poder**.
 

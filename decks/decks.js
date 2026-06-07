@@ -852,6 +852,7 @@ function renderDeckCard(deck) {
           </div>
         </div>
       </button>
+      <a class="deck-play-link" href="../play/?deck=${encodeURIComponent(deck.id)}">Jogar contra bot</a>
     </article>
   `;
 }

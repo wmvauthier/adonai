@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adonai Card Game - Play</title>
+  <meta name="description" content="Teste decks de Adonai Card Game em uma partida local contra bot." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../shared/generic.css" />
+  <link rel="stylesheet" href="./play.css" />
+</head>
+
+<body>
+  <div class="page-noise" aria-hidden="true"></div>
+
+  <main class="play-shell">
+    <section class="play-setup" id="setupView">
+      <div class="play-setup-panel">
+        <div class="setup-copy">
+          <span class="section-kicker">Adonai Play</span>
+          <h1>Partida local contra bot</h1>
+          <p>
+            Carregue um deck pre-construido ou o deck atual do deckbuilder para validar fluxo, layout e regras basicas
+            antes da camada online.
+          </p>
+        </div>
+
+        <div class="setup-grid">
+          <label>
+            Seu deck
+            <select id="humanDeckSelect"></select>
+          </label>
+
+          <label>
+            Deck do bot
+            <select id="botDeckSelect"></select>
+          </label>
+
+          <label>
+            Bot
+            <select id="botModeSelect">
+              <option value="basic">Basico</option>
+              <option value="aggressive">Agressivo</option>
+              <option value="test">Teste</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="setup-status" id="setupStatus">Carregando dados...</div>
+
+        <div class="setup-actions">
+          <a class="ghost-link" href="../deckbuilder/">Abrir deckbuilder</a>
+          <a class="ghost-link" href="../decks/">Ver precons</a>
+          <button class="primary-action" type="button" id="startGameButton" disabled>Iniciar partida</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="play-board is-hidden" id="gameView" aria-live="polite">
+      <section class="player-area opponent-area" id="botArea"></section>
+
+      <section class="battlefield-shell">
+        <div class="battlefield-column battlefield-column--bot">
+          <div class="essence-panel essence-panel--bot">
+            <div class="essence-row" id="botEssence" aria-label="Essencias do bot"></div>
+          </div>
+          <div class="battlefield-row" id="botBattlefield"></div>
+        </div>
+
+        <div class="stack-log-panel">
+          <div class="phase-panel" id="phasePanel">
+            <div class="phase-track" id="phaseTracker"></div>
+            <small id="phaseIndicator">-</small>
+          </div>
+          <div class="game-log" id="gameLog"></div>
+        </div>
+
+        <div class="battlefield-column battlefield-column--human">
+          <div class="battlefield-row" id="humanBattlefield"></div>
+          <div class="essence-panel essence-panel--human">
+            <div class="essence-row" id="humanEssence" aria-label="Essencias do jogador"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="player-area human-area" id="humanArea"></section>
+
+      <section class="hand-dock">
+        <div class="hand-row" id="humanHand"></div>
+      </section>
+
+      <aside class="stack-edge-panel" id="stackEdgePanel" aria-live="polite"></aside>
+
+      <aside class="action-dock">
+        <div class="selected-card-panel" id="selectedCardPanel">
+          <span>Carta selecionada</span>
+          <strong>Nenhuma</strong>
+        </div>
+        <div class="action-grid">
+          <button type="button" id="drawButton">Comprar</button>
+          <button type="button" id="consecrateButton">Consagrar</button>
+          <button type="button" id="playCardButton">Jogar</button>
+          <button type="button" id="attackButton">Atacar</button>
+          <button type="button" id="nextPhaseButton">Avancar etapa</button>
+          <button type="button" id="endTurnButton">Encerrar turno</button>
+        </div>
+      </aside>
+
+      <div class="game-result is-hidden" id="gameResult">
+        <div>
+          <span class="section-kicker">Resultado</span>
+          <strong id="gameResultTitle">Partida encerrada</strong>
+          <p id="gameResultText"></p>
+          <button type="button" id="resultNewGameButton">Nova partida</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="./play.js"></script>
+</body>
+
+</html>

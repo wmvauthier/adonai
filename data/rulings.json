@@ -18,7 +18,7 @@
         "rulings": [
           "Campeões começam a partida na zona de Identidade e não são permanentes do campo de batalha.",
           "Campeões não atacam, não bloqueiam, não possuem poder ou resistência e não podem ser alvo de cartas ou efeitos, salvo se uma regra futura disser explicitamente o contrário.",
-          "Cada jogador pode ativar apenas uma habilidade de seu Campeão por rodada. Depois disso, o Campeão fica Encoberto até a etapa de Ativação de seu controlador.",
+          "Cada jogador pode ativar apenas uma habilidade de seu Campeão por rodada. Depois disso, o Campeão fica Encoberto até a etapa de Preparação de seu controlador.",
           "Requisitos como “Fé Nv3” ou “Iniquidade Nv1” são verificados apenas no momento em que a habilidade é ativada."
         ]
       },
@@ -35,7 +35,7 @@
         "type": "Pecado",
         "title": "Pecado",
         "rulings": [
-          "Pecados, por regra geral, só podem ser jogados durante a etapa de Preparação do próprio jogador, salvo permissão específica.",
+          "Pecados, por regra geral, só podem ser jogados durante a etapa de Alistamento do próprio jogador, salvo permissão específica.",
           "Custos de Pecado são pagos causando dano ao território do próprio controlador. Esse dano é custo e deve ser pago integralmente para que a carta seja jogada.",
           "Um Pecado Momentâneo resolve, executa suas instruções e vai ao cemitério de seu dono, salvo se uma regra ou efeito disser o contrário.",
           "As Desvirtudes associadas ao Pecado são aplicadas depois da resolução da carta. Se o Pecado for anulado, suas alterações morais associadas não são aplicadas."

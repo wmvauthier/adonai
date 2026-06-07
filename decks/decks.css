@@ -298,6 +298,25 @@
   gap:10px;
   padding:20px;
 }
+.deck-play-link{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:42px;
+  margin:0 20px 20px;
+  border:1px solid rgba(215,193,139,.3);
+  border-radius:999px;
+  background:rgba(215,193,139,.08);
+  color:#fff7df;
+  font-size:.86rem;
+  font-weight:600;
+  transition:background .2s ease, border-color .2s ease, transform .2s ease;
+}
+.deck-play-link:hover{
+  transform:translateY(-1px);
+  background:rgba(215,193,139,.16);
+  border-color:rgba(215,193,139,.5);
+}
 .deck-entry-kicker{
   display:flex;
   align-items:center;
