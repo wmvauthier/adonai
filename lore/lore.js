@@ -29,6 +29,7 @@ const els = {
   activeBookLabel: document.getElementById("activeBookLabel"),
   chapterTitle: document.getElementById("chapterTitle"),
   chapterCardName: document.getElementById("chapterCardName"),
+  chapterCardArt: document.getElementById("chapterCardArt"),
   chapterLore: document.getElementById("chapterLore"),
   prevChapter: document.getElementById("prevChapter"),
   nextChapter: document.getElementById("nextChapter")
@@ -359,7 +360,9 @@ function renderReader() {
   els.readingMain.style.setProperty("--chapter-art", `url("${cssUrl(cardArt)}")`);
   els.activeBookLabel.textContent = bookTitle;
   els.chapterTitle.textContent = localize(chapter.title);
-  els.chapterCardName.textContent = `${chapter.cardId} · ${localize(card.name)}`;
+  els.chapterCardName.textContent = localize(card.name);
+  els.chapterCardArt.src = cardArt;
+  els.chapterCardArt.alt = localize(card.name);
   els.chapterLore.innerHTML = localizeList(chapter.lore)
     .map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`)
     .join("");

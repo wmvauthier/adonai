@@ -36,6 +36,7 @@ const els = {
   humanDeckSelect: document.getElementById("humanDeckSelect"),
   botDeckSelect: document.getElementById("botDeckSelect"),
   botModeSelect: document.getElementById("botModeSelect"),
+  setupMatchPreview: document.getElementById("setupMatchPreview"),
   setupStatus: document.getElementById("setupStatus"),
   startGameButton: document.getElementById("startGameButton"),
   newGameButton: document.getElementById("newGameButton"),
@@ -87,7 +88,9 @@ const app = {
   zoomCardId: "",
   handExpanded: false,
   territorySnapshot: new Map(),
-  autoPassTimer: null
+  preloadedImages: new Set(),
+  autoPassTimer: null,
+  priority: null
 };
 
 function localize(value) {
@@ -262,6 +265,113 @@ function validateDeck(deck) {
   return "";
 }
 
+function getDeckIdentityCards(deck) {
+  const identity = deck?.identity || {};
+  return {
+    champion: app.cardByCode.get(identity.champions?.[0]),
+    temple: app.cardByCode.get(identity.temples?.[0]),
+    territory: app.cardByCode.get(identity.territories?.[0])
+  };
+}
+
+function getDeckTypeCounts(deck) {
+  const counts = { PER: 0, MIL: 0, ART: 0, PEC: 0 };
+  (deck?.cards || []).forEach((cardId) => {
+    const code = getCardTypeCode(app.cardByCode.get(cardId));
+    if (Object.prototype.hasOwnProperty.call(counts, code)) counts[code] += 1;
+  });
+  return counts;
+}
+
+function renderSetupDeckPreview(deck, label) {
+  if (!deck) {
+    return `
+      <article class="setup-deck-card is-empty">
+        <span>${escapeHtml(label)}</span>
+        <strong>Deck indisponivel</strong>
+      </article>
+    `;
+  }
+
+  const { champion, temple, territory } = getDeckIdentityCards(deck);
+  const counts = getDeckTypeCounts(deck);
+  const wallpaper = getCardArt(territory);
+  const wallpaperStyle = wallpaper ? `style="--setup-wallpaper:url(&quot;${escapeHtml(cssUrl(wallpaper))}&quot;)"` : "";
+  return `
+    <article class="setup-deck-card" ${wallpaperStyle}>
+      <div class="setup-deck-heading">
+        <div class="setup-champion-avatar">
+          ${champion ? `<img src="${escapeHtml(getCardArt(champion))}" alt="${escapeHtml(getCardName(champion))}" draggable="false" />` : ""}
+        </div>
+        <div>
+          <span>${escapeHtml(label)}</span>
+          <strong>${escapeHtml(getDeckName(deck))}</strong>
+          ${champion ? `<small>${escapeHtml(getCardName(champion))}</small>` : ""}
+        </div>
+      </div>
+      <div class="setup-identity-strip">
+        ${temple ? `
+          <figure>
+            <img src="${escapeHtml(getCardImage(temple))}" alt="${escapeHtml(getCardName(temple))}" draggable="false" />
+            <figcaption>Templo</figcaption>
+          </figure>
+        ` : ""}
+        ${territory ? `
+          <figure>
+            <img src="${escapeHtml(getCardImage(territory))}" alt="${escapeHtml(getCardName(territory))}" draggable="false" />
+            <figcaption>Territorio</figcaption>
+          </figure>
+        ` : ""}
+      </div>
+      <div class="setup-deck-facts">
+        <span>${(deck.cards || []).length} cartas</span>
+        <span>${counts.PER} Pers.</span>
+        <span>${counts.MIL} Mil.</span>
+        <span>${counts.ART} Art.</span>
+        <span>${counts.PEC} Pec.</span>
+      </div>
+    </article>
+  `;
+}
+
+function updateSetupPreview(humanDeck, botDeck) {
+  if (!els.setupMatchPreview) return;
+  els.setupMatchPreview.innerHTML = `
+    ${renderSetupDeckPreview(humanDeck, "Voce")}
+    <div class="setup-versus" aria-hidden="true">VS</div>
+    ${renderSetupDeckPreview(botDeck, "Bot")}
+  `;
+}
+
+function getDeckAssetUrls(deck) {
+  const identity = deck?.identity || {};
+  const ids = new Set([
+    ...(deck?.cards || []),
+    ...(identity.champions || []),
+    ...(identity.temples || []),
+    ...(identity.territories || [])
+  ]);
+  const urls = [];
+  ids.forEach((cardId) => {
+    const card = app.cardByCode.get(cardId);
+    [getCardImage(card), getCardArt(card)].forEach((url) => {
+      if (url) urls.push(url);
+    });
+  });
+  return urls;
+}
+
+function preloadDeckImages(...decks) {
+  decks.flatMap(getDeckAssetUrls).forEach((url) => {
+    if (!url || app.preloadedImages.has(url)) return;
+    app.preloadedImages.add(url);
+    const image = new Image();
+    image.decoding = "async";
+    image.loading = "eager";
+    image.src = url;
+  });
+}
+
 function populateDeckSelects() {
   const builderDeck = getBuilderDeckOption();
   app.deckOptions = builderDeck ? [builderDeck, ...app.decks] : [...app.decks];
@@ -304,16 +414,19 @@ function updateSetupStatus() {
   const botDeck = app.decks.find((deck) => deck.id === els.botDeckSelect.value);
   const humanError = validateDeck(humanDeck);
   const botError = validateDeck(botDeck);
+  const error = humanError || botError;
 
+  updateSetupPreview(humanDeck, botDeck);
   els.setupStatus.classList.remove("is-valid", "is-error");
-  if (humanError || botError) {
-    els.setupStatus.textContent = humanError || botError;
+  if (error) {
+    els.setupStatus.textContent = error;
     els.setupStatus.classList.add("is-error");
     els.startGameButton.disabled = true;
     return;
   }
 
-  els.setupStatus.textContent = `Pronto: ${getDeckName(humanDeck)} contra ${getDeckName(botDeck)}.`;
+  preloadDeckImages(humanDeck, botDeck);
+  els.setupStatus.textContent = "Decks prontos";
   els.setupStatus.classList.add("is-valid");
   els.startGameButton.disabled = false;
 }
@@ -338,6 +451,9 @@ function createCombatState() {
     blockers: {},
     awaitingBlockers: "",
     blockPromptAttackUid: "",
+    selectedBlockerUid: "",
+    selectedAttackerUid: "",
+    step: "",
     resolving: false
   };
 }
@@ -390,14 +506,44 @@ function createPlayer(id, label, deck, isBot = false) {
     maxTerritory: getTerritoryLife(deck.identity.territories[0]),
     spentEssence: 0,
     consecratedThisTurn: false,
-    drewThisTurn: false
+    drewThisTurn: false,
+    combatDeclaredThisTurn: false
   };
   drawCards(player, INITIAL_HAND_SIZE);
   return player;
 }
 
+function createMatchStats() {
+  const playerStats = () => ({ human: 0, bot: 0 });
+  return {
+    cardsPlayed: playerStats(),
+    cardsConsecrated: playerStats(),
+    cardsDrawn: playerStats(),
+    damageDealt: playerStats(),
+    territoryDamageDealt: playerStats(),
+    enemyTerritoryDamageDealt: playerStats(),
+    ownTerritoryDamageDealt: playerStats(),
+    characterDamageDealt: playerStats(),
+    damageTaken: playerStats()
+  };
+}
+
+function addPlayerStat(game, key, playerId, amount = 1) {
+  if (!game?.stats?.[key] || !game.stats[key][playerId] && game.stats[key][playerId] !== 0) return;
+  game.stats[key][playerId] += Math.max(0, toNumber(amount, 0));
+}
+
 function getTerritoryLife(cardId) {
   const card = app.cardByCode.get(cardId);
+  const structured = [
+    card?.stats?.life,
+    card?.stats?.vida,
+    card?.stats?.resistance,
+    card?.life,
+    card?.vida,
+    card?.resistance
+  ].map((value) => toNumber(value, 0)).find((value) => value > 0);
+  if (structured) return structured;
   const text = String(card?.text || "");
   const match = text.match(/\b(2[0-9]|3[0-9])\b/);
   return match ? Number(match[1]) : 28;
@@ -432,7 +578,9 @@ function setGamePhase(game, phase, playerId = game.activePlayer, force = false) 
   if (phaseIndex < 0) return false;
   const changed = game.phaseIndex !== phaseIndex;
   game.phaseIndex = phaseIndex;
-  if (changed || force) showPhaseAlert(phase, playerId);
+  if ((changed || force) && (phase === "prepare" || phase === "combat")) {
+    showPhaseAlert(phase, playerId);
+  }
   return true;
 }
 
@@ -462,11 +610,14 @@ function createGame(humanDeck, botDeck, botMode) {
     openingDrawSkipped: false,
     phaseIndex: 0,
     turnNumber: 1,
+    turnsElapsed: 0,
     stack: [],
     status: "active",
     winner: "",
     selectedUid: "",
     combat: createCombatState(),
+    priorityPasses: {},
+    stats: createMatchStats(),
     botMode,
     config: {
       humanDeckId: humanDeck.id,
@@ -483,9 +634,11 @@ function createGame(humanDeck, botDeck, botMode) {
 
 function beginTurn(game) {
   const player = currentPlayer(game);
+  game.turnsElapsed = toNumber(game.turnsElapsed, 0) + 1;
   player.spentEssence = 0;
   player.consecratedThisTurn = false;
   player.drewThisTurn = false;
+  player.combatDeclaredThisTurn = false;
   player.battlefield.forEach((instance) => {
     instance.exhausted = false;
     instance.declaredAttacker = false;
@@ -581,6 +734,58 @@ function canAct(playerId) {
   return app.game && app.game.status === "active" && app.game.activePlayer === playerId;
 }
 
+function getPriorityKey(game, key) {
+  return `${game.id}:${game.turnNumber}:${game.activePlayer}:${currentPhase(game)}:${key}`;
+}
+
+function isHumanPriorityOpen() {
+  return Boolean(app.priority?.waiting && app.priority.game === app.game && app.game?.status === "active");
+}
+
+function hasHumanPriorityPlay(game = app.game) {
+  if (!game || game.status !== "active") return false;
+  if (game.combat.awaitingBlockers || game.combat.resolving) return false;
+  return game.players.human.hand.some((cardId) => {
+    const card = app.cardByCode.get(cardId);
+    return getCardTypeCode(card) === "MIL" &&
+      ["combat", "regroup"].includes(currentPhase(game)) &&
+      getCost(card) <= getAvailableEssence(game.players.human);
+  });
+}
+
+function requestHumanPriority(game, key, label, resume) {
+  if (!game || game.status !== "active") return false;
+  const passKey = getPriorityKey(game, key);
+  if (game.priorityPasses[passKey] || !hasHumanPriorityPlay(game)) return false;
+  game.combat.step = getPriorityStepLabel(key);
+  app.priority = { game, key: passKey, label, resume, waiting: true };
+  addLog(game, label, "Prioridade");
+  renderGame();
+  return true;
+}
+
+function requestOrContinueHumanPriority(game, key, label, resume) {
+  if (!requestHumanPriority(game, key, label, resume)) resume();
+}
+
+function getPriorityStepLabel(key) {
+  if (key.includes("combat-start")) return "priority-combat-start";
+  if (key.includes("after-attackers")) return "priority-after-attackers";
+  if (key.includes("after-blockers")) return "priority-after-blockers";
+  if (key.includes("before-damage")) return "priority-before-damage";
+  if (key.includes("before-phase")) return "priority-before-phase";
+  return "priority";
+}
+
+function passHumanPriority() {
+  const priority = app.priority;
+  if (!priority?.waiting || priority.game !== app.game) return false;
+  priority.game.priorityPasses[priority.key] = true;
+  app.priority = null;
+  priority.resume();
+  return true;
+}
+
 function canDraw(player) {
   return currentPhase(app.game) === "draw" && !player.drewThisTurn;
 }
@@ -596,6 +801,15 @@ function canPlayCard(player, cardId) {
   const card = app.cardByCode.get(cardId);
   const phase = currentPhase(app.game);
   const typeCode = getCardTypeCode(card);
+  const isOwnTurn = app.game.activePlayer === player.id;
+
+  if (!isOwnTurn) {
+    return isHumanPriorityOpen() &&
+      player.id === "human" &&
+      typeCode === "MIL" &&
+      ["preparation", "combat", "regroup"].includes(phase) &&
+      getCost(card) <= getAvailableEssence(player);
+  }
 
   if (phase === "preparation") {
     if (typeCode === "PEC") return true;
@@ -607,6 +821,12 @@ function canPlayCard(player, cardId) {
   }
 
   return false;
+}
+
+function canBotSurviveSinCost(bot, cardId) {
+  const card = app.cardByCode.get(cardId);
+  if (getCardTypeCode(card) !== "PEC") return true;
+  return bot.territoryDamage + getCost(card) < bot.maxTerritory;
 }
 
 function canAttackWith(player, uid) {
@@ -720,6 +940,7 @@ function hasPlayableMiracle(player) {
 }
 
 function hasCombatAttack(player) {
+  if (player.combatDeclaredThisTurn) return false;
   return player.battlefield.some((instance) => canAttackWith(player, instance.uid));
 }
 
@@ -751,8 +972,24 @@ function clearHumanAutoPass() {
   app.autoPassTimer = null;
 }
 
+function schedulePriorityAutoPass(game) {
+  if (!isHumanPriorityOpen() || app.priority.game !== game || hasHumanPriorityPlay(game)) return;
+  clearHumanAutoPass();
+  const key = app.priority.key;
+  app.autoPassTimer = window.setTimeout(() => {
+    if (!isHumanPriorityOpen() || app.priority.key !== key || app.priority.game !== game) return;
+    addLog(game, "autoPass: sem jogadas disponiveis na prioridade.", "Sistema");
+    passHumanPriority();
+    renderGame();
+  }, 760);
+}
+
 function scheduleHumanAutoPass(game) {
   clearHumanAutoPass();
+  if (isHumanPriorityOpen()) {
+    schedulePriorityAutoPass(game);
+    return;
+  }
   const reason = getHumanAutoPassReason(game);
   if (!reason) return;
 
@@ -777,11 +1014,12 @@ function getSelectedAttackers(player) {
 function selectAttackTarget(playerId, uid, target = getTerritoryAttackTarget(getOpponentId(playerId))) {
   const game = app.game;
   const player = getPlayer(game, playerId);
-  if (!canAct(playerId) || !canAttackWith(player, uid)) return false;
+  if (!canAct(playerId) || player.combatDeclaredThisTurn || !canAttackWith(player, uid)) return false;
   if (!setAttackTarget(playerId, uid, target)) return false;
   const selected = new Set(getSelectedAttackers(player));
   selected.add(uid);
   game.combat.selectedAttackers = [...selected];
+  game.combat.selectedAttackerUid = uid;
   playTone("soft");
   return true;
 }
@@ -789,18 +1027,48 @@ function selectAttackTarget(playerId, uid, target = getTerritoryAttackTarget(get
 function toggleAttackSelection(playerId, uid) {
   const game = app.game;
   const player = getPlayer(game, playerId);
-  if (!canAct(playerId) || !canAttackWith(player, uid)) return false;
+  if (!canAct(playerId) || player.combatDeclaredThisTurn || !canAttackWith(player, uid)) return false;
   const selected = new Set(getSelectedAttackers(player));
   if (selected.has(uid)) {
     selected.delete(uid);
     delete game.combat.attackTargets[uid];
+    if (game.combat.selectedAttackerUid === uid) game.combat.selectedAttackerUid = selected.values().next().value || "";
   } else {
     selected.add(uid);
     setAttackTarget(playerId, uid, getTerritoryAttackTarget(getOpponentId(playerId)));
+    game.combat.selectedAttackerUid = uid;
   }
   game.combat.selectedAttackers = [...selected];
   playTone("soft");
   return true;
+}
+
+function getSelectedHumanAttackerUid() {
+  const game = app.game;
+  if (!game || game.activePlayer !== "human" || currentPhase(game) !== "combat") return "";
+  if (game.combat.awaitingBlockers || game.combat.resolving || game.combat.attackers.length) return "";
+  const uid = game.combat.selectedAttackerUid;
+  return uid && canAttackWith(game.players.human, uid) && getSelectedAttackers(game.players.human).includes(uid) ? uid : "";
+}
+
+function isHumanAttackTargetAvailable(target) {
+  const attackerUid = getSelectedHumanAttackerUid();
+  return Boolean(attackerUid && isValidAttackTarget("human", target));
+}
+
+function chooseHumanAttackTarget(target) {
+  const attackerUid = getSelectedHumanAttackerUid();
+  if (!attackerUid) {
+    showInteractionHint("Selecione um Personagem atacante primeiro.");
+    return false;
+  }
+  if (!isValidAttackTarget("human", target)) {
+    showInteractionHint("Esse alvo nao pode ser atacado agora.");
+    return false;
+  }
+  const changed = selectAttackTarget("human", attackerUid, target);
+  if (changed) renderGame();
+  return changed;
 }
 
 function applyDraw(playerId) {
@@ -810,8 +1078,9 @@ function applyDraw(playerId) {
   const drawn = drawCards(player, 2);
   const missing = 2 - drawn.length;
   player.drewThisTurn = true;
+  addPlayerStat(game, "cardsDrawn", playerId, drawn.length);
   addLog(game, `comprou ${drawn.length} carta${drawn.length === 1 ? "" : "s"}.`, player.label);
-  if (missing > 0) dealTerritoryDamage(player, missing * 2, "compra impossivel");
+  if (missing > 0) dealTerritoryDamage(player, missing * 2, "compra impossivel", playerId);
   playTone("draw");
   checkGameEnd(game);
   const finishDraw = () => {
@@ -832,10 +1101,13 @@ function applyConsecrate(playerId, cardId) {
   const game = app.game;
   const player = getPlayer(game, playerId);
   if (!canConsecrate(player, cardId)) return false;
+  const card = app.cardByCode.get(cardId);
   player.hand = player.hand.filter((id) => id !== cardId);
   player.essence.push(cardId);
   player.consecratedThisTurn = true;
-  addLog(game, `consagrou ${getCardName(app.cardByCode.get(cardId))}.`, player.label);
+  addPlayerStat(game, "cardsConsecrated", playerId);
+  addLog(game, `consagrou ${getCardName(card)}.`, player.label);
+  showConsecratedCardAnimation(card, playerId);
   setGamePhase(game, "preparation", playerId);
   addLog(game, `entrou em ${PHASE_LABELS.preparation}.`, player.label);
   playTone("soft");
@@ -851,14 +1123,14 @@ function applyPlayCard(playerId, cardId) {
   const cost = getCost(card);
   const typeCode = getCardTypeCode(card);
   if (typeCode === "PEC") {
-    dealTerritoryDamage(player, cost, `custo de Pecado: ${getCardName(card)}`);
+    dealTerritoryDamage(player, cost, `custo de Pecado: ${getCardName(card)}`, playerId);
     checkGameEnd(game);
     if (game.status !== "active") return true;
   } else {
     player.spentEssence += cost;
   }
   player.hand = player.hand.filter((id) => id !== cardId);
-  game.stack.unshift({ label: getCardName(card), owner: playerId, cardId });
+  addPlayerStat(game, "cardsPlayed", playerId);
   showPlayedCardAnimation(card, playerId);
 
   if (typeCode === "PER" || typeCode === "ART") {
@@ -870,12 +1142,6 @@ function applyPlayCard(playerId, cardId) {
     addLog(game, `resolveu ${getCardName(card)} em modo simplificado.`, player.label);
   }
 
-  setTimeout(() => {
-    if (!app.game) return;
-    app.game.stack = app.game.stack.filter((item) => item.label !== getCardName(card));
-    renderGame();
-  }, 1100);
-
   playTone(typeCode === "PEC" ? "hit" : "play");
   checkGameEnd(game);
   return true;
@@ -884,17 +1150,19 @@ function applyPlayCard(playerId, cardId) {
 function resolveSimpleSpell(playerId, card) {
   const game = app.game;
   const player = getPlayer(game, playerId);
-  const opponent = getOpponent(game, playerId);
   const typeCode = getCardTypeCode(card);
 
   if (typeCode === "MIL") {
     const drawn = drawCards(player, 1);
-    if (drawn.length) addLog(game, "efeito simplificado: comprou 1 carta.", player.label);
+    if (drawn.length) {
+      addPlayerStat(game, "cardsDrawn", playerId, drawn.length);
+      addLog(game, "efeito simplificado: comprou 1 carta.", player.label);
+    }
     return;
   }
 
   if (typeCode === "PEC") {
-    dealTerritoryDamage(opponent, 2, "Pecado simplificado");
+    addLog(game, "Pecado sem efeito generico; apenas o custo foi pago.", player.label);
     return;
   }
 
@@ -905,13 +1173,19 @@ function applyAttack(playerId, uid) {
   const game = app.game;
   const player = getPlayer(game, playerId);
   if (game.combat.awaitingBlockers || game.combat.resolving) return false;
+  if (player.combatDeclaredThisTurn) {
+    if (playerId === "human") showInteractionHint("Todos os ataques deste combate ja foram declarados.");
+    return false;
+  }
   const selected = getSelectedAttackers(player);
   const targets = selected.length
     ? selected
     : uid ? [uid] : player.battlefield.filter((item) => canAttackWith(player, item.uid)).map((item) => item.uid);
   const declared = declareAttackers(playerId, targets);
   if (!declared.length) return false;
-  startBlockDeclaration(playerId);
+  game.combat.step = "attackers-declared";
+  const continueToBlocks = () => startBlockDeclaration(playerId);
+  requestOrContinueHumanPriority(game, `after-attackers:${game.combat.attackers.join(",")}`, "Prioridade depois da declaracao de atacantes.", continueToBlocks);
   return true;
 }
 
@@ -933,6 +1207,7 @@ function declareAttackers(playerId, uids) {
   });
   game.combat.selectedAttackers = [];
   if (declared.length) {
+    player.combatDeclaredThisTurn = true;
     const summary = declared
       .map((instance) => `${getCardName(app.cardByCode.get(instance.cardId))} -> ${formatAttackTarget(getAttackTarget(playerId, instance.uid))}`)
       .join("; ");
@@ -962,6 +1237,7 @@ function hasBlockOptions(attackerId) {
 function startBlockDeclaration(attackerId) {
   const game = app.game;
   const defender = getOpponent(game, attackerId);
+  game.combat.step = "blockers";
 
   if (defender.id === "human" && hasBlockOptions(attackerId)) {
     game.combat.awaitingBlockers = "human";
@@ -973,7 +1249,7 @@ function startBlockDeclaration(attackerId) {
 
   declareAutoBlockers(attackerId);
   renderGame();
-  window.setTimeout(() => finishCombatAfterBlocks(attackerId), defender.id === "bot" ? 760 : 340);
+  window.setTimeout(() => continueCombatAfterBlocks(attackerId), defender.id === "bot" ? 760 : 340);
 }
 
 function chooseAutoBlockers(attackerPlayer, defender, attackerInstance, availableBlockers) {
@@ -1035,12 +1311,14 @@ function toggleHumanBlocker(attackerUid, blockerUid) {
   if (!canBlockAttack(defender, blockerUid, attackerPlayer, attackerUid)) return false;
 
   const currentAttackUid = getAssignedBlockerAttackUid(blockerUid);
-  if (currentAttackUid) {
-    game.combat.blockers[currentAttackUid] = (game.combat.blockers[currentAttackUid] || []).filter((uid) => uid !== blockerUid);
+  if (currentAttackUid === attackerUid) {
+    game.combat.blockers[attackerUid] = (game.combat.blockers[attackerUid] || []).filter((uid) => uid !== blockerUid);
+    if (!game.combat.blockers[attackerUid].length) delete game.combat.blockers[attackerUid];
+    return true;
   }
 
-  if (currentAttackUid === attackerUid) {
-    return true;
+  if (currentAttackUid) {
+    game.combat.blockers[currentAttackUid] = (game.combat.blockers[currentAttackUid] || []).filter((uid) => uid !== blockerUid);
   }
 
   const nextBlockers = new Set(game.combat.blockers[attackerUid] || []);
@@ -1069,7 +1347,7 @@ function finishHumanBlocks() {
   game.combat.awaitingBlockers = "";
   hideBlockPrompt();
   renderGame();
-  window.setTimeout(() => finishCombatAfterBlocks(game.combat.attackerId), 520);
+  window.setTimeout(() => continueCombatAfterBlocks(game.combat.attackerId), 520);
   return true;
 }
 
@@ -1083,7 +1361,21 @@ function finishCombatAfterBlocks(attackerId) {
   if (!game || game.status !== "active") return false;
   if (game.combat.awaitingBlockers || game.combat.resolving) return false;
   if (game.combat.attackerId && game.combat.attackerId !== attackerId) return false;
+  game.combat.step = "damage";
   return resolveDeclaredAttacks(attackerId);
+}
+
+function continueCombatAfterBlocks(attackerId) {
+  const game = app.game;
+  if (!game || game.status !== "active") return false;
+  if (game.combat.awaitingBlockers || game.combat.resolving) return false;
+  if (game.combat.attackerId && game.combat.attackerId !== attackerId) return false;
+  requestOrContinueHumanPriority(game, `after-blockers:${game.combat.attackers.join(",")}`, "Prioridade depois da declaracao de bloqueadores.", () => {
+    requestOrContinueHumanPriority(game, `before-damage:${game.combat.attackers.join(",")}`, "Prioridade antes do dano de combate.", () => {
+      finishCombatAfterBlocks(attackerId);
+    });
+  });
+  return true;
 }
 
 function resolveDeclaredAttacks(playerId) {
@@ -1096,6 +1388,7 @@ function resolveDeclaredAttacks(playerId) {
   game.combat.resolving = true;
 
   const damageEvents = [];
+  const directCharacterGroups = new Map();
   attackers.forEach((attacker) => {
     const target = getAttackTarget(playerId, attacker.uid);
     const blockerUids = game.combat.blockers[attacker.uid] || [];
@@ -1108,7 +1401,20 @@ function resolveDeclaredAttacks(playerId) {
       return;
     }
 
+    if (target.type === "character") {
+      const key = `${target.playerId}:${target.uid}`;
+      if (!directCharacterGroups.has(key)) {
+        directCharacterGroups.set(key, { target, attackers: [] });
+      }
+      directCharacterGroups.get(key).attackers.push(attacker);
+      return;
+    }
+
     assignUnblockedCombatDamage(damageEvents, player, opponent, attacker, target);
+  });
+
+  directCharacterGroups.forEach((group) => {
+    assignDirectCharacterGroupDamage(damageEvents, player, opponent, group.target, group.attackers);
   });
 
   renderGame();
@@ -1116,76 +1422,159 @@ function resolveDeclaredAttacks(playerId) {
   return true;
 }
 
-function queueTerritoryDamage(events, playerId, amount, reason) {
+function queueTerritoryDamage(events, playerId, amount, reason, meta = {}) {
   if (amount <= 0) return;
-  events.push({ type: "territory", playerId, amount, reason });
+  events.push({ type: "territory", playerId, amount, reason, ...meta });
 }
 
-function queueCharacterDamage(events, playerId, uid, amount, reason) {
+function queueCharacterDamage(events, playerId, uid, amount, reason, meta = {}) {
   if (amount <= 0) return;
-  events.push({ type: "character", playerId, uid, amount, reason });
+  events.push({ type: "character", playerId, uid, amount, reason, ...meta });
 }
 
-function assignDamageToAttackTarget(events, attacker, target, amount, reason) {
+function getCombatBatch(id) {
+  return `combat:${id}`;
+}
+
+function getDamageSource(playerId, uid) {
+  return { playerId, uid };
+}
+
+function assignDamageToAttackTarget(events, attackerPlayer, attacker, target, amount, reason, meta = {}) {
   if (target.type === "territory") {
-    queueTerritoryDamage(events, target.playerId, amount, reason);
+    queueTerritoryDamage(events, target.playerId, amount, reason, {
+      ...meta,
+      source: getDamageSource(attackerPlayer.id, attacker.uid)
+    });
     return;
   }
   const targetPlayer = getPlayer(app.game, target.playerId);
   const targetInstance = findBattlefieldInstance(targetPlayer, target.uid);
-  if (targetInstance) queueCharacterDamage(events, target.playerId, target.uid, amount, reason);
+  if (targetInstance) {
+    queueCharacterDamage(events, target.playerId, target.uid, amount, reason, {
+      ...meta,
+      source: getDamageSource(attackerPlayer.id, attacker.uid)
+    });
+  }
 }
 
 function assignUnblockedCombatDamage(events, attackerPlayer, defender, attacker, target) {
   const attackerPower = getCharacterPower(attacker);
   const attackerCard = app.cardByCode.get(attacker.cardId);
+  const batch = getCombatBatch(attacker.uid);
   if (target.type === "territory") {
-    queueTerritoryDamage(events, target.playerId, attackerPower, `${getCardName(attackerCard)} atacou sem bloqueio`);
+    queueTerritoryDamage(events, target.playerId, attackerPower, `${getCardName(attackerCard)} atacou sem bloqueio`, {
+      batch,
+      source: getDamageSource(attackerPlayer.id, attacker.uid)
+    });
     return;
   }
 
   const targetInstance = findBattlefieldInstance(defender, target.uid);
   if (!targetInstance) return;
   const targetCard = app.cardByCode.get(targetInstance.cardId);
-  queueCharacterDamage(events, defender.id, targetInstance.uid, attackerPower, `${getCardName(attackerCard)} atacou diretamente`);
-  queueCharacterDamage(events, attackerPlayer.id, attacker.uid, getCharacterPower(targetInstance), `${getCardName(targetCard)} revidou ataque direto`);
+  queueCharacterDamage(events, defender.id, targetInstance.uid, attackerPower, `${getCardName(attackerCard)} atacou diretamente`, {
+    batch,
+    source: getDamageSource(attackerPlayer.id, attacker.uid)
+  });
+  queueCharacterDamage(events, attackerPlayer.id, attacker.uid, getCharacterPower(targetInstance), `${getCardName(targetCard)} revidou ataque direto`, {
+    batch,
+    source: getDamageSource(defender.id, targetInstance.uid)
+  });
+}
+
+function distributeRetaliationDamage(targetInstance, attackers) {
+  let remaining = getCharacterPower(targetInstance);
+  if (remaining <= 0) return [];
+  const ordered = [...attackers].sort((a, b) => {
+    const lethalDiff = getLethalDamageNeeded(a) - getLethalDamageNeeded(b);
+    if (lethalDiff) return lethalDiff;
+    return getCharacterPower(b) - getCharacterPower(a);
+  });
+  const assignments = [];
+  ordered.forEach((attacker) => {
+    if (remaining <= 0) return;
+    const lethal = Math.max(1, getLethalDamageNeeded(attacker));
+    const amount = Math.min(remaining, lethal);
+    assignments.push({ attacker, amount });
+    remaining -= amount;
+  });
+  return assignments;
+}
+
+function assignDirectCharacterGroupDamage(events, attackerPlayer, defender, target, attackers) {
+  const targetInstance = findBattlefieldInstance(defender, target.uid);
+  if (!targetInstance) return;
+  const targetCard = app.cardByCode.get(targetInstance.cardId);
+  const batch = getCombatBatch(target.uid);
+
+  attackers.forEach((attacker) => {
+    const attackerCard = app.cardByCode.get(attacker.cardId);
+    queueCharacterDamage(events, defender.id, targetInstance.uid, getCharacterPower(attacker), `${getCardName(attackerCard)} atacou diretamente`, {
+      batch,
+      source: getDamageSource(attackerPlayer.id, attacker.uid)
+    });
+  });
+
+  distributeRetaliationDamage(targetInstance, attackers).forEach(({ attacker, amount }) => {
+    queueCharacterDamage(events, attackerPlayer.id, attacker.uid, amount, `${getCardName(targetCard)} distribuiu dano de retaliacao`, {
+      batch,
+      source: getDamageSource(defender.id, targetInstance.uid)
+    });
+  });
 }
 
 function assignBlockedCombatDamage(events, attackerPlayer, defender, attacker, blockers, target) {
   const attackerCard = app.cardByCode.get(attacker.cardId);
   const hasOverrun = cardHasKeyword(attackerCard, "SOBREPUJAR");
   let remainingPower = getCharacterPower(attacker);
+  const batch = getCombatBatch(attacker.uid);
 
   blockers.forEach((blocker) => {
     const blockerCard = app.cardByCode.get(blocker.cardId);
-    queueCharacterDamage(events, attackerPlayer.id, attacker.uid, getCharacterPower(blocker), `${getCardName(blockerCard)} bloqueou`);
+    queueCharacterDamage(events, attackerPlayer.id, attacker.uid, getCharacterPower(blocker), `${getCardName(blockerCard)} bloqueou`, {
+      batch,
+      source: getDamageSource(defender.id, blocker.uid)
+    });
   });
 
   blockers.forEach((blocker, index) => {
     if (remainingPower <= 0) return;
+    const isFirst = index === 0;
     const isLast = index === blockers.length - 1;
     const lethal = getLethalDamageNeeded(blocker);
-    const assigned = hasOverrun || !isLast ? Math.min(remainingPower, lethal) : remainingPower;
-    queueCharacterDamage(events, defender.id, blocker.uid, assigned, `${getCardName(attackerCard)} causou dano ao bloqueador`);
+    const assigned = isFirst || isLast || !hasOverrun ? remainingPower : Math.min(remainingPower, lethal);
+    queueCharacterDamage(events, defender.id, blocker.uid, assigned, `${getCardName(attackerCard)} causou dano ao bloqueador`, {
+      batch,
+      source: getDamageSource(attackerPlayer.id, attacker.uid)
+    });
     remainingPower -= assigned;
   });
 
   if (hasOverrun && remainingPower > 0) {
-    assignDamageToAttackTarget(events, attacker, target, remainingPower, `${getCardName(attackerCard)} causou dano excedente`);
+    assignDamageToAttackTarget(events, attackerPlayer, attacker, target, remainingPower, `${getCardName(attackerCard)} causou dano excedente`, { batch });
   }
 }
 
 function applyCombatDamageEvent(game, event) {
   if (event.type === "territory") {
-    dealTerritoryDamage(getPlayer(game, event.playerId), event.amount, event.reason);
+    dealTerritoryDamage(getPlayer(game, event.playerId), event.amount, event.reason, event.source?.playerId || "");
     return;
   }
-  dealCharacterDamage(getPlayer(game, event.playerId), event.uid, event.amount, event.reason);
+  dealCharacterDamage(getPlayer(game, event.playerId), event.uid, event.amount, event.reason, event.source?.playerId || "");
 }
 
 function applyCombatDamageEvents(game, events) {
   events.forEach((event) => applyCombatDamageEvent(game, event));
   destroyLethalCharacters(game);
+}
+
+function clearDamageFlashFlags(game) {
+  Object.values(game.players).forEach((player) => {
+    player.battlefield.forEach((instance) => {
+      instance.damageFlash = false;
+    });
+  });
 }
 
 function wait(ms) {
@@ -1194,12 +1583,16 @@ function wait(ms) {
 
 async function runCombatDamageSequence(game, attackerId, events, attackerCount) {
   await wait(260);
-  for (const event of events) {
+  const batches = groupDamageEvents(events);
+  for (const batch of batches) {
     if (!app.game || app.game !== game || game.status !== "active") return;
-    await animateCombatDamageEvent(event);
-    applyCombatDamageEvent(game, event);
+    await animateCombatDamageEvents(batch);
+    batch.forEach((event) => applyCombatDamageEvent(game, event));
     renderGame();
-    await wait(130);
+    await wait(360);
+    clearDamageFlashFlags(game);
+    renderGame();
+    await wait(80);
   }
 
   const dying = getLethalCharacterRefs(game);
@@ -1219,6 +1612,28 @@ async function runCombatDamageSequence(game, attackerId, events, attackerCount) 
   renderGame();
 }
 
+function groupDamageEvents(events) {
+  const makeBatches = (items, prefix) => {
+    const batches = [];
+    const batchIndexes = new Map();
+    items.forEach((event, index) => {
+      const key = `${prefix}:${event.batch || `event:${index}`}`;
+      if (!batchIndexes.has(key)) {
+        batchIndexes.set(key, batches.length);
+        batches.push([]);
+      }
+      batches[batchIndexes.get(key)].push(event);
+    });
+    return batches;
+  };
+  const characterEvents = events.filter((event) => event.type !== "territory");
+  const territoryEvents = events.filter((event) => event.type === "territory");
+  return [
+    ...makeBatches(characterEvents, "character"),
+    ...makeBatches(territoryEvents, "territory")
+  ];
+}
+
 function getBattlefieldCardElement(playerId, uid) {
   const attr = playerId === "human" ? "data-battlefield-card" : "data-bot-battlefield-card";
   return document.querySelector(`[${attr}="${escapeAttributeSelector(uid)}"]`);
@@ -1235,25 +1650,33 @@ function getDamageEventElement(event) {
   return getBattlefieldCardElement(event.playerId, event.uid);
 }
 
-async function animateCombatDamageEvent(event) {
-  const target = getDamageEventElement(event);
-  if (!target) {
-    await wait(260);
-    return;
-  }
-  const rect = target.getBoundingClientRect();
-  const burst = document.createElement("div");
-  burst.className = `combat-damage-burst is-${event.type}`;
-  burst.textContent = `-${event.amount}`;
-  burst.style.left = `${rect.left + rect.width / 2}px`;
-  burst.style.top = `${rect.top + rect.height / 2}px`;
-  document.body.appendChild(burst);
+async function animateCombatDamageEvents(events) {
+  const bursts = [];
+  const shaking = new Set();
+  events.forEach((event) => {
+    const target = getDamageEventElement(event);
+    const source = event.source ? getBattlefieldCardElement(event.source.playerId, event.source.uid) : null;
+    [target, source].filter(Boolean).forEach((element) => {
+      element.classList.add("is-combat-shaking");
+      shaking.add(element);
+    });
+    if (!target) return;
+    const rect = target.getBoundingClientRect();
+    const burst = document.createElement("div");
+    burst.className = `combat-damage-burst is-${event.type}`;
+    burst.textContent = `-${event.amount}`;
+    burst.style.left = `${rect.left + rect.width / 2}px`;
+    burst.style.top = `${rect.top + rect.height / 2}px`;
+    document.body.appendChild(burst);
+    bursts.push(burst);
+  });
   playTone("hit");
-  await wait(520);
-  burst.remove();
+  await wait(events.some((event) => getDamageEventElement(event)) ? 560 : 260);
+  bursts.forEach((burst) => burst.remove());
+  shaking.forEach((element) => element.classList.remove("is-combat-shaking"));
 }
 
-function dealCharacterDamage(player, uid, amount, reason) {
+function dealCharacterDamage(player, uid, amount, reason, sourcePlayerId = "") {
   const instance = findBattlefieldInstance(player, uid);
   if (!instance || amount <= 0) return;
   const card = app.cardByCode.get(instance.cardId);
@@ -1262,6 +1685,12 @@ function dealCharacterDamage(player, uid, amount, reason) {
     return;
   }
   instance.damage = Math.max(0, toNumber(instance.damage, 0) + amount);
+  instance.damageFlash = true;
+  addPlayerStat(app.game, "damageTaken", player.id, amount);
+  if (sourcePlayerId) {
+    addPlayerStat(app.game, "damageDealt", sourcePlayerId, amount);
+    addPlayerStat(app.game, "characterDamageDealt", sourcePlayerId, amount);
+  }
   addLog(app.game, `${getCardName(card)} recebeu ${amount} de dano (${reason}).`, player.label);
 }
 
@@ -1318,8 +1747,14 @@ function clearCombatAfterDamage(game, attackerPlayer) {
   };
 }
 
-function dealTerritoryDamage(player, amount, reason) {
+function dealTerritoryDamage(player, amount, reason, sourcePlayerId = "") {
   player.territoryDamage = Math.max(0, player.territoryDamage + Math.max(0, amount));
+  addPlayerStat(app.game, "damageTaken", player.id, amount);
+  if (sourcePlayerId) {
+    addPlayerStat(app.game, "damageDealt", sourcePlayerId, amount);
+    addPlayerStat(app.game, "territoryDamageDealt", sourcePlayerId, amount);
+    addPlayerStat(app.game, sourcePlayerId === player.id ? "ownTerritoryDamageDealt" : "enemyTerritoryDamageDealt", sourcePlayerId, amount);
+  }
   addLog(app.game, `Territorio de ${player.label} recebeu ${amount} de dano (${reason}).`);
 }
 
@@ -1327,8 +1762,12 @@ function applyNextPhase() {
   const game = app.game;
   if (!canAct("human")) return false;
   if (game.combat.awaitingBlockers || game.combat.resolving || game.combat.attackers.length) return false;
-  clearHumanAutoPass();
-  advancePhase(game);
+  const phase = currentPhase(game);
+  const doAdvance = () => {
+    clearHumanAutoPass();
+    advancePhase(game);
+  };
+  requestOrContinueHumanPriority(game, `before-phase:${phase}`, "Prioridade antes da passagem de etapa.", doAdvance);
   return true;
 }
 
@@ -1349,9 +1788,19 @@ function advancePhase(game) {
     endTurn(game);
     return;
   }
-  showPhaseAlert(currentPhase(game), game.activePlayer);
+  const enteredCombat = previous === "preparation" && currentPhase(game) === "combat";
+  if (enteredCombat) {
+    game.combat.step = "attackers";
+    showPhaseAlert("combat", game.activePlayer);
+  }
   addLog(game, `avancou de ${PHASE_LABELS[previous]} para ${PHASE_LABELS[currentPhase(game)]}.`, currentPlayer(game).label);
   renderGame();
+  if (enteredCombat) {
+    requestHumanPriority(game, "combat-start", "Prioridade no inicio do Combate.", () => {
+      game.combat.step = "attackers";
+      renderGame();
+    });
+  }
 }
 
 function applyEndTurn() {
@@ -1408,10 +1857,102 @@ function checkGameEnd(game) {
   }
 }
 
+function renderResultPlayerLine(player, isWinner) {
+  const champion = app.cardByCode.get(player.identity.champion);
+  const territoryRemaining = Math.max(0, player.maxTerritory - player.territoryDamage);
+  return `
+    <div class="result-player-line ${isWinner ? "is-winner" : ""}">
+      <img src="${escapeHtml(getCardArt(champion))}" alt="${escapeHtml(getCardName(champion))}" draggable="false" />
+      <div>
+        <span>${isWinner ? "Vencedor" : "Jogador"}</span>
+        <strong>${escapeHtml(player.label)}</strong>
+        <small>${territoryRemaining}/${player.maxTerritory} territorio</small>
+      </div>
+    </div>
+  `;
+}
+
+function renderResultMetric(label, humanValue, botValue) {
+  return `
+    <div class="result-metric">
+      <span>${escapeHtml(label)}</span>
+      <div class="result-metric-head">
+        <small>Voce</small>
+        <small>Oponente</small>
+      </div>
+      <div class="result-metric-values">
+        <strong>${escapeHtml(humanValue)}</strong>
+        <strong>${escapeHtml(botValue)}</strong>
+      </div>
+    </div>
+  `;
+}
+
+function renderResultMatchMetric(label, value, caption = "Partida") {
+  return `
+    <div class="result-metric result-metric--solo">
+      <span>${escapeHtml(label)}</span>
+      <strong>${escapeHtml(value)}</strong>
+      <small>${escapeHtml(caption)}</small>
+    </div>
+  `;
+}
+
 function showResult(title, text) {
   clearHumanAutoPass();
-  els.gameResultTitle.textContent = title;
-  els.gameResultText.textContent = text;
+  const game = app.game;
+  if (!game) {
+    els.gameResult.innerHTML = `
+      <div class="result-panel">
+        <span class="section-kicker">Resultado</span>
+        <strong>${escapeHtml(title)}</strong>
+        <p>${escapeHtml(text)}</p>
+        <button type="button" data-result-new-game>Nova partida</button>
+      </div>
+    `;
+    els.gameResult.classList.remove("is-hidden");
+    return;
+  }
+
+  const human = game.players.human;
+  const bot = game.players.bot;
+  const winner = game.winner ? getPlayer(game, game.winner) : human;
+  const winnerChampion = app.cardByCode.get(winner.identity.champion);
+  const winnerTerritory = app.cardByCode.get(winner.identity.territory);
+  const wallpaper = getCardArt(winnerTerritory);
+  const wallpaperStyle = wallpaper ? `style="--result-wallpaper:url(&quot;${escapeHtml(cssUrl(wallpaper))}&quot;)"` : "";
+  const stats = game.stats || createMatchStats();
+
+  els.gameResult.innerHTML = `
+    <div class="result-panel result-panel--rich ${game.winner === "human" ? "is-victory" : "is-defeat"}" ${wallpaperStyle}>
+      <div class="result-hero">
+        <img class="result-avatar" src="${escapeHtml(getCardArt(winnerChampion))}" alt="${escapeHtml(getCardName(winnerChampion))}" draggable="false" />
+        <div>
+          <span class="section-kicker">Resultado</span>
+          <strong>${escapeHtml(title)}</strong>
+          <p>${escapeHtml(text)}</p>
+          <small>${escapeHtml(getCardName(winnerChampion))} - ${escapeHtml(winner.deckName)}</small>
+        </div>
+      </div>
+
+      <div class="result-scoreboard">
+        ${renderResultPlayerLine(human, game.winner === "human")}
+        ${renderResultPlayerLine(bot, game.winner === "bot")}
+      </div>
+
+      <div class="result-stats">
+        ${renderResultMatchMetric("Turnos", game.turnsElapsed || game.turnNumber)}
+        ${renderResultMetric("Dano causado", stats.damageDealt.human, stats.damageDealt.bot)}
+        ${renderResultMetric("Dano ao territorio inimigo", stats.enemyTerritoryDamageDealt.human, stats.enemyTerritoryDamageDealt.bot)}
+        ${renderResultMetric("Dano ao proprio territorio", stats.ownTerritoryDamageDealt.human, stats.ownTerritoryDamageDealt.bot)}
+        ${renderResultMetric("Cartas jogadas", stats.cardsPlayed.human, stats.cardsPlayed.bot)}
+        ${renderResultMetric("Consagracoes", stats.cardsConsecrated.human, stats.cardsConsecrated.bot)}
+        ${renderResultMetric("Cartas Compradas", stats.cardsDrawn.human, stats.cardsDrawn.bot)}
+      </div>
+
+      <button type="button" data-result-new-game>Nova partida</button>
+    </div>
+  `;
   els.gameResult.classList.remove("is-hidden");
 }
 
@@ -1419,6 +1960,7 @@ function showPhaseAlert(phase, playerId) {
   const player = app.game?.players?.[playerId];
   const champion = player ? app.cardByCode.get(player.identity.champion) : null;
   const avatar = champion ? getCardArt(champion) : "";
+  const label = PHASE_LABELS[phase] || phase;
   let overlay = document.getElementById("phaseAlert");
   if (!overlay) {
     overlay = document.createElement("div");
@@ -1431,7 +1973,7 @@ function showPhaseAlert(phase, playerId) {
     <div class="phase-alert-card">
       ${avatar ? `<img class="phase-alert-avatar" src="${escapeHtml(avatar)}" alt="${escapeHtml(getCardName(champion))}" />` : ""}
       <span>${escapeHtml(player?.label || "Turno")}</span>
-      <strong>${escapeHtml(PHASE_LABELS[phase] || phase)}</strong>
+      <strong>${escapeHtml(label)}</strong>
     </div>
   `;
   window.clearTimeout(overlay._hideTimer);
@@ -1441,6 +1983,14 @@ function showPhaseAlert(phase, playerId) {
 }
 
 function showPlayedCardAnimation(card, playerId) {
+  showCardActionAnimation(card, playerId, playerId === "human" ? "Voce jogou" : "Bot jogou");
+}
+
+function showConsecratedCardAnimation(card, playerId) {
+  showCardActionAnimation(card, playerId, playerId === "human" ? "Voce consagrou" : "Bot consagrou");
+}
+
+function showCardActionAnimation(card, playerId, label) {
   if (!card) return;
   let overlay = document.getElementById("playedCardAnimation");
   if (!overlay) {
@@ -1452,8 +2002,8 @@ function showPlayedCardAnimation(card, playerId) {
   overlay.className = `played-card-animation is-visible ${playerId === "human" ? "is-human-play" : "is-bot-play"}`;
   overlay.innerHTML = `
     <div class="played-card-panel">
-      <span>${playerId === "human" ? "Voce jogou" : "Bot jogou"}</span>
-      <img src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" />
+      <span>${escapeHtml(label)}</span>
+      <img src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" draggable="false" />
       <strong>${escapeHtml(getCardName(card))}</strong>
       <small>${escapeHtml(getCardTypeLabel(card))} - custo ${getCost(card)}</small>
     </div>
@@ -1479,14 +2029,13 @@ function showDrawAnimation(cardIds, playerId, onComplete = () => {}) {
   overlay.className = `draw-animation is-visible ${playerId === "human" ? "is-human-draw" : "is-bot-draw"} ${requiresConfirm ? "requires-confirm" : ""}`;
   overlay.innerHTML = `
     <div class="draw-animation-inner">
-      <span>${playerId === "human" ? "Compra" : "Compra do bot"}</span>
       <div class="draw-animation-cards">
         ${isBotDraw
           ? cardIds.map((_, index) => `
-            <img class="is-card-back" style="--draw-index:${index}" src="${escapeHtml(CARD_BACK_IMAGE)}" alt="Carta comprada pelo bot" />
+            <img class="is-card-back" style="--draw-index:${index}" src="${escapeHtml(CARD_BACK_IMAGE)}" alt="Carta comprada pelo bot" draggable="false" />
           `).join("")
           : visibleCards.map((card, index) => `
-            <img style="--draw-index:${index}" src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" />
+            <img style="--draw-index:${index}" src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" draggable="false" />
           `).join("")}
       </div>
       ${requiresConfirm ? `<button type="button" class="draw-confirm-button" data-draw-confirm>Continuar</button>` : ""}
@@ -1543,9 +2092,17 @@ function runBotTurn() {
 
   setTimeout(() => {
     if (!app.game || app.game !== game || app.game.status !== "active") return;
-    advanceBotTo("combat");
-    attackWithBot(bot, mode);
-    renderGame();
+    const continueToCombat = () => {
+      if (!app.game || app.game !== game || app.game.status !== "active") return;
+      advanceBotTo("combat");
+      renderGame();
+      requestOrContinueHumanPriority(game, "combat-start", "Prioridade no inicio do Combate.", () => {
+        if (!app.game || app.game !== game || app.game.status !== "active") return;
+        attackWithBot(bot, mode);
+        renderGame();
+      });
+    };
+    continueToCombat();
   }, 5000);
 
   setTimeout(() => {
@@ -1556,10 +2113,13 @@ function runBotTurn() {
 
 function endBotTurnWhenCombatIsReady(game) {
   if (!app.game || app.game !== game || game.status !== "active" || game.activePlayer !== "bot") return;
-  if (game.combat.awaitingBlockers || game.combat.resolving || game.combat.attackers.length) {
+  if (isHumanPriorityOpen() || game.combat.awaitingBlockers || game.combat.resolving || game.combat.attackers.length) {
     window.setTimeout(() => endBotTurnWhenCombatIsReady(game), 520);
     return;
   }
+  if (requestHumanPriority(game, "before-end", "Voce recebeu prioridade antes do fim do turno do bot.", () => {
+    endBotTurnWhenCombatIsReady(game);
+  })) return;
   endTurn(game);
 }
 
@@ -1593,7 +2153,7 @@ function playBotCards(bot, mode, maxCards = Infinity) {
       return (getCost(cardA) + typeBoostA) - (getCost(cardB) + typeBoostB);
     });
 
-    const next = candidates.find((cardId) => canPlayCard(bot, cardId));
+    const next = candidates.find((cardId) => canPlayCard(bot, cardId) && canBotSurviveSinCost(bot, cardId));
     if (next) {
       applyPlayCard("bot", next);
       playedCount += 1;
@@ -1604,7 +2164,10 @@ function playBotCards(bot, mode, maxCards = Infinity) {
 }
 
 function attackWithBot(bot) {
-  const attackers = bot.battlefield.filter((instance) => canAttackWith(bot, instance.uid));
+  const botHasTrick = hasPlayableMiracle(bot);
+  const attackers = bot.battlefield.filter((instance) => (
+    canAttackWith(bot, instance.uid) && (getCharacterPower(instance) > 0 || botHasTrick)
+  ));
   attackers.forEach((instance) => {
     selectAttackTarget("bot", instance.uid, chooseBotAttackTarget(instance));
   });
@@ -1661,6 +2224,17 @@ function collapseHand() {
   setHandExpanded(false);
 }
 
+function reorderHandCard(cardId, targetCardId = "") {
+  const hand = app.game?.players?.human?.hand;
+  if (!hand || !cardId || !hand.includes(cardId)) return false;
+  const fromIndex = hand.indexOf(cardId);
+  const [moved] = hand.splice(fromIndex, 1);
+  const targetIndex = targetCardId && hand.includes(targetCardId) ? hand.indexOf(targetCardId) : hand.length;
+  hand.splice(targetIndex, 0, moved);
+  playTone("soft");
+  return true;
+}
+
 function renderGame() {
   const game = app.game;
   if (!game) return;
@@ -1671,7 +2245,7 @@ function renderGame() {
   const phase = currentPhase(game);
   const selectedAttackers = new Set(game.combat.selectedAttackers || []);
 
-  els.phaseIndicator.textContent = PHASE_LABELS[phase] || phase;
+  els.phaseIndicator.textContent = getPhaseDisplayLabel(game);
   els.phasePanel.classList.toggle("is-human-turn", game.activePlayer === "human");
   els.phasePanel.classList.toggle("is-bot-turn", game.activePlayer === "bot");
   els.phaseTracker.innerHTML = renderPhaseTracker(game);
@@ -1685,10 +2259,11 @@ function renderGame() {
   els.humanBattlefield.innerHTML = renderBattlefield(human, selectedBattlefieldUid, selectedAttackers);
   els.botEssence.innerHTML = renderEssence(bot, true);
   els.humanEssence.innerHTML = renderEssence(human);
+  updatePhaseFocusHighlights(game, phase);
   els.humanHand.style.setProperty("--hand-count", String(human.hand.length));
   els.humanHand.innerHTML = human.hand.map((cardId) => renderCardButton(cardId, {
     selected: selectedHandId === cardId,
-    actionable: canAct("human") && (canConsecrate(human, cardId) || canPlayCard(human, cardId)),
+    actionable: (canAct("human") || isHumanPriorityOpen()) && (canConsecrate(human, cardId) || canPlayCard(human, cardId)),
     zone: "hand"
   })).join("");
   els.gameLog.innerHTML = `${renderCombatSummary(game)}${game.log.map((entry) => `
@@ -1707,6 +2282,17 @@ function updateConsecrationHighlights(game, phase) {
   const botActive = game.activePlayer === "bot" && phase === "consecration";
   els.humanEssence?.closest(".essence-panel")?.classList.toggle("is-consecration-active", humanActive);
   els.botEssence?.closest(".essence-panel")?.classList.toggle("is-consecration-active", botActive);
+}
+
+function updatePhaseFocusHighlights(game, phase) {
+  const territoryPhases = ["preparation", "combat", "regroup"];
+  const humanFocus = game.activePlayer === "human" && territoryPhases.includes(phase);
+  const botFocus = game.activePlayer === "bot" && territoryPhases.includes(phase);
+  const combatFocus = phase === "combat";
+  els.humanBattlefield?.classList.toggle("is-territory-phase-active", combatFocus || humanFocus);
+  els.botBattlefield?.classList.toggle("is-territory-phase-active", combatFocus || botFocus);
+  els.humanArea?.querySelector("[data-territory-player='human']")?.classList.toggle("is-phase-focus", humanFocus);
+  els.botArea?.querySelector("[data-territory-player='bot']")?.classList.toggle("is-phase-focus", botFocus);
 }
 
 function updateBattlefieldWallpapers(human, bot) {
@@ -1759,14 +2345,31 @@ function renderStackEdgePanel(game) {
 }
 
 function renderPhaseTracker(game) {
-  const activePhase = currentPhase(game);
   const ownerLabel = game.activePlayer === "human" ? "Seu turno" : "Turno do bot";
   return `
     <span class="phase-current">
       <small>${escapeHtml(ownerLabel)} - Turno ${game.turnNumber}</small>
-      <strong>${escapeHtml(PHASE_LABELS[activePhase] || activePhase)}</strong>
+      <strong>${escapeHtml(getPhaseDisplayLabel(game))}</strong>
     </span>
   `;
+}
+
+function getPhaseDisplayLabel(game) {
+  const phase = currentPhase(game);
+  if (phase !== "combat") return PHASE_LABELS[phase] || phase;
+  const labels = {
+    attackers: "Declaracao de atacantes",
+    "attackers-declared": "Atacantes declarados",
+    blockers: "Declaracao de bloqueadores",
+    "priority-combat-start": "Combate",
+    "priority-after-attackers": "Atacantes declarados",
+    "priority-after-blockers": "Bloqueadores declarados",
+    "priority-before-damage": "Antes do dano",
+    "priority-before-phase": "Combate",
+    damage: "Dano de combate",
+    priority: "Combate"
+  };
+  return labels[game.combat.step] || PHASE_LABELS.combat;
 }
 
 function getCombatOrderUids() {
@@ -1797,6 +2400,22 @@ function getCombatRoleLabels(playerId, uid, selectedAttackers = new Set()) {
   });
 
   return labels;
+}
+
+function getCombatSlotForCard(playerId, uid) {
+  const game = app.game;
+  if (!game) return 0;
+  const attackUids = getCombatOrderUids();
+  const ownAttackIndex = attackUids.indexOf(uid);
+  if (ownAttackIndex >= 0) return ownAttackIndex + 1;
+
+  for (let index = 0; index < attackUids.length; index += 1) {
+    const attackerUid = attackUids[index];
+    const target = game.combat.attackTargets[attackerUid];
+    if (target?.type === "character" && target.playerId === playerId && target.uid === uid) return index + 1;
+    if ((game.combat.blockers[attackerUid] || []).includes(uid)) return index + 1;
+  }
+  return 0;
 }
 
 function getTerritoryCombatLabels(playerId) {
@@ -1850,10 +2469,11 @@ function renderPlayerArea(player, hideHand) {
   const secondaryLabel = hideHand ? "Mao" : "Deck";
   const secondaryValue = hideHand ? player.hand.length : player.deck.length;
   const territoryLabels = getTerritoryCombatLabels(player.id);
+  const attackTargetClass = isHumanAttackTargetAvailable(getTerritoryAttackTarget(player.id)) ? " is-click-attack-target" : "";
   return `
     <div class="player-hud ${hideHand ? "player-hud--opponent" : "player-hud--human"}${dangerClass}${damagedClass}">
       <div class="hud-avatar">
-        <img src="${escapeHtml(getCardArt(champion))}" alt="${escapeHtml(getCardName(champion))}" loading="lazy" />
+        <img src="${escapeHtml(getCardArt(champion))}" alt="${escapeHtml(getCardName(champion))}" loading="lazy" draggable="false" />
       </div>
       <div class="hud-copy">
         <span>${hideHand ? "Oponente" : "Jogador"}</span>
@@ -1861,9 +2481,9 @@ function renderPlayerArea(player, hideHand) {
         <small>${escapeHtml(player.deckName)}</small>
       </div>
       <div class="hud-identity">
-        ${[temple, territory].map((card) => `<img class="${isLandscapeCard(card) ? "is-landscape" : ""}" src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" loading="lazy" />`).join("")}
+        ${[temple, territory].map((card) => `<img class="${isLandscapeCard(card) ? "is-landscape" : ""}" src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" loading="lazy" draggable="false" />`).join("")}
       </div>
-      <div class="hud-territory ${territoryLabels.length ? "is-attack-target" : ""}" data-territory-player="${escapeHtml(player.id)}">
+      <div class="hud-territory ${territoryLabels.length ? "is-attack-target" : ""}${attackTargetClass}" data-territory-player="${escapeHtml(player.id)}">
         <span>Territorio</span>
         <strong>${territoryRemaining}</strong>
         <small>/${player.maxTerritory}</small>
@@ -1899,6 +2519,7 @@ function renderBattlefield(player, selectedUid, selectedAttackers = new Set()) {
     <div class="battlefield-line battlefield-line--${name}">
       ${instances.map((instance) => {
         const combatLabels = getCombatRoleLabels(player.id, instance.uid, selectedAttackers);
+        const target = getCharacterAttackTarget(player.id, instance.uid);
         return renderCardButton(instance.cardId, {
           uid: instance.uid,
           exhausted: instance.exhausted,
@@ -1907,8 +2528,10 @@ function renderBattlefield(player, selectedUid, selectedAttackers = new Set()) {
           attackSelected: selectedAttackers.has(instance.uid) || combatLabels.some((label) => label.startsWith("A")),
           attackTarget: combatLabels.some((label) => label.startsWith("T")),
           blocking: combatLabels.some((label) => label.startsWith("B")),
+          attackTargetable: isHumanAttackTargetAvailable(target),
           combatLabels,
           damage: instance.damage || 0,
+          damageFlash: instance.damageFlash,
           dying: instance.dying,
           zone: player.id === "human" ? "battlefield" : "bot-battlefield"
         });
@@ -1944,8 +2567,10 @@ function renderCardButton(cardId, options = {}) {
     options.actionable ? "is-actionable-card" : "",
     options.attackSelected ? "is-attack-selected" : "",
     options.attackTarget ? "is-attack-target" : "",
+    options.attackTargetable ? "is-click-attack-target" : "",
     options.blocking ? "is-blocking-card" : "",
     damage > 0 ? "is-damaged" : "",
+    options.damageFlash ? "is-damage-flash" : "",
     options.dying ? "is-dying-card" : "",
     options.exhausted ? "is-exhausted" : "",
     options.declared ? "is-declared-attacker" : ""
@@ -1958,10 +2583,11 @@ function renderCardButton(cardId, options = {}) {
         ? `data-bot-battlefield-card="${escapeHtml(options.uid)}"`
         : "";
   const draggable = options.zone === "hand" || options.zone === "battlefield" ? "draggable=\"true\"" : "";
+  const style = "";
 
   return `
-    <button class="${classes}" type="button" ${data} ${draggable} data-zoom-card="${escapeHtml(cardId)}" title="${escapeHtml(getCardName(card))}">
-      <img src="${escapeHtml(image)}" alt="${escapeHtml(getCardName(card))}" loading="lazy" />
+    <button class="${classes}" type="button" ${data} ${draggable} ${style} data-zoom-card="${escapeHtml(cardId)}" title="${escapeHtml(getCardName(card))}">
+      <img src="${escapeHtml(image)}" alt="${escapeHtml(getCardName(card))}" loading="lazy" draggable="false" />
       ${isFieldTile && statusPips ? `<span class="field-card-pips">${statusPips}</span>` : ""}
       ${isFieldTile && isCharacter ? `<span class="field-card-stats">${attack}/${resistance}</span>` : ""}
       ${isFieldTile && isCharacter && damage > 0 ? `<span class="field-card-damage">${damage}</span>` : ""}
@@ -1976,9 +2602,10 @@ function renderEssence(player, compact = false) {
   return player.essence.map((cardId, index) => {
     const card = app.cardByCode.get(cardId);
     const isSpent = index < player.spentEssence;
+    const typeCode = getCardTypeCode(card);
     return `
-      <button class="essence-card ${isSpent ? "is-spent" : ""}" type="button" data-zoom-card="${escapeHtml(cardId)}" title="${escapeHtml(getCardName(card))}">
-        <img src="${escapeHtml(getCardArt(card))}" alt="${escapeHtml(getCardName(card))}" loading="lazy" />
+      <button class="essence-card is-essence-type-${String(typeCode || "CRD").toLowerCase()} ${isSpent ? "is-spent" : ""}" type="button" data-zoom-card="${escapeHtml(cardId)}" title="${escapeHtml(getCardName(card))}">
+        <img src="${escapeHtml(getCardArt(card))}" alt="${escapeHtml(getCardName(card))}" loading="lazy" draggable="false" />
       </button>
     `;
   }).join("");
@@ -2011,7 +2638,7 @@ function showCemeteryModal(playerId) {
             if (!card) return "";
             return `
               <button class="zone-modal-card" type="button" data-zoom-card="${escapeHtml(cardId)}" title="${escapeHtml(getCardName(card))}">
-                <img src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" loading="lazy" />
+                <img src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" loading="lazy" draggable="false" />
               </button>
             `;
           }).join("")
@@ -2080,25 +2707,28 @@ function renderSelectedPanel() {
 function renderActionState() {
   const human = app.game.players.human;
   const humanTurn = canAct("human");
+  const priorityOpen = isHumanPriorityOpen();
   const combatLocked = Boolean(app.game.combat.awaitingBlockers || app.game.combat.resolving || app.game.combat.attackers.length);
   const readyAttackers = human.battlefield.filter((instance) => canAttackWith(human, instance.uid));
   const selectedAttackers = getSelectedAttackers(human);
   const phase = currentPhase(app.game);
-  const showAttack = humanTurn && phase === "combat" && !combatLocked;
-  const showNextPhase = humanTurn && ["consecration", "preparation", "combat"].includes(phase) && !combatLocked;
-  const showEndTurn = humanTurn && phase === "regroup" && !combatLocked;
+  const showAttack = !priorityOpen && humanTurn && phase === "combat" && !combatLocked && !human.combatDeclaredThisTurn;
+  const showNextPhase = priorityOpen || (humanTurn && ["consecration", "preparation", "combat"].includes(phase) && !combatLocked);
+  const showEndTurn = !priorityOpen && humanTurn && phase === "regroup" && !combatLocked;
   const visibleActionCount = [showAttack, showNextPhase, showEndTurn].filter(Boolean).length;
 
   els.drawButton.textContent = "Comprar 2";
   els.consecrateButton.textContent = "Consagrar";
   els.playCardButton.textContent = "Jogar";
   els.attackButton.textContent = selectedAttackers.length ? `Atacar ${selectedAttackers.length}` : "Enviar ataque";
+  els.nextPhaseButton.textContent = getNextActionLabel(app.game, priorityOpen);
   els.drawButton.hidden = true;
   els.consecrateButton.hidden = true;
   els.playCardButton.hidden = true;
   els.attackButton.hidden = !showAttack;
   els.nextPhaseButton.hidden = !showNextPhase;
   els.endTurnButton.hidden = !showEndTurn;
+  els.nextPhaseButton.classList.toggle("is-priority-button", priorityOpen);
   els.actionGrid?.style.setProperty("--action-columns", String(Math.max(1, Math.min(2, visibleActionCount))));
   els.drawButton.disabled = !humanTurn || !canDraw(human);
   els.consecrateButton.disabled = !humanTurn || phase !== "consecration";
@@ -2107,6 +2737,115 @@ function renderActionState() {
   els.nextPhaseButton.disabled = !showNextPhase;
   els.endTurnButton.disabled = !showEndTurn;
   if (els.concedeButton) els.concedeButton.disabled = !app.game || app.game.status !== "active";
+}
+
+function getNextActionLabel(game, priorityOpen = false) {
+  if (priorityOpen) return "Passar prioridade";
+  const phase = currentPhase(game);
+  const nextLabels = {
+    prepare: "Ir para compra",
+    draw: "Ir para consagracao",
+    consecration: "Nao quero consagrar",
+    preparation: "Ir para combate",
+    combat: game.combat?.step === "attackers-declared" ? "Ir para bloqueadores" : "Nao quero atacar",
+    regroup: "Encerrar turno"
+  };
+  return nextLabels[phase] || "Avancar etapa";
+}
+
+function renderBlockMiniCard(player, instance, label, options = {}) {
+  const card = app.cardByCode.get(instance?.cardId);
+  if (!card) return "";
+  const typeCode = getCardTypeCode(card);
+  const damage = toNumber(instance.damage, 0);
+  const isCharacter = typeCode === "PER";
+  const classes = [
+    "block-mini-card",
+    `is-type-${String(typeCode || "CRD").toLowerCase()}`,
+    instance.exhausted ? "is-exhausted" : "",
+    options.assigned ? "is-assigned" : "",
+    options.selected ? "is-selected" : "",
+    options.disabled ? "is-disabled" : ""
+  ].filter(Boolean).join(" ");
+  const draggable = "";
+  const data = options.blocker ? `data-blocker="${escapeHtml(instance.uid)}"` : "";
+  return `
+    <div class="${classes}" role="button" tabindex="0" ${data} ${draggable} ${options.disabled ? "aria-disabled=\"true\"" : ""} title="${escapeHtml(getCardName(card))}">
+      <img src="${escapeHtml(getCardArt(card))}" alt="${escapeHtml(getCardName(card))}" draggable="false" />
+      <span class="block-mini-label">${escapeHtml(label)}</span>
+      ${isCharacter ? `<strong class="block-mini-stats">${toNumber(card.stats?.attack, 0)}/${toNumber(card.stats?.resistance, 0)}</strong>` : ""}
+      ${isCharacter && damage > 0 ? `<em class="block-mini-damage">${damage}</em>` : ""}
+    </div>
+  `;
+}
+
+function renderBlockTargetCard(target, label = "T") {
+  const player = getPlayer(app.game, target.playerId);
+  if (!player) return "";
+  if (target.type === "territory") {
+    const territory = app.cardByCode.get(player.identity.territory);
+    const remaining = Math.max(0, player.maxTerritory - player.territoryDamage);
+    return `
+      <div class="block-mini-card is-target is-territory-target" title="Territorio de ${escapeHtml(player.label)}">
+        <img src="${escapeHtml(getCardArt(territory))}" alt="Territorio de ${escapeHtml(player.label)}" draggable="false" />
+        <span class="block-mini-label">${escapeHtml(label)}</span>
+        <strong class="block-mini-stats">${remaining}/${player.maxTerritory}</strong>
+      </div>
+    `;
+  }
+  const targetInstance = findBattlefieldInstance(player, target.uid);
+  return renderBlockMiniCard(player, targetInstance, label, { assigned: true });
+}
+
+function bindBlockPromptDrag(modal) {
+  if (modal._blockPromptDragBound) return;
+  modal._blockPromptDragBound = true;
+  modal.addEventListener("dragover", (event) => {
+    const lane = event.target.closest("[data-block-attack]");
+    if (!lane || app.dragPayload?.zone !== "blocker") return;
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "move";
+    lane.classList.add("is-drop-hover");
+  });
+  modal.addEventListener("dragleave", (event) => {
+    const lane = event.target.closest("[data-block-attack]");
+    if (lane && !lane.contains(event.relatedTarget)) lane.classList.remove("is-drop-hover");
+  });
+  modal.addEventListener("drop", (event) => {
+    const lane = event.target.closest("[data-block-attack]");
+    if (!lane || app.dragPayload?.zone !== "blocker") return;
+    event.preventDefault();
+    lane.classList.remove("is-drop-hover");
+    if (toggleHumanBlocker(lane.dataset.blockAttack, app.dragPayload.id)) {
+      app.dragPayload = null;
+      renderGame();
+    }
+  });
+  modal.addEventListener("click", (event) => {
+    const blocker = event.target.closest("[data-blocker]");
+    if (blocker) {
+      event.stopPropagation();
+      const assignedAttackUid = getAssignedBlockerAttackUid(blocker.dataset.blocker);
+      if (assignedAttackUid) {
+        app.game.combat.blockers[assignedAttackUid] = (app.game.combat.blockers[assignedAttackUid] || [])
+          .filter((uid) => uid !== blocker.dataset.blocker);
+        if (!app.game.combat.blockers[assignedAttackUid].length) delete app.game.combat.blockers[assignedAttackUid];
+        app.game.combat.selectedBlockerUid = "";
+        renderGame();
+        return;
+      }
+      app.game.combat.selectedBlockerUid = blocker.dataset.blocker;
+      renderGame();
+      return;
+    }
+    const lane = event.target.closest("[data-block-attack]");
+    const selectedBlockerUid = app.game?.combat?.selectedBlockerUid || "";
+    if (!lane || !selectedBlockerUid) return;
+    if (toggleHumanBlocker(lane.dataset.blockAttack, selectedBlockerUid)) {
+      app.game.combat.selectedBlockerUid = "";
+      renderGame();
+    }
+  });
 }
 
 function renderBlockPrompt(game) {
@@ -2122,6 +2861,7 @@ function renderBlockPrompt(game) {
     modal.className = "block-prompt";
     document.body.appendChild(modal);
   }
+  bindBlockPromptDrag(modal);
 
   const attackerId = game.combat.attackerId;
   const attackerPlayer = getPlayer(game, attackerId);
@@ -2131,47 +2871,53 @@ function renderBlockPrompt(game) {
     ? game.combat.blockPromptAttackUid
     : attackers[0]?.uid || "";
   game.combat.blockPromptAttackUid = selectedAttackUid;
-  const selectedAttacker = findBattlefieldInstance(attackerPlayer, selectedAttackUid);
-  const blockers = defender.battlefield.filter((instance) => {
-    const card = app.cardByCode.get(instance.cardId);
-    return getCardTypeCode(card) === "PER";
-  });
+  const blockers = defender.battlefield.filter((instance) => canBlockWith(defender, instance.uid));
+  const assignedBlockerUids = new Set(Object.values(game.combat.blockers || {}).flat());
+  const unassignedBlockers = blockers.filter((blocker) => !assignedBlockerUids.has(blocker.uid));
 
   modal.innerHTML = `
-    <div class="block-prompt-panel" role="dialog" aria-modal="true" aria-label="Declarar bloqueadores">
-      <div class="block-prompt-head">
-        <strong>Declarar bloqueadores</strong>
-        <span>${escapeHtml(formatAttackTarget(getAttackTarget(attackerId, selectedAttackUid)))}</span>
-      </div>
-      <div class="block-attack-list">
+      <div class="block-prompt-panel" role="dialog" aria-modal="true" aria-label="Declarar bloqueadores">
+        <div class="block-prompt-head">
+          <strong>Declarar bloqueadores</strong>
+          <span>Clique em um Personagem e depois na raia do atacante. Clique em um bloqueador alocado para remove-lo.</span>
+        </div>
+      <div class="block-lanes">
         ${attackers.map((attacker, index) => {
-          const card = app.cardByCode.get(attacker.cardId);
-          const assigned = getCombatBlockerNames(attacker.uid);
+          const target = getAttackTarget(attackerId, attacker.uid);
+          const assignedBlockers = (game.combat.blockers[attacker.uid] || [])
+            .map((blockerUid) => findBattlefieldInstance(defender, blockerUid))
+            .filter(Boolean);
           return `
-            <button class="${attacker.uid === selectedAttackUid ? "is-selected" : ""}" type="button" data-block-attack="${escapeHtml(attacker.uid)}">
-              <span>A${index + 1}</span>
-              <img src="${escapeHtml(getCardArt(card))}" alt="${escapeHtml(getCardName(card))}" />
-              <strong>${escapeHtml(getCardName(card))}</strong>
-              <small>${escapeHtml(formatAttackTarget(getAttackTarget(attackerId, attacker.uid)))}</small>
-              ${assigned.length ? `<em>B: ${escapeHtml(assigned.join(", "))}</em>` : ""}
-            </button>
+            <div class="block-lane" data-block-attack="${escapeHtml(attacker.uid)}">
+              <div class="block-lane-attacker">
+                ${renderBlockMiniCard(attackerPlayer, attacker, `A${index + 1}`)}
+              </div>
+              <div class="block-lane-center">
+                <div class="block-lane-slot">
+                  ${assignedBlockers.length
+                    ? assignedBlockers.map((blocker, blockerIndex) => renderBlockMiniCard(defender, blocker, `B${blockerIndex + 1}`, {
+                      blocker: true,
+                      assigned: true,
+                      selected: game.combat.selectedBlockerUid === blocker.uid
+                    })).join("")
+                    : `<span class="block-lane-empty">Clique aqui apos escolher um bloqueador</span>`}
+                </div>
+              </div>
+              <div class="block-lane-target">
+                ${renderBlockTargetCard(target)}
+              </div>
+            </div>
           `;
         }).join("")}
       </div>
-      <div class="blocker-list">
-        ${blockers.length ? blockers.map((blocker) => {
-          const card = app.cardByCode.get(blocker.cardId);
-          const assignedAttack = getAssignedBlockerAttackUid(blocker.uid);
-          const canBlockSelected = selectedAttacker && canBlockAttack(defender, blocker.uid, attackerPlayer, selectedAttackUid);
-          return `
-            <button class="${assignedAttack ? "is-assigned" : ""}" type="button" data-blocker="${escapeHtml(blocker.uid)}" ${canBlockSelected ? "" : "disabled"}>
-              <img src="${escapeHtml(getCardArt(card))}" alt="${escapeHtml(getCardName(card))}" />
-              <span>${escapeHtml(getCardName(card))}</span>
-              <strong>${toNumber(card.stats?.attack, 0)}/${toNumber(card.stats?.resistance, 0)}</strong>
-              ${assignedAttack ? `<em>B${attackers.findIndex((item) => item.uid === assignedAttack) + 1}</em>` : ""}
-            </button>
-          `;
-        }).join("") : `<p>Nenhum Personagem preparado para bloquear.</p>`}
+      <div class="blocker-pool" aria-label="Nao bloqueadores">
+        <span class="blocker-pool-title">Nao bloqueadores</span>
+        ${unassignedBlockers.length
+          ? unassignedBlockers.map((blocker) => renderBlockMiniCard(defender, blocker, "", {
+            blocker: true,
+            selected: game.combat.selectedBlockerUid === blocker.uid
+          })).join("")
+          : `<p>Nenhum Personagem preparado disponivel.</p>`}
       </div>
       <div class="block-prompt-actions">
         <button type="button" data-skip-blocks>Sem bloqueios</button>
@@ -2181,18 +2927,15 @@ function renderBlockPrompt(game) {
   `;
 
   modal.classList.add("is-visible");
-  modal.querySelectorAll("[data-block-attack]").forEach((button) => {
-    button.addEventListener("click", () => {
-      game.combat.blockPromptAttackUid = button.dataset.blockAttack;
-      renderBlockPrompt(game);
-      renderGame();
-    });
-  });
   modal.querySelectorAll("[data-blocker]").forEach((button) => {
-    button.addEventListener("click", () => {
-      if (toggleHumanBlocker(game.combat.blockPromptAttackUid, button.dataset.blocker)) {
-        renderGame();
+    button.addEventListener("dragstart", (event) => {
+      if (button.getAttribute("aria-disabled") === "true") {
+        event.preventDefault();
+        return;
       }
+      app.dragPayload = { zone: "blocker", id: button.dataset.blocker };
+      event.dataTransfer.effectAllowed = "move";
+      event.dataTransfer.setData("text/plain", JSON.stringify(app.dragPayload));
     });
   });
   modal.querySelector("[data-confirm-blocks]")?.addEventListener("click", finishHumanBlocks);
@@ -2287,7 +3030,10 @@ function bindEvents() {
   els.startGameButton.addEventListener("click", startGame);
   els.newGameButton?.addEventListener("click", showSetup);
   els.resetGameButton?.addEventListener("click", restartGame);
-  els.resultNewGameButton.addEventListener("click", showSetup);
+  els.resultNewGameButton?.addEventListener("click", showSetup);
+  els.gameResult.addEventListener("click", (event) => {
+    if (event.target.closest("[data-result-new-game]")) showSetup();
+  });
   els.soundToggleButton?.addEventListener("click", toggleSound);
 
   els.humanHand.addEventListener("click", (event) => {
@@ -2300,6 +3046,16 @@ function bindEvents() {
   document.addEventListener("pointerdown", (event) => {
     if (!els.handDock || els.handDock.contains(event.target)) return;
     collapseHand();
+    if (app.selected?.zone === "hand") {
+      app.selected = null;
+      renderGame();
+    }
+  });
+
+  document.addEventListener("contextmenu", (event) => {
+    if (event.target.closest(".play-card, .essence-card, .zone-modal-card, .combat-resolution-chip, .block-prompt, #cardZoomPreview, .played-card-animation, .draw-animation")) {
+      event.preventDefault();
+    }
   });
 
   els.humanBattlefield.addEventListener("click", (event) => {
@@ -2311,6 +3067,19 @@ function bindEvents() {
       return;
     }
     selectBattlefieldCard(button.dataset.battlefieldCard);
+  });
+  els.botBattlefield.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-bot-battlefield-card]");
+    if (!button) return;
+    if (chooseHumanAttackTarget(getCharacterAttackTarget("bot", button.dataset.botBattlefieldCard))) {
+      app.selected = null;
+    }
+  });
+  els.botArea.addEventListener("click", (event) => {
+    if (!event.target.closest("[data-territory-player='bot']")) return;
+    if (chooseHumanAttackTarget(getTerritoryAttackTarget("bot"))) {
+      app.selected = null;
+    }
   });
 
   els.drawButton.addEventListener("click", () => {
@@ -2329,7 +3098,11 @@ function bindEvents() {
     }
   });
   els.nextPhaseButton.addEventListener("click", () => {
-    applyNextPhase();
+    if (isHumanPriorityOpen()) {
+      passHumanPriority();
+    } else {
+      applyNextPhase();
+    }
     renderGame();
   });
   els.endTurnButton.addEventListener("click", applyEndTurn);
@@ -2359,6 +3132,7 @@ function bindDragAndDrop() {
     clearTimeout(app.zoomTimer);
     app.zoomCardId = cardId;
     app.zoomTimer = setTimeout(() => {
+      if (app.pointerDrag?.cardId === cardId) app.pointerDrag.longPress = true;
       if (app.zoomCardId === cardId) showCardZoom(cardId);
     }, 360);
   });
@@ -2378,10 +3152,18 @@ function bindDragAndDrop() {
   document.addEventListener("dragstart", (event) => {
     const handCard = event.target.closest("[data-hand-card]");
     const battlefieldCard = event.target.closest("[data-battlefield-card]");
+    const blockerCard = event.target.closest("[data-blocker]");
     if (handCard) {
       app.dragPayload = { zone: "hand", id: handCard.dataset.handCard };
     } else if (battlefieldCard) {
       app.dragPayload = { zone: "battlefield", id: battlefieldCard.dataset.battlefieldCard };
+    } else if (blockerCard) {
+      if (blockerCard.getAttribute("aria-disabled") === "true") {
+        event.preventDefault();
+        app.dragPayload = null;
+        return;
+      }
+      app.dragPayload = { zone: "blocker", id: blockerCard.dataset.blocker };
     } else {
       app.dragPayload = null;
       return;
@@ -2395,7 +3177,7 @@ function bindDragAndDrop() {
     document.querySelectorAll(".is-drop-hover").forEach((node) => node.classList.remove("is-drop-hover"));
   });
 
-  [els.humanBattlefield, humanEssencePanel, els.botArea, els.botBattlefield].forEach((zone) => {
+  [els.humanBattlefield, humanEssencePanel, els.botArea, els.botBattlefield, els.humanHand].forEach((zone) => {
     zone?.addEventListener("dragover", (event) => {
       if (!app.dragPayload) return;
       event.preventDefault();
@@ -2413,19 +3195,31 @@ function bindDragAndDrop() {
   });
 
   document.addEventListener("pointerdown", (event) => {
-    if (event.pointerType === "mouse") return;
+    const blockerCard = event.target.closest("[data-blocker]");
+    if (event.pointerType === "mouse" && !blockerCard) return;
     const handCard = event.target.closest("[data-hand-card]");
     const battlefieldCard = event.target.closest("[data-battlefield-card]");
-    if (!handCard && !battlefieldCard) return;
+    if (blockerCard) return;
+    if (blockerCard?.getAttribute("aria-disabled") === "true") return;
+    if (!handCard && !battlefieldCard && !blockerCard) return;
     const cardId = handCard?.dataset.handCard || "";
     const uid = battlefieldCard?.dataset.battlefieldCard || "";
-    const sourceCard = cardId || app.game?.players.human.battlefield.find((item) => item.uid === uid)?.cardId || "";
+    const blockerUid = blockerCard?.dataset.blocker || "";
+    const sourceCard = cardId ||
+      app.game?.players.human.battlefield.find((item) => item.uid === uid)?.cardId ||
+      app.game?.players.human.battlefield.find((item) => item.uid === blockerUid)?.cardId ||
+      "";
     if (!sourceCard) return;
     app.pointerDrag = {
-      payload: handCard ? { zone: "hand", id: cardId } : { zone: "battlefield", id: uid },
+      payload: handCard
+        ? { zone: "hand", id: cardId }
+        : blockerCard
+          ? { zone: "blocker", id: blockerUid }
+          : { zone: "battlefield", id: uid },
       startX: event.clientX,
       startY: event.clientY,
       moved: false,
+      longPress: false,
       ghost: null,
       cardId: sourceCard
     };
@@ -2436,7 +3230,7 @@ function bindDragAndDrop() {
     if (!drag) return;
     const dx = event.clientX - drag.startX;
     const dy = event.clientY - drag.startY;
-    if (!drag.moved && drag.payload.zone === "hand" && Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy) * 1.25) {
+    if (!drag.longPress && !drag.moved && drag.payload.zone === "hand" && Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy) * 1.25) {
       app.pointerDrag = null;
       hideCardZoom();
       return;
@@ -2460,8 +3254,9 @@ function bindDragAndDrop() {
   document.addEventListener("pointerup", (event) => {
     const drag = app.pointerDrag;
     if (!drag) return;
+    if (drag.moved) event.preventDefault();
     const dropElement = drag.moved ? document.elementFromPoint(event.clientX, event.clientY) : null;
-    const zone = dropElement?.closest(".essence-panel--human, #humanBattlefield, #botArea, #botBattlefield") || null;
+    const zone = dropElement?.closest(".essence-panel--human, #humanBattlefield, #botArea, #botBattlefield, #humanHand, [data-block-attack]") || null;
     if (drag.ghost) drag.ghost.remove();
     document.querySelectorAll(".is-drop-hover").forEach((node) => node.classList.remove("is-drop-hover"));
     if (zone) handleDrop(zone, drag.payload, dropElement);
@@ -2479,7 +3274,7 @@ function showCardZoom(cardId) {
     zoom.className = "card-zoom-preview";
     document.body.appendChild(zoom);
   }
-  zoom.innerHTML = `<img src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" />`;
+  zoom.innerHTML = `<img src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" draggable="false" />`;
   zoom.classList.add("is-visible");
 }
 
@@ -2507,36 +3302,38 @@ function createDragGhost(cardId) {
 
 function getDropZoneFromPoint(x, y) {
   const element = document.elementFromPoint(x, y);
-  return element?.closest(".essence-panel--human, #humanBattlefield, #botArea, #botBattlefield");
-}
-
-function getAttackTargetFromDrop(zone, targetElement) {
-  const opponentCard = targetElement?.closest?.("[data-bot-battlefield-card]");
-  if (zone === els.botBattlefield && opponentCard) {
-    const target = getCharacterAttackTarget("bot", opponentCard.dataset.botBattlefieldCard);
-    if (isValidAttackTarget("human", target)) return target;
-    showInteractionHint("Somente Personagens despreparados podem ser atacados diretamente.");
-    return null;
-  }
-  if (zone === els.botArea || zone === els.botBattlefield) {
-    return getTerritoryAttackTarget("bot");
-  }
-  return null;
+  return element?.closest(".essence-panel--human, #humanBattlefield, #botArea, #botBattlefield, #humanHand, [data-block-attack]");
 }
 
 function handleDrop(zone, payload, targetElement = null) {
-  if (!payload || !app.game || app.game.status !== "active" || !canAct("human")) return;
-  if (app.game.combat.awaitingBlockers || app.game.combat.resolving || app.game.combat.attackers.length) return;
+  if (!payload || !app.game || app.game.status !== "active") return;
+  if (payload.zone === "blocker" && zone?.matches?.("[data-block-attack]")) {
+    if (toggleHumanBlocker(zone.dataset.blockAttack, payload.id)) {
+      app.dragPayload = null;
+      renderGame();
+    }
+    return;
+  }
+  if (payload.zone === "hand" && zone === els.humanHand) {
+    const targetCardId = targetElement?.closest?.("[data-hand-card]")?.dataset.handCard || "";
+    if (targetCardId !== payload.id && reorderHandCard(payload.id, targetCardId)) {
+      app.selected = { zone: "hand", id: payload.id };
+      renderGame();
+    }
+    return;
+  }
+
+  const humanCanAct = canAct("human") || isHumanPriorityOpen();
+  if (!humanCanAct) return;
+  if (app.game.combat.awaitingBlockers || app.game.combat.resolving) return;
+  if (!isHumanPriorityOpen() && app.game.combat.attackers.length) return;
   clearHumanAutoPass();
   let changed = false;
 
-  if (payload.zone === "hand" && zone?.closest(".essence-panel--human")) {
+  if (!isHumanPriorityOpen() && payload.zone === "hand" && zone?.closest(".essence-panel--human")) {
     changed = applyConsecrate("human", payload.id);
   } else if (payload.zone === "hand" && zone === els.humanBattlefield) {
     changed = applyPlayCard("human", payload.id);
-  } else if (payload.zone === "battlefield" && (zone === els.botArea || zone === els.botBattlefield)) {
-    const target = getAttackTargetFromDrop(zone, targetElement);
-    changed = target ? selectAttackTarget("human", payload.id, target) : false;
   }
 
   if (changed) {

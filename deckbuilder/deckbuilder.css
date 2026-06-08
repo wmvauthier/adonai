@@ -808,10 +808,10 @@ body.is-dragging-card .deck-lane-insert::before,
 
 .deck-board-card-actions{
   position:absolute;
-  left:50%;
-  bottom:8px;
+  right:6px;
+  bottom:6px;
   z-index:7;
-  width:min(178px, calc(100vw - 34px));
+  width:min(78px, calc(100% - 12px));
   display:none;
   gap:6px;
   padding:8px;
@@ -819,7 +819,6 @@ body.is-dragging-card .deck-lane-insert::before,
   border:1px solid rgba(215,193,139,.28);
   background:rgba(8,9,9,.94);
   box-shadow:0 18px 44px rgba(0,0,0,.58);
-  transform:translateX(-50%);
 }
 
 .deck-board-card.is-actions-open .deck-board-card-actions{
@@ -841,19 +840,19 @@ body.is-dragging-card .deck-lane-insert::before,
 
 .deck-board-card-actions div{
   display:grid;
-  grid-template-columns:repeat(3, minmax(0, 1fr));
+  grid-template-columns:1fr;
   gap:4px;
 }
 
 .deck-board-card-actions button{
-  min-height:28px;
-  padding:0 6px;
+  min-height:24px;
+  padding:0 5px;
   border-radius:999px;
   border:1px solid rgba(255,255,255,.1);
   background:rgba(255,255,255,.04);
   color:#efe6d2;
   cursor:pointer;
-  font-size:.68rem;
+  font-size:.62rem;
 }
 
 .deck-group{
