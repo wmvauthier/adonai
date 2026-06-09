@@ -78,20 +78,6 @@
   background: #101414;
 }
 
-.setup-status {
-  min-height: 36px;
-  color: var(--muted);
-  line-height: 1.5;
-}
-
-.setup-status.is-valid {
-  color: #9cf0b8;
-}
-
-.setup-status.is-error {
-  color: #ff9b8f;
-}
-
 .setup-actions {
   display: flex;
   align-items: center;
@@ -3394,6 +3380,25 @@ button.hud-mini-metric {
   filter: brightness(1.08) saturate(1.12);
 }
 
+.essence-card.is-actionable-essence img {
+  animation: actionable-card-pulse 1.7s ease-in-out infinite;
+  filter: brightness(1.1) saturate(1.16);
+}
+
+.essence-panel--human.is-consecration-active .essence-row,
+.essence-card.is-actionable-essence,
+.essence-card.is-actionable-essence img {
+  touch-action: none;
+}
+
+.essence-card.is-actionable-essence {
+  cursor: grab;
+}
+
+.essence-card.is-actionable-essence:active {
+  cursor: grabbing;
+}
+
 @keyframes actionable-card-pulse {
   0%,
   100% {
@@ -3414,7 +3419,8 @@ button.hud-mini-metric {
 @media (prefers-reduced-motion: reduce) {
   .player-hud.is-territory-hit .hud-territory,
   .player-hud.is-territory-hit .hud-territory strong,
-  .play-card.is-actionable-card img {
+  .play-card.is-actionable-card img,
+  .essence-card.is-actionable-essence img {
     animation: none;
   }
 }
@@ -4457,6 +4463,10 @@ button.hud-mini-metric {
   overflow: hidden;
 }
 
+.setup-grid--hidden {
+  display: none !important;
+}
+
 .setup-deck-card::before {
   content: "";
   position: absolute;
@@ -4586,6 +4596,76 @@ button.hud-mini-metric {
   font-weight: 800;
 }
 
+.setup-carousel-button {
+  position: absolute;
+  top: 50%;
+  z-index: 4;
+  width: 36px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(215, 193, 139, .34);
+  border-radius: 999px;
+  background: rgba(5, 7, 7, .72);
+  color: #fff8e8;
+  cursor: pointer;
+  font-size: 1.45rem;
+  font-weight: 900;
+  line-height: 1;
+  transform: translateY(-50%);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .42);
+}
+
+.setup-carousel-button--prev {
+  left: 8px;
+}
+
+.setup-carousel-button--next {
+  right: 8px;
+}
+
+.setup-carousel-button:hover {
+  border-color: rgba(126, 220, 255, .68);
+  color: #dff8ff;
+  box-shadow: 0 0 20px rgba(126, 220, 255, .18), 0 10px 24px rgba(0, 0, 0, .42);
+}
+
+.setup-difficulty {
+  display: grid;
+  gap: 6px;
+}
+
+.setup-difficulty > span {
+  color: var(--gold);
+  font-size: .62rem;
+  font-weight: 900;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.setup-difficulty > div {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.setup-difficulty button {
+  min-height: 30px;
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .055);
+  color: rgba(245, 241, 232, .74);
+  cursor: pointer;
+  font-size: .68rem;
+  font-weight: 800;
+}
+
+.setup-difficulty button.is-active {
+  border-color: rgba(126, 220, 255, .64);
+  background: rgba(20, 64, 78, .68);
+  color: #eaffff;
+}
+
 .setup-versus {
   align-self: center;
   display: grid;
@@ -4599,42 +4679,6 @@ button.hud-mini-metric {
   font-size: .76rem;
   font-weight: 1000;
   box-shadow: 0 0 24px rgba(126, 220, 255, .14);
-}
-
-.setup-status {
-  width: fit-content;
-  min-height: 0;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 10px;
-  border: 1px solid rgba(255, 255, 255, .08);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, .045);
-  font-size: .78rem;
-  font-weight: 800;
-}
-
-.setup-status::before {
-  content: "!";
-  display: grid;
-  width: 18px;
-  height: 18px;
-  place-items: center;
-  border-radius: 50%;
-  background: rgba(255, 155, 143, .18);
-  color: #ffb6ad;
-  font-size: .72rem;
-}
-
-.setup-status.is-valid::before {
-  content: "✓";
-  background: rgba(115, 230, 155, .18);
-  color: #9cf0b8;
-}
-
-.setup-status.is-error::before {
-  content: "!";
 }
 
 .setup-actions a,
@@ -4847,6 +4891,41 @@ button.hud-mini-metric {
   text-overflow: clip;
   overflow-wrap: anywhere;
   line-height: 1.05;
+}
+
+.phase-panel.is-discard-phase {
+  height: auto;
+  min-height: 42px;
+}
+
+.phase-current em {
+  max-width: min(360px, 82vw);
+  margin-top: 3px;
+  color: rgba(245, 241, 232, .76);
+  font-size: clamp(.52rem, 2.4vw, .68rem);
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.1;
+  text-transform: none;
+}
+
+.hud-cemetery.is-discard-drop-target {
+  border-color: rgba(126, 220, 255, .68);
+  background: rgba(16, 54, 65, .64);
+  cursor: copy;
+  box-shadow:
+    0 0 0 1px rgba(126, 220, 255, .18),
+    0 0 20px rgba(126, 220, 255, .2);
+}
+
+.hud-cemetery.is-discard-drop-target.is-drop-hover,
+.hud-cemetery.is-discard-drop-target:hover {
+  border-color: rgba(156, 240, 184, .86);
+  background: rgba(21, 76, 45, .72);
+  box-shadow:
+    0 0 0 2px rgba(156, 240, 184, .28),
+    0 0 26px rgba(156, 240, 184, .28);
 }
 
 .field-card-pips {

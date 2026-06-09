@@ -23,14 +23,14 @@
       <div class="play-setup-panel">
         <div class="setup-copy">
           <span class="section-kicker">Adonai Play</span>
-          <h1>Partida local contra bot</h1>
-          <p>
+          <!-- <h1>Partida local contra bot</h1> -->
+          <!-- <p>
             Carregue um deck pre-construido ou o deck atual do deckbuilder para validar fluxo, layout e regras basicas
             antes da camada online.
-          </p>
+          </p> -->
         </div>
 
-        <div class="setup-grid">
+        <div class="setup-grid setup-grid--hidden" hidden>
           <label>
             Seu deck
             <select id="humanDeckSelect"></select>
@@ -53,11 +53,9 @@
 
         <div class="setup-match-preview" id="setupMatchPreview" aria-live="polite"></div>
 
-        <div class="setup-status" id="setupStatus">Carregando dados...</div>
-
         <div class="setup-actions">
-          <a class="ghost-link" href="../deckbuilder/">Abrir deckbuilder</a>
-          <a class="ghost-link" href="../decks/">Ver precons</a>
+          <a class="ghost-link" href="../deckbuilder/">Abrir Deckbuilder</a>
+          <a class="ghost-link" href="../decks/">Ver Decks</a>
           <button class="primary-action" type="button" id="startGameButton" disabled>Iniciar partida</button>
         </div>
       </div>

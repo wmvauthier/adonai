@@ -11,14 +11,16 @@ const PLAY_STORAGE_KEY = "adonai.play.v1";
 const BUILDER_DECK_ID = "BUILDER_CURRENT";
 const MAIN_DECK_SIZE = 40;
 const INITIAL_HAND_SIZE = 6;
-const PHASES = ["prepare", "draw", "consecration", "preparation", "combat", "regroup"];
+const MAX_HAND_SIZE = 7;
+const PHASES = ["prepare", "draw", "consecration", "preparation", "combat", "regroup", "discard"];
 const PHASE_LABELS = {
   prepare: "Preparacao",
   draw: "Compra",
   consecration: "Consagracao",
   preparation: "Alistamento",
   combat: "Combate",
-  regroup: "Reagrupamento"
+  regroup: "Reagrupamento",
+  discard: "Descarte"
 };
 const TYPE_LABELS = {
   ART: "Artefato",
@@ -37,7 +39,6 @@ const els = {
   botDeckSelect: document.getElementById("botDeckSelect"),
   botModeSelect: document.getElementById("botModeSelect"),
   setupMatchPreview: document.getElementById("setupMatchPreview"),
-  setupStatus: document.getElementById("setupStatus"),
   startGameButton: document.getElementById("startGameButton"),
   newGameButton: document.getElementById("newGameButton"),
   resetGameButton: document.getElementById("resetGameButton"),
@@ -89,6 +90,9 @@ const app = {
   handExpanded: false,
   territorySnapshot: new Map(),
   preloadedImages: new Set(),
+  preloadPromises: new Map(),
+  setupPreloadToken: 0,
+  setupAssetsReady: false,
   autoPassTimer: null,
   priority: null
 };
@@ -283,7 +287,23 @@ function getDeckTypeCounts(deck) {
   return counts;
 }
 
-function renderSetupDeckPreview(deck, label) {
+function renderBotModeSelector() {
+  const options = Array.from(els.botModeSelect.options || []);
+  return `
+    <div class="setup-difficulty" role="group" aria-label="Dificuldade do bot">
+      <span>Dificuldade</span>
+      <div>
+        ${options.map((option) => `
+          <button class="${option.value === els.botModeSelect.value ? "is-active" : ""}" type="button" data-bot-mode="${escapeHtml(option.value)}">
+            ${escapeHtml(option.textContent)}
+          </button>
+        `).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function renderSetupDeckPreview(deck, label, kind) {
   if (!deck) {
     return `
       <article class="setup-deck-card is-empty">
@@ -299,6 +319,8 @@ function renderSetupDeckPreview(deck, label) {
   const wallpaperStyle = wallpaper ? `style="--setup-wallpaper:url(&quot;${escapeHtml(cssUrl(wallpaper))}&quot;)"` : "";
   return `
     <article class="setup-deck-card" ${wallpaperStyle}>
+      <button class="setup-carousel-button setup-carousel-button--prev" type="button" data-setup-cycle="${escapeHtml(kind)}" data-direction="-1" aria-label="Deck anterior">‹</button>
+      <button class="setup-carousel-button setup-carousel-button--next" type="button" data-setup-cycle="${escapeHtml(kind)}" data-direction="1" aria-label="Proximo deck">›</button>
       <div class="setup-deck-heading">
         <div class="setup-champion-avatar">
           ${champion ? `<img src="${escapeHtml(getCardArt(champion))}" alt="${escapeHtml(getCardName(champion))}" draggable="false" />` : ""}
@@ -330,6 +352,7 @@ function renderSetupDeckPreview(deck, label) {
         <span>${counts.ART} Art.</span>
         <span>${counts.PEC} Pec.</span>
       </div>
+      ${kind === "bot" ? renderBotModeSelector() : ""}
     </article>
   `;
 }
@@ -337,9 +360,9 @@ function renderSetupDeckPreview(deck, label) {
 function updateSetupPreview(humanDeck, botDeck) {
   if (!els.setupMatchPreview) return;
   els.setupMatchPreview.innerHTML = `
-    ${renderSetupDeckPreview(humanDeck, "Voce")}
+    ${renderSetupDeckPreview(humanDeck, "Voce", "human")}
     <div class="setup-versus" aria-hidden="true">VS</div>
-    ${renderSetupDeckPreview(botDeck, "Bot")}
+    ${renderSetupDeckPreview(botDeck, "Bot", "bot")}
   `;
 }
 
@@ -361,15 +384,31 @@ function getDeckAssetUrls(deck) {
   return urls;
 }
 
-function preloadDeckImages(...decks) {
-  decks.flatMap(getDeckAssetUrls).forEach((url) => {
-    if (!url || app.preloadedImages.has(url)) return;
-    app.preloadedImages.add(url);
+function preloadImageAsset(url) {
+  if (!url || app.preloadedImages.has(url)) return Promise.resolve();
+  if (app.preloadPromises.has(url)) return app.preloadPromises.get(url);
+  const promise = new Promise((resolve, reject) => {
     const image = new Image();
     image.decoding = "async";
     image.loading = "eager";
+    image.onload = () => {
+      app.preloadedImages.add(url);
+      app.preloadPromises.delete(url);
+      resolve(url);
+    };
+    image.onerror = () => {
+      app.preloadPromises.delete(url);
+      reject(new Error(`Asset nao carregou: ${url}`));
+    };
     image.src = url;
   });
+  app.preloadPromises.set(url, promise);
+  return promise;
+}
+
+function preloadDeckImages(...decks) {
+  const urls = [...new Set(decks.flatMap(getDeckAssetUrls).filter(Boolean))];
+  return Promise.all(urls.map(preloadImageAsset));
 }
 
 function populateDeckSelects() {
@@ -409,26 +448,48 @@ function populateDeckSelects() {
   updateSetupStatus();
 }
 
-function updateSetupStatus() {
+function cycleSetupDeck(kind, direction) {
+  const select = kind === "human" ? els.humanDeckSelect : els.botDeckSelect;
+  const source = kind === "human" ? app.deckOptions : app.decks;
+  if (!select || !source.length) return;
+  const ids = source.map((deck) => deck.id);
+  const currentIndex = Math.max(0, ids.indexOf(select.value));
+  const nextIndex = (currentIndex + direction + ids.length) % ids.length;
+  select.value = ids[nextIndex];
+  writePlayStorage(kind === "human" ? { humanDeckId: select.value } : { botDeckId: select.value });
+  updateSetupStatus();
+}
+
+async function updateSetupStatus() {
   const humanDeck = getDeckOption(els.humanDeckSelect.value);
   const botDeck = app.decks.find((deck) => deck.id === els.botDeckSelect.value);
   const humanError = validateDeck(humanDeck);
   const botError = validateDeck(botDeck);
   const error = humanError || botError;
+  const token = ++app.setupPreloadToken;
 
+  app.setupAssetsReady = false;
   updateSetupPreview(humanDeck, botDeck);
-  els.setupStatus.classList.remove("is-valid", "is-error");
+  els.startGameButton.disabled = true;
   if (error) {
-    els.setupStatus.textContent = error;
-    els.setupStatus.classList.add("is-error");
-    els.startGameButton.disabled = true;
+    els.startGameButton.textContent = "Deck invalido";
     return;
   }
 
-  preloadDeckImages(humanDeck, botDeck);
-  els.setupStatus.textContent = "Decks prontos";
-  els.setupStatus.classList.add("is-valid");
-  els.startGameButton.disabled = false;
+  els.startGameButton.textContent = "Carregando assets...";
+  try {
+    await preloadDeckImages(humanDeck, botDeck);
+    if (token !== app.setupPreloadToken) return;
+    app.setupAssetsReady = true;
+    els.startGameButton.textContent = "Iniciar partida";
+    els.startGameButton.disabled = false;
+    updateSetupPreview(humanDeck, botDeck);
+  } catch (error) {
+    if (token !== app.setupPreloadToken) return;
+    app.setupAssetsReady = false;
+    els.startGameButton.textContent = "Assets incompletos";
+    els.startGameButton.disabled = true;
+  }
 }
 
 function createCardInstance(cardId, owner) {
@@ -506,6 +567,7 @@ function createPlayer(id, label, deck, isBot = false) {
     maxTerritory: getTerritoryLife(deck.identity.territories[0]),
     spentEssence: 0,
     consecratedThisTurn: false,
+    consecrationActionTaken: false,
     drewThisTurn: false,
     combatDeclaredThisTurn: false
   };
@@ -637,6 +699,7 @@ function beginTurn(game) {
   game.turnsElapsed = toNumber(game.turnsElapsed, 0) + 1;
   player.spentEssence = 0;
   player.consecratedThisTurn = false;
+  player.consecrationActionTaken = false;
   player.drewThisTurn = false;
   player.combatDeclaredThisTurn = false;
   player.battlefield.forEach((instance) => {
@@ -671,6 +734,7 @@ function beginTurn(game) {
 }
 
 function startGame() {
+  if (!app.setupAssetsReady) return;
   const humanDeck = getDeckOption(els.humanDeckSelect.value);
   const botDeck = app.decks.find((deck) => deck.id === els.botDeckSelect.value);
   const humanError = validateDeck(humanDeck);
@@ -792,7 +856,27 @@ function canDraw(player) {
 
 function canConsecrate(player, cardId) {
   return currentPhase(app.game) === "consecration" &&
-    !player.consecratedThisTurn &&
+    !player.consecrationActionTaken &&
+    player.hand.includes(cardId);
+}
+
+function canProfane(player, index) {
+  return currentPhase(app.game) === "consecration" &&
+    !player.consecrationActionTaken &&
+    Number.isInteger(index) &&
+    index >= 0 &&
+    index < player.essence.length;
+}
+
+function getHandOverflow(player) {
+  return Math.max(0, (player?.hand?.length || 0) - MAX_HAND_SIZE);
+}
+
+function canDiscardForHandLimit(player, cardId) {
+  return app.game?.status === "active" &&
+    app.game.activePlayer === player?.id &&
+    currentPhase(app.game) === "discard" &&
+    getHandOverflow(player) > 0 &&
     player.hand.includes(cardId);
 }
 
@@ -1105,6 +1189,7 @@ function applyConsecrate(playerId, cardId) {
   player.hand = player.hand.filter((id) => id !== cardId);
   player.essence.push(cardId);
   player.consecratedThisTurn = true;
+  player.consecrationActionTaken = true;
   addPlayerStat(game, "cardsConsecrated", playerId);
   addLog(game, `consagrou ${getCardName(card)}.`, player.label);
   showConsecratedCardAnimation(card, playerId);
@@ -1112,6 +1197,87 @@ function applyConsecrate(playerId, cardId) {
   addLog(game, `entrou em ${PHASE_LABELS.preparation}.`, player.label);
   playTone("soft");
   return true;
+}
+
+function applyProfane(playerId, index) {
+  const game = app.game;
+  const player = getPlayer(game, playerId);
+  const essenceIndex = Number(index);
+  if (!canProfane(player, essenceIndex)) return false;
+  const [cardId] = player.essence.splice(essenceIndex, 1);
+  if (!cardId) return false;
+  const spentReduction = essenceIndex < player.spentEssence ? 1 : 0;
+  player.spentEssence = Math.max(0, Math.min(player.spentEssence - spentReduction, player.essence.length));
+  player.hand.push(cardId);
+  player.consecrationActionTaken = true;
+  const card = app.cardByCode.get(cardId);
+  addLog(game, `profanou ${getCardName(card)}.`, player.label);
+  showCardActionAnimation(card, playerId, playerId === "human" ? "Voce profanou" : "Bot profanou");
+  setGamePhase(game, "preparation", playerId);
+  addLog(game, `entrou em ${PHASE_LABELS.preparation}.`, player.label);
+  playTone("soft");
+  return true;
+}
+
+function discardCardFromHand(player, cardId) {
+  const index = player.hand.indexOf(cardId);
+  if (index < 0) return "";
+  const [discardedCardId] = player.hand.splice(index, 1);
+  if (discardedCardId) player.cemetery.push(discardedCardId);
+  return discardedCardId || "";
+}
+
+function chooseBotDiscardCard(bot) {
+  return [...bot.hand].sort((a, b) => {
+    const cardA = app.cardByCode.get(a);
+    const cardB = app.cardByCode.get(b);
+    const typePriority = { MIL: 0, PEC: 1, ART: 2, PER: 3 };
+    const typeDelta = (typePriority[getCardTypeCode(cardA)] ?? 4) - (typePriority[getCardTypeCode(cardB)] ?? 4);
+    if (typeDelta !== 0) return typeDelta;
+    return getCost(cardB) - getCost(cardA);
+  })[0] || bot.hand[0] || "";
+}
+
+function finishDiscardCheck(game, playerId) {
+  if (!game || game !== app.game || game.status !== "active" || game.activePlayer !== playerId) return;
+  const player = getPlayer(game, playerId);
+  if (getHandOverflow(player) > 0) {
+    renderGame();
+    return;
+  }
+  addLog(game, `ficou com ${player.hand.length}/${MAX_HAND_SIZE} cartas na mao.`, player.label);
+  window.setTimeout(() => {
+    if (!app.game || app.game !== game || game.status !== "active" || game.activePlayer !== playerId || currentPhase(game) !== "discard") return;
+    endTurn(game);
+  }, playerId === "human" ? 420 : 280);
+}
+
+function applyDiscardForHandLimit(playerId, cardId) {
+  const game = app.game;
+  const player = getPlayer(game, playerId);
+  if (!canDiscardForHandLimit(player, cardId)) return false;
+  const discardedCardId = discardCardFromHand(player, cardId);
+  if (!discardedCardId) return false;
+  const card = app.cardByCode.get(discardedCardId);
+  app.selected = null;
+  addLog(game, `descartou ${getCardName(card)} para respeitar o limite de mao.`, player.label);
+  showCardActionAnimation(card, playerId, playerId === "human" ? "Voce descartou" : "Bot descartou");
+  playTone("soft");
+  finishDiscardCheck(game, playerId);
+  return true;
+}
+
+function autoDiscardToHandLimit(game, playerId) {
+  if (!game || game !== app.game || game.status !== "active" || game.activePlayer !== playerId || currentPhase(game) !== "discard") return;
+  const player = getPlayer(game, playerId);
+  while (getHandOverflow(player) > 0) {
+    const cardId = chooseBotDiscardCard(player);
+    if (!cardId) break;
+    const discardedCardId = discardCardFromHand(player, cardId);
+    const card = app.cardByCode.get(discardedCardId);
+    addLog(game, `descartou ${getCardName(card)} para respeitar o limite de mao.`, player.label);
+  }
+  finishDiscardCheck(game, playerId);
 }
 
 function applyPlayCard(playerId, cardId) {
@@ -1784,8 +1950,12 @@ function advancePhase(game) {
     game.combat = createCombatState();
   }
   game.phaseIndex += 1;
+  if (currentPhase(game) === "discard") {
+    enterDiscardStepOrEndTurn(game);
+    return;
+  }
   if (game.phaseIndex >= PHASES.length) {
-    endTurn(game);
+    enterDiscardStepOrEndTurn(game);
     return;
   }
   const enteredCombat = previous === "preparation" && currentPhase(game) === "combat";
@@ -1806,7 +1976,28 @@ function advancePhase(game) {
 function applyEndTurn() {
   if (!canAct("human")) return false;
   clearHumanAutoPass();
-  endTurn(app.game);
+  enterDiscardStepOrEndTurn(app.game);
+  return true;
+}
+
+function enterDiscardStepOrEndTurn(game) {
+  if (!game || game.status !== "active") return false;
+  const player = currentPlayer(game);
+  if (getHandOverflow(player) <= 0) {
+    endTurn(game);
+    return true;
+  }
+  const alreadyDiscarding = currentPhase(game) === "discard";
+  setGamePhase(game, "discard", player.id);
+  app.selected = null;
+  clearHumanAutoPass();
+  if (!alreadyDiscarding) {
+    addLog(game, `precisa descartar ${getHandOverflow(player)} carta${getHandOverflow(player) === 1 ? "" : "s"} para ficar com ${MAX_HAND_SIZE} na mao.`, player.label);
+  }
+  renderGame();
+  if (player.isBot) {
+    window.setTimeout(() => autoDiscardToHandLimit(game, player.id), 720);
+  }
   return true;
 }
 
@@ -2120,7 +2311,7 @@ function endBotTurnWhenCombatIsReady(game) {
   if (requestHumanPriority(game, "before-end", "Voce recebeu prioridade antes do fim do turno do bot.", () => {
     endBotTurnWhenCombatIsReady(game);
   })) return;
-  endTurn(game);
+  enterDiscardStepOrEndTurn(game);
 }
 
 function advanceBotTo(phase) {
@@ -2130,7 +2321,7 @@ function advanceBotTo(phase) {
 }
 
 function chooseBotConsecration(bot, mode) {
-  if (bot.consecratedThisTurn || !bot.hand.length) return "";
+  if (bot.consecrationActionTaken || !bot.hand.length) return "";
   const sorted = [...bot.hand].sort((a, b) => {
     const cardA = app.cardByCode.get(a);
     const cardB = app.cardByCode.get(b);
@@ -2197,6 +2388,12 @@ function chooseBotAttackTarget(attacker) {
 }
 
 function selectHandCard(cardId) {
+  if (currentPhase(app.game) === "discard" && canDiscardForHandLimit(app.game.players.human, cardId)) {
+    app.selected = null;
+    showInteractionHint("Arraste uma carta da mao para o seu Cemiterio.");
+    renderGame();
+    return;
+  }
   app.selected = { zone: "hand", id: cardId };
   renderGame();
 }
@@ -2248,6 +2445,7 @@ function renderGame() {
   els.phaseIndicator.textContent = getPhaseDisplayLabel(game);
   els.phasePanel.classList.toggle("is-human-turn", game.activePlayer === "human");
   els.phasePanel.classList.toggle("is-bot-turn", game.activePlayer === "bot");
+  els.phasePanel.classList.toggle("is-discard-phase", phase === "discard");
   els.phaseTracker.innerHTML = renderPhaseTracker(game);
   updateConsecrationHighlights(game, phase);
   updateBattlefieldWallpapers(human, bot);
@@ -2263,7 +2461,7 @@ function renderGame() {
   els.humanHand.style.setProperty("--hand-count", String(human.hand.length));
   els.humanHand.innerHTML = human.hand.map((cardId) => renderCardButton(cardId, {
     selected: selectedHandId === cardId,
-    actionable: (canAct("human") || isHumanPriorityOpen()) && (canConsecrate(human, cardId) || canPlayCard(human, cardId)),
+    actionable: (canAct("human") || isHumanPriorityOpen()) && (canConsecrate(human, cardId) || canPlayCard(human, cardId) || canDiscardForHandLimit(human, cardId)),
     zone: "hand"
   })).join("");
   els.gameLog.innerHTML = `${renderCombatSummary(game)}${game.log.map((entry) => `
@@ -2346,12 +2544,22 @@ function renderStackEdgePanel(game) {
 
 function renderPhaseTracker(game) {
   const ownerLabel = game.activePlayer === "human" ? "Seu turno" : "Turno do bot";
+  const helper = getPhaseHelper(game);
   return `
     <span class="phase-current">
       <small>${escapeHtml(ownerLabel)} - Turno ${game.turnNumber}</small>
       <strong>${escapeHtml(getPhaseDisplayLabel(game))}</strong>
+      ${helper ? `<em>${escapeHtml(helper)}</em>` : ""}
     </span>
   `;
+}
+
+function getPhaseHelper(game) {
+  if (currentPhase(game) !== "discard") return "";
+  const player = currentPlayer(game);
+  const overflow = getHandOverflow(player);
+  if (overflow <= 0) return `Limite de mao: ${MAX_HAND_SIZE}`;
+  return `Descarte ${overflow} carta${overflow === 1 ? "" : "s"} para ficar com ${MAX_HAND_SIZE} na mao.`;
 }
 
 function getPhaseDisplayLabel(game) {
@@ -2470,6 +2678,9 @@ function renderPlayerArea(player, hideHand) {
   const secondaryValue = hideHand ? player.hand.length : player.deck.length;
   const territoryLabels = getTerritoryCombatLabels(player.id);
   const attackTargetClass = isHumanAttackTargetAvailable(getTerritoryAttackTarget(player.id)) ? " is-click-attack-target" : "";
+  const discardTargetClass = player.id === "human" && app.game?.activePlayer === "human" && currentPhase(app.game) === "discard" && getHandOverflow(player) > 0
+    ? " is-discard-drop-target"
+    : "";
   return `
     <div class="player-hud ${hideHand ? "player-hud--opponent" : "player-hud--human"}${dangerClass}${damagedClass}">
       <div class="hud-avatar">
@@ -2494,7 +2705,7 @@ function renderPlayerArea(player, hideHand) {
           <span>${escapeHtml(secondaryLabel)}</span>
           <strong>${secondaryValue}</strong>
         </div>
-        <button class="hud-mini-metric hud-cemetery" type="button" data-cemetery-player="${escapeHtml(player.id)}">
+        <button class="hud-mini-metric hud-cemetery${discardTargetClass}" type="button" data-cemetery-player="${escapeHtml(player.id)}">
           <span>Cemiterio</span>
           <strong>${player.cemetery.length}</strong>
         </button>
@@ -2602,9 +2813,10 @@ function renderEssence(player, compact = false) {
   return player.essence.map((cardId, index) => {
     const card = app.cardByCode.get(cardId);
     const isSpent = index < player.spentEssence;
+    const actionable = player.id === "human" && canProfane(player, index);
     const typeCode = getCardTypeCode(card);
     return `
-      <button class="essence-card is-essence-type-${String(typeCode || "CRD").toLowerCase()} ${isSpent ? "is-spent" : ""}" type="button" data-zoom-card="${escapeHtml(cardId)}" title="${escapeHtml(getCardName(card))}">
+      <button class="essence-card is-essence-type-${String(typeCode || "CRD").toLowerCase()} ${isSpent ? "is-spent" : ""} ${actionable ? "is-actionable-essence" : ""}" type="button" data-essence-index="${index}" data-zoom-card="${escapeHtml(cardId)}" title="${escapeHtml(getCardName(card))}">
         <img src="${escapeHtml(getCardArt(card))}" alt="${escapeHtml(getCardName(card))}" loading="lazy" draggable="false" />
       </button>
     `;
@@ -2682,6 +2894,13 @@ function renderSelectedPanel() {
   const battlefieldUid = getSelectedBattlefieldUid();
   let card = handId ? app.cardByCode.get(handId) : null;
   let detail = "";
+  const human = app.game.players.human;
+  const discardOverflow = currentPhase(app.game) === "discard" ? getHandOverflow(human) : 0;
+
+  if (discardOverflow > 0 && canAct("human")) {
+    els.selectedCardPanel.innerHTML = "";
+    return;
+  }
 
   if (battlefieldUid) {
     const instance = app.game.players.human.battlefield.find((item) => item.uid === battlefieldUid);
@@ -2983,7 +3202,7 @@ function toggleSound() {
 }
 
 async function loadData() {
-  els.setupStatus.textContent = "Carregando dados...";
+  els.startGameButton.textContent = "Carregando dados...";
   const [cardsResponse, decksResponse, typesResponse, collectionsResponse] = await Promise.all([
     fetch(DATA_URLS.cards),
     fetch(DATA_URLS.decks),
@@ -3026,6 +3245,20 @@ function bindEvents() {
   });
   els.botModeSelect.addEventListener("change", () => {
     writePlayStorage({ botMode: els.botModeSelect.value });
+    updateSetupStatus();
+  });
+  els.setupMatchPreview?.addEventListener("click", (event) => {
+    const cycleButton = event.target.closest("[data-setup-cycle]");
+    if (cycleButton) {
+      cycleSetupDeck(cycleButton.dataset.setupCycle, Number(cycleButton.dataset.direction) || 1);
+      return;
+    }
+    const modeButton = event.target.closest("[data-bot-mode]");
+    if (modeButton) {
+      els.botModeSelect.value = modeButton.dataset.botMode;
+      writePlayStorage({ botMode: els.botModeSelect.value });
+      updateSetupPreview(getDeckOption(els.humanDeckSelect.value), app.decks.find((deck) => deck.id === els.botDeckSelect.value));
+    }
   });
   els.startGameButton.addEventListener("click", startGame);
   els.newGameButton?.addEventListener("click", showSetup);
@@ -3044,6 +3277,7 @@ function bindEvents() {
   });
 
   document.addEventListener("pointerdown", (event) => {
+    if (event.target.closest("[data-essence-index]")) return;
     if (!els.handDock || els.handDock.contains(event.target)) return;
     collapseHand();
     if (app.selected?.zone === "hand") {
@@ -3146,17 +3380,28 @@ function bindDragAndDrop() {
     document.addEventListener(eventName, hideCardZoom, true);
   });
   document.addEventListener("pointercancel", cleanupPointerDrag, true);
-  document.addEventListener("scroll", cleanupPointerDrag, true);
+  document.addEventListener("scroll", () => {
+    if (app.pointerDrag?.payload?.zone === "essence") return;
+    cleanupPointerDrag();
+  }, true);
   window.addEventListener("blur", cleanupPointerDrag);
 
   document.addEventListener("dragstart", (event) => {
     const handCard = event.target.closest("[data-hand-card]");
     const battlefieldCard = event.target.closest("[data-battlefield-card]");
+    const essenceCard = event.target.closest("[data-essence-index]");
     const blockerCard = event.target.closest("[data-blocker]");
     if (handCard) {
       app.dragPayload = { zone: "hand", id: handCard.dataset.handCard };
     } else if (battlefieldCard) {
       app.dragPayload = { zone: "battlefield", id: battlefieldCard.dataset.battlefieldCard };
+    } else if (essenceCard) {
+      if (!canProfane(app.game.players.human, Number(essenceCard.dataset.essenceIndex))) {
+        event.preventDefault();
+        app.dragPayload = null;
+        return;
+      }
+      app.dragPayload = { zone: "essence", index: Number(essenceCard.dataset.essenceIndex), id: essenceCard.dataset.zoomCard };
     } else if (blockerCard) {
       if (blockerCard.getAttribute("aria-disabled") === "true") {
         event.preventDefault();
@@ -3177,7 +3422,30 @@ function bindDragAndDrop() {
     document.querySelectorAll(".is-drop-hover").forEach((node) => node.classList.remove("is-drop-hover"));
   });
 
-  [els.humanBattlefield, humanEssencePanel, els.botArea, els.botBattlefield, els.humanHand].forEach((zone) => {
+  document.addEventListener("dragover", (event) => {
+    const zone = event.target.closest("[data-cemetery-player='human']");
+    if (!zone || !canDropHandCardToHumanCemetery(app.dragPayload)) return;
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "move";
+    zone.classList.add("is-drop-hover");
+  });
+
+  document.addEventListener("dragleave", (event) => {
+    const zone = event.target.closest("[data-cemetery-player='human']");
+    if (zone && !zone.contains(event.relatedTarget)) zone.classList.remove("is-drop-hover");
+  });
+
+  document.addEventListener("drop", (event) => {
+    const zone = event.target.closest("[data-cemetery-player='human']");
+    if (!zone || !canDropHandCardToHumanCemetery(app.dragPayload)) return;
+    event.preventDefault();
+    event.stopPropagation();
+    zone.classList.remove("is-drop-hover");
+    handleDrop(zone, app.dragPayload, event.target);
+    app.dragPayload = null;
+  });
+
+  [els.humanBattlefield, humanEssencePanel, els.botArea, els.botBattlefield, els.humanHand, els.handDock].forEach((zone) => {
     zone?.addEventListener("dragover", (event) => {
       if (!app.dragPayload) return;
       event.preventDefault();
@@ -3196,24 +3464,37 @@ function bindDragAndDrop() {
 
   document.addEventListener("pointerdown", (event) => {
     const blockerCard = event.target.closest("[data-blocker]");
-    if (event.pointerType === "mouse" && !blockerCard) return;
+    const essenceCard = event.target.closest("[data-essence-index]");
+    if (event.pointerType === "mouse" && !blockerCard && !essenceCard) return;
     const handCard = event.target.closest("[data-hand-card]");
     const battlefieldCard = event.target.closest("[data-battlefield-card]");
     if (blockerCard) return;
     if (blockerCard?.getAttribute("aria-disabled") === "true") return;
-    if (!handCard && !battlefieldCard && !blockerCard) return;
+    if (!handCard && !battlefieldCard && !blockerCard && !essenceCard) return;
     const cardId = handCard?.dataset.handCard || "";
     const uid = battlefieldCard?.dataset.battlefieldCard || "";
+    const essenceIndex = essenceCard ? Number(essenceCard.dataset.essenceIndex) : -1;
     const blockerUid = blockerCard?.dataset.blocker || "";
     const sourceCard = cardId ||
       app.game?.players.human.battlefield.find((item) => item.uid === uid)?.cardId ||
+      app.game?.players.human.essence[essenceIndex] ||
       app.game?.players.human.battlefield.find((item) => item.uid === blockerUid)?.cardId ||
       "";
+    if (essenceCard && !canProfane(app.game.players.human, essenceIndex)) return;
     if (!sourceCard) return;
+    const sourceElement = handCard || essenceCard || battlefieldCard || blockerCard;
+    if (essenceCard) event.preventDefault();
+    try {
+      sourceElement?.setPointerCapture?.(event.pointerId);
+    } catch (error) {
+      // Some browsers refuse capture when the source was re-rendered mid-event.
+    }
     app.pointerDrag = {
       payload: handCard
         ? { zone: "hand", id: cardId }
-        : blockerCard
+        : essenceCard
+          ? { zone: "essence", index: essenceIndex, id: sourceCard }
+          : blockerCard
           ? { zone: "blocker", id: blockerUid }
           : { zone: "battlefield", id: uid },
       startX: event.clientX,
@@ -3221,7 +3502,9 @@ function bindDragAndDrop() {
       moved: false,
       longPress: false,
       ghost: null,
-      cardId: sourceCard
+      cardId: sourceCard,
+      pointerId: event.pointerId,
+      sourceElement
     };
   });
 
@@ -3230,13 +3513,16 @@ function bindDragAndDrop() {
     if (!drag) return;
     const dx = event.clientX - drag.startX;
     const dy = event.clientY - drag.startY;
+    const isEssenceDrag = drag.payload.zone === "essence";
+    if (isEssenceDrag) event.preventDefault();
     if (!drag.longPress && !drag.moved && drag.payload.zone === "hand" && Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy) * 1.25) {
+      releasePointerDragCapture(drag);
       app.pointerDrag = null;
       hideCardZoom();
       return;
     }
-    if (!drag.moved && Math.hypot(dx, dy) < 10) return;
-    event.preventDefault();
+    if (!drag.moved && Math.hypot(dx, dy) < (isEssenceDrag ? 4 : 10)) return;
+    if (!isEssenceDrag) event.preventDefault();
     drag.moved = true;
     hideCardZoom();
     if (!drag.ghost) {
@@ -3256,10 +3542,11 @@ function bindDragAndDrop() {
     if (!drag) return;
     if (drag.moved) event.preventDefault();
     const dropElement = drag.moved ? document.elementFromPoint(event.clientX, event.clientY) : null;
-    const zone = dropElement?.closest(".essence-panel--human, #humanBattlefield, #botArea, #botBattlefield, #humanHand, [data-block-attack]") || null;
+    const zone = dropElement?.closest(".essence-panel--human, #humanBattlefield, #botArea, #botBattlefield, #humanHand, .hand-dock, [data-cemetery-player='human'], [data-block-attack]") || null;
     if (drag.ghost) drag.ghost.remove();
     document.querySelectorAll(".is-drop-hover").forEach((node) => node.classList.remove("is-drop-hover"));
     if (zone) handleDrop(zone, drag.payload, dropElement);
+    releasePointerDragCapture(drag);
     app.pointerDrag = null;
   });
 }
@@ -3286,10 +3573,22 @@ function hideCardZoom() {
 }
 
 function cleanupPointerDrag() {
+  releasePointerDragCapture(app.pointerDrag);
   if (app.pointerDrag?.ghost) app.pointerDrag.ghost.remove();
   app.pointerDrag = null;
   app.dragPayload = null;
   document.querySelectorAll(".is-drop-hover").forEach((node) => node.classList.remove("is-drop-hover"));
+}
+
+function releasePointerDragCapture(drag) {
+  if (!drag?.sourceElement || typeof drag.pointerId === "undefined") return;
+  try {
+    if (drag.sourceElement.hasPointerCapture?.(drag.pointerId)) {
+      drag.sourceElement.releasePointerCapture(drag.pointerId);
+    }
+  } catch (error) {
+    // Capture can already be gone after pointercancel, blur, or a browser-native interruption.
+  }
 }
 
 function createDragGhost(cardId) {
@@ -3302,7 +3601,19 @@ function createDragGhost(cardId) {
 
 function getDropZoneFromPoint(x, y) {
   const element = document.elementFromPoint(x, y);
-  return element?.closest(".essence-panel--human, #humanBattlefield, #botArea, #botBattlefield, #humanHand, [data-block-attack]");
+  return element?.closest(".essence-panel--human, #humanBattlefield, #botArea, #botBattlefield, #humanHand, .hand-dock, [data-cemetery-player='human'], [data-block-attack]");
+}
+
+function isHumanHandDropZone(zone) {
+  return zone === els.humanHand || zone === els.handDock || zone?.id === "humanHand" || zone?.classList?.contains("hand-dock");
+}
+
+function isHumanCemeteryDropZone(zone) {
+  return zone?.matches?.("[data-cemetery-player='human']");
+}
+
+function canDropHandCardToHumanCemetery(payload) {
+  return payload?.zone === "hand" && canDiscardForHandLimit(app.game?.players?.human, payload.id);
 }
 
 function handleDrop(zone, payload, targetElement = null) {
@@ -3314,10 +3625,25 @@ function handleDrop(zone, payload, targetElement = null) {
     }
     return;
   }
-  if (payload.zone === "hand" && zone === els.humanHand) {
+  if (payload.zone === "hand" && isHumanCemeteryDropZone(zone)) {
+    if (applyDiscardForHandLimit("human", payload.id)) {
+      collapseHand();
+      renderGame();
+    }
+    return;
+  }
+  if (payload.zone === "hand" && isHumanHandDropZone(zone)) {
     const targetCardId = targetElement?.closest?.("[data-hand-card]")?.dataset.handCard || "";
     if (targetCardId !== payload.id && reorderHandCard(payload.id, targetCardId)) {
       app.selected = { zone: "hand", id: payload.id };
+      renderGame();
+    }
+    return;
+  }
+  if (payload.zone === "essence" && isHumanHandDropZone(zone)) {
+    if (applyProfane("human", payload.index)) {
+      app.selected = null;
+      collapseHand();
       renderGame();
     }
     return;
@@ -3348,8 +3674,8 @@ async function init() {
   try {
     await loadData();
   } catch (error) {
-    els.setupStatus.textContent = error.message || "Nao foi possivel carregar o modo Play.";
-    els.setupStatus.classList.add("is-error");
+    els.startGameButton.textContent = error.message || "Erro ao carregar";
+    els.startGameButton.disabled = true;
   }
 }
 
