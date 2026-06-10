@@ -94,6 +94,7 @@ const app = {
   setupPreloadToken: 0,
   setupAssetsReady: false,
   autoPassTimer: null,
+  blockReviewResume: null,
   priority: null
 };
 
@@ -1413,8 +1414,12 @@ function startBlockDeclaration(attackerId) {
     return;
   }
 
-  declareAutoBlockers(attackerId);
+  const declaredBlockers = declareAutoBlockers(attackerId);
   renderGame();
+  if (defender.id === "bot" && declaredBlockers) {
+    window.setTimeout(() => showBotBlockReview(attackerId, () => continueCombatAfterBlocks(attackerId)), 360);
+    return;
+  }
   window.setTimeout(() => continueCombatAfterBlocks(attackerId), defender.id === "bot" ? 760 : 340);
 }
 
@@ -1460,8 +1465,10 @@ function declareAutoBlockers(attackerId) {
   });
 
   if (declarations.length) {
+    game.combat.step = "blockers-declared";
     addLog(game, `bloqueios declarados: ${declarations.join("; ")}.`, defender.label);
   }
+  return declarations.length;
 }
 
 function getAssignedBlockerAttackUid(blockerUid) {
@@ -1542,6 +1549,93 @@ function continueCombatAfterBlocks(attackerId) {
     });
   });
   return true;
+}
+
+function hasDeclaredBlockers(game) {
+  return Object.values(game?.combat?.blockers || {}).some((blockerUids) => blockerUids.length);
+}
+
+function showBotBlockReview(attackerId, onContinue) {
+  const game = app.game;
+  if (!game || game.status !== "active" || game.combat.attackerId !== attackerId || !hasDeclaredBlockers(game)) {
+    onContinue();
+    return;
+  }
+
+  const attackerPlayer = getPlayer(game, attackerId);
+  const defender = getOpponent(game, attackerId);
+  if (defender.id !== "bot") {
+    onContinue();
+    return;
+  }
+
+  let modal = document.getElementById("botBlockReview");
+  if (!modal) {
+    modal = document.createElement("div");
+    modal.id = "botBlockReview";
+    modal.className = "block-prompt block-review";
+    document.body.appendChild(modal);
+  }
+
+  game.combat.step = "blockers-declared";
+  app.blockReviewResume = () => {
+    hideBotBlockReview();
+    onContinue();
+  };
+
+  const attackers = getCombatAttackers(attackerId);
+  const canRespond = hasHumanPriorityPlay(game);
+  modal.innerHTML = `
+    <div class="block-prompt-panel block-review-panel" role="dialog" aria-modal="true" aria-label="Bloqueios do bot">
+      <div class="block-prompt-head">
+        <strong>Bloqueios do bot</strong>
+        <span>${canRespond
+          ? "Confira os bloqueios. Ao continuar, voce recebe prioridade para responder."
+          : "Confira os bloqueios antes do dano de combate."}</span>
+      </div>
+      <div class="block-lanes">
+        ${attackers.map((attacker, index) => {
+          const target = getAttackTarget(attackerId, attacker.uid);
+          const assignedBlockers = (game.combat.blockers[attacker.uid] || [])
+            .map((blockerUid) => findBattlefieldInstance(defender, blockerUid))
+            .filter(Boolean);
+          return `
+            <div class="block-lane is-readonly">
+              <div class="block-lane-attacker">
+                ${renderBlockMiniCard(attackerPlayer, attacker, `A${index + 1}`)}
+              </div>
+              <div class="block-lane-center">
+                <div class="block-lane-slot">
+                  ${assignedBlockers.length
+                    ? assignedBlockers.map((blocker, blockerIndex) => renderBlockMiniCard(defender, blocker, `B${blockerIndex + 1}`, {
+                      assigned: true
+                    })).join("")
+                    : `<span class="block-lane-empty">Sem bloqueio</span>`}
+                </div>
+              </div>
+              <div class="block-lane-target">
+                ${renderBlockTargetCard(target)}
+              </div>
+            </div>
+          `;
+        }).join("")}
+      </div>
+      <div class="block-prompt-actions">
+        <button type="button" data-confirm-bot-blocks>${canRespond ? "Responder aos bloqueios" : "Continuar para dano"}</button>
+      </div>
+    </div>
+  `;
+
+  modal.classList.add("is-visible");
+  modal.querySelector("[data-confirm-bot-blocks]")?.addEventListener("click", () => {
+    const resume = app.blockReviewResume;
+    app.blockReviewResume = null;
+    resume?.();
+  }, { once: true });
+}
+
+function hideBotBlockReview() {
+  document.getElementById("botBlockReview")?.classList.remove("is-visible");
 }
 
 function resolveDeclaredAttacks(playerId) {
@@ -2569,6 +2663,7 @@ function getPhaseDisplayLabel(game) {
     attackers: "Declaracao de atacantes",
     "attackers-declared": "Atacantes declarados",
     blockers: "Declaracao de bloqueadores",
+    "blockers-declared": "Bloqueadores declarados",
     "priority-combat-start": "Combate",
     "priority-after-attackers": "Atacantes declarados",
     "priority-after-blockers": "Bloqueadores declarados",
@@ -2866,7 +2961,8 @@ function hideZoneModal() {
 }
 
 function clearTransientOverlays() {
-  ["phaseAlert", "playedCardAnimation", "drawAnimation", "interactionHint", "cardZoomPreview", "zoneModal", "blockPrompt"].forEach((id) => {
+  app.blockReviewResume = null;
+  ["phaseAlert", "playedCardAnimation", "drawAnimation", "interactionHint", "cardZoomPreview", "zoneModal", "blockPrompt", "botBlockReview"].forEach((id) => {
     document.getElementById(id)?.classList.remove("is-visible");
   });
   document.querySelectorAll(".combat-damage-burst").forEach((node) => node.remove());

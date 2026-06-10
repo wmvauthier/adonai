@@ -4198,6 +4198,25 @@ button.hud-mini-metric {
   box-shadow: 0 0 18px rgba(255, 214, 112, .24);
 }
 
+.block-review .block-lane.is-readonly {
+  border-color: rgba(255, 111, 111, .26);
+  background: rgba(54, 9, 11, .22);
+}
+
+.block-review .block-lane-slot {
+  border-style: solid;
+  border-color: rgba(255, 111, 111, .22);
+}
+
+.block-review .block-prompt-actions {
+  grid-template-columns: 1fr;
+}
+
+.block-review .block-prompt-actions button {
+  border-color: rgba(126, 220, 255, .58);
+  background: rgba(11, 58, 72, .78);
+}
+
 .block-lane-attacker,
 .block-lane-target,
 .block-lane-center,
