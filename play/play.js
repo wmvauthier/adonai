@@ -51,6 +51,7 @@ const els = {
   phasePanel: document.getElementById("phasePanel"),
   phaseTracker: document.getElementById("phaseTracker"),
   phaseIndicator: document.getElementById("phaseIndicator"),
+  phaseRoundDock: document.getElementById("phaseRoundDock"),
   botEssence: document.getElementById("botEssence"),
   humanEssence: document.getElementById("humanEssence"),
   gameLog: document.getElementById("gameLog"),
@@ -197,8 +198,24 @@ function getVirtueLevelData(virtue, level) {
   return (virtue?.levels || []).find((item) => Number(item.level) === Number(level)) || null;
 }
 
-function renderCardVirtuePips(card, limit = 4) {
+function renderCardVirtuePips(card, limit = 4, options = {}) {
   const ids = Array.isArray(card?.virtues) ? card.virtues.slice(0, limit) : [];
+  if (options.fixedSlots) {
+    return Array.from({ length: limit }, (_, index) => {
+      const id = ids[index];
+      const virtue = app.virtuesById.get(Number(id));
+      const isActive = Boolean(id);
+      const icon = isActive ? getVirtueIcon(virtue) : "";
+      const label = isActive ? getVirtueName(virtue) : `Espaco de virtude ${index + 1}`;
+      return `
+        <span class="hand-card-pip-slot ${isActive ? "is-filled" : "is-empty"}" aria-label="${escapeHtml(label)}">
+          ${icon
+            ? `<img src="${escapeHtml(icon)}" alt="${escapeHtml(label)}" loading="lazy" draggable="false" />`
+            : isActive ? `<b>${escapeHtml(id)}</b>` : ""}
+        </span>
+      `;
+    }).join("");
+  }
   if (!ids.length) return "";
   return ids.map((id) => {
     const virtue = app.virtuesById.get(Number(id));
@@ -2594,6 +2611,7 @@ function renderGame() {
   els.phasePanel.classList.toggle("is-bot-turn", game.activePlayer === "bot");
   els.phasePanel.classList.toggle("is-discard-phase", phase === "discard");
   els.phaseTracker.innerHTML = renderPhaseTracker(game);
+  if (els.phaseRoundDock) els.phaseRoundDock.innerHTML = renderPhaseRoundCard(game);
   updateConsecrationHighlights(game, phase);
   updateBattlefieldWallpapers(human, bot);
   setHandExpanded(app.handExpanded);
@@ -2703,6 +2721,59 @@ function renderPhaseTracker(game) {
       ${helper ? `<em>${escapeHtml(helper)}</em>` : ""}
     </span>
   `;
+}
+
+function renderPhaseRoundCard(game) {
+  const helper = getPhaseHelper(game);
+  const brief = getPhaseBrief(game, helper);
+  return `
+    <span class="phase-round-card">
+      <i aria-hidden="true"></i>
+      <span>
+        <strong>${escapeHtml(brief.title)}</strong>
+        <small>${escapeHtml(brief.text)}</small>
+      </span>
+      <em>Fase <b>${escapeHtml(brief.progress)}</b></em>
+    </span>
+  `;
+}
+
+function getPhaseBrief(game, helper = "") {
+  const phase = currentPhase(game);
+  const structuralPhases = PHASES.filter((item) => item !== "discard");
+  const phaseIndex = structuralPhases.indexOf(phase);
+  const progress = phaseIndex >= 0 ? `${phaseIndex + 1}/${structuralPhases.length}` : `${structuralPhases.length}/${structuralPhases.length}`;
+  const defaults = {
+    prepare: {
+      title: "Etapa estrutural da rodada",
+      text: "Prepare suas cartas e Essências antes da compra."
+    },
+    draw: {
+      title: "Etapa estrutural da rodada",
+      text: "Compre as cartas previstas para o turno."
+    },
+    consecration: {
+      title: "Etapa estrutural da rodada",
+      text: "Consagre forças na Essência ou profane para recuperá-las."
+    },
+    preparation: {
+      title: "Etapa principal da rodada",
+      text: "Jogue cartas, equipe personagens e organize seu campo."
+    },
+    combat: {
+      title: "Etapa de combate",
+      text: helper || "Declare ataques, bloqueios, respostas e resolva dano."
+    },
+    regroup: {
+      title: "Etapa final da rodada",
+      text: "Resolva o fim do turno e verifique o limite de mão."
+    },
+    discard: {
+      title: "Ajuste de mão",
+      text: helper || `Descarte até ficar com ${MAX_HAND_SIZE} cartas na mão.`
+    }
+  };
+  return { ...(defaults[phase] || defaults.prepare), progress };
 }
 
 function getPhaseHelper(game) {
@@ -3025,7 +3096,9 @@ function renderCardButton(cardId, options = {}) {
   const attack = toNumber(card.stats?.attack, 0);
   const resistance = toNumber(card.stats?.resistance, 0);
   const damage = toNumber(options.damage, 0);
-  const virtuePips = renderCardVirtuePips(card);
+  const virtuePips = isHandTile
+    ? renderCardVirtuePips(card, 5, { fixedSlots: true })
+    : renderCardVirtuePips(card);
   const statusPips = [
     ...(options.combatLabels || []).map((label) => `<span title="Combate">${escapeHtml(label)}</span>`),
     options.declared && !(options.combatLabels || []).some((label) => label.startsWith("A")) ? `<span title="Atacante declarado">A</span>` : ""
