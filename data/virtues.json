@@ -1,160 +1,776 @@
 {
-  "schemaVersion": 1,
-  "updatedAt": "2026-05-29",
+  "schemaVersion": 2,
+  "updatedAt": "2026-06-11",
   "virtues": [
     {
       "id": 1,
+      "axis": 1,
+      "polarity": "virtue",
+      "oppositeId": 2,
       "name": {
         "pt": "Fé",
         "en": "Faith"
       },
+      "flavor": {
+        "pt": "Confiar que, mesmo sem ver, a provisão virá. Você segue adiante e encontra o que precisa no caminho."
+      },
       "images": {
         "icon": "../assets/icons/01-fe.webp",
         "item": "../assets/itens/01 - Fé - Logo.webp"
-      }
+      },
+      "levels": [
+        {
+          "level": 1,
+          "title": {
+            "pt": "Convicção"
+          },
+          "text": {
+            "pt": "No início da sua etapa de compra, você pode colocar três cartas da sua mão no fundo do seu baralho. Se fizer isso, compre uma carta adicional."
+          }
+        },
+        {
+          "level": 2,
+          "title": {
+            "pt": "Confiança"
+          },
+          "text": {
+            "pt": "No início da sua etapa de compra, você pode colocar duas cartas da sua mão no fundo do seu baralho. Se fizer isso, compre uma carta adicional."
+          }
+        },
+        {
+          "level": 3,
+          "title": {
+            "pt": "Revelação"
+          },
+          "text": {
+            "pt": "No início da sua etapa de compra, você pode comprar duas cartas adicionais. Se fizer isso, coloque três cartas da sua mão no fundo do seu baralho."
+          }
+        },
+        {
+          "level": 4,
+          "title": {
+            "pt": "Providência"
+          },
+          "text": {
+            "pt": "No início da sua etapa de compra, você pode comprar até quatro cartas adicionais. Se fizer isso, coloque duas cartas da sua mão no fundo do seu baralho."
+          }
+        }
+      ]
     },
     {
       "id": 2,
+      "axis": 1,
+      "polarity": "vice",
+      "oppositeId": 1,
       "name": {
         "pt": "Dúvida",
         "en": "Doubt"
       },
+      "flavor": {
+        "pt": "A incerteza paralisa. Você hesita, não encontra respostas e perde acesso ao que antes parecia claro."
+      },
       "images": {
         "icon": "../assets/icons/02-duvida.webp",
         "item": "../assets/itens/02 - Dúvida - Logo.webp"
-      }
+      },
+      "levels": [
+        {
+          "level": 1,
+          "title": {
+            "pt": "Insegurança"
+          },
+          "text": {
+            "pt": "No início da sua etapa de compra, coloque uma carta da sua mão no fundo do seu baralho."
+          }
+        },
+        {
+          "level": 2,
+          "title": {
+            "pt": "Inquietação"
+          },
+          "text": {
+            "pt": "No início da sua etapa de compra, coloque uma carta da sua mão no fundo do seu baralho e uma no topo."
+          }
+        },
+        {
+          "level": 3,
+          "title": {
+            "pt": "Desconfiança"
+          },
+          "text": {
+            "pt": "No início da sua etapa de compra, coloque uma carta da sua mão no fundo do seu baralho e uma no topo. Cause 1 de dano ao seu território."
+          }
+        },
+        {
+          "level": 4,
+          "title": {
+            "pt": "Desespero"
+          },
+          "text": {
+            "pt": "No início da sua etapa de compra, coloque duas cartas da sua mão no topo do seu baralho e cause 1 de dano ao seu território."
+          }
+        }
+      ]
     },
     {
       "id": 3,
+      "axis": 2,
+      "polarity": "virtue",
+      "oppositeId": 4,
       "name": {
         "pt": "Temperança",
         "en": "Temperance"
       },
+      "flavor": {
+        "pt": "A disciplina e a contenção trazem recompensa. Quem age com medida extrai mais valor do pouco."
+      },
       "images": {
         "icon": "../assets/icons/03-temperanca.webp",
         "item": "../assets/itens/03 - Temperança - Logo.webp"
-      }
+      },
+      "levels": [
+        {
+          "level": 1,
+          "title": {
+            "pt": "Disciplina"
+          },
+          "text": {
+            "pt": "No seu reagrupamento, se você jogou até uma carta neste turno, você pode desativar E e criar uma ficha de Incenso."
+          }
+        },
+        {
+          "level": 2,
+          "title": {
+            "pt": "Sobriedade"
+          },
+          "text": {
+            "pt": "No seu reagrupamento, se você jogou até uma carta neste turno, crie uma ficha de Incenso."
+          }
+        },
+        {
+          "level": 3,
+          "title": {
+            "pt": "Autodomínio"
+          },
+          "text": {
+            "pt": "No seu reagrupamento, se você jogou até uma carta neste turno, ative E e crie uma ficha de Incenso."
+          }
+        },
+        {
+          "level": 4,
+          "title": {
+            "pt": "Harmonia"
+          },
+          "text": {
+            "pt": "No seu reagrupamento, se você jogou até uma carta neste turno, ative EE e crie uma ficha de Incenso."
+          }
+        }
+      ]
     },
     {
       "id": 4,
+      "axis": 2,
+      "polarity": "vice",
+      "oppositeId": 3,
       "name": {
         "pt": "Descontrole",
         "en": "Lack of control"
       },
+      "flavor": {
+        "pt": "A falta de controle leva ao excesso. Quanto mais você tenta fazer, mais perde o domínio da situação."
+      },
       "images": {
         "icon": "../assets/icons/04-descontrole.webp",
         "item": "../assets/itens/04 - Descontrole - Logo.webp"
-      }
+      },
+      "levels": [
+        {
+          "level": 1,
+          "title": {
+            "pt": "Excesso"
+          },
+          "text": {
+            "pt": "No seu reagrupamento, se você jogou duas ou mais cartas neste turno, desative até E."
+          }
+        },
+        {
+          "level": 2,
+          "title": {
+            "pt": "Impulso"
+          },
+          "text": {
+            "pt": "No seu reagrupamento, se você jogou duas ou mais cartas neste turno, desative até E e descarte uma carta."
+          }
+        },
+        {
+          "level": 3,
+          "title": {
+            "pt": "Descontrole"
+          },
+          "text": {
+            "pt": "No seu reagrupamento, se você jogou uma ou mais cartas neste turno, desative até EE e descarte uma carta."
+          }
+        },
+        {
+          "level": 4,
+          "title": {
+            "pt": "Caos"
+          },
+          "text": {
+            "pt": "No seu reagrupamento, se você jogou uma ou mais cartas neste turno, desative até EE e descarte uma carta aleatoriamente."
+          }
+        }
+      ]
     },
     {
       "id": 5,
+      "axis": 3,
+      "polarity": "virtue",
+      "oppositeId": 6,
       "name": {
         "pt": "Justiça",
         "en": "Justice"
       },
+      "flavor": {
+        "pt": "Aquele que te fere responde por seus atos. Nenhuma agressão contra você passa sem consequência."
+      },
       "images": {
         "icon": "../assets/icons/05-justica.webp",
         "item": "../assets/itens/05 - Justiça - Logo.webp"
-      }
+      },
+      "levels": [
+        {
+          "level": 1,
+          "title": {
+            "pt": "Ordem"
+          },
+          "text": {
+            "pt": "A primeira vez a cada turno que um personagem com poder 3 ou mais causar dano de combate ao seu território, cause 1 de dano a ele."
+          }
+        },
+        {
+          "level": 2,
+          "title": {
+            "pt": "Julgamento"
+          },
+          "text": {
+            "pt": "A primeira vez a cada turno que um personagem com poder 3 ou mais causar dano de combate a um personagem que você controla ou ao seu território, cause 1 de dano a ele."
+          }
+        },
+        {
+          "level": 3,
+          "title": {
+            "pt": "Retribuição"
+          },
+          "text": {
+            "pt": "Toda vez que um personagem com poder 3 ou mais causar dano de combate a um personagem que você controla ou ao seu território, cause 1 de dano a ele."
+          }
+        },
+        {
+          "level": 4,
+          "title": {
+            "pt": "Lei Suprema"
+          },
+          "text": {
+            "pt": "Toda vez que um personagem com poder 3 ou mais causar dano de combate a um personagem que você controla ou ao seu território, cause 2 de dano a ele."
+          }
+        }
+      ]
     },
     {
       "id": 6,
+      "axis": 3,
+      "polarity": "vice",
+      "oppositeId": 5,
       "name": {
         "pt": "Iniquidade",
         "en": "Iniquity"
       },
+      "flavor": {
+        "pt": "A justiça não te protege. Você sofre as consequências enquanto os outros agem sem punição."
+      },
       "images": {
         "icon": "../assets/icons/06-iniquidade.webp",
         "item": "../assets/itens/06 - Iniquidade - Logo.webp"
-      }
+      },
+      "levels": [
+        {
+          "level": 1,
+          "title": {
+            "pt": "Parcialidade"
+          },
+          "text": {
+            "pt": "A primeira vez a cada turno que um personagem seu com poder 3 ou mais causar dano de combate a um território, cause 1 de dano a ele."
+          }
+        },
+        {
+          "level": 2,
+          "title": {
+            "pt": "Corrupção"
+          },
+          "text": {
+            "pt": "A primeira vez a cada turno que um personagem seu com poder 3 ou mais causar dano de combate a um personagem ou a um território, cause 1 de dano a ele."
+          }
+        },
+        {
+          "level": 3,
+          "title": {
+            "pt": "Opressão"
+          },
+          "text": {
+            "pt": "Toda vez que um personagem que você controla com poder 3 ou mais causar dano de combate, cause 1 de dano a ele."
+          }
+        },
+        {
+          "level": 4,
+          "title": {
+            "pt": "Tirania"
+          },
+          "text": {
+            "pt": "Toda vez que um personagem que você controla com poder 3 ou mais causar dano de combate, cause 2 de dano a ele."
+          }
+        }
+      ]
     },
     {
       "id": 7,
+      "axis": 4,
+      "polarity": "virtue",
+      "oppositeId": 8,
       "name": {
         "pt": "Fortaleza",
         "en": "Fortitude"
       },
+      "flavor": {
+        "pt": "Permanecer firme diante do impacto. Nem você nem os seus cedem facilmente ao ataque."
+      },
       "images": {
         "icon": "../assets/icons/07-fortaleza.webp",
         "item": "../assets/itens/07 - Fortaleza - Logo.webp"
-      }
+      },
+      "levels": [
+        {
+          "level": 1,
+          "title": {
+            "pt": "Resistência"
+          },
+          "text": {
+            "pt": "Durante cada turno, previna até 1 de dano de combate que seria causado a personagens que você controla."
+          }
+        },
+        {
+          "level": 2,
+          "title": {
+            "pt": "Determinação"
+          },
+          "text": {
+            "pt": "Durante cada turno, previna até 1 de dano de combate que seria causado ao seu território ou a personagens que você controla."
+          }
+        },
+        {
+          "level": 3,
+          "title": {
+            "pt": "Coragem"
+          },
+          "text": {
+            "pt": "Durante cada turno, previna até 2 de dano de combate que seria causado ao seu território ou a personagens que você controla."
+          }
+        },
+        {
+          "level": 4,
+          "title": {
+            "pt": "Inabalável"
+          },
+          "text": {
+            "pt": "Durante cada turno, previna até 2 de dano de combate que seria causado ao seu território e até 2 de dano de combate que seria causado a personagens que você controla."
+          }
+        }
+      ]
     },
     {
       "id": 8,
+      "axis": 4,
+      "polarity": "vice",
+      "oppositeId": 7,
       "name": {
         "pt": "Covardia",
         "en": "Cowardice"
       },
+      "flavor": {
+        "pt": "Diante do impacto, você cede. Seus aliados se quebram com facilidade e não conseguem sustentar a pressão."
+      },
       "images": {
         "icon": "../assets/icons/08-covardia.webp",
         "item": "../assets/itens/08 - Covardia - Logo.webp"
-      }
+      },
+      "levels": [
+        {
+          "level": 1,
+          "title": {
+            "pt": "Fraqueza"
+          },
+          "text": {
+            "pt": "Personagens danificados que você controla não podem atacar sozinhos."
+          }
+        },
+        {
+          "level": 2,
+          "title": {
+            "pt": "Fragilidade"
+          },
+          "text": {
+            "pt": "Personagens danificados que você controla não podem atacar sozinhos e têm -1/-0 enquanto estiverem atacando."
+          }
+        },
+        {
+          "level": 3,
+          "title": {
+            "pt": "Pânico"
+          },
+          "text": {
+            "pt": "Personagens danificados que você controla não podem atacar."
+          }
+        },
+        {
+          "level": 4,
+          "title": {
+            "pt": "Colapso"
+          },
+          "text": {
+            "pt": "Toda vez que um personagem que você controla sofrer dano de combate, desative-o. Personagens danificados que você controla não podem ativar durante sua ativação."
+          }
+        }
+      ]
     },
     {
       "id": 9,
+      "axis": 5,
+      "polarity": "virtue",
+      "oppositeId": 10,
       "name": {
         "pt": "Esperança",
         "en": "Hope"
       },
+      "flavor": {
+        "pt": "Mesmo após sofrer perdas, você se reergue. Aquilo que foi danificado pode ser restaurado."
+      },
       "images": {
         "icon": "../assets/icons/09-esperanca.webp",
         "item": "../assets/itens/09 - Esperança - Logo.webp"
-      }
+      },
+      "levels": [
+        {
+          "level": 1,
+          "title": {
+            "pt": "Ânimo"
+          },
+          "text": {
+            "pt": "No reagrupamento de cada oponente, se seu território sofreu dano neste turno, cure em 1 o seu território."
+          }
+        },
+        {
+          "level": 2,
+          "title": {
+            "pt": "Perseverança"
+          },
+          "text": {
+            "pt": "No reagrupamento de cada oponente, se seu território sofreu dano neste turno, cure em 2 o seu território ou em 1 um personagem que você controla."
+          }
+        },
+        {
+          "level": 3,
+          "title": {
+            "pt": "Renovação"
+          },
+          "text": {
+            "pt": "No reagrupamento de cada oponente, se seu território sofreu dano neste turno, cure em 2 o seu território e em 1 um personagem que você controla."
+          }
+        },
+        {
+          "level": 4,
+          "title": {
+            "pt": "Milagre"
+          },
+          "text": {
+            "pt": "No reagrupamento de cada oponente, se seu território sofreu dano neste turno, cure em 3 o dano distribuído entre seu território e os personagens que você controla."
+          }
+        }
+      ]
     },
     {
       "id": 10,
+      "axis": 5,
+      "polarity": "vice",
+      "oppositeId": 9,
       "name": {
         "pt": "Desespero",
         "en": "Despair"
       },
+      "flavor": {
+        "pt": "Sem esperança, o dano permanece. As perdas se acumulam e você não consegue se recuperar."
+      },
       "images": {
         "icon": "../assets/icons/10-desespero.webp",
         "item": "../assets/itens/10 - Desespero - Logo.webp"
-      }
+      },
+      "levels": [
+        {
+          "level": 1,
+          "title": {
+            "pt": "Cansaço"
+          },
+          "text": {
+            "pt": "No reagrupamento de cada oponente, se seu território sofreu dano neste turno, cause 1 de dano ao seu território."
+          }
+        },
+        {
+          "level": 2,
+          "title": {
+            "pt": "Exaustão"
+          },
+          "text": {
+            "pt": "No reagrupamento de cada oponente, se seu território sofreu dano neste turno, cause 2 de dano ao seu território ou 1 a um personagem que você controla."
+          }
+        },
+        {
+          "level": 3,
+          "title": {
+            "pt": "Ruína"
+          },
+          "text": {
+            "pt": "No reagrupamento de cada oponente, se seu território sofreu dano neste turno, cause 2 de dano distribuídos dentre seu território e os personagens que você controla."
+          }
+        },
+        {
+          "level": 4,
+          "title": {
+            "pt": "Desolação"
+          },
+          "text": {
+            "pt": "No reagrupamento de cada oponente, se seu território sofreu dano neste turno, cause 3 de dano distribuídos dentre seu território e os personagens que você controla."
+          }
+        }
+      ]
     },
     {
       "id": 11,
+      "axis": 6,
+      "polarity": "virtue",
+      "oppositeId": 12,
       "name": {
         "pt": "Prudência",
         "en": "Prudence"
       },
+      "flavor": {
+        "pt": "Você se antecipa aos acontecimentos. Ao observar antes de agir, toma decisões mais seguras e eficazes."
+      },
       "images": {
         "icon": "../assets/icons/11-prudencia.webp",
         "item": "../assets/itens/11 - Prudência - Logo.webp"
-      }
+      },
+      "levels": [
+        {
+          "level": 1,
+          "title": {
+            "pt": "Observação"
+          },
+          "text": {
+            "pt": "Na sua preparação, olhe a carta do topo do seu baralho e coloque-a no topo ou no fundo do baralho."
+          }
+        },
+        {
+          "level": 2,
+          "title": {
+            "pt": "Discernimento"
+          },
+          "text": {
+            "pt": "Na sua preparação, olhe duas cartas do topo do seu baralho e coloque até uma no cemitério e as demais no topo ou no fundo do baralho."
+          }
+        },
+        {
+          "level": 3,
+          "title": {
+            "pt": "Antecipação"
+          },
+          "text": {
+            "pt": "Na sua preparação, olhe três cartas do topo do seu baralho e coloque até uma no cemitério e as demais no topo ou no fundo do baralho."
+          }
+        },
+        {
+          "level": 4,
+          "title": {
+            "pt": "Sabedoria"
+          },
+          "text": {
+            "pt": "Na sua preparação, olhe quatro cartas do topo do seu baralho e coloque até uma no cemitério e as demais no topo ou no fundo do baralho."
+          }
+        }
+      ]
     },
     {
       "id": 12,
+      "axis": 6,
+      "polarity": "vice",
+      "oppositeId": 11,
       "name": {
         "pt": "Insensatez",
         "en": "Folly"
       },
+      "flavor": {
+        "pt": "Você age sem pensar. Suas decisões são impulsivas, e você perde o controle sobre o que vem a seguir."
+      },
       "images": {
         "icon": "../assets/icons/12-insensatez.webp",
         "item": "../assets/itens/12 - Insensatez - Logo.webp"
-      }
+      },
+      "levels": [
+        {
+          "level": 1,
+          "title": {
+            "pt": "Distração"
+          },
+          "text": {
+            "pt": "Jogue com o topo do seu baralho revelado. Na sua preparação, pulverize uma carta."
+          }
+        },
+        {
+          "level": 2,
+          "title": {
+            "pt": "Impulsividade"
+          },
+          "text": {
+            "pt": "Jogue com a mão e o topo do seu baralho revelados. Na sua preparação, pulverize duas cartas."
+          }
+        },
+        {
+          "level": 3,
+          "title": {
+            "pt": "Irreflexão"
+          },
+          "text": {
+            "pt": "Jogue com a mão e o topo do seu baralho revelados. Na sua preparação, pulverize três cartas."
+          }
+        },
+        {
+          "level": 4,
+          "title": {
+            "pt": "Insensatez"
+          },
+          "text": {
+            "pt": "Jogue com a mão e o topo do seu baralho revelados. Na sua preparação, pulverize quatro cartas."
+          }
+        }
+      ]
     },
     {
       "id": 13,
+      "axis": 7,
+      "polarity": "virtue",
+      "oppositeId": 14,
       "name": {
         "pt": "Caridade",
         "en": "Charity"
       },
+      "flavor": {
+        "pt": "A união fortalece. Ao agir em conjunto e cuidar uns dos outros, seus aliados se tornam mais eficazes no combate."
+      },
       "images": {
         "icon": "../assets/icons/13-caridade.webp",
         "item": "../assets/itens/13 - Caridade - Logo.webp"
-      }
+      },
+      "levels": [
+        {
+          "level": 1,
+          "title": {
+            "pt": "Cuidado"
+          },
+          "text": {
+            "pt": "Toda vez que você atacar com exatamente dois personagens, eles ganham +1/+0 até o reagrupamento."
+          }
+        },
+        {
+          "level": 2,
+          "title": {
+            "pt": "Comunhão"
+          },
+          "text": {
+            "pt": "Toda vez que você atacar com dois ou mais personagens, eles ganham +1/+0 até o reagrupamento."
+          }
+        },
+        {
+          "level": 3,
+          "title": {
+            "pt": "Generosidade"
+          },
+          "text": {
+            "pt": "Toda vez que você atacar com dois ou mais personagens, eles ganham +1/+1 até o reagrupamento."
+          }
+        },
+        {
+          "level": 4,
+          "title": {
+            "pt": "Amor Perfeito"
+          },
+          "text": {
+            "pt": "Toda vez que você atacar com dois ou mais personagens, eles ganham +1/+1 até o reagrupamento. Personagens desativados que você controla podem bloquear ataques direcionados a personagens que você controla."
+          }
+        }
+      ]
     },
     {
       "id": 14,
+      "axis": 7,
+      "polarity": "vice",
+      "oppositeId": 13,
       "name": {
         "pt": "Egoísmo",
         "en": "Selfishness"
       },
+      "flavor": {
+        "pt": "Isolado dos outros, você perde a força do coletivo. Quanto mais se fecha em si mesmo, menos consegue agir de forma eficaz."
+      },
       "images": {
         "icon": "../assets/icons/14-egoismo.webp",
         "item": "../assets/itens/14 - Egoísmo - Logo.webp"
-      }
+      },
+      "levels": [
+        {
+          "level": 1,
+          "title": {
+            "pt": "Indiferença"
+          },
+          "text": {
+            "pt": "Toda vez que você atacar com dois ou mais personagens, eles ganham -1/-0 até o reagrupamento."
+          }
+        },
+        {
+          "level": 2,
+          "title": {
+            "pt": "Isolamento"
+          },
+          "text": {
+            "pt": "Toda vez que você atacar com dois ou mais personagens, eles ganham -2/-0 até o reagrupamento."
+          }
+        },
+        {
+          "level": 3,
+          "title": {
+            "pt": "Avareza"
+          },
+          "text": {
+            "pt": "Você não pode atacar com mais de um personagem."
+          }
+        },
+        {
+          "level": 4,
+          "title": {
+            "pt": "Egoísmo"
+          },
+          "text": {
+            "pt": "Você não pode atacar com mais de um personagem. Personagens que você controla não podem bloquear ataques direcionados a personagens."
+          }
+        }
+      ]
     }
   ]
 }

@@ -2,7 +2,8 @@ const DATA_URLS = {
   cards: "../data/cards.json",
   decks: "../data/decks.json",
   types: "../data/types.json",
-  collections: "../data/collections.json"
+  collections: "../data/collections.json",
+  virtues: "../data/virtues.json"
 };
 
 const CARD_BACK_IMAGE = "../assets/logo/Fundo - Foundation.webp";
@@ -14,9 +15,9 @@ const INITIAL_HAND_SIZE = 6;
 const MAX_HAND_SIZE = 7;
 const PHASES = ["prepare", "draw", "consecration", "preparation", "combat", "regroup", "discard"];
 const PHASE_LABELS = {
-  prepare: "Preparacao",
+  prepare: "Preparação",
   draw: "Compra",
-  consecration: "Consagracao",
+  consecration: "Consagração",
   preparation: "Alistamento",
   combat: "Combate",
   regroup: "Reagrupamento",
@@ -78,8 +79,11 @@ const app = {
   cardByCode: new Map(),
   typesById: new Map(),
   collectionsById: new Map(),
+  virtues: [],
+  virtuesById: new Map(),
   game: null,
   selected: null,
+  expandedTemplePlayer: "",
   lastConfig: null,
   soundEnabled: true,
   audio: null,
@@ -170,6 +174,41 @@ function getCost(card) {
   return toNumber(card?.cost, 0);
 }
 
+function getVirtueName(virtue) {
+  return localize(virtue?.name) || `Virtude ${virtue?.id || ""}`.trim();
+}
+
+function getVirtueIcon(virtue) {
+  return virtue?.images?.icon || virtue?.images?.item || "";
+}
+
+function createVirtueState() {
+  return Object.fromEntries(app.virtues.map((virtue) => [String(virtue.id), 0]));
+}
+
+function getActiveVirtues(player) {
+  const state = player?.virtues || {};
+  return app.virtues
+    .map((virtue) => ({ virtue, value: toNumber(state[String(virtue.id)], 0) }))
+    .filter((item) => item.value > 0);
+}
+
+function getVirtueLevelData(virtue, level) {
+  return (virtue?.levels || []).find((item) => Number(item.level) === Number(level)) || null;
+}
+
+function renderCardVirtuePips(card, limit = 4) {
+  const ids = Array.isArray(card?.virtues) ? card.virtues.slice(0, limit) : [];
+  if (!ids.length) return "";
+  return ids.map((id) => {
+    const virtue = app.virtuesById.get(Number(id));
+    const icon = getVirtueIcon(virtue);
+    return icon
+      ? `<img src="${escapeHtml(icon)}" alt="${escapeHtml(getVirtueName(virtue))}" loading="lazy" draggable="false" />`
+      : `<span>${escapeHtml(id)}</span>`;
+  }).join("");
+}
+
 function isLandscapeCard(card) {
   const code = getCardTypeCode(card);
   return code === "TER" || code === "TEM";
@@ -254,6 +293,7 @@ function getDeckOption(deckId) {
 function validateDeck(deck) {
   if (!deck) return "Deck nao encontrado.";
   const cards = Array.isArray(deck.cards) ? deck.cards : [];
+  const reserve = Array.isArray(deck.reserve) ? deck.reserve : [];
   const identity = deck.identity || {};
   const identityIds = []
     .concat(identity.champions || [])
@@ -265,7 +305,7 @@ function validateDeck(deck) {
   if ((identity.champions || []).length !== 1 || (identity.territories || []).length !== 1 || (identity.temples || []).length !== 1) {
     return "Identidade precisa ter Campeao, Territorio e Templo.";
   }
-  if (![...cards, ...identityIds].every((id) => app.cardByCode.has(id))) return "Deck possui cartas desconhecidas.";
+  if (![...cards, ...reserve, ...identityIds].every((id) => app.cardByCode.has(id))) return "Deck possui cartas desconhecidas.";
   if (!cards.every((id) => isMainDeckCard(app.cardByCode.get(id)))) return "Deck principal possui carta de Identidade.";
   return "";
 }
@@ -371,6 +411,7 @@ function getDeckAssetUrls(deck) {
   const identity = deck?.identity || {};
   const ids = new Set([
     ...(deck?.cards || []),
+    ...(deck?.reserve || []),
     ...(identity.champions || []),
     ...(identity.temples || []),
     ...(identity.territories || [])
@@ -380,6 +421,12 @@ function getDeckAssetUrls(deck) {
     const card = app.cardByCode.get(cardId);
     [getCardImage(card), getCardArt(card)].forEach((url) => {
       if (url) urls.push(url);
+    });
+    (card?.virtues || []).forEach((virtueId) => {
+      const virtue = app.virtuesById.get(Number(virtueId));
+      [virtue?.images?.icon, virtue?.images?.item].forEach((url) => {
+        if (url) urls.push(url);
+      });
     });
   });
   return urls;
@@ -564,6 +611,8 @@ function createPlayer(id, label, deck, isBot = false) {
     essence: [],
     cemetery: [],
     exile: [],
+    reserve: Array.isArray(deck.reserve) ? [...deck.reserve] : [],
+    virtues: createVirtueState(),
     territoryDamage: 0,
     maxTerritory: getTerritoryLife(deck.identity.territories[0]),
     spentEssence: 0,
@@ -753,6 +802,7 @@ function startGame() {
   writePlayStorage(app.lastConfig);
   app.game = createGame(humanDeck, botDeck, els.botModeSelect.value);
   app.selected = null;
+  app.expandedTemplePlayer = "";
   app.territorySnapshot.clear();
   clearHumanAutoPass();
   collapseHand();
@@ -772,6 +822,7 @@ function restartGame() {
   if (!humanDeck || !botDeck) return;
   app.game = createGame(humanDeck, botDeck, app.lastConfig.botMode || "basic");
   app.selected = null;
+  app.expandedTemplePlayer = "";
   app.territorySnapshot.clear();
   clearHumanAutoPass();
   collapseHand();
@@ -785,6 +836,7 @@ function restartGame() {
 function showSetup() {
   app.game = null;
   app.selected = null;
+  app.expandedTemplePlayer = "";
   app.territorySnapshot.clear();
   clearHumanAutoPass();
   collapseHand();
@@ -2536,6 +2588,7 @@ function renderGame() {
   const phase = currentPhase(game);
   const selectedAttackers = new Set(game.combat.selectedAttackers || []);
 
+  els.gameView.classList.toggle("is-consecration-focus", phase === "consecration");
   els.phaseIndicator.textContent = getPhaseDisplayLabel(game);
   els.phasePanel.classList.toggle("is-human-turn", game.activePlayer === "human");
   els.phasePanel.classList.toggle("is-bot-turn", game.activePlayer === "bot");
@@ -2572,8 +2625,12 @@ function renderGame() {
 function updateConsecrationHighlights(game, phase) {
   const humanActive = game.activePlayer === "human" && phase === "consecration";
   const botActive = game.activePlayer === "bot" && phase === "consecration";
-  els.humanEssence?.closest(".essence-panel")?.classList.toggle("is-consecration-active", humanActive);
-  els.botEssence?.closest(".essence-panel")?.classList.toggle("is-consecration-active", botActive);
+  const humanPanel = els.humanEssence?.closest(".essence-panel");
+  const botPanel = els.botEssence?.closest(".essence-panel");
+  humanPanel?.classList.toggle("is-consecration-active", humanActive);
+  botPanel?.classList.toggle("is-consecration-active", botActive);
+  humanPanel?.closest(".player-dock-shell")?.classList.toggle("is-consecration-active", humanActive);
+  botPanel?.closest(".player-dock-shell")?.classList.toggle("is-consecration-active", botActive);
 }
 
 function updatePhaseFocusHighlights(game, phase) {
@@ -2641,7 +2698,7 @@ function renderPhaseTracker(game) {
   const helper = getPhaseHelper(game);
   return `
     <span class="phase-current">
-      <small>${escapeHtml(ownerLabel)} - Turno ${game.turnNumber}</small>
+      <small>${escapeHtml(ownerLabel)} · Turno ${game.turnNumber}</small>
       <strong>${escapeHtml(getPhaseDisplayLabel(game))}</strong>
       ${helper ? `<em>${escapeHtml(helper)}</em>` : ""}
     </span>
@@ -2649,7 +2706,28 @@ function renderPhaseTracker(game) {
 }
 
 function getPhaseHelper(game) {
-  if (currentPhase(game) !== "discard") return "";
+  const phase = currentPhase(game);
+  if (phase !== "discard") {
+    const helpers = {
+      prepare: "Prepare permanentes e Essências antes da compra.",
+      draw: "Compre as cartas do turno.",
+      consecration: "Consagre da mão, profane da Essência ou omita a ação.",
+      preparation: "Jogue cartas, equipe personagens ou ative habilidades.",
+      regroup: "Finalize efeitos do turno e verifique o limite de mão."
+    };
+    if (phase === "combat") {
+      const combatHelpers = {
+        attackers: "Selecione atacantes e escolha alvos.",
+        "attackers-declared": "Ataques declarados. Aguarde respostas.",
+        blockers: "Defina bloqueadores para os ataques.",
+        "blockers-declared": "Bloqueios declarados. Aguarde respostas.",
+        "priority-before-damage": "Última janela antes do dano.",
+        damage: "Dano simultâneo de combate."
+      };
+      return combatHelpers[game.combat.step] || "Resolva declarações, respostas e dano.";
+    }
+    return helpers[phase] || "";
+  }
   const player = currentPlayer(game);
   const overflow = getHandOverflow(player);
   if (overflow <= 0) return `Limite de mao: ${MAX_HAND_SIZE}`;
@@ -2660,9 +2738,9 @@ function getPhaseDisplayLabel(game) {
   const phase = currentPhase(game);
   if (phase !== "combat") return PHASE_LABELS[phase] || phase;
   const labels = {
-    attackers: "Declaracao de atacantes",
+    attackers: "Declaração de atacantes",
     "attackers-declared": "Atacantes declarados",
-    blockers: "Declaracao de bloqueadores",
+    blockers: "Declaração de bloqueadores",
     "blockers-declared": "Bloqueadores declarados",
     "priority-combat-start": "Combate",
     "priority-after-attackers": "Atacantes declarados",
@@ -2760,6 +2838,76 @@ function renderCombatSummary(game) {
   return `<div class="combat-summary">${lines}</div>`;
 }
 
+function renderDockMetricIcon(icon) {
+  const icons = {
+    hand: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h9.5a2 2 0 0 1 2 2v12.5"/><path d="M4.5 7.5h10a2 2 0 0 1 2 2v10h-10a2 2 0 0 1-2-2z"/></svg>`,
+    deck: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h11v14H7z"/><path d="M4 8h11v11"/><path d="M10 2h8v3"/></svg>`,
+    virtues: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.2 5.5L20 11l-5.8 2.5L12 21l-2.2-7.5L4 11l5.8-2.5z"/></svg>`,
+    cemetery: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 17v3h8v-3"/><path d="M6 11a6 6 0 1 1 12 0c0 3-2 5-6 5s-6-2-6-5z"/><path d="M9 11h.1M15 11h.1"/><path d="m11 14 1-1 1 1"/></svg>`,
+    reserve: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 21 12 12 21 3 12z"/><path d="M12 7 17 12 12 17 7 12z"/></svg>`
+  };
+  return icons[icon] || "";
+}
+
+function renderDockMetric({ label, value, icon = "", button = false, attrs = "", extraClass = "", subtitle = "" }) {
+  const tag = button ? "button" : "div";
+  return `
+    <${tag} class="dock-metric ${extraClass}" ${button ? "type=\"button\"" : ""} ${attrs}>
+      ${icon ? `<i class="dock-metric-icon">${renderDockMetricIcon(icon)}</i>` : ""}
+      <span>${escapeHtml(label)}</span>
+      <strong>${escapeHtml(value)}</strong>
+      ${subtitle ? `<small>${escapeHtml(subtitle)}</small>` : ""}
+    </${tag}>
+  `;
+}
+
+function renderIdentityTile(player, card, kind, attrs = "") {
+  if (!card) return "";
+  const isTerritory = kind === "territory";
+  const isChampion = kind === "champion";
+  const isTemple = kind === "temple";
+  const remaining = isTerritory ? Math.max(0, player.maxTerritory - player.territoryDamage) : 0;
+  const currentValue = isTerritory ? remaining : isTemple ? getAvailableEssence(player) : "";
+  const totalValue = isTerritory ? player.maxTerritory : isTemple ? player.essence.length : "";
+  const labels = isTerritory ? getTerritoryCombatLabels(player.id) : [];
+  const attackTargetClass = isTerritory && isHumanAttackTargetAvailable(getTerritoryAttackTarget(player.id)) ? " is-click-attack-target" : "";
+  const damagedClass = isTerritory && labels.length ? " is-attack-target" : "";
+  const image = getCardArt(card);
+  const label = kind === "champion" ? "Campeao" : kind === "territory" ? "Territorio" : "Templo";
+  const marker = isTerritory || isTemple
+    ? `<strong class="identity-dock-value"><span>${escapeHtml(currentValue)}</span><small>/${escapeHtml(totalValue)}</small></strong>`
+    : "";
+  return `
+    <button class="identity-dock-tile identity-dock-tile--${escapeHtml(kind)}${damagedClass}${attackTargetClass}" type="button" ${attrs}>
+      <img class="${isLandscapeCard(card) ? "is-landscape" : ""}" src="${escapeHtml(image)}" alt="${escapeHtml(getCardName(card))}" loading="lazy" draggable="false" />
+      <span>${escapeHtml(label)}</span>
+      ${marker}
+      ${labels.length ? `<em>${escapeHtml(labels.join(" "))}</em>` : ""}
+    </button>
+  `;
+}
+
+function renderTempleDockExpansion(player, temple) {
+  const cards = player.essence || [];
+  return `
+    <div class="identity-dock-expanded">
+      <button class="identity-dock-close" type="button" data-close-temple-dock aria-label="Fechar">×</button>
+      <div class="identity-dock-essences" aria-label="Cartas consagradas de ${escapeHtml(player.label)}">
+        ${cards.length
+          ? cards.map((cardId) => {
+            const card = app.cardByCode.get(cardId);
+            return `
+              <button class="identity-dock-essence" type="button" data-zoom-card="${escapeHtml(cardId)}" title="${escapeHtml(getCardName(card))}">
+                <img src="${escapeHtml(getCardArt(card))}" alt="${escapeHtml(getCardName(card))}" loading="lazy" draggable="false" />
+              </button>
+            `;
+          }).join("")
+          : `<span class="identity-dock-empty">Nenhuma carta consagrada.</span>`}
+      </div>
+    </div>
+  `;
+}
+
 function renderPlayerArea(player, hideHand) {
   const territoryRemaining = Math.max(0, player.maxTerritory - player.territoryDamage);
   const dangerClass = territoryRemaining <= 8 ? " is-danger" : "";
@@ -2769,42 +2917,58 @@ function renderPlayerArea(player, hideHand) {
   const champion = app.cardByCode.get(player.identity.champion);
   const temple = app.cardByCode.get(player.identity.temple);
   const territory = app.cardByCode.get(player.identity.territory);
-  const secondaryLabel = hideHand ? "Mao" : "Deck";
-  const secondaryValue = hideHand ? player.hand.length : player.deck.length;
-  const territoryLabels = getTerritoryCombatLabels(player.id);
-  const attackTargetClass = isHumanAttackTargetAvailable(getTerritoryAttackTarget(player.id)) ? " is-click-attack-target" : "";
   const discardTargetClass = player.id === "human" && app.game?.activePlayer === "human" && currentPhase(app.game) === "discard" && getHandOverflow(player) > 0
     ? " is-discard-drop-target"
     : "";
+  const activeVirtues = getActiveVirtues(player);
+  const templeExpanded = app.expandedTemplePlayer === player.id;
+  const identityMarkup = `
+    <div class="player-dock-identity ${templeExpanded ? "is-expanded" : ""}">
+      ${templeExpanded
+        ? renderTempleDockExpansion(player, temple)
+        : `
+          ${renderIdentityTile(player, champion, "champion", `data-zoom-card="${escapeHtml(player.identity.champion)}"`)}
+          ${renderIdentityTile(player, territory, "territory", `data-territory-player="${escapeHtml(player.id)}" data-zoom-card="${escapeHtml(player.identity.territory)}"`)}
+          ${renderIdentityTile(player, temple, "temple", `data-temple-player="${escapeHtml(player.id)}" data-zoom-card="${escapeHtml(player.identity.temple)}"`)}
+        `}
+    </div>
+  `;
+  const metricsMarkup = `
+    <div class="player-dock-metrics">
+      ${renderDockMetric({ label: "Mão", value: player.hand.length, icon: "hand" })}
+      ${renderDockMetric({ label: "Deck", value: player.deck.length, icon: "deck" })}
+      ${renderDockMetric({
+        label: "Virtudes",
+        value: activeVirtues.length ? activeVirtues.map((item) => item.value).join("/") : "0",
+        icon: "virtues",
+        button: true,
+        attrs: `data-virtues-player="${escapeHtml(player.id)}"`,
+        extraClass: activeVirtues.length ? "is-active" : ""
+      })}
+      ${renderDockMetric({
+        label: "Cemitério",
+        value: player.cemetery.length,
+        icon: "cemetery",
+        button: true,
+        attrs: `data-cemetery-player="${escapeHtml(player.id)}"`,
+        extraClass: `hud-cemetery${discardTargetClass}`
+      })}
+      ${renderDockMetric({
+        label: "Reserva",
+        value: player.reserve?.length || 0,
+        icon: "reserve",
+        button: player.id === "human",
+        attrs: player.id === "human" ? `data-reserve-player="${escapeHtml(player.id)}"` : ""
+      })}
+    </div>
+  `;
   return `
-    <div class="player-hud ${hideHand ? "player-hud--opponent" : "player-hud--human"}${dangerClass}${damagedClass}">
-      <div class="hud-avatar">
-        <img src="${escapeHtml(getCardArt(champion))}" alt="${escapeHtml(getCardName(champion))}" loading="lazy" draggable="false" />
-      </div>
-      <div class="hud-copy">
-        <span>${hideHand ? "Oponente" : "Jogador"}</span>
+    <div class="player-dock ${hideHand ? "player-dock--opponent" : "player-dock--human"}${dangerClass}${damagedClass}">
+      <div class="player-dock-label">
+        <span>${hideHand ? "Oponente" : "Você"}</span>
         <strong>${escapeHtml(player.label)}</strong>
-        <small>${escapeHtml(player.deckName)}</small>
       </div>
-      <div class="hud-identity">
-        ${[temple, territory].map((card) => `<img class="${isLandscapeCard(card) ? "is-landscape" : ""}" src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" loading="lazy" draggable="false" />`).join("")}
-      </div>
-      <div class="hud-territory ${territoryLabels.length ? "is-attack-target" : ""}${attackTargetClass}" data-territory-player="${escapeHtml(player.id)}">
-        <span>Territorio</span>
-        <strong>${territoryRemaining}</strong>
-        <small>/${player.maxTerritory}</small>
-        ${territoryLabels.length ? `<em>${escapeHtml(territoryLabels.join(" "))}</em>` : ""}
-      </div>
-      <div class="hud-mini-metrics">
-        <div class="hud-mini-metric">
-          <span>${escapeHtml(secondaryLabel)}</span>
-          <strong>${secondaryValue}</strong>
-        </div>
-        <button class="hud-mini-metric hud-cemetery${discardTargetClass}" type="button" data-cemetery-player="${escapeHtml(player.id)}">
-          <span>Cemiterio</span>
-          <strong>${player.cemetery.length}</strong>
-        </button>
-      </div>
+      ${hideHand ? `${identityMarkup}${metricsMarkup}` : `${metricsMarkup}${identityMarkup}`}
     </div>
   `;
 }
@@ -2854,12 +3018,14 @@ function renderCardButton(cardId, options = {}) {
   const card = app.cardByCode.get(cardId);
   if (!card) return "";
   const isFieldTile = options.zone === "battlefield" || options.zone === "bot-battlefield";
-  const image = isFieldTile ? getCardArt(card) : getCardImage(card);
+  const isHandTile = options.zone === "hand";
+  const image = isFieldTile || isHandTile ? getCardArt(card) : getCardImage(card);
   const typeCode = getCardTypeCode(card);
   const isCharacter = typeCode === "PER";
   const attack = toNumber(card.stats?.attack, 0);
   const resistance = toNumber(card.stats?.resistance, 0);
   const damage = toNumber(options.damage, 0);
+  const virtuePips = renderCardVirtuePips(card);
   const statusPips = [
     ...(options.combatLabels || []).map((label) => `<span title="Combate">${escapeHtml(label)}</span>`),
     options.declared && !(options.combatLabels || []).some((label) => label.startsWith("A")) ? `<span title="Atacante declarado">A</span>` : ""
@@ -2867,7 +3033,9 @@ function renderCardButton(cardId, options = {}) {
   const classes = [
     "play-card",
     isFieldTile ? "is-field-tile" : "",
+    isHandTile ? "is-hand-tile" : "",
     isFieldTile ? `is-field-type-${String(typeCode || "CRD").toLowerCase()}` : "",
+    isHandTile ? `is-hand-type-${String(typeCode || "CRD").toLowerCase()}` : "",
     isLandscapeCard(card) ? "is-landscape" : "",
     options.selected ? "is-selected" : "",
     options.actionable ? "is-actionable-card" : "",
@@ -2893,7 +3061,11 @@ function renderCardButton(cardId, options = {}) {
 
   return `
     <button class="${classes}" type="button" ${data} ${draggable} ${style} data-zoom-card="${escapeHtml(cardId)}" title="${escapeHtml(getCardName(card))}">
-      <img src="${escapeHtml(image)}" alt="${escapeHtml(getCardName(card))}" loading="lazy" draggable="false" />
+      <img class="card-main-art" src="${escapeHtml(image)}" alt="${escapeHtml(getCardName(card))}" loading="lazy" draggable="false" />
+      ${isHandTile ? `<span class="hand-card-cost">${escapeHtml(getCost(card))}</span>` : ""}
+      ${isHandTile && virtuePips ? `<span class="hand-card-pips">${virtuePips}</span>` : ""}
+      ${isHandTile ? `<span class="card-type-gem card-type-gem--${String(typeCode || "CRD").toLowerCase()}"></span>` : ""}
+      ${isHandTile && isCharacter ? `<span class="hand-card-stats">${attack}/${resistance}</span>` : ""}
       ${isFieldTile && statusPips ? `<span class="field-card-pips">${statusPips}</span>` : ""}
       ${isFieldTile && isCharacter ? `<span class="field-card-stats">${attack}/${resistance}</span>` : ""}
       ${isFieldTile && isCharacter && damage > 0 ? `<span class="field-card-damage">${damage}</span>` : ""}
@@ -2912,7 +3084,7 @@ function renderEssence(player, compact = false) {
     const typeCode = getCardTypeCode(card);
     return `
       <button class="essence-card is-essence-type-${String(typeCode || "CRD").toLowerCase()} ${isSpent ? "is-spent" : ""} ${actionable ? "is-actionable-essence" : ""}" type="button" data-essence-index="${index}" data-zoom-card="${escapeHtml(cardId)}" title="${escapeHtml(getCardName(card))}">
-        <img src="${escapeHtml(getCardArt(card))}" alt="${escapeHtml(getCardName(card))}" loading="lazy" draggable="false" />
+        <img class="card-main-art" src="${escapeHtml(getCardArt(card))}" alt="${escapeHtml(getCardName(card))}" loading="lazy" draggable="false" />
       </button>
     `;
   }).join("");
@@ -2950,6 +3122,96 @@ function showCemeteryModal(playerId) {
             `;
           }).join("")
           : `<p class="zone-modal-empty">Nenhuma carta no cemiterio.</p>`}
+      </div>
+    </div>
+  `;
+  modal.classList.add("is-visible");
+}
+
+function showReserveModal(playerId) {
+  const player = app.game?.players?.[playerId];
+  if (!player) return;
+  let modal = document.getElementById("zoneModal");
+  if (!modal) {
+    modal = document.createElement("div");
+    modal.id = "zoneModal";
+    modal.className = "zone-modal";
+    document.body.appendChild(modal);
+  }
+  const cards = player.reserve || [];
+  const canReveal = player.id === "human";
+  modal.innerHTML = `
+    <div class="zone-modal-panel zone-modal-panel--reserve" role="dialog" aria-modal="true" aria-label="Reserva de ${escapeHtml(player.label)}">
+      <div class="zone-modal-head">
+        <div>
+          <span>Zona de reserva</span>
+          <strong>${escapeHtml(player.label)} - ${cards.length} carta${cards.length === 1 ? "" : "s"}</strong>
+        </div>
+        <button type="button" data-close-zone-modal>Fechar</button>
+      </div>
+      <div class="zone-modal-grid">
+        ${cards.length
+          ? cards.map((cardId) => {
+            const card = app.cardByCode.get(cardId);
+            return canReveal
+              ? `
+                <button class="zone-modal-card" type="button" data-zoom-card="${escapeHtml(cardId)}" title="${escapeHtml(getCardName(card))}">
+                  <img src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" loading="lazy" draggable="false" />
+                </button>
+              `
+              : `
+                <div class="zone-modal-card is-card-back" title="Carta da Reserva">
+                  <img src="${escapeHtml(CARD_BACK_IMAGE)}" alt="Carta oculta da Reserva" loading="lazy" draggable="false" />
+                </div>
+              `;
+          }).join("")
+          : `<p class="zone-modal-empty">Nenhuma carta na Reserva.</p>`}
+      </div>
+    </div>
+  `;
+  modal.classList.add("is-visible");
+}
+
+function showVirtuesModal(playerId) {
+  const player = app.game?.players?.[playerId];
+  if (!player) return;
+  let modal = document.getElementById("zoneModal");
+  if (!modal) {
+    modal = document.createElement("div");
+    modal.id = "zoneModal";
+    modal.className = "zone-modal";
+    document.body.appendChild(modal);
+  }
+  const state = player.virtues || {};
+  modal.innerHTML = `
+    <div class="zone-modal-panel zone-modal-panel--virtues" role="dialog" aria-modal="true" aria-label="Virtudes de ${escapeHtml(player.label)}">
+      <div class="zone-modal-head">
+        <div>
+          <span>Eixos morais</span>
+          <strong>${escapeHtml(player.label)}</strong>
+        </div>
+        <button type="button" data-close-zone-modal>Fechar</button>
+      </div>
+      <div class="virtue-modal-grid">
+        ${app.virtues.map((virtue) => {
+          const value = toNumber(state[String(virtue.id)], 0);
+          const level = getVirtueLevelData(virtue, value);
+          const icon = getVirtueIcon(virtue);
+          return `
+            <article class="virtue-modal-card ${value > 0 ? "is-active" : ""}">
+              <div class="virtue-modal-head">
+                ${icon ? `<img src="${escapeHtml(icon)}" alt="${escapeHtml(getVirtueName(virtue))}" loading="lazy" draggable="false" />` : ""}
+                <div>
+                  <span>${virtue.polarity === "vice" ? "Desvirtude" : "Virtude"}</span>
+                  <strong>${escapeHtml(getVirtueName(virtue))}</strong>
+                </div>
+                <b>${value > 0 ? `Nv${value}` : "0"}</b>
+              </div>
+              <p>${escapeHtml(value > 0 ? localize(level?.text) : localize(virtue.flavor) || "Nenhum efeito ativo.")}</p>
+              ${value > 0 && level ? `<small>${escapeHtml(localize(level.title))}</small>` : `<small>Neutro</small>`}
+            </article>
+          `;
+        }).join("")}
       </div>
     </div>
   `;
@@ -3037,6 +3299,9 @@ function renderActionState() {
   els.playCardButton.textContent = "Jogar";
   els.attackButton.textContent = selectedAttackers.length ? `Atacar ${selectedAttackers.length}` : "Enviar ataque";
   els.nextPhaseButton.textContent = getNextActionLabel(app.game, priorityOpen);
+  els.attackButton.dataset.actionSubtitle = selectedAttackers.length ? "Confirmar todos os atacantes" : "Selecione atacantes no campo";
+  els.nextPhaseButton.dataset.actionSubtitle = getNextActionSubtitle(app.game, priorityOpen);
+  els.endTurnButton.dataset.actionSubtitle = "Passar a vez ao oponente";
   els.drawButton.hidden = true;
   els.consecrateButton.hidden = true;
   els.playCardButton.hidden = true;
@@ -3052,6 +3317,20 @@ function renderActionState() {
   els.nextPhaseButton.disabled = !showNextPhase;
   els.endTurnButton.disabled = !showEndTurn;
   if (els.concedeButton) els.concedeButton.disabled = !app.game || app.game.status !== "active";
+}
+
+function getNextActionSubtitle(game, priorityOpen = false) {
+  if (priorityOpen) return "Não fazer nada nesta janela";
+  const phase = currentPhase(game);
+  const subtitles = {
+    prepare: "Continuar para a compra",
+    draw: "Continuar para a Consagração",
+    consecration: "Omitir a ação estrutural",
+    preparation: "Avançar para o Combate",
+    combat: game.combat?.step === "attackers-declared" ? "Abrir declaração de bloqueadores" : "Encerrar a etapa de Combate",
+    regroup: "Finalizar o turno"
+  };
+  return subtitles[phase] || "Continuar a partida";
 }
 
 function getNextActionLabel(game, priorityOpen = false) {
@@ -3299,25 +3578,29 @@ function toggleSound() {
 
 async function loadData() {
   els.startGameButton.textContent = "Carregando dados...";
-  const [cardsResponse, decksResponse, typesResponse, collectionsResponse] = await Promise.all([
+  const [cardsResponse, decksResponse, typesResponse, collectionsResponse, virtuesResponse] = await Promise.all([
     fetch(DATA_URLS.cards),
     fetch(DATA_URLS.decks),
     fetch(DATA_URLS.types),
-    fetch(DATA_URLS.collections)
+    fetch(DATA_URLS.collections),
+    fetch(DATA_URLS.virtues)
   ]);
-  if (!cardsResponse.ok || !decksResponse.ok || !typesResponse.ok || !collectionsResponse.ok) {
+  if (!cardsResponse.ok || !decksResponse.ok || !typesResponse.ok || !collectionsResponse.ok || !virtuesResponse.ok) {
     throw new Error("Nao foi possivel carregar os dados do jogo.");
   }
 
-  const [cardsPayload, decksPayload, typesPayload, collectionsPayload] = await Promise.all([
+  const [cardsPayload, decksPayload, typesPayload, collectionsPayload, virtuesPayload] = await Promise.all([
     cardsResponse.json(),
     decksResponse.json(),
     typesResponse.json(),
-    collectionsResponse.json()
+    collectionsResponse.json(),
+    virtuesResponse.json()
   ]);
 
   app.typesById = new Map((typesPayload.types || []).map((type) => [Number(type.id), type]));
   app.collectionsById = new Map((collectionsPayload.collections || []).map((collection) => [Number(collection.id), collection]));
+  app.virtues = virtuesPayload.virtues || [];
+  app.virtuesById = new Map(app.virtues.map((virtue) => [Number(virtue.id), virtue]));
   app.cards = (cardsPayload.cards || []).map((card, index) => normalizeCard(card, cardsPayload.defaults || {}, index));
   app.cardByCode = new Map(app.cards.map((card) => [card.code, card]));
   app.decks = decksPayload.decks || [];
@@ -3383,7 +3666,7 @@ function bindEvents() {
   });
 
   document.addEventListener("contextmenu", (event) => {
-    if (event.target.closest(".play-card, .essence-card, .zone-modal-card, .combat-resolution-chip, .block-prompt, #cardZoomPreview, .played-card-animation, .draw-animation")) {
+    if (event.target.closest(".play-card, .essence-card, .identity-dock-tile, .identity-dock-essence, .zone-modal-card, .combat-resolution-chip, .block-prompt, #cardZoomPreview, .played-card-animation, .draw-animation")) {
       event.preventDefault();
     }
   });
@@ -3441,6 +3724,27 @@ function bindEvents() {
     const closeButton = event.target.closest("[data-close-zone-modal]");
     if (closeButton || event.target.id === "zoneModal") {
       hideZoneModal();
+      return;
+    }
+    if (event.target.closest("[data-close-temple-dock]")) {
+      app.expandedTemplePlayer = "";
+      renderGame();
+      return;
+    }
+    const templeButton = event.target.closest("[data-temple-player]");
+    if (templeButton) {
+      app.expandedTemplePlayer = app.expandedTemplePlayer === templeButton.dataset.templePlayer ? "" : templeButton.dataset.templePlayer;
+      renderGame();
+      return;
+    }
+    const virtuesButton = event.target.closest("[data-virtues-player]");
+    if (virtuesButton) {
+      showVirtuesModal(virtuesButton.dataset.virtuesPlayer);
+      return;
+    }
+    const reserveButton = event.target.closest("[data-reserve-player]");
+    if (reserveButton) {
+      showReserveModal(reserveButton.dataset.reservePlayer);
       return;
     }
     const cemeteryButton = event.target.closest("[data-cemetery-player]");
@@ -3511,6 +3815,7 @@ function bindDragAndDrop() {
     }
     event.dataTransfer.effectAllowed = "move";
     event.dataTransfer.setData("text/plain", JSON.stringify(app.dragPayload));
+    setNativeDragImage(event, getDragPreviewCardId(app.dragPayload));
   });
 
   document.addEventListener("dragend", () => {
@@ -3691,8 +3996,31 @@ function createDragGhost(cardId) {
   const card = app.cardByCode.get(cardId);
   const ghost = document.createElement("div");
   ghost.className = "drag-ghost";
-  ghost.innerHTML = `<img src="${escapeHtml(getCardImage(card))}" alt="" />`;
+  ghost.innerHTML = `<img src="${escapeHtml(getCardArt(card))}" alt="" />`;
   return ghost;
+}
+
+function getDragPreviewCardId(payload) {
+  if (!payload || !app.game) return "";
+  if (payload.zone === "hand" || payload.zone === "essence") return payload.id;
+  if (payload.zone === "battlefield") {
+    return app.game.players.human.battlefield.find((item) => item.uid === payload.id)?.cardId || "";
+  }
+  if (payload.zone === "blocker") {
+    return app.game.players.human.battlefield.find((item) => item.uid === payload.id)?.cardId || "";
+  }
+  return "";
+}
+
+function setNativeDragImage(event, cardId) {
+  const card = app.cardByCode.get(cardId);
+  if (!card || !event.dataTransfer?.setDragImage) return;
+  const ghost = document.createElement("div");
+  ghost.className = "native-drag-preview";
+  ghost.innerHTML = `<img src="${escapeHtml(getCardArt(card))}" alt="" />`;
+  document.body.appendChild(ghost);
+  event.dataTransfer.setDragImage(ghost, 38, 52);
+  window.setTimeout(() => ghost.remove(), 0);
 }
 
 function getDropZoneFromPoint(x, y) {

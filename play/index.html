@@ -61,14 +61,16 @@
       </div>
     </section>
 
-    <section class="play-board is-hidden" id="gameView" aria-live="polite">
-      <section class="player-area opponent-area" id="botArea"></section>
+    <section class="play-board play-board--new-ui is-hidden" id="gameView" aria-live="polite">
+      <section class="player-dock-shell player-dock-shell--opponent">
+        <section class="player-area opponent-area" id="botArea"></section>
+        <div class="essence-panel essence-panel--bot">
+          <div class="essence-row" id="botEssence" aria-label="Essencias do bot"></div>
+        </div>
+      </section>
 
       <section class="battlefield-shell">
         <div class="battlefield-column battlefield-column--bot">
-          <div class="essence-panel essence-panel--bot">
-            <div class="essence-row" id="botEssence" aria-label="Essencias do bot"></div>
-          </div>
           <div class="battlefield-row" id="botBattlefield"></div>
         </div>
 
@@ -82,16 +84,14 @@
 
         <div class="battlefield-column battlefield-column--human">
           <div class="battlefield-row" id="humanBattlefield"></div>
-          <div class="essence-panel essence-panel--human">
-            <div class="essence-row" id="humanEssence" aria-label="Essencias do jogador"></div>
-          </div>
         </div>
       </section>
 
-      <section class="player-area human-area" id="humanArea"></section>
-
-      <section class="hand-dock">
-        <div class="hand-row" id="humanHand"></div>
+      <section class="player-dock-shell player-dock-shell--human">
+        <section class="player-area human-area" id="humanArea"></section>
+        <div class="essence-panel essence-panel--human">
+          <div class="essence-row" id="humanEssence" aria-label="Essencias do jogador"></div>
+        </div>
       </section>
 
       <aside class="stack-edge-panel" id="stackEdgePanel" aria-live="polite"></aside>
@@ -110,6 +110,10 @@
           <button type="button" id="endTurnButton">Encerrar turno</button>
         </div>
       </aside>
+
+      <section class="hand-dock">
+        <div class="hand-row" id="humanHand"></div>
+      </section>
 
       <div class="game-result is-hidden" id="gameResult">
         <div>

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ADONAI Card Game — Wireframe UI Validada</title>
+  <meta name="description" content="Protótipo estático em HTML, CSS e JS da UI validada para ADONAI Card Game." />
+  <link rel="stylesheet" href="./play.css" />
+</head>
+<body>
+  <div class="page-bg" aria-hidden="true"></div>
+
+  <main class="prototype-shell">
+    <header class="prototype-header">
+      <div>
+        <span class="kicker">ADONAI CARD GAME</span>
+        <h1>Wireframe jogável da UI validada</h1>
+        <p>
+          Protótipo limpo, leve e independente, recriando os layouts A–E: tela principal,
+          consagração/profanação, alistamento, combate e pilha/resposta.
+        </p>
+      </div>
+
+      <div class="toolbar" aria-label="Filtros de tela">
+        <button type="button" class="toolbar-button is-active" data-filter="all">Todos</button>
+        <button type="button" class="toolbar-button" data-filter="A">A</button>
+        <button type="button" class="toolbar-button" data-filter="B">B</button>
+        <button type="button" class="toolbar-button" data-filter="C">C</button>
+        <button type="button" class="toolbar-button" data-filter="D">D</button>
+        <button type="button" class="toolbar-button" data-filter="E">E</button>
+      </div>
+    </header>
+
+    <section class="showcase" id="showcase" aria-live="polite"></section>
+  </main>
+
+  <dialog class="card-modal" id="cardModal">
+    <button class="modal-close" type="button" data-close-modal aria-label="Fechar">×</button>
+    <div class="modal-card" id="modalCard"></div>
+    <div class="modal-copy" id="modalCopy"></div>
+  </dialog>
+
+  <script src="./play.js"></script>
+</body>
+</html>
