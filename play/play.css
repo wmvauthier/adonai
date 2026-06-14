@@ -6608,7 +6608,7 @@ button.dock-metric {
 
 .play-board--new-ui .player-dock-identity:not(.is-expanded) .identity-dock-tile strong {
   position: absolute;
-  right: 5px;
+  /* right: 5px; */
   bottom: 4px;
   z-index: 2;
   display: inline-flex;
@@ -7844,83 +7844,6 @@ textarea {
   text-overflow: clip;
 }
 
-.play-board--new-ui .phase-round-card {
-  width: min(96%, 430px);
-  min-width: 0;
-  min-height: clamp(34px, 6.3dvh, 44px);
-  display: grid;
-  grid-template-columns: clamp(28px, 7vw, 34px) minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 9px;
-  border: 1px solid rgba(215, 161, 66, .3);
-  border-radius: 10px;
-  background:
-    radial-gradient(circle at 12% 50%, rgba(255, 226, 154, .16), transparent 44%),
-    linear-gradient(90deg, rgba(118, 73, 20, .5), rgba(16, 12, 8, .82) 42%, rgba(28, 18, 9, .72));
-  color: #f7e7be;
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, .025),
-    0 6px 18px rgba(0, 0, 0, .24);
-}
-
-.play-board--new-ui .phase-round-card > i {
-  width: clamp(24px, 6vw, 30px);
-  aspect-ratio: 1;
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(255, 226, 154, .42);
-  border-radius: 50%;
-  background:
-    radial-gradient(circle, rgba(255, 222, 139, .22), transparent 62%),
-    rgba(0, 0, 0, .28);
-}
-
-.play-board--new-ui .phase-round-card > i::before {
-  content: "✦";
-  color: var(--ui-gold-strong);
-  font-size: .9rem;
-  line-height: 1;
-}
-
-.play-board--new-ui .phase-round-card strong {
-  display: block;
-  color: var(--ui-gold-strong);
-  font-size: clamp(.64rem, 2.4vw, .78rem);
-  font-weight: 950;
-  letter-spacing: .08em;
-  line-height: 1;
-  text-transform: uppercase;
-}
-
-.play-board--new-ui .phase-round-card small {
-  display: block;
-  margin-top: 2px;
-  color: rgba(245, 241, 232, .8);
-  font-size: clamp(.55rem, 2.1vw, .68rem);
-  line-height: 1.05;
-}
-
-.play-board--new-ui .phase-round-card em {
-  display: grid;
-  justify-items: end;
-  color: rgba(245, 241, 232, .7);
-  font-size: .52rem;
-  font-style: normal;
-  font-weight: 850;
-  letter-spacing: .05em;
-  line-height: 1;
-  text-transform: uppercase;
-}
-
-.play-board--new-ui .phase-round-card b {
-  display: block;
-  margin-top: 2px;
-  color: var(--ui-gold-strong);
-  font-size: .82rem;
-  line-height: 1;
-}
-
 @media (max-height: 740px) {
   .play-board--new-ui .battlefield-shell {
     grid-template-rows: minmax(0, 1fr) clamp(76px, 13dvh, 92px) minmax(0, 1fr);
@@ -7931,28 +7854,18 @@ textarea {
     min-height: clamp(76px, 13dvh, 92px);
     height: clamp(76px, 13dvh, 92px);
   }
-
-  .play-board--new-ui .phase-round-card {
-    grid-template-columns: minmax(0, 1fr) auto;
-  }
-
-  .play-board--new-ui .phase-round-card > i {
-    display: none;
-  }
 }
 
 /* Separacao do resumo da etapa abaixo da mao */
 .play-board--new-ui {
-  --phase-round-h: clamp(48px, 8.4dvh, 62px);
   grid-template-areas: none;
-  grid-template-rows: auto minmax(0, 1fr) auto var(--action-h) var(--hand-h) var(--phase-round-h);
+  grid-template-rows: auto minmax(0, 1fr) auto var(--action-h) var(--hand-h);
 }
 
 .play-board--new-ui > .player-dock-shell,
 .play-board--new-ui > .battlefield-shell,
 .play-board--new-ui > .action-dock,
-.play-board--new-ui > .hand-dock,
-.play-board--new-ui > .phase-round-dock {
+.play-board--new-ui > .hand-dock {
   grid-area: auto;
 }
 
@@ -7982,25 +7895,6 @@ textarea {
   padding-inline: clamp(24px, 6vw, 34px);
 }
 
-.play-board--new-ui .phase-round-dock {
-  min-width: 0;
-  width: 100%;
-  min-height: var(--phase-round-h);
-  height: var(--phase-round-h);
-  display: grid;
-  align-items: stretch;
-  justify-items: stretch;
-  overflow: hidden;
-}
-
-.play-board--new-ui .phase-round-card {
-  width: 100%;
-  max-width: none;
-  min-height: 0;
-  height: 100%;
-  grid-template-columns: clamp(30px, 7.2vw, 38px) minmax(0, 1fr) auto;
-}
-
 .play-board--new-ui .play-card.is-hand-type-mil .hand-card-cost,
 .play-board--new-ui .play-card.is-hand-type-art .hand-card-cost {
   border-color: rgba(0, 0, 0, .68);
@@ -8024,10 +7918,6 @@ textarea {
 }
 
 @media (max-height: 740px) {
-  .play-board--new-ui {
-    --phase-round-h: clamp(44px, 7.4dvh, 54px);
-  }
-
   .play-board--new-ui .battlefield-shell {
     grid-template-rows: minmax(0, 1fr) clamp(46px, 7.8dvh, 56px) minmax(0, 1fr);
   }
@@ -8036,14 +7926,6 @@ textarea {
   .play-board--new-ui .phase-panel {
     min-height: clamp(46px, 7.8dvh, 56px);
     height: clamp(46px, 7.8dvh, 56px);
-  }
-
-  .play-board--new-ui .phase-round-card {
-    grid-template-columns: minmax(0, 1fr) auto;
-  }
-
-  .play-board--new-ui .phase-round-card > i {
-    display: none;
   }
 }
 
@@ -8197,4 +8079,1929 @@ textarea {
   text-shadow:
     0 1px 2px #000,
     0 0 3px rgba(255, 255, 255, .2);
+}
+
+/* Remocao definitiva do resumo inferior e estabilizacao do indicador de fase */
+.play-board--new-ui {
+  grid-template-rows: auto minmax(0, 1fr) auto var(--action-h) var(--hand-h) !important;
+}
+
+.play-board--new-ui .battlefield-shell {
+  grid-template-rows: minmax(0, 1fr) clamp(52px, 8.6dvh, 64px) minmax(0, 1fr) !important;
+}
+
+.play-board--new-ui .stack-log-panel,
+.play-board--new-ui .phase-panel {
+  min-height: clamp(52px, 8.6dvh, 64px) !important;
+  height: clamp(52px, 8.6dvh, 64px) !important;
+  overflow: visible;
+}
+
+.play-board--new-ui .phase-panel {
+  position: relative;
+  z-index: 4;
+  width: 100%;
+  display: grid;
+  place-items: center;
+  padding: 0 clamp(8px, 2.5vw, 14px);
+}
+
+.play-board--new-ui .phase-track {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  overflow: visible;
+}
+
+.play-board--new-ui .phase-current {
+  width: 100% !important;
+  height: min(100%, 58px);
+  max-width: none !important;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto auto auto;
+  align-content: center;
+  justify-items: center;
+  gap: 2px;
+  padding: 5px clamp(28px, 7vw, 40px);
+  overflow: visible;
+  white-space: normal;
+}
+
+.play-board--new-ui .phase-current strong {
+  max-width: 100%;
+  font-size: clamp(.78rem, 3.3vw, 1rem);
+  line-height: 1;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.play-board--new-ui .phase-current em {
+  max-width: 100%;
+  line-height: 1.05;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.zone-modal-panel--moral-choice {
+  width: min(92vw, 520px);
+  border-color: rgba(215, 161, 66, .44);
+  background:
+    radial-gradient(circle at 12% 8%, rgba(255, 230, 160, .12), transparent 34%),
+    linear-gradient(145deg, rgba(23, 18, 11, .98), rgba(3, 7, 7, .98));
+}
+
+.moral-choice-description {
+  margin: 0 0 14px;
+  color: rgba(245, 241, 232, .78);
+  font-size: .88rem;
+  line-height: 1.35;
+}
+
+.moral-choice-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.moral-choice-card {
+  width: 100%;
+  min-height: 74px;
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  border: 1px solid rgba(215, 161, 66, .38);
+  border-radius: 12px;
+  background:
+    linear-gradient(120deg, rgba(215, 161, 66, .16), rgba(0, 0, 0, .42)),
+    rgba(7, 11, 10, .9);
+  color: #f7e7be;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .03);
+}
+
+.moral-choice-card:hover,
+.moral-choice-card:focus-visible {
+  border-color: rgba(77, 226, 255, .76);
+  box-shadow:
+    0 0 0 1px rgba(77, 226, 255, .24),
+    0 0 20px rgba(77, 226, 255, .16);
+}
+
+.moral-choice-card img {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, .75));
+}
+
+.moral-choice-card strong,
+.moral-choice-card small,
+.moral-choice-card em {
+  display: block;
+}
+
+.moral-choice-card strong {
+  color: #fff7d8;
+  font-size: .98rem;
+  font-weight: 900;
+}
+
+.moral-choice-card small {
+  margin-top: 2px;
+  color: rgba(245, 241, 232, .82);
+  font-size: .78rem;
+  line-height: 1.15;
+}
+
+.moral-choice-card em {
+  margin-top: 5px;
+  color: rgba(77, 226, 255, .82);
+  font-size: .68rem;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+/* Ajustes finais de proporcao, fase e virtudes no dock */
+.play-board--new-ui {
+  --action-h: clamp(50px, 10.5dvh, 62px) !important;
+  --hand-h: clamp(90px, 18.5dvh, 112px) !important;
+  grid-template-rows: auto minmax(0, 1fr) auto var(--action-h) var(--hand-h) !important;
+}
+
+.play-board--new-ui .action-dock {
+  min-height: var(--action-h) !important;
+  height: var(--action-h) !important;
+  padding: 5px !important;
+}
+
+.play-board--new-ui .hand-dock {
+  min-height: var(--hand-h) !important;
+  height: var(--hand-h) !important;
+}
+
+.play-board--new-ui .hand-row .play-card,
+.play-board--new-ui .hand-dock.is-hand-expanded .hand-row .play-card {
+  height: calc(100% - 4px) !important;
+  width: calc((var(--hand-h) - 4px) * .72) !important;
+  flex-basis: calc((var(--hand-h) - 4px) * .72) !important;
+}
+
+.play-board--new-ui .battlefield-shell {
+  grid-template-rows: minmax(0, 1fr) clamp(50px, 8.6dvh, 58px) minmax(0, 1fr) !important;
+}
+
+.play-board--new-ui .stack-log-panel {
+  position: relative !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: clamp(50px, 8.6dvh, 58px) !important;
+  height: clamp(50px, 8.6dvh, 58px) !important;
+  display: block !important;
+  overflow: visible !important;
+  padding: 0 !important;
+}
+
+.play-board--new-ui .phase-panel {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  display: grid !important;
+  place-items: center !important;
+  overflow: visible !important;
+  padding: 0 clamp(10px, 3vw, 14px) !important;
+}
+
+.play-board--new-ui .phase-track {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: visible !important;
+}
+
+.play-board--new-ui .phase-current {
+  box-sizing: border-box !important;
+  width: min(100%, 360px) !important;
+  max-width: calc(100% - 8px) !important;
+  min-width: min(238px, calc(100% - 8px)) !important;
+  height: clamp(42px, 7.8dvh, 50px) !important;
+  min-height: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 2px !important;
+  padding: 5px 28px !important;
+  overflow: visible !important;
+  clip-path: polygon(15px 0, calc(100% - 15px) 0, 100% 50%, calc(100% - 15px) 100%, 15px 100%, 0 50%);
+}
+
+.play-board--new-ui .phase-current small,
+.play-board--new-ui .phase-current strong,
+.play-board--new-ui .phase-current em {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+}
+
+.play-board--new-ui .phase-current small {
+  font-size: clamp(.42rem, 1.65vw, .54rem) !important;
+  line-height: 1 !important;
+}
+
+.play-board--new-ui .phase-current strong {
+  font-size: clamp(.78rem, 3.2vw, .98rem) !important;
+  line-height: 1 !important;
+  letter-spacing: .045em !important;
+}
+
+.play-board--new-ui .phase-current em {
+  font-size: clamp(.42rem, 1.65vw, .56rem) !important;
+  line-height: 1.05 !important;
+}
+
+.play-board--new-ui .dock-metric--virtues {
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: auto minmax(0, 1fr) !important;
+  gap: 2px !important;
+  padding: 3px !important;
+}
+
+.play-board--new-ui .dock-metric--virtues > span {
+  grid-column: 1;
+  max-width: 100%;
+}
+
+.play-board--new-ui .dock-virtue-icons {
+  grid-column: 1;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  display: flex !important;
+  flex-wrap: wrap;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  gap: 1px 2px;
+  padding: 0;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.play-board--new-ui .dock-virtue-chip {
+  position: relative;
+  width: clamp(12px, 3vw, 15px);
+  height: clamp(12px, 3vw, 15px);
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+}
+
+.play-board--new-ui .dock-virtue-chip img,
+.play-board--new-ui .dock-virtue-chip i {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: 50%;
+  object-fit: contain;
+  filter:
+    drop-shadow(0 1px 2px rgba(0, 0, 0, .9))
+    drop-shadow(0 0 4px rgba(255, 226, 154, .22));
+}
+
+.play-board--new-ui .dock-virtue-chip.is-vice img {
+  filter:
+    drop-shadow(0 1px 2px rgba(0, 0, 0, .9))
+    drop-shadow(0 0 4px rgba(255, 94, 94, .22));
+}
+
+.play-board--new-ui .dock-virtue-chip b {
+  position: absolute;
+  right: -4px;
+  bottom: -4px;
+  min-width: 10px;
+  height: 10px;
+  display: grid;
+  place-items: center;
+  padding: 0 2px;
+  border: 1px solid rgba(0, 0, 0, .85);
+  border-radius: 999px;
+  background: rgba(255, 247, 216, .95);
+  color: #050505;
+  font-size: .48rem;
+  font-weight: 950;
+  line-height: 1;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .7);
+}
+
+.play-board--new-ui .dock-virtue-chip.is-vice b {
+  background: rgba(255, 150, 150, .95);
+}
+
+.play-board--new-ui .dock-virtue-empty {
+  color: rgba(245, 241, 232, .74);
+  font-size: clamp(.72rem, 2.8vw, .9rem);
+  font-weight: 950;
+}
+
+.zone-modal {
+  overflow: hidden;
+}
+
+.zone-modal-panel--virtues,
+.zone-modal-panel--moral-choice {
+  max-height: min(88dvh, 760px);
+  overflow: hidden;
+}
+
+.zone-modal-panel--virtues .virtue-modal-grid,
+.zone-modal-panel--moral-choice .moral-choice-grid {
+  min-height: 0;
+  padding: 14px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+.zone-modal-panel--moral-choice {
+  grid-template-rows: auto auto minmax(0, 1fr);
+}
+
+.zone-modal-panel--moral-choice .moral-choice-description {
+  margin: 0;
+  padding: 12px 14px 0;
+}
+
+.moral-choice-card p {
+  margin: 5px 0 0;
+  color: rgba(245, 241, 232, .74);
+  font-size: .72rem;
+  line-height: 1.28;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* Ajustes finais de compactacao e legibilidade */
+.play-board--new-ui {
+  --action-h: clamp(44px, 9dvh, 54px) !important;
+  --hand-h: clamp(82px, 16.5dvh, 102px) !important;
+  grid-template-rows: auto minmax(0, 1fr) auto var(--action-h) var(--hand-h) !important;
+}
+
+.play-board--new-ui .action-dock {
+  min-height: var(--action-h) !important;
+  height: var(--action-h) !important;
+  padding: 4px !important;
+}
+
+.play-board--new-ui .hand-dock {
+  min-height: var(--hand-h) !important;
+  height: var(--hand-h) !important;
+}
+
+.play-board--new-ui .hand-row .play-card,
+.play-board--new-ui .hand-dock.is-hand-expanded .hand-row .play-card {
+  height: calc(100% - 4px) !important;
+  width: calc((var(--hand-h) - 4px) * .72) !important;
+  flex-basis: calc((var(--hand-h) - 4px) * .72) !important;
+}
+
+.play-board--new-ui .action-grid button {
+  min-height: 0 !important;
+  padding: 5px 8px !important;
+}
+
+.play-board--new-ui .action-grid button::after {
+  margin-top: 1px !important;
+  font-size: clamp(.48rem, 1.8vw, .58rem) !important;
+}
+
+.play-board--new-ui .player-dock-metrics {
+  grid-template-columns:
+    minmax(0, .72fr)
+    minmax(0, .72fr)
+    minmax(112px, 1.95fr)
+    minmax(0, .72fr)
+    minmax(0, .72fr) !important;
+  gap: 3px !important;
+}
+
+.play-board--new-ui .dock-metric {
+  padding-inline: 2px !important;
+  column-gap: 2px !important;
+}
+
+.play-board--new-ui .dock-metric:not(.dock-metric--virtues) {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+
+.play-board--new-ui .dock-metric:not(.dock-metric--virtues) .dock-metric-icon {
+  display: none !important;
+}
+
+.play-board--new-ui .dock-metric span {
+  font-size: clamp(.34rem, 1.28vw, .43rem) !important;
+}
+
+.play-board--new-ui .dock-metric strong {
+  font-size: clamp(.68rem, 2.65vw, .86rem) !important;
+}
+
+.play-board--new-ui .dock-metric--virtues {
+  padding-inline: 4px !important;
+}
+
+.play-board--new-ui .dock-virtue-icons {
+  flex-wrap: nowrap !important;
+  justify-content: center !important;
+  gap: 0 1px !important;
+}
+
+.play-board--new-ui .dock-virtue-chip {
+  width: clamp(15px, 3.7vw, 17px) !important;
+  height: clamp(15px, 3.7vw, 17px) !important;
+}
+
+.play-board--new-ui .dock-virtue-chip b {
+  right: -5px !important;
+  bottom: -5px !important;
+  min-width: 11px !important;
+  height: 11px !important;
+  font-size: .5rem !important;
+}
+
+.play-board--new-ui .phase-current {
+  width: min(100%, 372px) !important;
+  max-width: calc(100% - 8px) !important;
+  min-width: min(248px, calc(100% - 8px)) !important;
+  height: clamp(42px, 8dvh, 52px) !important;
+  padding: 5px 24px !important;
+}
+
+.play-board--new-ui .phase-current small {
+  display: none !important;
+}
+
+.play-board--new-ui .phase-current strong {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.play-board--new-ui .phase-current em {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  color: rgba(245, 241, 232, .82);
+  font-size: clamp(.42rem, 1.62vw, .55rem) !important;
+  line-height: 1.08 !important;
+  text-align: center !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+}
+
+.moral-choice-card {
+  min-height: 66px !important;
+  grid-template-columns: 48px minmax(0, 1fr) !important;
+  gap: 10px !important;
+}
+
+.moral-choice-card small {
+  display: none !important;
+}
+
+.moral-choice-card em {
+  margin-top: 2px !important;
+}
+
+.moral-choice-card p {
+  margin-top: 3px !important;
+  font-size: .7rem !important;
+  line-height: 1.22 !important;
+}
+
+/* Ajustes finais de modal moral, badges e identidade */
+.moral-choice-card {
+  height: auto !important;
+  min-height: 0 !important;
+  align-items: start !important;
+  overflow: visible !important;
+}
+
+.moral-choice-card > span {
+  min-width: 0 !important;
+  display: block !important;
+  overflow: visible !important;
+}
+
+.moral-choice-card strong {
+  display: none !important;
+}
+
+.moral-choice-card em {
+  display: block !important;
+  margin: 0 !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+.moral-choice-card p {
+  display: block !important;
+  max-height: none !important;
+  overflow: visible !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
+}
+
+.zone-modal-panel--moral-choice .moral-choice-grid {
+  gap: 8px !important;
+}
+
+.play-board--new-ui .dock-metric--virtues,
+.play-board--new-ui .dock-metric--virtues .dock-virtue-icons,
+.play-board--new-ui .dock-metric--virtues .dock-virtue-chip {
+  overflow: visible !important;
+}
+
+.play-board--new-ui .dock-virtue-icons {
+  min-height: 20px !important;
+  padding: 1px 2px 3px !important;
+}
+
+.play-board--new-ui .dock-virtue-chip {
+  isolation: isolate;
+  width: clamp(16px, 3.8vw, 18px) !important;
+  height: clamp(16px, 3.8vw, 18px) !important;
+}
+
+.play-board--new-ui .dock-virtue-chip b {
+  right: -1px !important;
+  bottom: -2px !important;
+  z-index: 2;
+  min-width: 12px !important;
+  height: 12px !important;
+  border-width: 1px !important;
+  font-size: .54rem !important;
+}
+
+.play-board--new-ui .identity-dock-tile--territory,
+.play-board--new-ui .identity-dock-tile--temple {
+  justify-items: stretch;
+}
+
+.play-board--new-ui .identity-dock-tile--territory .identity-dock-value,
+.play-board--new-ui .identity-dock-tile--temple .identity-dock-value {
+  align-self: center !important;
+  justify-self: center !important;
+  width: 100%;
+  display: flex !important;
+  align-items: baseline !important;
+  justify-content: center !important;
+  gap: 1px !important;
+  text-align: center;
+  transform: translateY(1px);
+}
+
+.play-board--new-ui .identity-dock-tile--territory .identity-dock-value span,
+.play-board--new-ui .identity-dock-tile--temple .identity-dock-value span {
+  font-size: clamp(1.05rem, 4.7vw, 1.36rem) !important;
+  letter-spacing: -.05em !important;
+}
+
+.play-board--new-ui .identity-dock-tile--territory .identity-dock-value small,
+.play-board--new-ui .identity-dock-tile--temple .identity-dock-value small {
+  font-size: clamp(.58rem, 2.3vw, .72rem) !important;
+}
+
+.play-board--new-ui .play-card:focus,
+.play-board--new-ui .play-card:focus-visible {
+  outline: none !important;
+}
+
+.play-board--new-ui .play-card.is-selected:not(.is-attack-selected) {
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.played-card-panel small {
+  max-width: min(320px, 74vw);
+  color: rgba(94, 255, 206, .86);
+  line-height: 1.18;
+  white-space: normal;
+}
+
+/* Refinos finais de dock e modal moral */
+.play-board--new-ui .player-dock--opponent,
+.play-board--new-ui .player-dock--human {
+  grid-template-areas:
+    "label"
+    "identity"
+    "metrics" !important;
+}
+
+.play-board--new-ui .player-dock-metrics {
+  grid-template-columns:
+    minmax(0, .56fr)
+    minmax(0, .56fr)
+    minmax(132px, 2.65fr)
+    minmax(0, .56fr)
+    minmax(0, .56fr) !important;
+  gap: 2px !important;
+}
+
+.play-board--new-ui .dock-metric:not(.dock-metric--virtues) {
+  padding-inline: 1px !important;
+}
+
+.play-board--new-ui .dock-metric:not(.dock-metric--virtues) span {
+  font-size: clamp(.31rem, 1.1vw, .38rem) !important;
+}
+
+.play-board--new-ui .dock-metric:not(.dock-metric--virtues) strong {
+  font-size: clamp(.62rem, 2.35vw, .78rem) !important;
+}
+
+.play-board--new-ui .dock-virtue-icons {
+  min-height: 24px !important;
+  gap: 0 2px !important;
+  padding: 2px 3px 4px !important;
+}
+
+.play-board--new-ui .dock-virtue-chip {
+  width: clamp(18px, 4.25vw, 21px) !important;
+  height: clamp(18px, 4.25vw, 21px) !important;
+}
+
+.play-board--new-ui .dock-virtue-chip b {
+  right: -2px !important;
+  bottom: -2px !important;
+  min-width: 13px !important;
+  height: 13px !important;
+  font-size: .58rem !important;
+}
+
+.play-board--new-ui .identity-dock-tile--territory .identity-dock-value,
+.play-board--new-ui .identity-dock-tile--temple .identity-dock-value {
+  grid-column: 2 !important;
+  grid-row: 2 !important;
+  place-self: center !important;
+  width: auto !important;
+  min-width: clamp(42px, 12vw, 58px);
+  max-width: 78%;
+  padding: 0 4px;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: .9 !important;
+  transform: none !important;
+}
+
+.play-board--new-ui .identity-dock-tile--territory .identity-dock-value span,
+.play-board--new-ui .identity-dock-tile--temple .identity-dock-value span {
+  font-size: clamp(1.28rem, 5.6vw, 1.72rem) !important;
+  line-height: .86 !important;
+}
+
+.play-board--new-ui .identity-dock-tile--territory .identity-dock-value small,
+.play-board--new-ui .identity-dock-tile--temple .identity-dock-value small {
+  font-size: clamp(.64rem, 2.65vw, .82rem) !important;
+  line-height: 1 !important;
+}
+
+.moral-choice-card {
+  overflow: hidden !important;
+}
+
+.moral-choice-card > span {
+  overflow: hidden !important;
+}
+
+.moral-choice-card p {
+  max-height: 3.8em !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+  padding-right: 2px;
+  scrollbar-width: thin;
+  overflow-wrap: break-word !important;
+  word-break: normal !important;
+}
+
+/* Ajustes finais de ordem e escala das docks */
+.play-board--new-ui {
+  --action-h: clamp(40px, 8dvh, 48px) !important;
+  grid-template-rows: auto minmax(0, 1fr) auto var(--action-h) var(--hand-h) !important;
+}
+
+.play-board--new-ui .action-dock {
+  min-height: var(--action-h) !important;
+  height: var(--action-h) !important;
+  padding: 3px !important;
+}
+
+.play-board--new-ui .action-grid button {
+  padding-block: 4px !important;
+}
+
+.play-board--new-ui .player-dock--opponent {
+  grid-template-areas:
+    "label"
+    "metrics"
+    "identity" !important;
+}
+
+.play-board--new-ui .player-dock--human {
+  grid-template-areas:
+    "identity"
+    "metrics"
+    "label" !important;
+}
+
+.play-board--new-ui .player-dock-metrics {
+  grid-template-columns:
+    minmax(0, .45fr)
+    minmax(0, .45fr)
+    minmax(156px, 3.35fr)
+    minmax(0, .45fr)
+    minmax(0, .45fr) !important;
+  gap: 2px !important;
+}
+
+.play-board--new-ui .dock-metric--virtues {
+  padding-inline: 3px !important;
+}
+
+.play-board--new-ui .dock-virtue-icons {
+  min-height: 25px !important;
+  gap: 0 1px !important;
+  padding: 1px 1px 4px !important;
+}
+
+.play-board--new-ui .dock-virtue-chip {
+  width: clamp(20px, 4.4vw, 21px) !important;
+  height: clamp(20px, 4.4vw, 21px) !important;
+}
+
+.play-board--new-ui .dock-virtue-chip b {
+  right: -1px !important;
+  bottom: -2px !important;
+  min-width: 13px !important;
+  height: 13px !important;
+  font-size: .58rem !important;
+}
+
+.play-board--new-ui .battlefield-shell {
+  grid-template-rows: minmax(0, 1fr) clamp(58px, 9.6dvh, 68px) minmax(0, 1fr) !important;
+}
+
+.play-board--new-ui .stack-log-panel,
+.play-board--new-ui .phase-panel {
+  min-height: clamp(58px, 9.6dvh, 68px) !important;
+  height: clamp(58px, 9.6dvh, 68px) !important;
+}
+
+.play-board--new-ui .phase-current {
+  width: min(100%, 394px) !important;
+  max-width: calc(100% - 6px) !important;
+  height: clamp(48px, 8.8dvh, 58px) !important;
+  padding-block: 6px !important;
+}
+
+.play-board--new-ui .identity-dock-tile--territory .identity-dock-value,
+.play-board--new-ui .identity-dock-tile--temple .identity-dock-value {
+  align-items: center !important;
+  gap: 2px !important;
+}
+
+.play-board--new-ui .identity-dock-tile--territory .identity-dock-value span,
+.play-board--new-ui .identity-dock-tile--temple .identity-dock-value span {
+  line-height: 1 !important;
+}
+
+.play-board--new-ui .identity-dock-tile--territory .identity-dock-value small,
+.play-board--new-ui .identity-dock-tile--temple .identity-dock-value small {
+  line-height: 1 !important;
+  transform: translateY(.03em);
+}
+
+/* Ajuste final: ataque, fase compacta e leitura das docks */
+.play-board--new-ui {
+  --action-h: clamp(42px, 8.4dvh, 50px) !important;
+  grid-template-rows: auto minmax(0, 1fr) auto var(--action-h) var(--hand-h) !important;
+}
+
+.play-board--new-ui .action-dock {
+  min-height: var(--action-h) !important;
+  height: var(--action-h) !important;
+  padding: 3px !important;
+}
+
+.play-board--new-ui .action-grid button {
+  padding-block: 4px !important;
+}
+
+.play-board--new-ui .player-dock-metrics {
+  grid-template-columns:
+    minmax(0, .52fr)
+    minmax(0, .52fr)
+    minmax(142px, 2.75fr)
+    minmax(0, .52fr)
+    minmax(0, .52fr) !important;
+  gap: 2px !important;
+}
+
+.play-board--new-ui .dock-metric--virtues {
+  padding-inline: 2px !important;
+}
+
+.play-board--new-ui .dock-virtue-icons {
+  min-height: 27px !important;
+  gap: 0 !important;
+  padding: 1px 0 4px !important;
+  justify-content: center !important;
+}
+
+.play-board--new-ui .dock-virtue-chip {
+  width: clamp(21px, 4.75vw, 24px) !important;
+  height: clamp(21px, 4.75vw, 24px) !important;
+}
+
+.play-board--new-ui .dock-virtue-chip b {
+  right: 0 !important;
+  bottom: -1px !important;
+  min-width: 13px !important;
+  height: 13px !important;
+  font-size: .58rem !important;
+}
+
+.play-board--new-ui .battlefield-shell {
+  grid-template-rows: minmax(0, 1fr) clamp(48px, 7.8dvh, 56px) minmax(0, 1fr) !important;
+}
+
+.play-board--new-ui .stack-log-panel,
+.play-board--new-ui .phase-panel {
+  min-height: clamp(48px, 7.8dvh, 56px) !important;
+  height: clamp(48px, 7.8dvh, 56px) !important;
+}
+
+.play-board--new-ui .phase-current {
+  width: min(100%, 394px) !important;
+  max-width: calc(100% - 6px) !important;
+  min-height: 0 !important;
+  height: clamp(38px, 6.8dvh, 46px) !important;
+  padding: 4px 34px !important;
+}
+
+.play-board--new-ui .phase-current strong {
+  font-size: clamp(.86rem, 3.55vw, 1.02rem) !important;
+  line-height: .98 !important;
+}
+
+.play-board--new-ui .phase-current em {
+  max-width: 100% !important;
+  font-size: clamp(.49rem, 1.85vw, .6rem) !important;
+  line-height: 1.05 !important;
+}
+
+.play-board--new-ui .player-dock-identity:not(.is-expanded) .identity-dock-tile--territory .identity-dock-value,
+.play-board--new-ui .player-dock-identity:not(.is-expanded) .identity-dock-tile--temple .identity-dock-value {
+  position: absolute !important;
+  top: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: 50% !important;
+  z-index: 2 !important;
+  transform: translate(-50%, -50%) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: clamp(42px, 11vw, 56px) !important;
+  width: auto !important;
+  max-width: calc(100% - 10px) !important;
+  padding: 2px 6px !important;
+  text-align: center !important;
+}
+
+/* Reorganizacao das docks e scroll externo do modal moral */
+.play-board--new-ui {
+  --dock-identity-h: clamp(40px, 8.8dvh, 52px) !important;
+  --dock-metric-h: clamp(50px, 10dvh, 58px) !important;
+}
+
+.play-board--new-ui .player-dock {
+  min-height: calc(var(--dock-label-h) + var(--dock-identity-h) + var(--dock-metric-h) + 20px) !important;
+}
+
+.play-board--new-ui .player-dock--opponent {
+  grid-template-areas:
+    "label"
+    "identity"
+    "metrics" !important;
+}
+
+.play-board--new-ui .player-dock--human {
+  grid-template-areas:
+    "identity"
+    "metrics"
+    "label" !important;
+}
+
+.play-board--new-ui .player-dock-identity:not(.is-expanded),
+.play-board--new-ui .player-dock-identity:not(.is-expanded) .identity-dock-tile {
+  min-height: var(--dock-identity-h) !important;
+  height: var(--dock-identity-h) !important;
+}
+
+.play-board--new-ui .player-dock-identity:not(.is-expanded) .identity-dock-tile--champion > img {
+  object-position: center 18% !important;
+}
+
+.play-board--new-ui .player-dock-metrics {
+  min-height: var(--dock-metric-h) !important;
+  height: var(--dock-metric-h) !important;
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  grid-template-rows: minmax(24px, .95fr) minmax(24px, 1fr) !important;
+  gap: 3px !important;
+}
+
+.play-board--new-ui .player-dock-metrics .dock-metric {
+  min-height: 0 !important;
+  height: 100% !important;
+}
+
+.play-board--new-ui .player-dock-metrics .dock-metric:not(.dock-metric--virtues) {
+  grid-row: 2 !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: auto 1fr !important;
+  align-items: center !important;
+  justify-items: center !important;
+  padding: 2px 3px !important;
+}
+
+.play-board--new-ui .player-dock-metrics .dock-metric:nth-child(1) {
+  grid-column: 1 !important;
+}
+
+.play-board--new-ui .player-dock-metrics .dock-metric:nth-child(2) {
+  grid-column: 2 !important;
+}
+
+.play-board--new-ui .player-dock-metrics .dock-metric:nth-child(4) {
+  grid-column: 3 !important;
+}
+
+.play-board--new-ui .player-dock-metrics .dock-metric:nth-child(5) {
+  grid-column: 4 !important;
+}
+
+.play-board--new-ui .dock-metric--virtues {
+  grid-column: 1 / -1 !important;
+  grid-row: 1 !important;
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) !important;
+  grid-template-rows: minmax(0, 1fr) !important;
+  align-items: center !important;
+  justify-items: stretch !important;
+  gap: 6px !important;
+  padding: 2px 8px !important;
+}
+
+.play-board--new-ui .dock-metric--virtues > span {
+  display: block !important;
+  grid-column: 1 !important;
+  color: rgba(245, 241, 232, .66) !important;
+  font-size: clamp(.36rem, 1.35vw, .46rem) !important;
+  font-weight: 900 !important;
+  letter-spacing: .08em !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+}
+
+.play-board--new-ui .dock-virtue-icons {
+  grid-column: 2 !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+.play-board--new-ui .dock-virtue-chip {
+  width: clamp(21px, 5vw, 25px) !important;
+  height: clamp(21px, 5vw, 25px) !important;
+  margin: 0 2px !important;
+  overflow: visible !important;
+}
+
+.play-board--new-ui .dock-virtue-chip b {
+  right: -2px !important;
+  bottom: -2px !important;
+}
+
+.play-board--new-ui .player-dock-shell--opponent.is-consecration-active > .essence-panel {
+  top: calc(6px + var(--dock-label-h) + 5px) !important;
+  bottom: auto !important;
+}
+
+.play-board--new-ui .player-dock-shell--human.is-consecration-active > .essence-panel {
+  top: 6px !important;
+  bottom: auto !important;
+}
+
+/* Refinamento final efetivo: virtudes maiores e metricas compactas */
+.play-board--new-ui {
+  --dock-virtues-h: clamp(38px, 8.2dvh, 46px) !important;
+  --dock-metric-h: clamp(24px, 5.1dvh, 29px) !important;
+  --action-h: clamp(36px, 7dvh, 42px) !important;
+}
+
+.play-board--new-ui .player-dock {
+  min-height: calc(var(--dock-identity-h) + var(--dock-virtues-h) + var(--dock-metric-h) + 22px) !important;
+}
+
+.play-board--new-ui .player-dock-metrics > .dock-metric:not(.dock-metric--virtues),
+.play-board--new-ui .player-dock-metrics > .player-dock-label {
+  align-content: stretch !important;
+  align-items: stretch !important;
+  padding: 1px 3px !important;
+}
+
+.play-board--new-ui .player-dock-metrics > .dock-metric:not(.dock-metric--virtues) {
+  grid-template-rows: auto minmax(0, 1fr) !important;
+}
+
+.play-board--new-ui .player-dock-metrics > .player-dock-label {
+  display: grid !important;
+  grid-template-rows: auto minmax(0, 1fr) !important;
+}
+
+.play-board--new-ui .dock-metric:not(.dock-metric--virtues) span,
+.play-board--new-ui .player-dock-metrics > .player-dock-label span {
+  align-self: start !important;
+  width: 100% !important;
+  color: rgba(245, 241, 232, .62) !important;
+  font-size: clamp(.39rem, 1.45vw, .48rem) !important;
+  font-weight: 900 !important;
+  letter-spacing: .08em !important;
+  line-height: .9 !important;
+  text-align: center !important;
+  text-transform: uppercase !important;
+}
+
+.play-board--new-ui .dock-metric:not(.dock-metric--virtues) strong,
+.play-board--new-ui .player-dock-metrics > .player-dock-label strong {
+  align-self: center !important;
+  justify-self: center !important;
+  width: 100% !important;
+  color: #fff8e8 !important;
+  font-size: clamp(.78rem, 3.05vw, .98rem) !important;
+  font-weight: 950 !important;
+  line-height: .92 !important;
+  text-align: center !important;
+}
+
+.play-board--new-ui .player-dock > .dock-metric--virtues {
+  padding: 1px 5px 3px !important;
+}
+
+.play-board--new-ui .player-dock > .dock-metric--virtues > span {
+  font-size: clamp(.34rem, 1.22vw, .42rem) !important;
+  line-height: .92 !important;
+}
+
+.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-icons {
+  grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+  justify-items: stretch !important;
+}
+
+.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-chip {
+  justify-self: center !important;
+  width: min(100%, clamp(31px, 8.4vw, 40px)) !important;
+  height: min(100%, clamp(31px, 8.4vw, 40px)) !important;
+}
+
+.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-chip img,
+.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-chip i {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.play-board--new-ui .dock-virtue-chip.is-empty {
+  opacity: .72 !important;
+}
+
+.play-board--new-ui .dock-virtue-chip.is-empty img,
+.play-board--new-ui .dock-virtue-chip.is-empty i {
+  filter:
+    grayscale(1)
+    brightness(.72)
+    contrast(.92)
+    opacity(.72)
+    drop-shadow(0 1px 2px rgba(0, 0, 0, .86)) !important;
+}
+
+.play-board--new-ui .action-dock {
+  min-height: var(--action-h) !important;
+  height: var(--action-h) !important;
+  padding: 2px 3px !important;
+}
+
+.play-board--new-ui .action-grid button {
+  padding-block: 2px !important;
+}
+
+/* Fase compacta efetiva e labels com respiro */
+.play-board--new-ui .battlefield-shell {
+  grid-template-rows: minmax(0, 1fr) clamp(34px, 5.8dvh, 42px) minmax(0, 1fr) !important;
+}
+
+.play-board--new-ui .stack-log-panel,
+.play-board--new-ui .phase-panel {
+  min-height: clamp(34px, 5.8dvh, 42px) !important;
+  height: clamp(34px, 5.8dvh, 42px) !important;
+}
+
+.play-board--new-ui .phase-current {
+  width: min(100%, 420px) !important;
+  max-width: calc(100% - 4px) !important;
+  min-width: 0 !important;
+  height: clamp(28px, 4.9dvh, 34px) !important;
+  min-height: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  padding: 3px 28px !important;
+}
+
+.play-board--new-ui .phase-current strong {
+  width: 100% !important;
+  max-width: 100% !important;
+  color: var(--ui-gold-strong) !important;
+  font-size: clamp(.82rem, 3.5vw, 1.04rem) !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+.play-board--new-ui .phase-current em,
+.play-board--new-ui .phase-current small {
+  display: none !important;
+}
+
+.play-board--new-ui .dock-metric:not(.dock-metric--virtues) span,
+.play-board--new-ui .player-dock-metrics > .player-dock-label span,
+.play-board--new-ui .player-dock > .dock-metric--virtues > span {
+  padding-top: 2px !important;
+}
+
+/* Fase compacta e respiro nas labels das metricas */
+.play-board--new-ui .battlefield-shell {
+  grid-template-rows: minmax(0, 1fr) clamp(34px, 5.8dvh, 42px) minmax(0, 1fr) !important;
+}
+
+.play-board--new-ui .stack-log-panel,
+.play-board--new-ui .phase-panel {
+  min-height: clamp(34px, 5.8dvh, 42px) !important;
+  height: clamp(34px, 5.8dvh, 42px) !important;
+}
+
+.play-board--new-ui .phase-current {
+  width: min(100%, 420px) !important;
+  max-width: calc(100% - 4px) !important;
+  min-width: 0 !important;
+  height: clamp(28px, 4.9dvh, 34px) !important;
+  min-height: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  padding: 3px 28px !important;
+}
+
+.play-board--new-ui .phase-current strong {
+  width: 100% !important;
+  max-width: 100% !important;
+  color: var(--ui-gold-strong) !important;
+  font-size: clamp(.82rem, 3.5vw, 1.04rem) !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+.play-board--new-ui .phase-current em,
+.play-board--new-ui .phase-current small {
+  display: none !important;
+}
+
+.play-board--new-ui .dock-metric:not(.dock-metric--virtues) span,
+.play-board--new-ui .player-dock-metrics > .player-dock-label span {
+  padding-top: 2px !important;
+}
+
+.play-board--new-ui .player-dock > .dock-metric--virtues > span {
+  padding-top: 2px !important;
+}
+
+/* Ajuste fino: virtudes maiores e metricas compactas/consistentes */
+.play-board--new-ui {
+  --dock-virtues-h: clamp(38px, 8.2dvh, 46px) !important;
+  --dock-metric-h: clamp(24px, 5.1dvh, 29px) !important;
+  --action-h: clamp(36px, 7dvh, 42px) !important;
+}
+
+.play-board--new-ui .player-dock {
+  min-height: calc(var(--dock-identity-h) + var(--dock-virtues-h) + var(--dock-metric-h) + 22px) !important;
+}
+
+.play-board--new-ui .player-dock-metrics > .dock-metric:not(.dock-metric--virtues),
+.play-board--new-ui .player-dock-metrics > .player-dock-label {
+  align-content: stretch !important;
+  align-items: stretch !important;
+  padding: 1px 3px !important;
+}
+
+.play-board--new-ui .player-dock-metrics > .dock-metric:not(.dock-metric--virtues) {
+  grid-template-rows: auto minmax(0, 1fr) !important;
+}
+
+.play-board--new-ui .player-dock-metrics > .player-dock-label {
+  display: grid !important;
+  grid-template-rows: auto minmax(0, 1fr) !important;
+}
+
+.play-board--new-ui .dock-metric:not(.dock-metric--virtues) span,
+.play-board--new-ui .player-dock-metrics > .player-dock-label span {
+  align-self: start !important;
+  width: 100% !important;
+  color: rgba(245, 241, 232, .62) !important;
+  font-size: clamp(.39rem, 1.45vw, .48rem) !important;
+  font-weight: 900 !important;
+  letter-spacing: .08em !important;
+  line-height: .9 !important;
+  text-align: center !important;
+  text-transform: uppercase !important;
+}
+
+.play-board--new-ui .dock-metric:not(.dock-metric--virtues) strong,
+.play-board--new-ui .player-dock-metrics > .player-dock-label strong {
+  align-self: center !important;
+  justify-self: center !important;
+  width: 100% !important;
+  color: #fff8e8 !important;
+  font-size: clamp(.78rem, 3.05vw, .98rem) !important;
+  font-weight: 950 !important;
+  line-height: .92 !important;
+  text-align: center !important;
+}
+
+.play-board--new-ui .player-dock > .dock-metric--virtues {
+  padding: 1px 5px 3px !important;
+}
+
+.play-board--new-ui .player-dock > .dock-metric--virtues > span {
+  font-size: clamp(.34rem, 1.22vw, .42rem) !important;
+  line-height: .92 !important;
+}
+
+.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-icons {
+  grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+  justify-items: stretch !important;
+}
+
+.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-chip {
+  justify-self: center !important;
+  width: min(100%, clamp(31px, 8.4vw, 40px)) !important;
+  height: min(100%, clamp(31px, 8.4vw, 40px)) !important;
+}
+
+.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-chip img,
+.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-chip i {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.play-board--new-ui .dock-virtue-chip.is-empty {
+  opacity: .72 !important;
+}
+
+.play-board--new-ui .dock-virtue-chip.is-empty img,
+.play-board--new-ui .dock-virtue-chip.is-empty i {
+  filter:
+    grayscale(1)
+    brightness(.72)
+    contrast(.92)
+    opacity(.72)
+    drop-shadow(0 1px 2px rgba(0, 0, 0, .86)) !important;
+}
+
+.play-board--new-ui .action-dock {
+  min-height: var(--action-h) !important;
+  height: var(--action-h) !important;
+  padding: 2px 3px !important;
+}
+
+.play-board--new-ui .action-grid button {
+  padding-block: 2px !important;
+}
+
+.zone-modal-panel--moral-choice {
+  display: grid !important;
+  grid-template-rows: auto auto minmax(0, 1fr) !important;
+  max-height: min(88dvh, 760px) !important;
+  overflow: hidden !important;
+}
+
+.zone-modal-panel--moral-choice .moral-choice-grid {
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  overscroll-behavior: contain !important;
+  scrollbar-width: thin !important;
+}
+
+.zone-modal-panel--moral-choice .moral-choice-card,
+.zone-modal-panel--moral-choice .moral-choice-card > span,
+.zone-modal-panel--moral-choice .moral-choice-card p {
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.zone-modal-panel--moral-choice .moral-choice-card p {
+  padding-right: 0 !important;
+  scrollbar-width: auto !important;
+}
+
+/* Dock definitiva: identidade uniforme, virtudes no topo e label entre metricas */
+.play-board--new-ui {
+  --dock-identity-h: clamp(40px, 8.6dvh, 50px) !important;
+  --dock-metric-h: clamp(58px, 11.2dvh, 66px) !important;
+}
+
+.play-board--new-ui .player-dock {
+  grid-template-areas:
+    "identity"
+    "metrics" !important;
+  min-height: calc(var(--dock-identity-h) + var(--dock-metric-h) + 17px) !important;
+}
+
+.play-board--new-ui .player-dock--opponent,
+.play-board--new-ui .player-dock--human {
+  grid-template-areas:
+    "identity"
+    "metrics" !important;
+}
+
+.play-board--new-ui .player-dock-identity:not(.is-expanded) {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  min-height: var(--dock-identity-h) !important;
+  height: var(--dock-identity-h) !important;
+}
+
+.play-board--new-ui .player-dock-identity:not(.is-expanded) .identity-dock-tile {
+  min-height: var(--dock-identity-h) !important;
+  height: var(--dock-identity-h) !important;
+}
+
+.play-board--new-ui .player-dock-metrics {
+  min-height: var(--dock-metric-h) !important;
+  height: var(--dock-metric-h) !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(66px, 1.95fr) minmax(0, 1fr) minmax(0, 1fr) !important;
+  grid-template-rows: minmax(30px, 1fr) minmax(24px, .82fr) !important;
+  gap: 3px !important;
+}
+
+.play-board--new-ui .player-dock-metrics > .dock-metric,
+.play-board--new-ui .player-dock-metrics > .player-dock-label {
+  min-height: 0 !important;
+  height: 100% !important;
+}
+
+.play-board--new-ui .player-dock-metrics > .dock-metric:not(.dock-metric--virtues) {
+  grid-row: 2 !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: auto 1fr !important;
+  align-items: center !important;
+  justify-items: center !important;
+  padding: 2px 3px !important;
+}
+
+.play-board--new-ui .player-dock-metrics > .dock-metric:nth-child(2) {
+  grid-column: 1 !important;
+}
+
+.play-board--new-ui .player-dock-metrics > .dock-metric:nth-child(3) {
+  grid-column: 2 !important;
+}
+
+.play-board--new-ui .player-dock-metrics > .player-dock-label {
+  grid-area: auto !important;
+  grid-column: 3 !important;
+  grid-row: 2 !important;
+  display: grid !important;
+  grid-template-rows: auto auto !important;
+  align-content: center !important;
+  justify-items: center !important;
+  gap: 1px !important;
+  min-width: 0 !important;
+  padding: 2px 3px !important;
+  border: 1px solid rgba(215, 193, 139, .16);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, .18);
+  text-align: center !important;
+}
+
+.play-board--new-ui .player-dock-metrics > .player-dock-label span,
+.play-board--new-ui .player-dock-metrics > .player-dock-label strong {
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.play-board--new-ui .player-dock-metrics > .player-dock-label span {
+  font-size: clamp(.35rem, 1.28vw, .43rem) !important;
+}
+
+.play-board--new-ui .player-dock-metrics > .player-dock-label strong {
+  font-size: clamp(.48rem, 1.85vw, .58rem) !important;
+}
+
+.play-board--new-ui .player-dock-metrics > .dock-metric:nth-child(5) {
+  grid-column: 4 !important;
+}
+
+.play-board--new-ui .player-dock-metrics > .dock-metric:nth-child(6) {
+  grid-column: 5 !important;
+}
+
+.play-board--new-ui .dock-metric--virtues {
+  grid-column: 1 / -1 !important;
+  grid-row: 1 !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: auto minmax(0, 1fr) !important;
+  align-items: stretch !important;
+  justify-items: stretch !important;
+  gap: 2px !important;
+  padding: 2px 8px 3px !important;
+}
+
+.play-board--new-ui .dock-metric--virtues > span {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  display: block !important;
+  width: 100% !important;
+  text-align: center !important;
+  font-size: clamp(.34rem, 1.2vw, .42rem) !important;
+  line-height: 1 !important;
+}
+
+.play-board--new-ui .dock-virtue-icons {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: space-evenly !important;
+  gap: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+.play-board--new-ui .dock-virtue-chip {
+  width: clamp(23px, 5.8vw, 29px) !important;
+  height: clamp(23px, 5.8vw, 29px) !important;
+  margin: 0 2px !important;
+}
+
+.play-board--new-ui .dock-virtue-chip b {
+  right: -2px !important;
+  bottom: -2px !important;
+}
+
+.play-board--new-ui .player-dock-shell--opponent.is-consecration-active > .essence-panel,
+.play-board--new-ui .player-dock-shell--human.is-consecration-active > .essence-panel {
+  top: 6px !important;
+  bottom: auto !important;
+}
+
+/* Refinamento final: dock espelhada, 7 slots de virtude e action mais compacta */
+.play-board--new-ui {
+  --dock-identity-h: clamp(36px, 7.8dvh, 45px) !important;
+  --dock-virtues-h: clamp(34px, 7.2dvh, 42px) !important;
+  --dock-metric-h: clamp(27px, 5.8dvh, 33px) !important;
+  --action-h: clamp(38px, 7.4dvh, 45px) !important;
+  grid-template-rows: auto minmax(0, 1fr) auto var(--action-h) var(--hand-h) !important;
+}
+
+.play-board--new-ui .player-dock {
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: var(--dock-identity-h) var(--dock-virtues-h) var(--dock-metric-h) !important;
+  grid-template-areas:
+    "identity"
+    "virtues"
+    "metrics" !important;
+  min-height: calc(var(--dock-identity-h) + var(--dock-virtues-h) + var(--dock-metric-h) + 22px) !important;
+  gap: 5px !important;
+}
+
+.play-board--new-ui .player-dock--opponent {
+  grid-template-rows: var(--dock-metric-h) var(--dock-virtues-h) var(--dock-identity-h) !important;
+  grid-template-areas:
+    "metrics"
+    "virtues"
+    "identity" !important;
+}
+
+.play-board--new-ui .player-dock--human {
+  grid-template-rows: var(--dock-identity-h) var(--dock-virtues-h) var(--dock-metric-h) !important;
+  grid-template-areas:
+    "identity"
+    "virtues"
+    "metrics" !important;
+}
+
+.play-board--new-ui .player-dock-identity:not(.is-expanded) {
+  grid-area: identity !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  min-height: var(--dock-identity-h) !important;
+  height: var(--dock-identity-h) !important;
+}
+
+.play-board--new-ui .player-dock-identity:not(.is-expanded) .identity-dock-tile {
+  min-height: var(--dock-identity-h) !important;
+  height: var(--dock-identity-h) !important;
+}
+
+.play-board--new-ui .player-dock-metrics {
+  grid-area: metrics !important;
+  min-height: var(--dock-metric-h) !important;
+  height: var(--dock-metric-h) !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(66px, 1.95fr) minmax(0, 1fr) minmax(0, 1fr) !important;
+  grid-template-rows: minmax(0, 1fr) !important;
+  gap: 3px !important;
+}
+
+.play-board--new-ui .player-dock-metrics > .dock-metric:not(.dock-metric--virtues),
+.play-board--new-ui .player-dock-metrics > .player-dock-label {
+  grid-row: 1 !important;
+  min-height: 0 !important;
+  height: 100% !important;
+}
+
+.play-board--new-ui .player-dock-metrics > .dock-metric:nth-child(1) {
+  grid-column: 1 !important;
+}
+
+.play-board--new-ui .player-dock-metrics > .dock-metric:nth-child(2) {
+  grid-column: 2 !important;
+}
+
+.play-board--new-ui .player-dock-metrics > .player-dock-label {
+  grid-area: auto !important;
+  grid-column: 3 !important;
+}
+
+.play-board--new-ui .player-dock-metrics > .dock-metric:nth-child(4) {
+  grid-column: 4 !important;
+}
+
+.play-board--new-ui .player-dock-metrics > .dock-metric:nth-child(5) {
+  grid-column: 5 !important;
+}
+
+.play-board--new-ui .player-dock-metrics > .dock-metric:not(.dock-metric--virtues) {
+  padding: 2px 4px !important;
+}
+
+.play-board--new-ui .dock-metric:not(.dock-metric--virtues) span {
+  font-size: clamp(.39rem, 1.45vw, .5rem) !important;
+}
+
+.play-board--new-ui .dock-metric:not(.dock-metric--virtues) strong {
+  font-size: clamp(.76rem, 3vw, .98rem) !important;
+}
+
+.play-board--new-ui .player-dock-metrics > .player-dock-label span {
+  font-size: clamp(.38rem, 1.38vw, .48rem) !important;
+}
+
+.play-board--new-ui .player-dock-metrics > .player-dock-label strong {
+  font-size: clamp(.53rem, 2.05vw, .66rem) !important;
+}
+
+.play-board--new-ui .player-dock > .dock-metric--virtues {
+  grid-area: virtues !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: var(--dock-virtues-h) !important;
+  height: var(--dock-virtues-h) !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: auto minmax(0, 1fr) !important;
+  align-items: stretch !important;
+  justify-items: stretch !important;
+  gap: 2px !important;
+  padding: 2px 7px 4px !important;
+}
+
+.play-board--new-ui .player-dock > .dock-metric--virtues > span {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  display: block !important;
+  width: 100% !important;
+  text-align: center !important;
+  font-size: clamp(.34rem, 1.2vw, .42rem) !important;
+  line-height: 1 !important;
+}
+
+.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-icons {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  display: grid !important;
+  grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+  align-items: center !important;
+  justify-items: center !important;
+  gap: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-chip {
+  width: clamp(24px, 6.2vw, 30px) !important;
+  height: clamp(24px, 6.2vw, 30px) !important;
+  margin: 0 !important;
+}
+
+.play-board--new-ui .dock-virtue-chip.is-empty {
+  opacity: .38;
+}
+
+.play-board--new-ui .dock-virtue-chip.is-empty img,
+.play-board--new-ui .dock-virtue-chip.is-empty i {
+  filter: grayscale(.45) contrast(.9) opacity(.72);
+}
+
+.play-board--new-ui .action-dock {
+  min-height: var(--action-h) !important;
+  height: var(--action-h) !important;
+  padding: 3px !important;
+}
+
+.play-board--new-ui .action-grid button {
+  padding-block: 3px !important;
+}
+
+.play-board--new-ui .player-dock-shell--opponent.is-consecration-active > .essence-panel {
+  top: calc(6px + var(--dock-metric-h) + var(--dock-virtues-h) + 10px) !important;
+  bottom: auto !important;
+}
+
+.play-board--new-ui .player-dock-shell--human.is-consecration-active > .essence-panel {
+  top: 6px !important;
+  bottom: auto !important;
+}
+
+/* Ajuste fino definitivo: virtudes maiores e metricas compactas */
+.play-board--new-ui {
+  --dock-virtues-h: clamp(38px, 8.2dvh, 46px) !important;
+  --dock-metric-h: clamp(24px, 5.1dvh, 29px) !important;
+  --action-h: clamp(36px, 7dvh, 42px) !important;
+}
+
+.play-board--new-ui .player-dock {
+  min-height: calc(var(--dock-identity-h) + var(--dock-virtues-h) + var(--dock-metric-h) + 22px) !important;
+}
+
+.play-board--new-ui .player-dock-metrics > .dock-metric:not(.dock-metric--virtues),
+.play-board--new-ui .player-dock-metrics > .player-dock-label {
+  align-content: stretch !important;
+  align-items: stretch !important;
+  padding: 1px 3px !important;
+}
+
+.play-board--new-ui .player-dock-metrics > .dock-metric:not(.dock-metric--virtues),
+.play-board--new-ui .player-dock-metrics > .player-dock-label {
+  grid-template-rows: auto minmax(0, 1fr) !important;
+}
+
+.play-board--new-ui .dock-metric:not(.dock-metric--virtues) span,
+.play-board--new-ui .player-dock-metrics > .player-dock-label span {
+  align-self: start !important;
+  width: 100% !important;
+  color: rgba(245, 241, 232, .62) !important;
+  font-size: clamp(.39rem, 1.45vw, .48rem) !important;
+  font-weight: 900 !important;
+  letter-spacing: .08em !important;
+  line-height: .9 !important;
+  text-align: center !important;
+  text-transform: uppercase !important;
+}
+
+.play-board--new-ui .dock-metric:not(.dock-metric--virtues) strong,
+.play-board--new-ui .player-dock-metrics > .player-dock-label strong {
+  align-self: center !important;
+  justify-self: center !important;
+  width: 100% !important;
+  color: #fff8e8 !important;
+  font-size: clamp(.78rem, 3.05vw, .98rem) !important;
+  font-weight: 950 !important;
+  line-height: .92 !important;
+  text-align: center !important;
+}
+
+.play-board--new-ui .player-dock > .dock-metric--virtues {
+  padding: 1px 5px 3px !important;
+}
+
+.play-board--new-ui .player-dock > .dock-metric--virtues > span {
+  font-size: clamp(.34rem, 1.22vw, .42rem) !important;
+  line-height: .92 !important;
+}
+
+.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-icons {
+  grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+  justify-items: stretch !important;
+}
+
+.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-chip {
+  justify-self: center !important;
+  width: min(100%, clamp(31px, 8.4vw, 40px)) !important;
+  height: min(100%, clamp(31px, 8.4vw, 40px)) !important;
+}
+
+.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-chip img,
+.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-chip i {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.play-board--new-ui .dock-virtue-chip.is-empty {
+  opacity: .72 !important;
+}
+
+.play-board--new-ui .dock-virtue-chip.is-empty img,
+.play-board--new-ui .dock-virtue-chip.is-empty i {
+  filter:
+    grayscale(1)
+    brightness(.72)
+    contrast(.92)
+    opacity(.72)
+    drop-shadow(0 1px 2px rgba(0, 0, 0, .86)) !important;
+}
+
+.play-board--new-ui .action-dock {
+  min-height: var(--action-h) !important;
+  height: var(--action-h) !important;
+  padding: 2px 3px !important;
+}
+
+.play-board--new-ui .action-grid button {
+  padding-block: 2px !important;
+}
+
+/* Fase compacta efetiva e labels com respiro */
+.play-board--new-ui .battlefield-shell {
+  grid-template-rows: minmax(0, 1fr) clamp(34px, 5.8dvh, 42px) minmax(0, 1fr) !important;
+}
+
+.play-board--new-ui .stack-log-panel,
+.play-board--new-ui .phase-panel {
+  min-height: clamp(34px, 5.8dvh, 42px) !important;
+  height: clamp(34px, 5.8dvh, 42px) !important;
+}
+
+.play-board--new-ui .phase-current {
+  width: min(100%, 420px) !important;
+  max-width: calc(100% - 4px) !important;
+  min-width: 0 !important;
+  height: clamp(28px, 4.9dvh, 34px) !important;
+  min-height: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  padding: 3px 28px !important;
+}
+
+.play-board--new-ui .phase-current strong {
+  width: 100% !important;
+  max-width: 100% !important;
+  color: var(--ui-gold-strong) !important;
+  font-size: clamp(.82rem, 3.5vw, 1.04rem) !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+.play-board--new-ui .phase-current em,
+.play-board--new-ui .phase-current small {
+  display: none !important;
+}
+
+.play-board--new-ui .dock-metric:not(.dock-metric--virtues) span,
+.play-board--new-ui .player-dock-metrics > .player-dock-label span,
+.play-board--new-ui .player-dock > .dock-metric--virtues > span {
+  padding-top: 2px !important;
+}
+
+/* Refinos visuais finais: essencias, campos e acoes */
+.play-board--new-ui .player-dock-shell.is-consecration-active > .essence-panel {
+  padding: 2px 4px !important;
+}
+
+.play-board--new-ui .player-dock-shell.is-consecration-active > .essence-panel .essence-row {
+  gap: 4px !important;
+  align-items: center !important;
+}
+
+.play-board--new-ui .player-dock-shell.is-consecration-active > .essence-panel .essence-card {
+  --essence-square-size: min(38px, calc(var(--dock-identity-h) - 6px));
+  flex: 0 0 var(--essence-square-size) !important;
+  width: var(--essence-square-size) !important;
+  height: var(--essence-square-size) !important;
+  aspect-ratio: 1 / 1 !important;
+  border-radius: 8px !important;
+}
+
+.play-board--new-ui .player-dock-shell.is-consecration-active > .essence-panel .essence-card .card-main-art,
+.play-board--new-ui .player-dock-shell.is-consecration-active > .essence-panel .essence-card img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+.play-board--new-ui .player-dock > .dock-metric--virtues > span {
+  font-size: clamp(.39rem, 1.45vw, .48rem) !important;
+}
+
+.play-board--new-ui .action-grid button {
+  text-transform: uppercase !important;
+}
+
+.play-board--new-ui .action-grid button::after {
+  text-transform: none !important;
+}
+
+.play-board--new-ui .battlefield-shell {
+  gap: 3px !important;
+  padding: 0 !important;
+}
+
+.play-board--new-ui .battlefield-column {
+  padding: 0 !important;
+}
+
+.play-board--new-ui .battlefield-row {
+  gap: 3px !important;
+  padding: 3px !important;
+  border-radius: 10px !important;
+}
+
+.play-board--new-ui .battlefield-row::before {
+  inset: 4px !important;
+  border-radius: 8px !important;
+}
+
+.play-board--new-ui .battlefield-line {
+  gap: 4px !important;
 }

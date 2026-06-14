@@ -51,7 +51,6 @@ const els = {
   phasePanel: document.getElementById("phasePanel"),
   phaseTracker: document.getElementById("phaseTracker"),
   phaseIndicator: document.getElementById("phaseIndicator"),
-  phaseRoundDock: document.getElementById("phaseRoundDock"),
   botEssence: document.getElementById("botEssence"),
   humanEssence: document.getElementById("humanEssence"),
   gameLog: document.getElementById("gameLog"),
@@ -100,7 +99,8 @@ const app = {
   setupAssetsReady: false,
   autoPassTimer: null,
   blockReviewResume: null,
-  priority: null
+  priority: null,
+  pendingMoralChoice: null
 };
 
 function localize(value) {
@@ -176,7 +176,7 @@ function getCost(card) {
 }
 
 function getVirtueName(virtue) {
-  return localize(virtue?.name) || `Virtude ${virtue?.id || ""}`.trim();
+  return localize(virtue?.name) || `${virtue?.id || ""}`.trim();
 }
 
 function getVirtueIcon(virtue) {
@@ -196,6 +196,270 @@ function getActiveVirtues(player) {
 
 function getVirtueLevelData(virtue, level) {
   return (virtue?.levels || []).find((item) => Number(item.level) === Number(level)) || null;
+}
+
+function getVirtueById(id) {
+  return app.virtuesById.get(Number(id)) || null;
+}
+
+function getVirtueValue(player, id) {
+  return toNumber(player?.virtues?.[String(id)], 0);
+}
+
+function setVirtueValue(player, id, value) {
+  if (!player?.virtues) return;
+  player.virtues[String(id)] = Math.max(0, Math.min(4, toNumber(value, 0)));
+}
+
+function getVirtuesByPolarity(polarity) {
+  return app.virtues.filter((virtue) => virtue.polarity === polarity);
+}
+
+function applyMoralShift(player, targetId, delta = 1) {
+  const source = getVirtueById(targetId);
+  const amount = Math.abs(toNumber(delta, 0));
+  if (!player || !source || amount <= 0) return null;
+  const direction = delta >= 0 ? source : getVirtueById(source.oppositeId);
+  if (!direction) return null;
+  const opposite = getVirtueById(direction.oppositeId);
+  const before = new Map(app.virtues.map((virtue) => [Number(virtue.id), getVirtueValue(player, virtue.id)]));
+  let remaining = amount;
+
+  if (opposite) {
+    const oppositeValue = getVirtueValue(player, opposite.id);
+    const reduction = Math.min(oppositeValue, remaining);
+    if (reduction > 0) {
+      setVirtueValue(player, opposite.id, oppositeValue - reduction);
+      remaining -= reduction;
+    }
+  }
+
+  if (remaining > 0) {
+    const current = getVirtueValue(player, direction.id);
+    setVirtueValue(player, direction.id, current + remaining);
+  }
+
+  const changes = app.virtues
+    .map((virtue) => ({
+      virtue,
+      before: before.get(Number(virtue.id)) || 0,
+      after: getVirtueValue(player, virtue.id)
+    }))
+    .filter((item) => item.before !== item.after);
+
+  return changes.length ? { direction, source, changes } : null;
+}
+
+function simulateMoralShiftValues(player, targetId, delta = 1) {
+  const source = getVirtueById(targetId);
+  const amount = Math.abs(toNumber(delta, 0));
+  const state = new Map(app.virtues.map((virtue) => [Number(virtue.id), getVirtueValue(player, virtue.id)]));
+  if (!source || amount <= 0) return state;
+  const direction = delta >= 0 ? source : getVirtueById(source.oppositeId);
+  if (!direction) return state;
+  const opposite = getVirtueById(direction.oppositeId);
+  let remaining = amount;
+
+  if (opposite) {
+    const oppositeValue = state.get(Number(opposite.id)) || 0;
+    const reduction = Math.min(oppositeValue, remaining);
+    if (reduction > 0) {
+      state.set(Number(opposite.id), oppositeValue - reduction);
+      remaining -= reduction;
+    }
+  }
+
+  if (remaining > 0) {
+    const current = state.get(Number(direction.id)) || 0;
+    state.set(Number(direction.id), Math.max(0, Math.min(4, current + remaining)));
+  }
+
+  return state;
+}
+
+function getMoralChoicePreview(player, targetId, delta = 1) {
+  const afterState = simulateMoralShiftValues(player, targetId, delta);
+  const changed = app.virtues
+    .map((virtue) => ({
+      virtue,
+      before: getVirtueValue(player, virtue.id),
+      after: afterState.get(Number(virtue.id)) || 0
+    }))
+    .filter((item) => item.before !== item.after);
+  const gained = changed.find((item) => item.after > item.before && item.after > 0);
+  const relevant = gained || changed[0];
+  if (!relevant) {
+    return {
+      title: "Sem alteração",
+      text: "Esta escolha não altera nenhum nível moral neste momento."
+    };
+  }
+  const level = getVirtueLevelData(relevant.virtue, relevant.after);
+  if (gained) {
+    return {
+      title: `${getVirtueName(relevant.virtue)} Nv${relevant.after}`,
+      text: localize(level?.text) || localize(relevant.virtue.flavor) || "Efeito ainda sem descrição."
+    };
+  }
+  if (relevant.after > 0) {
+    return {
+      title: `${getVirtueName(relevant.virtue)} ficará em Nv${relevant.after}`,
+      text: localize(level?.text) || localize(relevant.virtue.flavor) || "Efeito ainda sem descrição."
+    };
+  }
+  return {
+    title: `${getVirtueName(relevant.virtue)} ficará neutra`,
+    text: "Nenhum efeito ativo permanecerá neste eixo depois desta escolha."
+  };
+}
+
+function formatMoralChange(change) {
+  const name = getVirtueName(change.virtue);
+  return `${name} ${change.before}->${change.after}`;
+}
+
+function addMoralShiftLog(game, player, result, context) {
+  if (!result?.changes?.length) return;
+  const summary = result.changes.map(formatMoralChange).join(", ");
+  addLog(game, `${context}: ${summary}.`, player.label);
+}
+
+function formatMoralResultForAlert(result) {
+  if (!result?.changes?.length) return "";
+  return result.changes
+    .map((change) => `${getVirtueName(change.virtue)} ${change.before}->${change.after}`)
+    .join(" · ");
+}
+
+function applyCardMoralPips(playerId, card) {
+  const game = app.game;
+  const player = getPlayer(game, playerId);
+  const ids = Array.isArray(card?.virtues) ? card.virtues : [];
+  const changes = [];
+  ids.forEach((id) => {
+    const result = applyMoralShift(player, id, 1);
+    if (result?.changes?.length) changes.push(...result.changes.map(formatMoralChange));
+  });
+  if (changes.length) {
+    addLog(game, `marcas morais de ${getCardName(card)}: ${changes.join(", ")}.`, player.label);
+  }
+}
+
+function buildMoralChoice(player, sourceVirtue, targetId, delta, detail) {
+  const target = getVirtueById(targetId);
+  if (!sourceVirtue || !target) return null;
+  const current = getVirtueValue(player, sourceVirtue.id);
+  const targetCurrent = getVirtueValue(player, target.id);
+  const direction = delta >= 0 ? "+1" : "-1";
+  const preview = getMoralChoicePreview(player, target.id, delta);
+  return {
+    sourceId: sourceVirtue.id,
+    targetId: target.id,
+    delta,
+    title: getVirtueName(sourceVirtue),
+    subtitle: detail || `${getVirtueName(target)} ${direction}`,
+    meta: `Atual ${current}${sourceVirtue.id === target.id ? "" : ` · ${getVirtueName(target)} ${targetCurrent}`}`,
+    effectTitle: preview.title,
+    effectText: preview.text,
+    icon: getVirtueIcon(sourceVirtue)
+  };
+}
+
+function getConsecrationMoralChoices(player) {
+  const activeVices = getVirtuesByPolarity("vice").filter((virtue) => getVirtueValue(player, virtue.id) > 0);
+  if (activeVices.length) {
+    const lowest = Math.min(...activeVices.map((virtue) => getVirtueValue(player, virtue.id)));
+    return activeVices
+      .filter((virtue) => getVirtueValue(player, virtue.id) === lowest)
+      .map((virtue) => buildMoralChoice(player, virtue, virtue.oppositeId, 1, `Redimir para ${getVirtueName(getVirtueById(virtue.oppositeId))} +1`))
+      .filter(Boolean);
+  }
+
+  const activeVirtues = getVirtuesByPolarity("virtue")
+    .filter((virtue) => getVirtueValue(player, virtue.id) > 0 && getVirtueValue(player, virtue.id) < 4);
+  if (activeVirtues.length) {
+    const highest = Math.max(...activeVirtues.map((virtue) => getVirtueValue(player, virtue.id)));
+    return activeVirtues
+      .filter((virtue) => getVirtueValue(player, virtue.id) === highest)
+      .map((virtue) => buildMoralChoice(player, virtue, virtue.id, 1, `${getVirtueName(virtue)} +1`))
+      .filter(Boolean);
+  }
+
+  return getVirtuesByPolarity("virtue")
+    .filter((virtue) => getVirtueValue(player, virtue.id) < 4)
+    .map((virtue) => buildMoralChoice(player, virtue, virtue.id, 1, `${getVirtueName(virtue)} +1`))
+    .filter(Boolean);
+}
+
+function getProfanationMoralChoices(player) {
+  const activeVirtues = getVirtuesByPolarity("virtue").filter((virtue) => getVirtueValue(player, virtue.id) > 0);
+  if (activeVirtues.length) {
+    const lowest = Math.min(...activeVirtues.map((virtue) => getVirtueValue(player, virtue.id)));
+    return activeVirtues
+      .filter((virtue) => getVirtueValue(player, virtue.id) === lowest)
+      .map((virtue) => buildMoralChoice(player, virtue, virtue.id, -1, `${getVirtueName(virtue)} -1`))
+      .filter(Boolean);
+  }
+
+  const activeVices = getVirtuesByPolarity("vice")
+    .filter((virtue) => getVirtueValue(player, virtue.id) > 0 && getVirtueValue(player, virtue.id) < 4);
+  if (activeVices.length) {
+    const highest = Math.max(...activeVices.map((virtue) => getVirtueValue(player, virtue.id)));
+    return activeVices
+      .filter((virtue) => getVirtueValue(player, virtue.id) === highest)
+      .map((virtue) => buildMoralChoice(player, virtue, virtue.id, 1, `${getVirtueName(virtue)} +1`))
+      .filter(Boolean);
+  }
+
+  return getVirtuesByPolarity("vice")
+    .filter((virtue) => getVirtueValue(player, virtue.id) < 4)
+    .map((virtue) => buildMoralChoice(player, virtue, virtue.id, 1, `${getVirtueName(virtue)} +1`))
+    .filter(Boolean);
+}
+
+function queueMoralChoice(player, title, description, choices, context, onComplete) {
+  const validChoices = choices.filter(Boolean);
+  if (!validChoices.length) {
+    onComplete?.(null);
+    return;
+  }
+  if (player.id !== "human" || validChoices.length === 1) {
+    const choice = validChoices[0];
+    const result = applyMoralShift(player, choice.targetId, choice.delta);
+    addMoralShiftLog(app.game, player, result, context);
+    onComplete?.(result);
+    return;
+  }
+  showMoralChoiceModal({
+    playerId: player.id,
+    title,
+    description,
+    choices: validChoices,
+    context,
+    onComplete
+  });
+}
+
+function queueConsecrationMoralAdjustment(player, onComplete) {
+  queueMoralChoice(
+    player,
+    "Escolha moral da Consagração",
+    "Escolha uma das opções possíveis pelas regras de Consagração.",
+    getConsecrationMoralChoices(player),
+    "Consagração",
+    onComplete
+  );
+}
+
+function queueProfanationMoralAdjustment(player, onComplete) {
+  queueMoralChoice(
+    player,
+    "Escolha moral da Profanação",
+    "Escolha uma das opções possíveis pelas regras de Profanação.",
+    getProfanationMoralChoices(player),
+    "Profanação",
+    onComplete
+  );
 }
 
 function renderCardVirtuePips(card, limit = 4, options = {}) {
@@ -865,7 +1129,7 @@ function showSetup() {
 }
 
 function canAct(playerId) {
-  return app.game && app.game.status === "active" && app.game.activePlayer === playerId;
+  return app.game && app.game.status === "active" && app.game.activePlayer === playerId && !app.pendingMoralChoice;
 }
 
 function getPriorityKey(game, key) {
@@ -1100,6 +1364,7 @@ function hasCombatAttack(player) {
 
 function getHumanAutoPassReason(game) {
   if (!game || game.status !== "active" || game.activePlayer !== "human") return "";
+  if (app.pendingMoralChoice) return "";
   if (game.stack.length) return "";
   if (game.combat.awaitingBlockers || game.combat.resolving || game.combat.attackers.length) return "";
 
@@ -1140,6 +1405,7 @@ function schedulePriorityAutoPass(game) {
 
 function scheduleHumanAutoPass(game) {
   clearHumanAutoPass();
+  if (app.pendingMoralChoice) return;
   if (isHumanPriorityOpen()) {
     schedulePriorityAutoPass(game);
     return;
@@ -1251,6 +1517,16 @@ function applyDraw(playerId) {
   return true;
 }
 
+function finishConsecrationAction(playerId) {
+  const game = app.game;
+  if (!game || game.status !== "active" || game.activePlayer !== playerId || currentPhase(game) !== "consecration") return;
+  const player = getPlayer(game, playerId);
+  setGamePhase(game, "preparation", playerId);
+  addLog(game, `entrou em ${PHASE_LABELS.preparation}.`, player.label);
+  playTone("soft");
+  renderGame();
+}
+
 function applyConsecrate(playerId, cardId) {
   const game = app.game;
   const player = getPlayer(game, playerId);
@@ -1262,10 +1538,10 @@ function applyConsecrate(playerId, cardId) {
   player.consecrationActionTaken = true;
   addPlayerStat(game, "cardsConsecrated", playerId);
   addLog(game, `consagrou ${getCardName(card)}.`, player.label);
-  showConsecratedCardAnimation(card, playerId);
-  setGamePhase(game, "preparation", playerId);
-  addLog(game, `entrou em ${PHASE_LABELS.preparation}.`, player.label);
-  playTone("soft");
+  queueConsecrationMoralAdjustment(player, (result) => {
+    showConsecratedCardAnimation(card, playerId, formatMoralResultForAlert(result));
+    finishConsecrationAction(playerId);
+  });
   return true;
 }
 
@@ -1282,10 +1558,10 @@ function applyProfane(playerId, index) {
   player.consecrationActionTaken = true;
   const card = app.cardByCode.get(cardId);
   addLog(game, `profanou ${getCardName(card)}.`, player.label);
-  showCardActionAnimation(card, playerId, playerId === "human" ? "Voce profanou" : "Bot profanou");
-  setGamePhase(game, "preparation", playerId);
-  addLog(game, `entrou em ${PHASE_LABELS.preparation}.`, player.label);
-  playTone("soft");
+  queueProfanationMoralAdjustment(player, (result) => {
+    showCardActionAnimation(card, playerId, playerId === "human" ? "Voce profanou" : "Bot profanou", formatMoralResultForAlert(result));
+    finishConsecrationAction(playerId);
+  });
   return true;
 }
 
@@ -1378,6 +1654,7 @@ function applyPlayCard(playerId, cardId) {
     addLog(game, `resolveu ${getCardName(card)} em modo simplificado.`, player.label);
   }
 
+  applyCardMoralPips(playerId, card);
   playTone(typeCode === "PEC" ? "hit" : "play");
   checkGameEnd(game);
   return true;
@@ -2340,11 +2617,11 @@ function showPlayedCardAnimation(card, playerId) {
   showCardActionAnimation(card, playerId, playerId === "human" ? "Voce jogou" : "Bot jogou");
 }
 
-function showConsecratedCardAnimation(card, playerId) {
-  showCardActionAnimation(card, playerId, playerId === "human" ? "Voce consagrou" : "Bot consagrou");
+function showConsecratedCardAnimation(card, playerId, detail = "") {
+  showCardActionAnimation(card, playerId, playerId === "human" ? "Voce consagrou" : "Bot consagrou", detail);
 }
 
-function showCardActionAnimation(card, playerId, label) {
+function showCardActionAnimation(card, playerId, label, detail = "") {
   if (!card) return;
   let overlay = document.getElementById("playedCardAnimation");
   if (!overlay) {
@@ -2359,7 +2636,7 @@ function showCardActionAnimation(card, playerId, label) {
       <span>${escapeHtml(label)}</span>
       <img src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" draggable="false" />
       <strong>${escapeHtml(getCardName(card))}</strong>
-      <small>${escapeHtml(getCardTypeLabel(card))} - custo ${getCost(card)}</small>
+      <small>${escapeHtml(detail || `${getCardTypeLabel(card)} - custo ${getCost(card)}`)}</small>
     </div>
   `;
   window.clearTimeout(overlay._hideTimer);
@@ -2611,7 +2888,6 @@ function renderGame() {
   els.phasePanel.classList.toggle("is-bot-turn", game.activePlayer === "bot");
   els.phasePanel.classList.toggle("is-discard-phase", phase === "discard");
   els.phaseTracker.innerHTML = renderPhaseTracker(game);
-  if (els.phaseRoundDock) els.phaseRoundDock.innerHTML = renderPhaseRoundCard(game);
   updateConsecrationHighlights(game, phase);
   updateBattlefieldWallpapers(human, bot);
   setHandExpanded(app.handExpanded);
@@ -2712,68 +2988,11 @@ function renderStackEdgePanel(game) {
 }
 
 function renderPhaseTracker(game) {
-  const ownerLabel = game.activePlayer === "human" ? "Seu turno" : "Turno do bot";
-  const helper = getPhaseHelper(game);
   return `
     <span class="phase-current">
-      <small>${escapeHtml(ownerLabel)} · Turno ${game.turnNumber}</small>
       <strong>${escapeHtml(getPhaseDisplayLabel(game))}</strong>
-      ${helper ? `<em>${escapeHtml(helper)}</em>` : ""}
     </span>
   `;
-}
-
-function renderPhaseRoundCard(game) {
-  const helper = getPhaseHelper(game);
-  const brief = getPhaseBrief(game, helper);
-  return `
-    <span class="phase-round-card">
-      <i aria-hidden="true"></i>
-      <span>
-        <strong>${escapeHtml(brief.title)}</strong>
-        <small>${escapeHtml(brief.text)}</small>
-      </span>
-      <em>Fase <b>${escapeHtml(brief.progress)}</b></em>
-    </span>
-  `;
-}
-
-function getPhaseBrief(game, helper = "") {
-  const phase = currentPhase(game);
-  const structuralPhases = PHASES.filter((item) => item !== "discard");
-  const phaseIndex = structuralPhases.indexOf(phase);
-  const progress = phaseIndex >= 0 ? `${phaseIndex + 1}/${structuralPhases.length}` : `${structuralPhases.length}/${structuralPhases.length}`;
-  const defaults = {
-    prepare: {
-      title: "Etapa estrutural da rodada",
-      text: "Prepare suas cartas e Essências antes da compra."
-    },
-    draw: {
-      title: "Etapa estrutural da rodada",
-      text: "Compre as cartas previstas para o turno."
-    },
-    consecration: {
-      title: "Etapa estrutural da rodada",
-      text: "Consagre forças na Essência ou profane para recuperá-las."
-    },
-    preparation: {
-      title: "Etapa principal da rodada",
-      text: "Jogue cartas, equipe personagens e organize seu campo."
-    },
-    combat: {
-      title: "Etapa de combate",
-      text: helper || "Declare ataques, bloqueios, respostas e resolva dano."
-    },
-    regroup: {
-      title: "Etapa final da rodada",
-      text: "Resolva o fim do turno e verifique o limite de mão."
-    },
-    discard: {
-      title: "Ajuste de mão",
-      text: helper || `Descarte até ficar com ${MAX_HAND_SIZE} cartas na mão.`
-    }
-  };
-  return { ...(defaults[phase] || defaults.prepare), progress };
 }
 
 function getPhaseHelper(game) {
@@ -2932,6 +3151,39 @@ function renderDockMetric({ label, value, icon = "", button = false, attrs = "",
   `;
 }
 
+function renderDockVirtueMetric(player) {
+  const axes = [...new Set(app.virtues.map((virtue) => Number(virtue.axis)).filter(Boolean))]
+    .sort((a, b) => a - b)
+    .slice(0, 7);
+  const chips = axes.map((axis) => {
+    const options = app.virtues
+      .filter((virtue) => Number(virtue.axis) === axis)
+      .sort((a, b) => Number(a.id) - Number(b.id));
+    const active = options
+      .map((virtue) => ({ virtue, value: getVirtueValue(player, virtue.id) }))
+      .filter((item) => item.value > 0)
+      .sort((a, b) => b.value - a.value || Number(a.virtue.id) - Number(b.virtue.id))[0];
+    const displayVirtue = active?.virtue || options.find((virtue) => virtue.polarity === "virtue") || options[0];
+    const icon = getVirtueIcon(displayVirtue);
+    const label = displayVirtue ? getVirtueName(displayVirtue) : `Virtude ${axis}`;
+    return `
+      <span class="dock-virtue-chip ${active ? active.virtue.polarity === "vice" ? "is-vice" : "is-virtue" : "is-empty"}" title="${escapeHtml(active ? `${getVirtueName(active.virtue)} Nv${active.value}` : label)}">
+        ${icon
+          ? `<img src="${escapeHtml(icon)}" alt="${escapeHtml(label)}" loading="lazy" draggable="false" />`
+          : `<i>${escapeHtml(axis)}</i>`}
+        ${active ? `<b>${escapeHtml(active.value)}</b>` : ""}
+      </span>
+    `;
+  }).join("");
+  const hasActiveVirtues = getActiveVirtues(player).length > 0;
+  return `
+    <button class="dock-metric dock-metric--virtues ${hasActiveVirtues ? "is-active" : ""}" type="button" data-virtues-player="${escapeHtml(player.id)}">
+      <span>Virtudes</span>
+      <strong class="dock-virtue-icons">${chips}</strong>
+    </button>
+  `;
+}
+
 function renderIdentityTile(player, card, kind, attrs = "") {
   if (!card) return "";
   const isTerritory = kind === "territory";
@@ -2991,7 +3243,6 @@ function renderPlayerArea(player, hideHand) {
   const discardTargetClass = player.id === "human" && app.game?.activePlayer === "human" && currentPhase(app.game) === "discard" && getHandOverflow(player) > 0
     ? " is-discard-drop-target"
     : "";
-  const activeVirtues = getActiveVirtues(player);
   const templeExpanded = app.expandedTemplePlayer === player.id;
   const identityMarkup = `
     <div class="player-dock-identity ${templeExpanded ? "is-expanded" : ""}">
@@ -3004,18 +3255,17 @@ function renderPlayerArea(player, hideHand) {
         `}
     </div>
   `;
+  const labelMarkup = `
+    <div class="player-dock-label">
+      <span>${hideHand ? "Oponente" : "Você"}</span>
+      <strong>${escapeHtml(player.label)}</strong>
+    </div>
+  `;
   const metricsMarkup = `
     <div class="player-dock-metrics">
       ${renderDockMetric({ label: "Mão", value: player.hand.length, icon: "hand" })}
       ${renderDockMetric({ label: "Deck", value: player.deck.length, icon: "deck" })}
-      ${renderDockMetric({
-        label: "Virtudes",
-        value: activeVirtues.length ? activeVirtues.map((item) => item.value).join("/") : "0",
-        icon: "virtues",
-        button: true,
-        attrs: `data-virtues-player="${escapeHtml(player.id)}"`,
-        extraClass: activeVirtues.length ? "is-active" : ""
-      })}
+      ${labelMarkup}
       ${renderDockMetric({
         label: "Cemitério",
         value: player.cemetery.length,
@@ -3033,13 +3283,12 @@ function renderPlayerArea(player, hideHand) {
       })}
     </div>
   `;
+  const virtuesMarkup = renderDockVirtueMetric(player);
   return `
     <div class="player-dock ${hideHand ? "player-dock--opponent" : "player-dock--human"}${dangerClass}${damagedClass}">
-      <div class="player-dock-label">
-        <span>${hideHand ? "Oponente" : "Você"}</span>
-        <strong>${escapeHtml(player.label)}</strong>
-      </div>
-      ${hideHand ? `${identityMarkup}${metricsMarkup}` : `${metricsMarkup}${identityMarkup}`}
+      ${hideHand
+        ? `${metricsMarkup}${virtuesMarkup}${identityMarkup}`
+        : `${identityMarkup}${virtuesMarkup}${metricsMarkup}`}
     </div>
   `;
 }
@@ -3110,7 +3359,6 @@ function renderCardButton(cardId, options = {}) {
     isFieldTile ? `is-field-type-${String(typeCode || "CRD").toLowerCase()}` : "",
     isHandTile ? `is-hand-type-${String(typeCode || "CRD").toLowerCase()}` : "",
     isLandscapeCard(card) ? "is-landscape" : "",
-    options.selected ? "is-selected" : "",
     options.actionable ? "is-actionable-card" : "",
     options.attackSelected ? "is-attack-selected" : "",
     options.attackTarget ? "is-attack-target" : "",
@@ -3256,6 +3504,13 @@ function showVirtuesModal(playerId) {
     document.body.appendChild(modal);
   }
   const state = player.virtues || {};
+  const activeVirtues = app.virtues
+    .map((virtue) => ({
+      virtue,
+      value: toNumber(state[String(virtue.id)], 0),
+      level: getVirtueLevelData(virtue, toNumber(state[String(virtue.id)], 0))
+    }))
+    .filter((item) => item.value > 0);
   modal.innerHTML = `
     <div class="zone-modal-panel zone-modal-panel--virtues" role="dialog" aria-modal="true" aria-label="Virtudes de ${escapeHtml(player.label)}">
       <div class="zone-modal-head">
@@ -3266,37 +3521,89 @@ function showVirtuesModal(playerId) {
         <button type="button" data-close-zone-modal>Fechar</button>
       </div>
       <div class="virtue-modal-grid">
-        ${app.virtues.map((virtue) => {
-          const value = toNumber(state[String(virtue.id)], 0);
-          const level = getVirtueLevelData(virtue, value);
+        ${activeVirtues.length
+          ? activeVirtues.map(({ virtue, value, level }) => {
           const icon = getVirtueIcon(virtue);
           return `
-            <article class="virtue-modal-card ${value > 0 ? "is-active" : ""}">
+            <article class="virtue-modal-card is-active">
               <div class="virtue-modal-head">
                 ${icon ? `<img src="${escapeHtml(icon)}" alt="${escapeHtml(getVirtueName(virtue))}" loading="lazy" draggable="false" />` : ""}
                 <div>
-                  <span>${virtue.polarity === "vice" ? "Desvirtude" : "Virtude"}</span>
                   <strong>${escapeHtml(getVirtueName(virtue))}</strong>
                 </div>
                 <b>${value > 0 ? `Nv${value}` : "0"}</b>
               </div>
-              <p>${escapeHtml(value > 0 ? localize(level?.text) : localize(virtue.flavor) || "Nenhum efeito ativo.")}</p>
-              ${value > 0 && level ? `<small>${escapeHtml(localize(level.title))}</small>` : `<small>Neutro</small>`}
+              <p>${escapeHtml(localize(level?.text) || localize(virtue.flavor) || "Efeito ainda sem descrição.")}</p>
             </article>
           `;
-        }).join("")}
+        }).join("")
+          : `<p class="zone-modal-empty">Nenhuma Virtude ou Desvirtude ativa.</p>`}
       </div>
     </div>
   `;
   modal.classList.add("is-visible");
 }
 
+function showMoralChoiceModal({ playerId, title, description, choices, context, onComplete }) {
+  const player = app.game?.players?.[playerId];
+  if (!player) return;
+  let modal = document.getElementById("zoneModal");
+  if (!modal) {
+    modal = document.createElement("div");
+    modal.id = "zoneModal";
+    modal.className = "zone-modal";
+    document.body.appendChild(modal);
+  }
+  clearHumanAutoPass();
+  app.pendingMoralChoice = { playerId, choices, context, onComplete };
+  modal.innerHTML = `
+    <div class="zone-modal-panel zone-modal-panel--moral-choice" role="dialog" aria-modal="true" aria-label="${escapeHtml(title)}">
+      <div class="zone-modal-head">
+        <div>
+          <span>Ajuste moral</span>
+          <strong>${escapeHtml(title)}</strong>
+        </div>
+      </div>
+      <p class="moral-choice-description">${escapeHtml(description)}</p>
+      <div class="moral-choice-grid">
+        ${choices.map((choice, index) => `
+          <button class="moral-choice-card" type="button" data-moral-choice="${index}">
+            ${choice.icon ? `<img src="${escapeHtml(choice.icon)}" alt="${escapeHtml(choice.title)}" draggable="false" />` : ""}
+            <span>
+              <em>${escapeHtml(choice.effectTitle)}</em>
+              <p>${escapeHtml(choice.effectText)}</p>
+            </span>
+          </button>
+        `).join("")}
+      </div>
+    </div>
+  `;
+  modal.classList.add("is-visible");
+}
+
+function resolveMoralChoice(index) {
+  const pending = app.pendingMoralChoice;
+  if (!pending || pending.playerId !== "human") return false;
+  const choice = pending.choices[Number(index)];
+  const player = app.game?.players?.[pending.playerId];
+  if (!choice || !player) return false;
+  const result = applyMoralShift(player, choice.targetId, choice.delta);
+  addMoralShiftLog(app.game, player, result, pending.context);
+  app.pendingMoralChoice = null;
+  document.getElementById("zoneModal")?.classList.remove("is-visible");
+  pending.onComplete?.(result);
+  renderGame();
+  return true;
+}
+
 function hideZoneModal() {
+  if (app.pendingMoralChoice) return;
   document.getElementById("zoneModal")?.classList.remove("is-visible");
 }
 
 function clearTransientOverlays() {
   app.blockReviewResume = null;
+  app.pendingMoralChoice = null;
   ["phaseAlert", "playedCardAnimation", "drawAnimation", "interactionHint", "cardZoomPreview", "zoneModal", "blockPrompt", "botBlockReview"].forEach((id) => {
     document.getElementById(id)?.classList.remove("is-visible");
   });
@@ -3370,9 +3677,9 @@ function renderActionState() {
   els.drawButton.textContent = "Comprar 2";
   els.consecrateButton.textContent = "Consagrar";
   els.playCardButton.textContent = "Jogar";
-  els.attackButton.textContent = selectedAttackers.length ? `Atacar ${selectedAttackers.length}` : "Enviar ataque";
+  els.attackButton.textContent = selectedAttackers.length ? `Atacar ${selectedAttackers.length}` : "Todos Atacam";
   els.nextPhaseButton.textContent = getNextActionLabel(app.game, priorityOpen);
-  els.attackButton.dataset.actionSubtitle = selectedAttackers.length ? "Confirmar todos os atacantes" : "Selecione atacantes no campo";
+  els.attackButton.dataset.actionSubtitle = selectedAttackers.length ? "Confirmar atacantes selecionados" : "Declarar todos os atacantes preparados";
   els.nextPhaseButton.dataset.actionSubtitle = getNextActionSubtitle(app.game, priorityOpen);
   els.endTurnButton.dataset.actionSubtitle = "Passar a vez ao oponente";
   els.drawButton.hidden = true;
@@ -3386,7 +3693,7 @@ function renderActionState() {
   els.drawButton.disabled = !humanTurn || !canDraw(human);
   els.consecrateButton.disabled = !humanTurn || phase !== "consecration";
   els.playCardButton.disabled = !humanTurn || phase !== "preparation";
-  els.attackButton.disabled = combatLocked || !humanTurn || phase !== "combat" || !readyAttackers.length || !selectedAttackers.length;
+  els.attackButton.disabled = combatLocked || !humanTurn || phase !== "combat" || !readyAttackers.length;
   els.nextPhaseButton.disabled = !showNextPhase;
   els.endTurnButton.disabled = !showEndTurn;
   if (els.concedeButton) els.concedeButton.disabled = !app.game || app.game.status !== "active";
@@ -3794,8 +4101,14 @@ function bindEvents() {
   els.endTurnButton.addEventListener("click", applyEndTurn);
   els.concedeButton?.addEventListener("click", concede);
   document.addEventListener("click", (event) => {
+    const moralChoiceButton = event.target.closest("[data-moral-choice]");
+    if (moralChoiceButton) {
+      resolveMoralChoice(moralChoiceButton.dataset.moralChoice);
+      return;
+    }
     const closeButton = event.target.closest("[data-close-zone-modal]");
     if (closeButton || event.target.id === "zoneModal") {
+      if (app.pendingMoralChoice) return;
       hideZoneModal();
       return;
     }
