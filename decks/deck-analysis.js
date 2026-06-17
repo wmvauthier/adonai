@@ -5,7 +5,9 @@ const path = require("path");
 
 const root = path.resolve(__dirname, "..");
 const dataDir = path.join(root, "data");
-const decksPath = path.join(dataDir, "decks.json");
+const gameDir = path.join(dataDir, "game");
+const refsDir = path.join(dataDir, "refs");
+const decksPath = path.join(gameDir, "decks.json");
 
 function readJson(file) {
   return JSON.parse(fs.readFileSync(file, "utf8"));
@@ -89,12 +91,12 @@ function withFieldAverage(items, fieldAverages, lowerIsBetter = false) {
 }
 
 function loadReferenceData() {
-  const collections = byId(readJson(path.join(dataDir, "collections.json")).collections);
-  const types = byId(readJson(path.join(dataDir, "types.json")).types);
-  const subtypes = byId(readJson(path.join(dataDir, "subtypes.json")).subtypes);
-  const functions = byId(readJson(path.join(dataDir, "functions.json")).functions);
-  const roles = byId(readJson(path.join(dataDir, "roles.json")).roles);
-  const virtues = byId(readJson(path.join(dataDir, "virtues.json")).virtues);
+  const collections = byId(readJson(path.join(refsDir, "collections.json")).collections);
+  const types = byId(readJson(path.join(refsDir, "types.json")).types);
+  const subtypes = byId(readJson(path.join(refsDir, "subtypes.json")).subtypes);
+  const functions = byId(readJson(path.join(refsDir, "mechanics.json")).functions);
+  const roles = byId(readJson(path.join(refsDir, "roles.json")).roles);
+  const virtues = byId(readJson(path.join(gameDir, "virtues.json")).virtues);
   return { collections, types, subtypes, functions, roles, virtues };
 }
 
@@ -249,7 +251,7 @@ function validateDeck(deck) {
 function main() {
   const shouldWrite = process.argv.includes("--write");
   const refs = loadReferenceData();
-  const cardsPayload = readJson(path.join(dataDir, "cards.json"));
+  const cardsPayload = readJson(path.join(gameDir, "cards.json"));
   const decksPayload = readJson(decksPath);
   const cards = normalizeCards(cardsPayload, refs);
   const cardsByCode = new Map(cards.map((card) => [card.code, card]));
@@ -274,7 +276,7 @@ function main() {
     writeJson(decksPath, next);
     console.log(`Atualizado: ${path.relative(root, decksPath)}`);
   } else {
-    console.log(`OK: ${decks.length} decks analisados. Use --write para atualizar data/decks.json.`);
+    console.log(`OK: ${decks.length} decks analisados. Use --write para atualizar data/game/decks.json.`);
   }
 }
 

@@ -1,0 +1,210 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-06-15",
+  "actions": [
+    {
+      "id": "draw_cards",
+      "label": { "pt": "Comprar cartas" },
+      "handler": "drawCards",
+      "params": ["player", "amount"]
+    },
+    {
+      "id": "modify_event_amount",
+      "label": { "pt": "Modificar quantidade de um evento" },
+      "handler": "modifyEventAmount",
+      "params": ["eventId", "operation", "amount"]
+    },
+    {
+      "id": "put_cards_from_hand_on_bottom",
+      "label": { "pt": "Colocar cartas da mão no fundo do baralho" },
+      "handler": "putCardsFromHandOnBottom",
+      "params": ["player", "amount", "choice"]
+    },
+    {
+      "id": "put_cards_from_hand_on_top",
+      "label": { "pt": "Colocar cartas da mão no topo do baralho" },
+      "handler": "putCardsFromHandOnTop",
+      "params": ["player", "amount", "choice"]
+    },
+    {
+      "id": "review_top_cards",
+      "label": { "pt": "Revisar cartas do topo do baralho" },
+      "handler": "reviewTopCards",
+      "params": ["player", "amount", "maxCemetery", "description"]
+    },
+    {
+      "id": "heal_territory",
+      "label": { "pt": "Curar território" },
+      "handler": "healTerritory",
+      "params": ["player", "amount", "distribution"]
+    },
+    {
+      "id": "heal_character",
+      "label": { "pt": "Curar personagem" },
+      "handler": "healCharacter",
+      "params": ["target", "amount"]
+    },
+    {
+      "id": "distribute_healing",
+      "label": { "pt": "Distribuir cura" },
+      "handler": "distributeHealing",
+      "params": ["targets", "amount"]
+    },
+    {
+      "id": "deal_damage",
+      "label": { "pt": "Causar dano" },
+      "handler": "dealDamage",
+      "params": ["source", "target", "amount", "damageType", "damageAsCost"]
+    },
+    {
+      "id": "prevent_damage",
+      "label": { "pt": "Prevenir dano" },
+      "handler": "preventDamage",
+      "params": ["event", "amount"]
+    },
+    {
+      "id": "replace_damage",
+      "label": { "pt": "Substituir dano" },
+      "handler": "replaceDamage",
+      "params": ["event", "replacement"]
+    },
+    {
+      "id": "modify_power_resistance",
+      "label": { "pt": "Modificar poder e resistência" },
+      "handler": "modifyPowerResistance",
+      "params": ["target", "power", "resistance", "duration"]
+    },
+    {
+      "id": "set_base_resistance",
+      "label": { "pt": "Definir resistência base" },
+      "handler": "setBaseResistance",
+      "params": ["target", "value", "duration"]
+    },
+    {
+      "id": "grant_keyword",
+      "label": { "pt": "Conceder palavra-chave" },
+      "handler": "grantKeyword",
+      "params": ["target", "keyword", "duration"]
+    },
+    {
+      "id": "tap",
+      "label": { "pt": "Despreparar" },
+      "handler": "tapObject",
+      "params": ["target"]
+    },
+    {
+      "id": "untap",
+      "label": { "pt": "Preparar" },
+      "handler": "untapObject",
+      "params": ["target"]
+    },
+    {
+      "id": "tap_essence",
+      "label": { "pt": "Desativar Essência" },
+      "handler": "tapEssence",
+      "params": ["player", "amount", "upTo"]
+    },
+    {
+      "id": "untap_essence",
+      "label": { "pt": "Ativar Essência" },
+      "handler": "untapEssence",
+      "params": ["player", "amount", "upTo"]
+    },
+    {
+      "id": "create_token",
+      "label": { "pt": "Criar ficha" },
+      "handler": "createToken",
+      "params": ["controller", "tokenId", "state", "combatTarget"]
+    },
+    {
+      "id": "move_card",
+      "label": { "pt": "Mover carta entre zonas" },
+      "handler": "moveCard",
+      "params": ["card", "from", "to", "owner"]
+    },
+    {
+      "id": "discard_cards",
+      "label": { "pt": "Descartar cartas" },
+      "handler": "discardCards",
+      "params": ["player", "amount", "choice"]
+    },
+    {
+      "id": "search_library",
+      "label": { "pt": "Buscar no baralho" },
+      "handler": "searchLibrary",
+      "params": ["player", "filter", "destination", "reveal", "shuffleAfter"]
+    },
+    {
+      "id": "reveal_cards",
+      "label": { "pt": "Revelar cartas" },
+      "handler": "revealCards",
+      "params": ["player", "zone", "amount"]
+    },
+    {
+      "id": "shuffle_library",
+      "label": { "pt": "Embaralhar baralho" },
+      "handler": "shuffleLibrary",
+      "params": ["player"]
+    },
+    {
+      "id": "adjust_moral",
+      "label": { "pt": "Alterar Virtude ou Desvirtude" },
+      "handler": "adjustMoral",
+      "params": ["player", "virtueId", "delta", "choice"]
+    },
+    {
+      "id": "create_temp_effect",
+      "label": { "pt": "Criar efeito temporário" },
+      "handler": "createTemporaryEffect",
+      "params": ["controller", "duration", "temporaryEffect"]
+    },
+    {
+      "id": "choose_effect_bundle",
+      "label": { "pt": "Escolher conjunto de ações" },
+      "handler": "chooseEffectBundle",
+      "params": ["choices", "description"]
+    },
+    {
+      "id": "destroy_permanent",
+      "label": { "pt": "Destruir permanente" },
+      "handler": "destroyPermanent",
+      "params": ["target", "reason"]
+    },
+    {
+      "id": "attach_equipment",
+      "label": { "pt": "Anexar equipamento" },
+      "handler": "attachEquipment",
+      "params": ["equipment", "target"]
+    },
+    {
+      "id": "detach_equipment",
+      "label": { "pt": "Desanexar equipamento" },
+      "handler": "detachEquipment",
+      "params": ["equipment"]
+    },
+    {
+      "id": "counter_stack_object",
+      "label": { "pt": "Anular objeto na pilha" },
+      "handler": "counterStackObject",
+      "params": ["target", "reason"]
+    },
+    {
+      "id": "distribute_damage",
+      "label": { "pt": "Distribuir dano" },
+      "handler": "distributeDamage",
+      "params": ["source", "targets", "amount", "damageType"]
+    },
+    {
+      "id": "reduce_next_cost",
+      "label": { "pt": "Reduzir custo da próxima carta" },
+      "handler": "reduceNextCost",
+      "params": ["player", "amount", "duration", "costType"]
+    },
+    {
+      "id": "pulverize",
+      "label": { "pt": "Pulverizar cartas" },
+      "handler": "pulverize",
+      "params": ["player", "amount"]
+    }
+  ]
+}

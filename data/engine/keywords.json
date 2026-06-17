@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-06-15",
+  "keywords": [
+    {
+      "id": "ENTRADA",
+      "kind": "ability_marker",
+      "trigger": "permanent.enters_battlefield",
+      "usesStack": true,
+      "label": { "pt": "Entrada" }
+    },
+    {
+      "id": "SAIDA",
+      "aliases": ["SAÍDA"],
+      "kind": "ability_marker",
+      "trigger": "permanent.leaves_battlefield",
+      "usesStack": true,
+      "label": { "pt": "Saída" }
+    },
+    {
+      "id": "ATAQUE",
+      "kind": "ability_marker",
+      "trigger": "combat.attackers.declared",
+      "usesStack": true,
+      "label": { "pt": "Ataque" }
+    },
+    {
+      "id": "EQUIPAVEL",
+      "aliases": ["EQUIPÁVEL"],
+      "kind": "ability_marker",
+      "label": { "pt": "Equipável" }
+    },
+    {
+      "id": "INESPERADO",
+      "kind": "static",
+      "handler": "canPlayAtInstantSpeed",
+      "label": { "pt": "Inesperado" }
+    },
+    {
+      "id": "IMBLOQUEAVEL",
+      "aliases": ["IMBLOQUEÁVEL"],
+      "kind": "static",
+      "handler": "cannotBeBlocked",
+      "label": { "pt": "Imbloqueável" }
+    },
+    {
+      "id": "INDESTRUTIVEL",
+      "aliases": ["INDESTRUTÍVEL"],
+      "kind": "replacement",
+      "trigger": "damage.would_be_dealt",
+      "handler": "preventDamageAndDestruction",
+      "label": { "pt": "Indestrutível" }
+    },
+    {
+      "id": "SOBREPUJAR",
+      "kind": "static",
+      "handler": "assignOverrunDamage",
+      "label": { "pt": "Sobrepujar" }
+    }
+  ]
+}

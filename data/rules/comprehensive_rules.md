@@ -816,11 +816,11 @@
 
 10.7.1. Depois da Profanação, o jogador ajusta seus eixos morais executando apenas o primeiro caso aplicável da lista abaixo:
 
-(a) se possuir ao menos uma Virtude ativa, escolha uma Virtude ativa de menor valor e aplique -1 a ela;
+(a) se possuir ao menos uma Virtude ativa, escolha uma Virtude ativa de menor valor e aplique -2 a ela;
 
-(b) se a alínea (a) não for aplicável e o jogador possuir ao menos uma Desvirtude ativa com valor inferior a 4, escolha uma Desvirtude ativa de maior valor entre as Desvirtudes elegíveis e aplique +1 a ela;
+(b) se a alínea (a) não for aplicável e o jogador possuir ao menos uma Desvirtude ativa com valor inferior a 4, escolha uma Desvirtude ativa de maior valor entre as Desvirtudes elegíveis e aplique +2 a ela;
 
-(c) se as alíneas (a) e (b) não forem aplicáveis, escolha uma Desvirtude com valor inferior a 4 e aplique +1 a ela.
+(c) se as alíneas (a) e (b) não forem aplicáveis, escolha uma Desvirtude com valor inferior a 4 e aplique +2 a ela.
 
 10.7.2. Em caso de empate entre atributos elegíveis no mesmo caso aplicável, o jogador escolhe entre eles.
 

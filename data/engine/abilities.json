@@ -1,0 +1,1476 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-06-16",
+  "abilities": [
+    {
+      "id": "virtue.faith.1",
+      "kind": "triggered",
+      "trigger": "phase.draw.begin",
+      "usesStack": true,
+      "optional": true,
+      "label": { "pt": "Fé Nv1 - Convicção" },
+      "condition": {
+        "activePlayer": "controller",
+        "controllerHandSize": { "gte": 3 }
+      },
+      "costs": [
+        {
+          "effect": "put_cards_from_hand_on_bottom",
+          "player": "controller",
+          "amount": 3,
+          "choice": "manual"
+        }
+      ],
+      "actions": [
+        {
+          "effect": "create_temp_effect",
+          "controller": "controller",
+          "duration": "next_phase_draw_amount",
+          "temporaryEffect": {
+            "trigger": "phase.draw.amount.replace",
+            "action": "modify_event_amount",
+            "operation": "add",
+            "amount": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "virtue.faith.2",
+      "kind": "triggered",
+      "trigger": "phase.draw.begin",
+      "usesStack": true,
+      "optional": true,
+      "label": { "pt": "Fé Nv2 - Confiança" },
+      "condition": {
+        "activePlayer": "controller",
+        "controllerHandSize": { "gte": 2 }
+      },
+      "costs": [
+        {
+          "effect": "put_cards_from_hand_on_bottom",
+          "player": "controller",
+          "amount": 2,
+          "choice": "manual"
+        }
+      ],
+      "actions": [
+        {
+          "effect": "create_temp_effect",
+          "controller": "controller",
+          "duration": "next_phase_draw_amount",
+          "temporaryEffect": {
+            "trigger": "phase.draw.amount.replace",
+            "action": "modify_event_amount",
+            "operation": "add",
+            "amount": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "virtue.faith.3",
+      "kind": "triggered",
+      "trigger": "phase.draw.begin",
+      "usesStack": true,
+      "optional": true,
+      "label": { "pt": "Fé Nv3 - Revelação" },
+      "condition": {
+        "activePlayer": "controller"
+      },
+      "actions": [
+        {
+          "effect": "create_temp_effect",
+          "controller": "controller",
+          "duration": "next_phase_draw_amount",
+          "temporaryEffect": {
+            "trigger": "phase.draw.amount.replace",
+            "action": "modify_event_amount",
+            "operation": "add",
+            "amount": 2
+          }
+        },
+        {
+          "effect": "create_temp_effect",
+          "controller": "controller",
+          "duration": "next_event",
+          "temporaryEffect": {
+            "trigger": "phase.draw.after_auto_draw",
+            "label": { "pt": "Fé Nv3 - Revelação" },
+            "suppressTriggerFeedback": true,
+            "condition": {
+              "activePlayer": "controller",
+              "eventPlayer": "controller"
+            },
+            "costs": [
+              {
+                "effect": "put_cards_from_hand_on_bottom",
+                "player": "controller",
+                "amount": 3,
+                "choice": "manual"
+              }
+            ],
+            "actions": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "virtue.faith.4",
+      "kind": "triggered",
+      "trigger": "phase.draw.begin",
+      "usesStack": true,
+      "optional": true,
+      "label": { "pt": "Fé Nv4 - Providência" },
+      "condition": {
+        "activePlayer": "controller"
+      },
+      "actions": [
+        {
+          "effect": "create_temp_effect",
+          "controller": "controller",
+          "duration": "next_phase_draw_amount",
+          "chooseAmount": {
+            "min": 1,
+            "max": 4,
+            "botStrategy": "max",
+            "title": { "pt": "Fé Nv4 - Providência" },
+            "description": { "pt": "Escolha quantas cartas adicionais você deseja comprar." },
+            "confirmPrefix": { "pt": "Comprar" }
+          },
+          "temporaryEffect": {
+            "trigger": "phase.draw.amount.replace",
+            "action": "modify_event_amount",
+            "operation": "add",
+            "amount": "$choice"
+          }
+        },
+        {
+          "effect": "create_temp_effect",
+          "controller": "controller",
+          "duration": "next_event",
+          "temporaryEffect": {
+            "trigger": "phase.draw.after_auto_draw",
+            "label": { "pt": "Fé Nv4 - Providência" },
+            "suppressTriggerFeedback": true,
+            "condition": {
+              "activePlayer": "controller",
+              "eventPlayer": "controller"
+            },
+            "costs": [
+              {
+                "effect": "put_cards_from_hand_on_bottom",
+                "player": "controller",
+                "amount": 2,
+                "choice": "manual"
+              }
+            ],
+            "actions": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "virtue.doubt.1",
+      "kind": "triggered",
+      "trigger": "phase.draw.begin",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Dúvida Nv1 - Insegurança" },
+      "condition": {
+        "activePlayer": "controller",
+        "controllerHandSize": { "gte": 1 }
+      },
+      "actions": [
+        {
+          "effect": "put_cards_from_hand_on_bottom",
+          "player": "controller",
+          "amount": 1,
+          "choice": "manual"
+        }
+      ]
+    },
+    {
+      "id": "virtue.doubt.2",
+      "kind": "triggered",
+      "trigger": "phase.draw.begin",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Dúvida Nv2 - Inquietação" },
+      "condition": {
+        "activePlayer": "controller",
+        "controllerHandSize": { "gte": 2 }
+      },
+      "actions": [
+        {
+          "effect": "put_cards_from_hand_on_bottom",
+          "player": "controller",
+          "amount": 1,
+          "choice": "manual"
+        },
+        {
+          "effect": "put_cards_from_hand_on_top",
+          "player": "controller",
+          "amount": 1,
+          "choice": "manual"
+        }
+      ]
+    },
+    {
+      "id": "virtue.doubt.3",
+      "kind": "triggered",
+      "trigger": "phase.draw.begin",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Dúvida Nv3 - Desconfiança" },
+      "condition": {
+        "activePlayer": "controller",
+        "controllerHandSize": { "gte": 2 }
+      },
+      "actions": [
+        {
+          "effect": "put_cards_from_hand_on_bottom",
+          "player": "controller",
+          "amount": 1,
+          "choice": "manual"
+        },
+        {
+          "effect": "put_cards_from_hand_on_top",
+          "player": "controller",
+          "amount": 1,
+          "choice": "manual"
+        },
+        {
+          "effect": "deal_damage",
+          "target": {
+            "zone": "territory",
+            "controller": "controller"
+          },
+          "amount": 1,
+          "damageType": "effect"
+        }
+      ]
+    },
+    {
+      "id": "virtue.doubt.4",
+      "kind": "triggered",
+      "trigger": "phase.draw.begin",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Dúvida Nv4 - Desespero" },
+      "condition": {
+        "activePlayer": "controller",
+        "controllerHandSize": { "gte": 2 }
+      },
+      "actions": [
+        {
+          "effect": "put_cards_from_hand_on_top",
+          "player": "controller",
+          "amount": 2,
+          "choice": "manual"
+        },
+        {
+          "effect": "deal_damage",
+          "target": {
+            "zone": "territory",
+            "controller": "controller"
+          },
+          "amount": 1,
+          "damageType": "effect"
+        }
+      ]
+    },
+    {
+      "id": "virtue.temperance.1",
+      "kind": "triggered",
+      "trigger": "phase.regroup.begin",
+      "usesStack": true,
+      "optional": true,
+      "label": { "pt": "Temperança Nv1 - Disciplina" },
+      "condition": {
+        "activePlayer": "controller",
+        "controllerCardsPlayedThisTurn": { "lte": 1 }
+      },
+      "actions": [
+        {
+          "effect": "tap_essence",
+          "player": "controller",
+          "amount": 1,
+          "stopResolutionOnFail": true
+        },
+        {
+          "effect": "create_token",
+          "controller": "controller",
+          "tokenId": "incense"
+        }
+      ]
+    },
+    {
+      "id": "virtue.temperance.2",
+      "kind": "triggered",
+      "trigger": "phase.regroup.begin",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Temperança Nv2 - Sobriedade" },
+      "condition": {
+        "activePlayer": "controller",
+        "controllerCardsPlayedThisTurn": { "lte": 1 }
+      },
+      "actions": [
+        {
+          "effect": "create_token",
+          "controller": "controller",
+          "tokenId": "incense"
+        }
+      ]
+    },
+    {
+      "id": "virtue.temperance.3",
+      "kind": "triggered",
+      "trigger": "phase.regroup.begin",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Temperança Nv3 - Autodomínio" },
+      "condition": {
+        "activePlayer": "controller",
+        "controllerCardsPlayedThisTurn": { "lte": 1 }
+      },
+      "actions": [
+        {
+          "effect": "untap_essence",
+          "player": "controller",
+          "amount": 1,
+          "upTo": true
+        },
+        {
+          "effect": "create_token",
+          "controller": "controller",
+          "tokenId": "incense"
+        }
+      ]
+    },
+    {
+      "id": "virtue.temperance.4",
+      "kind": "triggered",
+      "trigger": "phase.regroup.begin",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Temperança Nv4 - Harmonia" },
+      "condition": {
+        "activePlayer": "controller",
+        "controllerCardsPlayedThisTurn": { "lte": 1 }
+      },
+      "actions": [
+        {
+          "effect": "untap_essence",
+          "player": "controller",
+          "amount": 2,
+          "upTo": true
+        },
+        {
+          "effect": "create_token",
+          "controller": "controller",
+          "tokenId": "incense"
+        }
+      ]
+    },
+    {
+      "id": "virtue.lack_control.1",
+      "kind": "triggered",
+      "trigger": "phase.regroup.begin",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Descontrole Nv1 - Excesso" },
+      "condition": {
+        "activePlayer": "controller",
+        "controllerCardsPlayedThisTurn": { "gte": 2 }
+      },
+      "actions": [
+        {
+          "effect": "tap_essence",
+          "player": "controller",
+          "amount": 1,
+          "upTo": true
+        }
+      ]
+    },
+    {
+      "id": "virtue.lack_control.2",
+      "kind": "triggered",
+      "trigger": "phase.regroup.begin",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Descontrole Nv2 - Impulso" },
+      "condition": {
+        "activePlayer": "controller",
+        "controllerCardsPlayedThisTurn": { "gte": 2 }
+      },
+      "actions": [
+        {
+          "effect": "tap_essence",
+          "player": "controller",
+          "amount": 1,
+          "upTo": true
+        },
+        {
+          "effect": "discard_cards",
+          "player": "controller",
+          "amount": 1,
+          "choice": "manual"
+        }
+      ]
+    },
+    {
+      "id": "virtue.lack_control.3",
+      "kind": "triggered",
+      "trigger": "phase.regroup.begin",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Descontrole Nv3 - Descontrole" },
+      "condition": {
+        "activePlayer": "controller",
+        "controllerCardsPlayedThisTurn": { "gte": 1 }
+      },
+      "actions": [
+        {
+          "effect": "tap_essence",
+          "player": "controller",
+          "amount": 2,
+          "upTo": true
+        },
+        {
+          "effect": "discard_cards",
+          "player": "controller",
+          "amount": 1,
+          "choice": "manual"
+        }
+      ]
+    },
+    {
+      "id": "virtue.lack_control.4",
+      "kind": "triggered",
+      "trigger": "phase.regroup.begin",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Descontrole Nv4 - Caos" },
+      "condition": {
+        "activePlayer": "controller",
+        "controllerCardsPlayedThisTurn": { "gte": 1 }
+      },
+      "actions": [
+        {
+          "effect": "tap_essence",
+          "player": "controller",
+          "amount": 2,
+          "upTo": true
+        },
+        {
+          "effect": "discard_cards",
+          "player": "controller",
+          "amount": 1,
+          "choice": "random"
+        }
+      ]
+    },
+    {
+      "id": "virtue.justice.1",
+      "kind": "triggered",
+      "trigger": "damage.dealt",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Justiça Nv1 - Retidão" },
+      "condition": {
+        "damageType": "combat",
+        "sourceType": "character",
+        "sourcePower": { "gte": 3 },
+        "sourceController": "opponent",
+        "targetController": "controller",
+        "targetType": "territory",
+        "oncePerTurn": "justice"
+      },
+      "actions": [
+        {
+          "effect": "deal_damage",
+          "target": "damageSource",
+          "amount": 1,
+          "damageType": "effect"
+        }
+      ]
+    },
+    {
+      "id": "virtue.justice.2",
+      "kind": "triggered",
+      "trigger": "damage.dealt",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Justiça Nv2 - Equidade" },
+      "condition": {
+        "damageType": "combat",
+        "sourceType": "character",
+        "sourcePower": { "gte": 3 },
+        "sourceController": "opponent",
+        "targetController": "controller",
+        "targetType": ["territory", "character"],
+        "oncePerTurn": "justice"
+      },
+      "actions": [
+        {
+          "effect": "deal_damage",
+          "target": "damageSource",
+          "amount": 1,
+          "damageType": "effect"
+        }
+      ]
+    },
+    {
+      "id": "virtue.justice.3",
+      "kind": "triggered",
+      "trigger": "damage.dealt",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Justiça Nv3 - Juízo" },
+      "condition": {
+        "damageType": "combat",
+        "sourceType": "character",
+        "sourcePower": { "gte": 3 },
+        "sourceController": "opponent",
+        "targetController": "controller",
+        "targetType": ["territory", "character"]
+      },
+      "actions": [
+        {
+          "effect": "deal_damage",
+          "target": "damageSource",
+          "amount": 1,
+          "damageType": "effect"
+        }
+      ]
+    },
+    {
+      "id": "virtue.justice.4",
+      "kind": "triggered",
+      "trigger": "damage.dealt",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Justiça Nv4 - Retribuição" },
+      "condition": {
+        "damageType": "combat",
+        "sourceType": "character",
+        "sourcePower": { "gte": 3 },
+        "sourceController": "opponent",
+        "targetController": "controller",
+        "targetType": ["territory", "character"]
+      },
+      "actions": [
+        {
+          "effect": "deal_damage",
+          "target": "damageSource",
+          "amount": 2,
+          "damageType": "effect"
+        }
+      ]
+    },
+    {
+      "id": "virtue.iniquity.1",
+      "kind": "triggered",
+      "trigger": "damage.dealt",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Iniquidade Nv1 - Violência" },
+      "condition": {
+        "damageType": "combat",
+        "sourceType": "character",
+        "sourcePower": { "gte": 3 },
+        "sourceController": "controller",
+        "targetType": "territory",
+        "oncePerTurn": "iniquity"
+      },
+      "actions": [
+        {
+          "effect": "deal_damage",
+          "target": "damageSource",
+          "amount": 1,
+          "damageType": "effect"
+        }
+      ]
+    },
+    {
+      "id": "virtue.iniquity.2",
+      "kind": "triggered",
+      "trigger": "damage.dealt",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Iniquidade Nv2 - Opressão" },
+      "condition": {
+        "damageType": "combat",
+        "sourceType": "character",
+        "sourcePower": { "gte": 3 },
+        "sourceController": "controller",
+        "targetType": ["territory", "character"],
+        "oncePerTurn": "iniquity"
+      },
+      "actions": [
+        {
+          "effect": "deal_damage",
+          "target": "damageSource",
+          "amount": 1,
+          "damageType": "effect"
+        }
+      ]
+    },
+    {
+      "id": "virtue.iniquity.3",
+      "kind": "triggered",
+      "trigger": "damage.dealt",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Iniquidade Nv3 - Corrupção" },
+      "condition": {
+        "damageType": "combat",
+        "sourceType": "character",
+        "sourcePower": { "gte": 3 },
+        "sourceController": "controller",
+        "targetType": ["territory", "character"]
+      },
+      "actions": [
+        {
+          "effect": "deal_damage",
+          "target": "damageSource",
+          "amount": 1,
+          "damageType": "effect"
+        }
+      ]
+    },
+    {
+      "id": "virtue.iniquity.4",
+      "kind": "triggered",
+      "trigger": "damage.dealt",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Iniquidade Nv4 - Perversidade" },
+      "condition": {
+        "damageType": "combat",
+        "sourceType": "character",
+        "sourcePower": { "gte": 3 },
+        "sourceController": "controller",
+        "targetType": ["territory", "character"]
+      },
+      "actions": [
+        {
+          "effect": "deal_damage",
+          "target": "damageSource",
+          "amount": 2,
+          "damageType": "effect"
+        }
+      ]
+    },
+    {
+      "id": "virtue.fortitude.1",
+      "kind": "replacement",
+      "trigger": "damage.would_be_dealt",
+      "usesStack": false,
+      "optional": false,
+      "label": { "pt": "Fortaleza Nv1 - Resistência" },
+      "condition": {
+        "damageType": "combat",
+        "targetController": "controller",
+        "targetType": "character"
+      },
+      "actions": [
+        {
+          "effect": "prevent_damage",
+          "event": "current",
+          "amount": 1,
+          "turnBudget": {
+            "scope": "fortitude.characters",
+            "amount": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "virtue.fortitude.2",
+      "kind": "replacement",
+      "trigger": "damage.would_be_dealt",
+      "usesStack": false,
+      "optional": false,
+      "label": { "pt": "Fortaleza Nv2 - Determinação" },
+      "condition": {
+        "damageType": "combat",
+        "targetController": "controller",
+        "targetType": ["territory", "character"]
+      },
+      "actions": [
+        {
+          "effect": "prevent_damage",
+          "event": "current",
+          "amount": 1,
+          "turnBudget": {
+            "scope": "fortitude.shared",
+            "amount": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "virtue.fortitude.3",
+      "kind": "replacement",
+      "trigger": "damage.would_be_dealt",
+      "usesStack": false,
+      "optional": false,
+      "label": { "pt": "Fortaleza Nv3 - Coragem" },
+      "condition": {
+        "damageType": "combat",
+        "targetController": "controller",
+        "targetType": ["territory", "character"]
+      },
+      "actions": [
+        {
+          "effect": "prevent_damage",
+          "event": "current",
+          "amount": 2,
+          "turnBudget": {
+            "scope": "fortitude.shared",
+            "amount": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "virtue.fortitude.4.characters",
+      "kind": "replacement",
+      "trigger": "damage.would_be_dealt",
+      "usesStack": false,
+      "optional": false,
+      "label": { "pt": "Fortaleza Nv4 - Inabalável" },
+      "condition": {
+        "damageType": "combat",
+        "targetController": "controller",
+        "targetType": "character"
+      },
+      "actions": [
+        {
+          "effect": "prevent_damage",
+          "event": "current",
+          "amount": 2,
+          "turnBudget": {
+            "scope": "fortitude.characters",
+            "amount": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "virtue.fortitude.4.territory",
+      "kind": "replacement",
+      "trigger": "damage.would_be_dealt",
+      "usesStack": false,
+      "optional": false,
+      "label": { "pt": "Fortaleza Nv4 - Inabalável" },
+      "condition": {
+        "damageType": "combat",
+        "targetController": "controller",
+        "targetType": "territory"
+      },
+      "actions": [
+        {
+          "effect": "prevent_damage",
+          "event": "current",
+          "amount": 2,
+          "turnBudget": {
+            "scope": "fortitude.territory",
+            "amount": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "virtue.cowardice.2",
+      "kind": "triggered",
+      "trigger": "combat.attackers.declared",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Covardia Nv2 - Fragilidade" },
+      "condition": {
+        "attacker": "controller",
+        "damagedAttackerCount": { "gte": 1 }
+      },
+      "actions": [
+        {
+          "effect": "modify_power_resistance",
+          "target": {
+            "zone": "eventAttackers",
+            "damaged": true,
+            "count": "all"
+          },
+          "power": -1,
+          "resistance": 0,
+          "duration": "until_regroup"
+        }
+      ]
+    },
+    {
+      "id": "virtue.cowardice.4",
+      "kind": "triggered",
+      "trigger": "damage.dealt",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Covardia Nv4 - Colapso" },
+      "condition": {
+        "damageType": "combat",
+        "targetController": "controller",
+        "targetType": "character"
+      },
+      "actions": [
+        {
+          "effect": "tap",
+          "target": "damageTarget"
+        }
+      ]
+    },
+    {
+      "id": "virtue.hope.1",
+      "kind": "triggered",
+      "trigger": "phase.regroup.begin",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Esperança Nv1 - Ânimo" },
+      "condition": {
+        "activePlayer": "opponent",
+        "controllerTerritoryDamagedThisTurn": true
+      },
+      "actions": [
+        {
+          "effect": "heal_territory",
+          "player": "controller",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "virtue.hope.2",
+      "kind": "triggered",
+      "trigger": "phase.regroup.begin",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Esperança Nv2 - Perseverança" },
+      "condition": {
+        "activePlayer": "opponent",
+        "controllerTerritoryDamagedThisTurn": true
+      },
+      "actions": [
+        {
+          "effect": "choose_effect_bundle",
+          "description": { "pt": "Escolha como aplicar a cura de Esperança." },
+          "choices": [
+            {
+              "id": "character",
+              "label": { "pt": "Curar 1 Personagem" },
+              "actions": [
+                {
+                  "effect": "heal_character",
+                  "target": {
+                    "zone": "battlefield",
+                    "controller": "controller",
+                    "type": "PER",
+                    "damaged": true,
+                    "count": 1,
+                    "choice": "manual"
+                  },
+                  "amount": 1
+                }
+              ]
+            },
+            {
+              "id": "territory",
+              "label": { "pt": "Curar 2 Território" },
+              "actions": [
+                {
+                  "effect": "heal_territory",
+                  "player": "controller",
+                  "amount": 2
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "virtue.hope.3",
+      "kind": "triggered",
+      "trigger": "phase.regroup.begin",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Esperança Nv3 - Renovação" },
+      "condition": {
+        "activePlayer": "opponent",
+        "controllerTerritoryDamagedThisTurn": true
+      },
+      "actions": [
+        {
+          "effect": "heal_territory",
+          "player": "controller",
+          "amount": 2
+        },
+        {
+          "effect": "heal_character",
+          "target": {
+            "zone": "battlefield",
+            "controller": "controller",
+            "type": "PER",
+            "damaged": true,
+            "count": 1,
+            "choice": "manual"
+          },
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "virtue.hope.4",
+      "kind": "triggered",
+      "trigger": "phase.regroup.begin",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Esperança Nv4 - Milagre" },
+      "condition": {
+        "activePlayer": "opponent",
+        "controllerTerritoryDamagedThisTurn": true
+      },
+      "actions": [
+        {
+          "effect": "distribute_healing",
+          "amount": 3,
+          "description": { "pt": "Distribua 3 pontos de cura entre seu Território e seus Personagens danificados." },
+          "targets": [
+            {
+              "zone": "territory",
+              "controller": "controller"
+            },
+            {
+              "zone": "battlefield",
+              "controller": "controller",
+              "type": "PER",
+              "damaged": true,
+              "count": "all"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "virtue.despair.1",
+      "kind": "triggered",
+      "trigger": "phase.regroup.begin",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Desespero Nv1 - Cansaço" },
+      "condition": {
+        "activePlayer": "opponent",
+        "controllerTerritoryDamagedThisTurn": true
+      },
+      "actions": [
+        {
+          "effect": "deal_damage",
+          "target": {
+            "zone": "territory",
+            "controller": "controller"
+          },
+          "amount": 1,
+          "damageType": "effect"
+        }
+      ]
+    },
+    {
+      "id": "virtue.despair.2",
+      "kind": "triggered",
+      "trigger": "phase.regroup.begin",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Desespero Nv2 - Exaustão" },
+      "condition": {
+        "activePlayer": "opponent",
+        "controllerTerritoryDamagedThisTurn": true
+      },
+      "actions": [
+        {
+          "effect": "choose_effect_bundle",
+          "description": { "pt": "Escolha como aplicar o dano de Desespero." },
+          "choices": [
+            {
+              "id": "character",
+              "label": { "pt": "Causar 1 a um Personagem" },
+              "actions": [
+                {
+                  "effect": "deal_damage",
+                  "target": {
+                    "zone": "battlefield",
+                    "controller": "controller",
+                    "type": "PER",
+                    "count": 1,
+                    "choice": "manual"
+                  },
+                  "amount": 1,
+                  "damageType": "effect"
+                }
+              ]
+            },
+            {
+              "id": "territory",
+              "label": { "pt": "Causar 2 ao Território" },
+              "actions": [
+                {
+                  "effect": "deal_damage",
+                  "target": {
+                    "zone": "territory",
+                    "controller": "controller"
+                  },
+                  "amount": 2,
+                  "damageType": "effect"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "virtue.despair.3",
+      "kind": "triggered",
+      "trigger": "phase.regroup.begin",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Desespero Nv3 - Ruína" },
+      "condition": {
+        "activePlayer": "opponent",
+        "controllerTerritoryDamagedThisTurn": true
+      },
+      "actions": [
+        {
+          "effect": "distribute_damage",
+          "amount": 2,
+          "damageType": "effect",
+          "description": { "pt": "Distribua 2 pontos de dano entre seu Território e seus Personagens." },
+          "targets": [
+            {
+              "zone": "territory",
+              "controller": "controller"
+            },
+            {
+              "zone": "battlefield",
+              "controller": "controller",
+              "type": "PER",
+              "count": "all"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "virtue.despair.4",
+      "kind": "triggered",
+      "trigger": "phase.regroup.begin",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Desespero Nv4 - Desolação" },
+      "condition": {
+        "activePlayer": "opponent",
+        "controllerTerritoryDamagedThisTurn": true
+      },
+      "actions": [
+        {
+          "effect": "distribute_damage",
+          "amount": 3,
+          "damageType": "effect",
+          "description": { "pt": "Distribua 3 pontos de dano entre seu Território e seus Personagens." },
+          "targets": [
+            {
+              "zone": "territory",
+              "controller": "controller"
+            },
+            {
+              "zone": "battlefield",
+              "controller": "controller",
+              "type": "PER",
+              "count": "all"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "virtue.prudence.1",
+      "kind": "triggered",
+      "trigger": "phase.prepare.begin",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Prudência Nv1 - Observação" },
+      "condition": {
+        "activePlayer": "controller",
+        "controllerDeckSize": { "gte": 1 }
+      },
+      "actions": [
+        {
+          "effect": "review_top_cards",
+          "player": "controller",
+          "amount": 1,
+          "maxCemetery": 0,
+          "description": { "pt": "Olhe a carta do topo do seu baralho e coloque-a no topo ou no fundo." }
+        }
+      ]
+    },
+    {
+      "id": "virtue.prudence.2",
+      "kind": "triggered",
+      "trigger": "phase.prepare.begin",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Prudência Nv2 - Discernimento" },
+      "condition": {
+        "activePlayer": "controller",
+        "controllerDeckSize": { "gte": 1 }
+      },
+      "actions": [
+        {
+          "effect": "review_top_cards",
+          "player": "controller",
+          "amount": 2,
+          "maxCemetery": 1,
+          "description": { "pt": "Olhe as duas cartas do topo do seu baralho, envie ate uma ao cemiterio e organize as demais entre topo e fundo." }
+        }
+      ]
+    },
+    {
+      "id": "virtue.prudence.3",
+      "kind": "triggered",
+      "trigger": "phase.prepare.begin",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Prudência Nv3 - Antecipação" },
+      "condition": {
+        "activePlayer": "controller",
+        "controllerDeckSize": { "gte": 1 }
+      },
+      "actions": [
+        {
+          "effect": "review_top_cards",
+          "player": "controller",
+          "amount": 3,
+          "maxCemetery": 1,
+          "description": { "pt": "Olhe as tres cartas do topo do seu baralho, envie ate uma ao cemiterio e organize as demais entre topo e fundo." }
+        }
+      ]
+    },
+    {
+      "id": "virtue.prudence.4",
+      "kind": "triggered",
+      "trigger": "phase.prepare.begin",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Prudência Nv4 - Sabedoria" },
+      "condition": {
+        "activePlayer": "controller",
+        "controllerDeckSize": { "gte": 1 }
+      },
+      "actions": [
+        {
+          "effect": "review_top_cards",
+          "player": "controller",
+          "amount": 4,
+          "maxCemetery": 1,
+          "description": { "pt": "Olhe as quatro cartas do topo do seu baralho, envie ate uma ao cemiterio e organize as demais entre topo e fundo." }
+        }
+      ]
+    },
+    {
+      "id": "virtue.folly.1",
+      "kind": "triggered",
+      "trigger": "phase.prepare.begin",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Insensatez Nv1 - Distração" },
+      "condition": {
+        "activePlayer": "controller"
+      },
+      "actions": [
+        {
+          "effect": "pulverize",
+          "player": "controller",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "virtue.folly.2",
+      "kind": "triggered",
+      "trigger": "phase.prepare.begin",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Insensatez Nv2 - Impulsividade" },
+      "condition": {
+        "activePlayer": "controller"
+      },
+      "actions": [
+        {
+          "effect": "pulverize",
+          "player": "controller",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "id": "virtue.folly.3",
+      "kind": "triggered",
+      "trigger": "phase.prepare.begin",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Insensatez Nv3 - Irreflexão" },
+      "condition": {
+        "activePlayer": "controller"
+      },
+      "actions": [
+        {
+          "effect": "pulverize",
+          "player": "controller",
+          "amount": 3
+        }
+      ]
+    },
+    {
+      "id": "virtue.folly.4",
+      "kind": "triggered",
+      "trigger": "phase.prepare.begin",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Insensatez Nv4 - Insensatez" },
+      "condition": {
+        "activePlayer": "controller"
+      },
+      "actions": [
+        {
+          "effect": "pulverize",
+          "player": "controller",
+          "amount": 4
+        }
+      ]
+    },
+    {
+      "id": "virtue.charity.1",
+      "kind": "triggered",
+      "trigger": "combat.attackers.declared",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Caridade Nv1 - Cuidado" },
+      "condition": {
+        "attacker": "controller",
+        "attackerCount": { "eq": 2 }
+      },
+      "actions": [
+        {
+          "effect": "modify_power_resistance",
+          "target": "eventAttackers",
+          "power": 1,
+          "resistance": 0,
+          "duration": "until_regroup"
+        }
+      ]
+    },
+    {
+      "id": "virtue.charity.2",
+      "kind": "triggered",
+      "trigger": "combat.attackers.declared",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Caridade Nv2 - Comunhão" },
+      "condition": {
+        "attacker": "controller",
+        "attackerCount": { "gte": 2 }
+      },
+      "actions": [
+        {
+          "effect": "modify_power_resistance",
+          "target": "eventAttackers",
+          "power": 1,
+          "resistance": 0,
+          "duration": "until_regroup"
+        }
+      ]
+    },
+    {
+      "id": "virtue.charity.3",
+      "kind": "triggered",
+      "trigger": "combat.attackers.declared",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Caridade Nv3 - Generosidade" },
+      "condition": {
+        "attacker": "controller",
+        "attackerCount": { "gte": 2 }
+      },
+      "actions": [
+        {
+          "effect": "modify_power_resistance",
+          "target": "eventAttackers",
+          "power": 1,
+          "resistance": 1,
+          "duration": "until_regroup"
+        }
+      ]
+    },
+    {
+      "id": "virtue.charity.4",
+      "kind": "triggered",
+      "trigger": "combat.attackers.declared",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Caridade Nv4 - Amor Perfeito" },
+      "condition": {
+        "attacker": "controller",
+        "attackerCount": { "gte": 2 }
+      },
+      "actions": [
+        {
+          "effect": "modify_power_resistance",
+          "target": "eventAttackers",
+          "power": 1,
+          "resistance": 1,
+          "duration": "until_regroup"
+        }
+      ]
+    },
+    {
+      "id": "virtue.egoism.1",
+      "kind": "triggered",
+      "trigger": "combat.attackers.declared",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Egoísmo Nv1 - Indiferença" },
+      "condition": {
+        "attacker": "controller",
+        "attackerCount": { "gte": 2 }
+      },
+      "actions": [
+        {
+          "effect": "modify_power_resistance",
+          "target": "eventAttackers",
+          "power": -1,
+          "resistance": 0,
+          "duration": "until_regroup"
+        }
+      ]
+    },
+    {
+      "id": "virtue.egoism.2",
+      "kind": "triggered",
+      "trigger": "combat.attackers.declared",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Egoísmo Nv2 - Isolamento" },
+      "condition": {
+        "attacker": "controller",
+        "attackerCount": { "gte": 2 }
+      },
+      "actions": [
+        {
+          "effect": "modify_power_resistance",
+          "target": "eventAttackers",
+          "power": -2,
+          "resistance": 0,
+          "duration": "until_regroup"
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_per_011.entry",
+      "kind": "triggered",
+      "trigger": "permanent.enters_battlefield",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Aimeleque - Entrada" },
+      "condition": {
+        "sourceIsEventPermanent": true
+      },
+      "actions": [
+        {
+          "effect": "draw_cards",
+          "player": "controller",
+          "amount": 1
+        },
+        {
+          "effect": "heal_territory",
+          "player": "controller",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_per_003.entry",
+      "kind": "triggered",
+      "trigger": "permanent.enters_battlefield",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Golias de Gate - Entrada" },
+      "condition": {
+        "sourceIsEventPermanent": true
+      },
+      "actions": [
+        {
+          "effect": "tap",
+          "target": {
+            "zone": "battlefield",
+            "controller": "opponent",
+            "type": "PER",
+            "power": { "lte": 2 },
+            "count": "all"
+          }
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_per_009.attacked",
+      "kind": "triggered",
+      "trigger": "combat.attacker.targeted",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Urias - Alvo de ataque" },
+      "condition": {
+        "targetIsSource": true,
+        "sourceExhausted": true
+      },
+      "actions": [
+        {
+          "effect": "set_base_resistance",
+          "target": "source",
+          "value": 1,
+          "duration": "until_regroup"
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_per_010.damage_replacement",
+      "kind": "replacement",
+      "trigger": "damage.would_be_dealt",
+      "usesStack": false,
+      "optional": false,
+      "label": { "pt": "Benaia - Destruir fonte de dano" },
+      "condition": {
+        "targetIsSource": true,
+        "sourceType": "character",
+        "sourcePower": { "gte": 4 }
+      },
+      "actions": [
+        {
+          "effect": "destroy_permanent",
+          "target": "damageSource",
+          "reason": "replacement"
+        },
+        {
+          "effect": "prevent_damage",
+          "event": "current",
+          "amount": "all"
+        }
+      ]
+    }
+  ]
+}

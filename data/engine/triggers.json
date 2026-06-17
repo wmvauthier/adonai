@@ -1,0 +1,218 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-06-15",
+  "triggers": [
+    {
+      "id": "game.start",
+      "label": { "pt": "Início da partida" },
+      "scope": "game",
+      "timing": "after",
+      "payload": ["game"]
+    },
+    {
+      "id": "turn.begin",
+      "label": { "pt": "Início do turno" },
+      "scope": "turn",
+      "timing": "before",
+      "payload": ["game", "playerId", "turnNumber"]
+    },
+    {
+      "id": "turn.end",
+      "label": { "pt": "Fim do turno" },
+      "scope": "turn",
+      "timing": "after",
+      "payload": ["game", "playerId", "turnNumber"]
+    },
+    {
+      "id": "phase.prepare.begin",
+      "label": { "pt": "Início da etapa de Preparação" },
+      "scope": "phase",
+      "timing": "before_step_action",
+      "payload": ["game", "playerId"]
+    },
+    {
+      "id": "phase.draw.begin",
+      "label": { "pt": "Início da etapa de Compra" },
+      "scope": "phase",
+      "timing": "before_step_action",
+      "payload": ["game", "playerId"]
+    },
+    {
+      "id": "phase.draw.amount.replace",
+      "label": { "pt": "Modificação da compra automática" },
+      "scope": "replacement",
+      "timing": "would",
+      "replacementWindow": true,
+      "payload": ["game", "playerId", "baseAmount", "currentAmount", "reason"]
+    },
+    {
+      "id": "phase.draw.after_auto_draw",
+      "label": { "pt": "Depois da compra automática" },
+      "scope": "phase",
+      "timing": "after_step_action",
+      "payload": ["game", "playerId", "drawnCards"]
+    },
+    {
+      "id": "phase.consecration.begin",
+      "label": { "pt": "Início da etapa de Consagração" },
+      "scope": "phase",
+      "timing": "before_step_action",
+      "payload": ["game", "playerId"]
+    },
+    {
+      "id": "action.consecrate.after",
+      "label": { "pt": "Depois de Consagrar" },
+      "scope": "action",
+      "timing": "after",
+      "payload": ["game", "playerId", "cardId", "cardType"]
+    },
+    {
+      "id": "action.profane.after",
+      "label": { "pt": "Depois de Profanar" },
+      "scope": "action",
+      "timing": "after",
+      "payload": ["game", "playerId", "cardId"]
+    },
+    {
+      "id": "phase.preparation.begin",
+      "label": { "pt": "Início da etapa de Alistamento" },
+      "scope": "phase",
+      "timing": "before_priority",
+      "payload": ["game", "playerId"]
+    },
+    {
+      "id": "phase.combat.begin",
+      "label": { "pt": "Início da etapa de Combate" },
+      "scope": "phase",
+      "timing": "before_priority",
+      "payload": ["game", "playerId"]
+    },
+    {
+      "id": "combat.attackers.declared",
+      "label": { "pt": "Atacantes declarados" },
+      "scope": "combat",
+      "timing": "after",
+      "payload": ["game", "attackerId", "attackers", "targets"]
+    },
+    {
+      "id": "combat.attacker.targeted",
+      "label": { "pt": "Personagem ou Território escolhido como alvo de ataque" },
+      "scope": "combat",
+      "timing": "after",
+      "payload": ["game", "attackerId", "attackerUid", "target"]
+    },
+    {
+      "id": "combat.blockers.declared",
+      "label": { "pt": "Bloqueadores declarados" },
+      "scope": "combat",
+      "timing": "after",
+      "payload": ["game", "defenderId", "blockers"]
+    },
+    {
+      "id": "combat.damage.before",
+      "label": { "pt": "Antes do dano de combate" },
+      "scope": "combat",
+      "timing": "before",
+      "payload": ["game", "events"]
+    },
+    {
+      "id": "damage.would_be_dealt",
+      "label": { "pt": "Dano seria causado" },
+      "scope": "replacement",
+      "timing": "would",
+      "replacementWindow": true,
+      "payload": ["game", "source", "target", "amount", "damageType", "damageAsCost"]
+    },
+    {
+      "id": "damage.dealt",
+      "label": { "pt": "Dano causado" },
+      "scope": "event",
+      "timing": "after",
+      "payload": ["game", "source", "target", "amount", "damageType", "damageAsCost"]
+    },
+    {
+      "id": "heal.applied",
+      "label": { "pt": "Cura aplicada" },
+      "scope": "event",
+      "timing": "after",
+      "payload": ["game", "source", "target", "amount"]
+    },
+    {
+      "id": "phase.regroup.begin",
+      "label": { "pt": "Início da etapa de Reagrupamento" },
+      "scope": "phase",
+      "timing": "before_expiration",
+      "payload": ["game", "playerId"]
+    },
+    {
+      "id": "phase.discard.begin",
+      "label": { "pt": "Início da etapa de Descarte" },
+      "scope": "phase",
+      "timing": "before_step_action",
+      "payload": ["game", "playerId", "handLimit"]
+    },
+    {
+      "id": "card.played",
+      "label": { "pt": "Carta jogada" },
+      "scope": "card",
+      "timing": "after_announcement",
+      "payload": ["game", "playerId", "cardId", "stackObjectId"]
+    },
+    {
+      "id": "card.resolved",
+      "label": { "pt": "Carta resolvida" },
+      "scope": "card",
+      "timing": "after",
+      "payload": ["game", "playerId", "cardId", "result"]
+    },
+    {
+      "id": "permanent.enters_battlefield",
+      "label": { "pt": "Permanente entra no campo" },
+      "scope": "permanent",
+      "timing": "after",
+      "payload": ["game", "playerId", "instanceUid", "cardId"]
+    },
+    {
+      "id": "permanent.leaves_battlefield",
+      "label": { "pt": "Permanente deixa o campo" },
+      "scope": "permanent",
+      "timing": "after",
+      "payload": ["game", "playerId", "instanceUid", "cardId", "destination"]
+    },
+    {
+      "id": "permanent.dies",
+      "label": { "pt": "Personagem morre" },
+      "scope": "permanent",
+      "timing": "after",
+      "payload": ["game", "playerId", "instanceUid", "cardId"]
+    },
+    {
+      "id": "moral.changed",
+      "label": { "pt": "Virtude ou Desvirtude alterada" },
+      "scope": "moral",
+      "timing": "after",
+      "payload": ["game", "playerId", "changes", "reason"]
+    },
+    {
+      "id": "stack.object_added",
+      "label": { "pt": "Objeto colocado na pilha" },
+      "scope": "stack",
+      "timing": "after",
+      "payload": ["game", "stackObject"]
+    },
+    {
+      "id": "stack.object_resolved",
+      "label": { "pt": "Objeto da pilha resolvido" },
+      "scope": "stack",
+      "timing": "after",
+      "payload": ["game", "stackObject"]
+    },
+    {
+      "id": "priority.window_opened",
+      "label": { "pt": "Janela de prioridade aberta" },
+      "scope": "priority",
+      "timing": "before",
+      "payload": ["game", "playerId", "reason"]
+    }
+  ]
+}

@@ -1,11 +1,11 @@
 const DATA_URLS = {
-  cards: "../data/cards.json",
-  decks: "../data/decks.json",
-  types: "../data/types.json",
-  subtypes: "../data/subtypes.json",
-  functions: "../data/functions.json",
-  collections: "../data/collections.json",
-  virtues: "../data/virtues.json"
+  cards: "../data/game/cards.json",
+  decks: "../data/game/decks.json",
+  types: "../data/refs/types.json",
+  subtypes: "../data/refs/subtypes.json",
+  functions: "../data/refs/mechanics.json",
+  collections: "../data/refs/collections.json",
+  virtues: "../data/game/virtues.json"
 };
 
 const STORAGE_KEY = "adonai.deckbuilder.v1";

@@ -1,0 +1,348 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-06-16",
+  "links": [
+    {
+      "sourceType": "virtue",
+      "sourceId": 1,
+      "level": 1,
+      "abilityId": "virtue.faith.1"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 1,
+      "level": 2,
+      "abilityId": "virtue.faith.2"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 1,
+      "level": 3,
+      "abilityId": "virtue.faith.3"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 1,
+      "level": 4,
+      "abilityId": "virtue.faith.4"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 2,
+      "level": 1,
+      "abilityId": "virtue.doubt.1"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 2,
+      "level": 2,
+      "abilityId": "virtue.doubt.2"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 2,
+      "level": 3,
+      "abilityId": "virtue.doubt.3"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 2,
+      "level": 4,
+      "abilityId": "virtue.doubt.4"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 3,
+      "level": 1,
+      "abilityId": "virtue.temperance.1"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 3,
+      "level": 2,
+      "abilityId": "virtue.temperance.2"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 3,
+      "level": 3,
+      "abilityId": "virtue.temperance.3"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 3,
+      "level": 4,
+      "abilityId": "virtue.temperance.4"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 4,
+      "level": 1,
+      "abilityId": "virtue.lack_control.1"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 4,
+      "level": 2,
+      "abilityId": "virtue.lack_control.2"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 4,
+      "level": 3,
+      "abilityId": "virtue.lack_control.3"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 4,
+      "level": 4,
+      "abilityId": "virtue.lack_control.4"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 5,
+      "level": 1,
+      "abilityId": "virtue.justice.1"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 5,
+      "level": 2,
+      "abilityId": "virtue.justice.2"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 5,
+      "level": 3,
+      "abilityId": "virtue.justice.3"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 5,
+      "level": 4,
+      "abilityId": "virtue.justice.4"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 6,
+      "level": 1,
+      "abilityId": "virtue.iniquity.1"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 6,
+      "level": 2,
+      "abilityId": "virtue.iniquity.2"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 6,
+      "level": 3,
+      "abilityId": "virtue.iniquity.3"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 6,
+      "level": 4,
+      "abilityId": "virtue.iniquity.4"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 7,
+      "level": 1,
+      "abilityId": "virtue.fortitude.1"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 7,
+      "level": 2,
+      "abilityId": "virtue.fortitude.2"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 7,
+      "level": 3,
+      "abilityId": "virtue.fortitude.3"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 7,
+      "level": 4,
+      "abilityId": "virtue.fortitude.4.characters"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 7,
+      "level": 4,
+      "abilityId": "virtue.fortitude.4.territory"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 8,
+      "level": 2,
+      "abilityId": "virtue.cowardice.2"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 8,
+      "level": 4,
+      "abilityId": "virtue.cowardice.4"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 9,
+      "level": 1,
+      "abilityId": "virtue.hope.1"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 9,
+      "level": 2,
+      "abilityId": "virtue.hope.2"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 9,
+      "level": 3,
+      "abilityId": "virtue.hope.3"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 9,
+      "level": 4,
+      "abilityId": "virtue.hope.4"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 10,
+      "level": 1,
+      "abilityId": "virtue.despair.1"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 10,
+      "level": 2,
+      "abilityId": "virtue.despair.2"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 10,
+      "level": 3,
+      "abilityId": "virtue.despair.3"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 10,
+      "level": 4,
+      "abilityId": "virtue.despair.4"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 11,
+      "level": 1,
+      "abilityId": "virtue.prudence.1"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 11,
+      "level": 2,
+      "abilityId": "virtue.prudence.2"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 11,
+      "level": 3,
+      "abilityId": "virtue.prudence.3"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 11,
+      "level": 4,
+      "abilityId": "virtue.prudence.4"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 12,
+      "level": 1,
+      "abilityId": "virtue.folly.1"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 12,
+      "level": 2,
+      "abilityId": "virtue.folly.2"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 12,
+      "level": 3,
+      "abilityId": "virtue.folly.3"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 12,
+      "level": 4,
+      "abilityId": "virtue.folly.4"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 13,
+      "level": 1,
+      "abilityId": "virtue.charity.1"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 13,
+      "level": 2,
+      "abilityId": "virtue.charity.2"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 13,
+      "level": 3,
+      "abilityId": "virtue.charity.3"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 13,
+      "level": 4,
+      "abilityId": "virtue.charity.4"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 14,
+      "level": 1,
+      "abilityId": "virtue.egoism.1"
+    },
+    {
+      "sourceType": "virtue",
+      "sourceId": 14,
+      "level": 2,
+      "abilityId": "virtue.egoism.2"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-PER-011",
+      "zone": "battlefield",
+      "abilityId": "card.fnd_per_011.entry"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-PER-003",
+      "zone": "battlefield",
+      "abilityId": "card.fnd_per_003.entry"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-PER-009",
+      "zone": "battlefield",
+      "abilityId": "card.fnd_per_009.attacked"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-PER-010",
+      "zone": "battlefield",
+      "abilityId": "card.fnd_per_010.damage_replacement"
+    }
+  ]
+}

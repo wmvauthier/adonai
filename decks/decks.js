@@ -1,5 +1,5 @@
-const DECKS_URL = "../data/decks.json";
-const CARDS_URL = "../data/cards.json";
+const DECKS_URL = "../data/game/decks.json";
+const CARDS_URL = "../data/game/cards.json";
 const STORAGE_KEY = "adonai.decks.filters.v1";
 const DECK_LANES = ["0-1", "2", "3", "4", "5", "6+"];
 const COST_LAYOUT_TYPE_ORDER = ["PEC", "ART", "MIL", "PER"];
@@ -10,12 +10,12 @@ const TYPE_LAYOUT_LANES = {
   PEC: "4"
 };
 const REFERENCE_URLS = {
-  collections: "../data/collections.json",
-  types: "../data/types.json",
-  subtypes: "../data/subtypes.json",
-  functions: "../data/functions.json",
-  roles: "../data/roles.json",
-  virtues: "../data/virtues.json"
+  collections: "../data/refs/collections.json",
+  types: "../data/refs/types.json",
+  subtypes: "../data/refs/subtypes.json",
+  functions: "../data/refs/mechanics.json",
+  roles: "../data/refs/roles.json",
+  virtues: "../data/game/virtues.json"
 };
 
 const copy = {

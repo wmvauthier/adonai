@@ -1,14 +1,14 @@
-const DATA_URL = "../data/cards.json";
-const RULINGS_URL = "../data/rulings.json";
+const DATA_URL = "../data/game/cards.json";
+const RULINGS_URL = "../data/game/rulings.json";
 const STORAGE_KEY = "adonai.cards.filters.v1";
 const REFERENCE_URLS = {
-  collections: "../data/collections.json",
-  types: "../data/types.json",
-  subtypes: "../data/subtypes.json",
-  functions: "../data/functions.json",
-  roles: "../data/roles.json",
-  virtues: "../data/virtues.json",
-  bible: "../data/bible.json"
+  collections: "../data/refs/collections.json",
+  types: "../data/refs/types.json",
+  subtypes: "../data/refs/subtypes.json",
+  functions: "../data/refs/mechanics.json",
+  roles: "../data/refs/roles.json",
+  virtues: "../data/game/virtues.json",
+  bible: "../data/content/bible.json"
 };
 
 const typeOrder = ["Campeão", "Território", "Templo", "Personagem", "Milagre", "Artefato", "Pecado"];

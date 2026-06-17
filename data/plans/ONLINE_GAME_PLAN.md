@@ -52,15 +52,15 @@ Direcao atual:
 
 ## 2. Estado Atual Da Base
 
-- [x] `data/comprehensive_rules.md` existe e esta maduro o suficiente para orientar um motor de regras.
-- [x] `data/cards.json` possui 52 cartas atualmente.
+- [x] `data/rules/comprehensive_rules.md` existe e esta maduro o suficiente para orientar um motor de regras.
+- [x] `data/game/cards.json` possui 52 cartas atualmente.
 - [x] Das 52 cartas, 40 sao elegiveis para deck principal.
 - [x] Das 52 cartas, 12 sao cartas de Identidade:
   - 4 Campeoes;
   - 4 Territorios;
   - 4 Templos.
-- [x] `data/decks.json` possui decks pre-construidos.
-- [x] `data/decks.json` usa o campo `cards`, nao `main`.
+- [x] `data/game/decks.json` possui decks pre-construidos.
+- [x] `data/game/decks.json` usa o campo `cards`, nao `main`.
 - [x] Cada deck pre-construido atual tem 40 cartas em `cards`.
 
 ## 3. Ponto Critico Sobre Custo Zero
@@ -267,8 +267,8 @@ Use Supabase Auth se quiser rapidez e menos risco de seguranca quando chegarmos 
 - [ ] Criar `play/engine/actions.js`.
 - [ ] Criar `play/engine/rules.js`.
 - [ ] Criar `play/engine/card-catalog.js`.
-- [ ] Carregar `data/cards.json`.
-- [ ] Carregar `data/decks.json`.
+- [ ] Carregar `data/game/cards.json`.
+- [ ] Carregar `data/game/decks.json`.
 - [ ] Criar tela placeholder mobile first do tabuleiro.
 - [ ] Criar simulador local de partida.
 
@@ -384,7 +384,7 @@ Critério de aceite:
 
 ### Fase 5 - Cartas E Efeitos Locais
 
-- [ ] Criar `data/card_effects.json` ou `play/engine/card-effects.js`.
+- [ ] Criar `data/engine/abilities.json` e `data/engine/effect_actions.json`.
 - [ ] Mapear as 52 cartas com status:
   - `not_implemented`;
   - `stub`;
@@ -408,7 +408,7 @@ Critério de aceite:
 
 ### Fase 6 - Decks E Preparacao Local
 
-- [ ] Listar decks oficiais de `data/decks.json`.
+- [ ] Listar decks oficiais de `data/game/decks.json`.
 - [ ] Validar identidade do deck.
 - [ ] Validar 40 cartas do deck.
 - [ ] Validar singleton.
@@ -509,7 +509,7 @@ Critério de aceite:
 
 Critério de aceite:
 
-- Engine suporta as regras do `comprehensive_rules.md` com boa fidelidade.
+- Engine suporta as regras do `data/rules/comprehensive_rules.md` com boa fidelidade.
 - Uma partida local contra bot usa as regras reais, nao apenas regras simplificadas.
 - O fluxo de prioridade e pilha fica compreensivel em mobile.
 
@@ -890,7 +890,7 @@ Abordagem recomendada:
 
 1. Criar catalogo estruturado em arquivo separado.
 2. Manter `cards.json` como fonte editorial.
-3. Criar `data/card_effects.json` ou `play/engine/card-effects.js`.
+3. Criar `data/engine/abilities.json` e `data/engine/effect_actions.json`.
 4. Usar o catalogo localmente primeiro, contra bot.
 5. Reaproveitar o mesmo catalogo no servidor WebSocket depois.
 6. Para cada carta, mapear:
@@ -1070,15 +1070,15 @@ Versao Local 1.0 deve validar:
 ```text
 Voce e um engenheiro senior construindo a base jogavel local de Adonai Card Game dentro do repo existente.
 
-Objetivo imediato: criar o primeiro prototipo local em /play/ usando HTML/CSS/JS puro, sem backend, carregando data/cards.json e data/decks.json, com UI mobile first, GameState local e uma partida jogavel contra bot.
+Objetivo imediato: criar o primeiro prototipo local em /play/ usando HTML/CSS/JS puro, sem backend, carregando data/game/cards.json e data/game/decks.json, com UI mobile first, GameState local e uma partida jogavel contra bot.
 
-Respeite data/ONLINE_GAME_PLAN.md.
+Respeite data/plans/ONLINE_GAME_PLAN.md.
 
 Escopo:
 - Criar /play/index.html, /play/play.css e /play/play.js.
 - Criar um pequeno engine local em JS puro.
 - Separar GameState, GameAction, regras e renderizacao para que a mesma base possa ser usada futuramente em WebSocket.
-- Carregar decks oficiais de data/decks.json.
+- Carregar decks oficiais de data/game/decks.json.
 - Permitir iniciar uma partida local humano vs bot com dois decks oficiais.
 - Renderizar identidades, mao, deck, campo, cemiterio, territorio/dano e log.
 - Permitir acoes simples: comprar carta, passar turno, jogar carta simplificada no campo, causar dano de teste ao territorio e conceder.
@@ -1105,7 +1105,7 @@ Voce e um engenheiro senior evoluindo o modo /play/ de Adonai Card Game.
 
 Objetivo: transformar o prototipo local em uma versao Local 1.0 completa contra bot, antes de qualquer WebSocket, usuario, banco, ranking, matchmaking ou custo pago.
 
-Respeite data/ONLINE_GAME_PLAN.md e data/comprehensive_rules.md.
+Respeite data/plans/ONLINE_GAME_PLAN.md e data/rules/comprehensive_rules.md.
 
 Escopo:
 - Integrar deckbuilder -> /play/ usando estado local/export.

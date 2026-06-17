@@ -1,4 +1,4 @@
-const RULES_URL = "../data/comprehensive_rules.md";
+const RULES_URL = "../data/rules/comprehensive_rules.md";
 
 const els = {
   header: document.getElementById("siteHeader"),

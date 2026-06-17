@@ -1,6 +1,6 @@
 const DATA_URLS = {
-  instagram: "../data/instagram.json",
-  youtube: "../data/youtube.json"
+  instagram: "../data/content/instagram.json",
+  youtube: "../data/content/youtube.json"
 };
 
 const PLACEHOLDER_THUMB = "../assets/logo/adonai_logo_base-4.webp";

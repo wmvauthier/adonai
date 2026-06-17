@@ -1,9 +1,9 @@
 const DATA_URLS = {
-  lore: "../data/lore.json",
-  cards: "../data/cards.json",
-  collections: "../data/collections.json",
-  types: "../data/types.json",
-  virtues: "../data/virtues.json"
+  lore: "../data/content/lore.json",
+  cards: "../data/game/cards.json",
+  collections: "../data/refs/collections.json",
+  types: "../data/refs/types.json",
+  virtues: "../data/game/virtues.json"
 };
 
 const STORAGE_KEY = "adonai.lore.reader.v1";
