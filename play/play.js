@@ -1707,7 +1707,8 @@ function startGame() {
   els.gameView.classList.remove("is-hidden");
   emitGameEvent("game.start", { game: app.game });
   beginTurn(app.game);
-  playTone("start");
+  playTone("shuffle");
+  window.setTimeout(() => playTone("start"), 180);
   renderGame();
   if (app.game.activePlayer === "bot") scheduleBotTurn(app.game);
 }
@@ -1728,6 +1729,8 @@ function restartGame() {
   clearTransientOverlays();
   els.gameResult.classList.add("is-hidden");
   beginTurn(app.game);
+  playTone("shuffle");
+  window.setTimeout(() => playTone("start"), 180);
   renderGame();
   if (app.game.activePlayer === "bot") scheduleBotTurn(app.game);
 }
@@ -4217,6 +4220,7 @@ function applyConsecrate(playerId, cardId) {
   player.consecrationActionTaken = true;
   addPlayerStat(game, "cardsConsecrated", playerId);
   addLog(game, `consagrou ${getCardName(card)}.`, player.label);
+  playTone("consecrate");
   void resolveConsecrationSequence(game, player, card, cardId, playerId);
   return true;
 }
@@ -4234,6 +4238,7 @@ function applyProfane(playerId, index) {
   player.consecrationActionTaken = true;
   const card = app.cardByCode.get(cardId);
   addLog(game, `profanou ${getCardName(card)}.`, player.label);
+  playTone("profane");
   queueProfanationMoralAdjustment(player, (result) => {
     emitGameEvent("action.profane.after", {
       game,
@@ -4362,7 +4367,7 @@ function applyPlayCard(playerId, cardId) {
     result: typeCode === "PER" || typeCode === "ART" ? "battlefield" : "cemetery"
   });
   applyCardMoralPips(playerId, card);
-  playTone(typeCode === "PEC" ? "hit" : "play");
+  playTone(`play-${String(typeCode || "card").toLowerCase()}`);
   checkGameEnd(game);
   return true;
 }
@@ -5160,7 +5165,7 @@ async function animateResolutionEvents(events, kind = "damage") {
     document.body.appendChild(burst);
     bursts.push(burst);
   });
-  playTone(kind === "heal" ? "soft" : "hit");
+  playTone(kind === "heal" ? "heal" : "hit");
   await wait(events.some((event) => getResolutionEventElement(event)) ? 760 : 340);
   bursts.forEach((burst) => burst.remove());
   flashed.forEach((element) => {
@@ -5565,6 +5570,7 @@ function showPhaseAlert(phase, playerId) {
       <strong>${escapeHtml(label)}</strong>
     </div>
   `;
+  playTone(playerId === "human" ? "phase" : "phase-opponent");
   window.clearTimeout(overlay._hideTimer);
   overlay._hideTimer = window.setTimeout(() => {
     overlay.classList.remove("is-visible");
@@ -5607,6 +5613,7 @@ function showPulverizeAnimation(cardIds, playerId) {
   const cards = (cardIds || []).map((cardId) => app.cardByCode.get(cardId)).filter(Boolean);
   if (!cards.length) return Promise.resolve();
   return new Promise((resolve) => {
+    playTone("pulverize");
     let overlay = document.getElementById("pulverizeAnimation");
     if (!overlay) {
       overlay = document.createElement("div");
@@ -7132,31 +7139,198 @@ function hideBlockPrompt() {
   document.getElementById("blockPrompt")?.classList.remove("is-visible");
 }
 
-function playTone(kind) {
-  if (!app.soundEnabled || !window.AudioContext && !window.webkitAudioContext) return;
+function getAudioContext() {
+  if (!app.soundEnabled || !window.AudioContext && !window.webkitAudioContext) return null;
   const AudioContextCtor = window.AudioContext || window.webkitAudioContext;
   if (!app.audio) app.audio = new AudioContextCtor();
-  const ctx = app.audio;
-  const oscillator = ctx.createOscillator();
+  if (app.audio.state === "suspended") {
+    app.audio.resume?.().catch(() => {});
+  }
+  return app.audio;
+}
+
+function getNoiseBuffer(ctx) {
+  if (app.noiseBuffer && app.noiseBuffer.sampleRate === ctx.sampleRate) return app.noiseBuffer;
+  const length = Math.floor(ctx.sampleRate * 1.1);
+  const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  let previous = 0;
+  for (let index = 0; index < length; index += 1) {
+    const white = Math.random() * 2 - 1;
+    previous = previous * .82 + white * .18;
+    data[index] = previous;
+  }
+  app.noiseBuffer = buffer;
+  return buffer;
+}
+
+function connectEnvelope(ctx, volume, start, duration, attack = .006, releaseFloor = .0001) {
   const gain = ctx.createGain();
-  const tones = {
-    start: [220, .08],
-    draw: [440, .05],
-    soft: [330, .05],
-    play: [520, .06],
-    hit: [150, .08],
-    win: [660, .12],
-    end: [120, .1]
-  };
-  const [frequency, duration] = tones[kind] || tones.soft;
-  oscillator.frequency.value = frequency;
-  oscillator.type = kind === "hit" || kind === "end" ? "sawtooth" : "sine";
-  gain.gain.setValueAtTime(.045, ctx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + duration);
-  oscillator.connect(gain);
+  gain.gain.cancelScheduledValues(start);
+  gain.gain.setValueAtTime(releaseFloor, start);
+  gain.gain.exponentialRampToValueAtTime(Math.max(releaseFloor, volume), start + attack);
+  gain.gain.exponentialRampToValueAtTime(releaseFloor, start + Math.max(attack + .01, duration));
   gain.connect(ctx.destination);
-  oscillator.start();
-  oscillator.stop(ctx.currentTime + duration);
+  return gain;
+}
+
+function playOscLayer(ctx, options = {}) {
+  const start = ctx.currentTime + (options.delay || 0);
+  const duration = options.duration || .12;
+  const oscillator = ctx.createOscillator();
+  const gain = connectEnvelope(ctx, options.volume || .035, start, duration, options.attack || .006);
+  oscillator.type = options.type || "sine";
+  oscillator.frequency.setValueAtTime(options.frequency || 440, start);
+  if (options.endFrequency) {
+    oscillator.frequency.exponentialRampToValueAtTime(Math.max(20, options.endFrequency), start + duration);
+  }
+  oscillator.detune.setValueAtTime(options.detune || 0, start);
+  oscillator.connect(gain);
+  oscillator.start(start);
+  oscillator.stop(start + duration + .04);
+}
+
+function playNoiseLayer(ctx, options = {}) {
+  const start = ctx.currentTime + (options.delay || 0);
+  const duration = options.duration || .12;
+  const source = ctx.createBufferSource();
+  const filter = ctx.createBiquadFilter();
+  const gain = connectEnvelope(ctx, options.volume || .026, start, duration, options.attack || .004);
+  source.buffer = getNoiseBuffer(ctx);
+  filter.type = options.filterType || "bandpass";
+  filter.frequency.setValueAtTime(options.frequency || 1200, start);
+  if (options.endFrequency) {
+    filter.frequency.exponentialRampToValueAtTime(Math.max(40, options.endFrequency), start + duration);
+  }
+  filter.Q.value = options.q || 1.2;
+  source.connect(filter);
+  filter.connect(gain);
+  source.start(start);
+  source.stop(start + duration + .04);
+}
+
+function playCardChime(ctx, frequencies, baseDelay = 0) {
+  frequencies.forEach((frequency, index) => {
+    playOscLayer(ctx, {
+      frequency,
+      endFrequency: frequency * 1.015,
+      delay: baseDelay + index * .035,
+      duration: .18,
+      volume: .023,
+      type: "triangle",
+      attack: .01
+    });
+  });
+}
+
+function playTone(kind) {
+  const ctx = getAudioContext();
+  if (!ctx) return;
+  const normalized = String(kind || "soft").toLowerCase();
+  const cardType = normalized.startsWith("play-") ? normalized.replace("play-", "") : "";
+
+  if (normalized === "draw") {
+    playNoiseLayer(ctx, { frequency: 1900, endFrequency: 620, duration: .16, volume: .034, filterType: "bandpass", q: 1.9 });
+    playNoiseLayer(ctx, { frequency: 3100, endFrequency: 1300, delay: .055, duration: .11, volume: .02, filterType: "highpass", q: .8 });
+    playOscLayer(ctx, { frequency: 720, endFrequency: 960, delay: .03, duration: .11, volume: .018, type: "triangle" });
+    return;
+  }
+
+  if (normalized === "shuffle") {
+    [0, .055, .11, .17, .235].forEach((delay, index) => {
+      playNoiseLayer(ctx, {
+        frequency: 850 + index * 180,
+        endFrequency: 420 + index * 90,
+        delay,
+        duration: .09,
+        volume: .024,
+        filterType: "bandpass",
+        q: 1.1
+      });
+    });
+    playOscLayer(ctx, { frequency: 92, endFrequency: 68, delay: .02, duration: .22, volume: .018, type: "sine" });
+    return;
+  }
+
+  if (normalized === "hit") {
+    playOscLayer(ctx, { frequency: 105, endFrequency: 46, duration: .18, volume: .06, type: "sawtooth", attack: .002 });
+    playNoiseLayer(ctx, { frequency: 180, endFrequency: 70, duration: .18, volume: .052, filterType: "lowpass", q: .7 });
+    playNoiseLayer(ctx, { frequency: 1800, duration: .035, volume: .032, filterType: "bandpass", q: 2.2 });
+    return;
+  }
+
+  if (normalized === "heal") {
+    playCardChime(ctx, [420, 560, 760], 0);
+    playNoiseLayer(ctx, { frequency: 2400, endFrequency: 4200, duration: .24, volume: .014, filterType: "highpass", q: .8 });
+    return;
+  }
+
+  if (normalized === "pulverize") {
+    playNoiseLayer(ctx, { frequency: 420, endFrequency: 90, duration: .32, volume: .052, filterType: "lowpass", q: .9 });
+    playNoiseLayer(ctx, { frequency: 2400, endFrequency: 620, delay: .035, duration: .22, volume: .03, filterType: "bandpass", q: 1.8 });
+    playOscLayer(ctx, { frequency: 148, endFrequency: 72, delay: .03, duration: .28, volume: .032, type: "sawtooth" });
+    return;
+  }
+
+  if (normalized === "consecrate") {
+    playNoiseLayer(ctx, { frequency: 1800, endFrequency: 4200, duration: .22, volume: .018, filterType: "highpass", q: .7 });
+    playCardChime(ctx, [330, 495, 660, 990], .02);
+    return;
+  }
+
+  if (normalized === "profane") {
+    playNoiseLayer(ctx, { frequency: 1300, endFrequency: 380, duration: .24, volume: .03, filterType: "bandpass", q: 1.4 });
+    playOscLayer(ctx, { frequency: 392, endFrequency: 196, delay: .035, duration: .22, volume: .026, type: "triangle" });
+    return;
+  }
+
+  if (normalized === "phase" || normalized === "phase-opponent") {
+    const root = normalized === "phase-opponent" ? 220 : 294;
+    playOscLayer(ctx, { frequency: root, endFrequency: root * 1.5, duration: .16, volume: .026, type: "triangle" });
+    playOscLayer(ctx, { frequency: root * 2, delay: .055, duration: .18, volume: .018, type: "sine" });
+    playNoiseLayer(ctx, { frequency: 1800, endFrequency: 900, delay: .02, duration: .11, volume: .012, filterType: "bandpass" });
+    return;
+  }
+
+  if (normalized === "start") {
+    playCardChime(ctx, [220, 330, 440, 660], 0);
+    playOscLayer(ctx, { frequency: 110, endFrequency: 146, duration: .36, volume: .025, type: "sine" });
+    return;
+  }
+
+  if (normalized === "win") {
+    playCardChime(ctx, [392, 494, 587, 784], 0);
+    playOscLayer(ctx, { frequency: 196, endFrequency: 392, duration: .52, volume: .032, type: "triangle" });
+    return;
+  }
+
+  if (normalized === "end") {
+    playOscLayer(ctx, { frequency: 164, endFrequency: 82, duration: .24, volume: .035, type: "triangle" });
+    playNoiseLayer(ctx, { frequency: 500, endFrequency: 120, delay: .02, duration: .18, volume: .018, filterType: "lowpass" });
+    return;
+  }
+
+  if (cardType) {
+    const palettes = {
+      per: [196, 294, 392],
+      art: [247, 370, 494],
+      mil: [330, 495, 660],
+      pec: [130, 196, 260],
+      tem: [220, 330, 440],
+      ter: [146, 220, 294]
+    };
+    const notes = palettes[cardType] || [260, 390, 520];
+    if (cardType === "pec") {
+      playTone("hit");
+      playOscLayer(ctx, { frequency: 260, endFrequency: 210, delay: .08, duration: .16, volume: .018, type: "square" });
+      return;
+    }
+    playNoiseLayer(ctx, { frequency: 1250, endFrequency: 2200, duration: .1, volume: .018, filterType: "bandpass" });
+    playCardChime(ctx, notes, .02);
+    return;
+  }
+
+  playOscLayer(ctx, { frequency: normalized === "play" ? 520 : 330, duration: .08, volume: .025, type: "triangle" });
 }
 
 function toggleSound() {
