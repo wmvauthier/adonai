@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-06-16",
+  "updatedAt": "2026-06-17",
   "abilities": [
     {
       "id": "virtue.faith.1",
@@ -1382,6 +1382,405 @@
       ]
     },
     {
+      "id": "card.fnd_mil_029.resolved",
+      "kind": "triggered",
+      "trigger": "card.resolved",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Pedra da Funda" },
+      "description": { "pt": "Cause 4 de dano a um personagem alvo." },
+      "actions": [
+        {
+          "effect": "deal_damage",
+          "target": {
+            "zone": "battlefield",
+            "controller": "all",
+            "type": "PER",
+            "choice": true,
+            "choiceKey": "defesa_jonatas_target",
+            "count": 1
+          },
+          "amount": 4,
+          "damageType": "effect"
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_mil_030.resolved",
+      "kind": "triggered",
+      "trigger": "card.resolved",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Proteção Divina" },
+      "description": { "pt": "Previna todo o dano que seria causado ao personagem alvo neste turno. Cure 1 de dano do seu território." },
+      "actions": [
+        {
+          "effect": "prevent_damage_to_character",
+          "target": {
+            "zone": "battlefield",
+            "controller": "all",
+            "type": "PER",
+            "choice": true,
+            "choiceKey": "defesa_jonatas_target",
+            "count": 1
+          },
+          "duration": "until_regroup"
+        },
+        {
+          "effect": "heal_territory",
+          "player": "controller",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_mil_031.resolved",
+      "kind": "triggered",
+      "trigger": "card.resolved",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Fuga de Davi" },
+      "description": { "pt": "Retorne o personagem alvo para a mão de seu dono." },
+      "actions": [
+        {
+          "effect": "return_permanent_to_hand",
+          "target": {
+            "zone": "battlefield",
+            "controller": "all",
+            "type": "PER",
+            "choice": true,
+            "count": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_mil_032.resolved",
+      "kind": "triggered",
+      "trigger": "card.resolved",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Conselho do Profeta" },
+      "description": { "pt": "Anule a jogada alvo a menos que seu controlador pague {3}. Se você controla um Rei, em vez disso, anule aquela jogada." },
+      "actions": [
+        {
+          "effect": "counter_stack_object",
+          "target": {
+            "zone": "stack",
+            "objectType": "play",
+            "controller": "all",
+            "choice": true,
+            "count": 1
+          },
+          "unlessControllerPays": 3,
+          "paymentBypassIfControllerControlsSubtype": 5
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_mil_033.resolved",
+      "kind": "triggered",
+      "trigger": "card.resolved",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Força do Senhor" },
+      "description": { "pt": "O personagem alvo recebe +3/+3 até o reagrupamento." },
+      "actions": [
+        {
+          "effect": "modify_power_resistance",
+          "target": {
+            "zone": "battlefield",
+            "controller": "all",
+            "type": "PER",
+            "choice": true,
+            "count": 1
+          },
+          "power": 3,
+          "resistance": 3,
+          "duration": "until_regroup"
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_mil_034.resolved",
+      "kind": "triggered",
+      "trigger": "card.resolved",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Defesa de Jônatas" },
+      "description": { "pt": "Até o reagrupamento, o personagem alvo recebe +1/+1 e não pode ser alvo de jogadas ou habilidades que seus oponentes controlam." },
+      "actions": [
+        {
+          "effect": "modify_power_resistance",
+          "target": {
+            "zone": "battlefield",
+            "controller": "all",
+            "type": "PER",
+            "choice": true,
+            "choiceKey": "protectedCharacter",
+            "count": 1
+          },
+          "power": 1,
+          "resistance": 1,
+          "duration": "until_regroup"
+        },
+        {
+          "effect": "protect_from_opponents",
+          "target": {
+            "zone": "battlefield",
+            "controller": "all",
+            "type": "PER",
+            "choice": true,
+            "choiceKey": "protectedCharacter",
+            "count": 1
+          },
+          "duration": "until_regroup"
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_mil_035.resolved",
+      "kind": "triggered",
+      "trigger": "card.resolved",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Cura Divina" },
+      "description": { "pt": "Cure 5 de dano do seu território." },
+      "actions": [
+        {
+          "effect": "heal_territory",
+          "player": "controller",
+          "amount": 5
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_mil_036.resolved",
+      "kind": "triggered",
+      "trigger": "card.resolved",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Sabedoria Celestial" },
+      "description": { "pt": "Compre 2 cartas." },
+      "actions": [
+        {
+          "effect": "draw_cards",
+          "player": "controller",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_per_004.entry",
+      "kind": "triggered",
+      "trigger": "permanent.enters_battlefield",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Jônatas - Entrada" },
+      "description": { "pt": "Outro personagem alvo que você controla ganha INDESTRUTÍVEL até o reagrupamento." },
+      "condition": {
+        "sourceIsEventPermanent": true
+      },
+      "actions": [
+        {
+          "effect": "grant_keyword",
+          "target": {
+            "zone": "battlefield",
+            "controller": "controller",
+            "type": "PER",
+            "excludeSource": true,
+            "choice": true,
+            "count": 1
+          },
+          "keyword": "INDESTRUTIVEL",
+          "duration": "until_regroup"
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_per_002.attack",
+      "kind": "triggered",
+      "trigger": "combat.attackers.declared",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Davi, Rei de Israel - Ataque" },
+      "description": { "pt": "Crie uma ficha de personagem Soldado Israelita 0/2 desativada e atacando o mesmo alvo que Davi." },
+      "condition": {
+        "sourceIsEventAttacker": true
+      },
+      "actions": [
+        {
+          "effect": "create_token",
+          "controller": "controller",
+          "tokenId": "SOLDIER_ISRAELITE",
+          "amount": 1,
+          "state": {
+            "exhausted": true
+          },
+          "combatTarget": "same_as_source_attacker"
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_per_005.opponent_entry",
+      "kind": "triggered",
+      "trigger": "permanent.enters_battlefield",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Saul - Entrada inimiga" },
+      "description": { "pt": "Quando um personagem entrar sob controle de um oponente, Saul causa 1 de dano àquele personagem." },
+      "condition": {
+        "eventPlayer": "opponent",
+        "eventCardType": "PER"
+      },
+      "actions": [
+        {
+          "effect": "deal_damage",
+          "target": "eventPermanent",
+          "amount": 1,
+          "damageType": "effect"
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_per_005.leaves",
+      "kind": "triggered",
+      "trigger": "permanent.leaves_battlefield",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Saul - Saída" },
+      "description": { "pt": "Quando Saul sair, cause 2 de dano ao território de cada oponente." },
+      "actions": [
+        {
+          "effect": "deal_damage",
+          "target": {
+            "zone": "territory",
+            "controller": "opponent",
+            "count": 1
+          },
+          "amount": 2,
+          "damageType": "effect"
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_per_007.other_dies",
+      "kind": "triggered",
+      "trigger": "permanent.dies",
+      "usesStack": true,
+      "optional": false,
+      "oncePerTurn": true,
+      "label": { "pt": "Joabe - Primeiro personagem morto" },
+      "description": { "pt": "A primeira vez em cada turno que outro personagem morrer, compre 1 carta e cause 1 de dano ao seu território." },
+      "condition": {
+        "sourceIsNotEventPermanent": true,
+        "eventCardType": "PER"
+      },
+      "actions": [
+        {
+          "effect": "draw_cards",
+          "player": "controller",
+          "amount": 1
+        },
+        {
+          "effect": "deal_damage",
+          "target": {
+            "zone": "territory",
+            "controller": "controller",
+            "count": 1
+          },
+          "amount": 1,
+          "damageType": "effect"
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_per_006.entry",
+      "kind": "triggered",
+      "trigger": "permanent.enters_battlefield",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Natã - Entrada" },
+      "description": { "pt": "Busque um Milagre ou Pecado em seu baralho e coloque aquela carta no topo dele." },
+      "condition": {
+        "sourceIsEventPermanent": true
+      },
+      "actions": [
+        {
+          "effect": "search_library_to_top",
+          "player": "controller",
+          "filter": {
+            "types": ["MIL", "PEC"]
+          },
+          "shuffleAfter": false
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_per_012.entry",
+      "kind": "triggered",
+      "trigger": "permanent.enters_battlefield",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Mulher Sábia de Tecoa - Entrada" },
+      "description": { "pt": "Retorne uma carta de personagem do seu cemitério para a sua mão." },
+      "condition": {
+        "sourceIsEventPermanent": true
+      },
+      "actions": [
+        {
+          "effect": "move_cemetery_card_to_hand",
+          "player": "controller",
+          "filter": {
+            "type": "PER"
+          }
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_per_018.entry",
+      "kind": "triggered",
+      "trigger": "permanent.enters_battlefield",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Conselheiro Real - Entrada" },
+      "description": { "pt": "Compre 1 carta. Olhe as duas cartas do topo do seu baralho e devolva-as ao topo em qualquer ordem." },
+      "condition": {
+        "sourceIsEventPermanent": true
+      },
+      "actions": [
+        {
+          "effect": "draw_cards",
+          "player": "controller",
+          "amount": 1
+        },
+        {
+          "effect": "reorder_top_cards",
+          "player": "controller",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_per_020.entry",
+      "kind": "triggered",
+      "trigger": "permanent.enters_battlefield",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Ancião de Israel - Entrada" },
+      "description": { "pt": "Olhe as 2 cartas do topo do seu baralho. Coloque uma delas na sua mão e o restante no fundo do seu baralho." },
+      "condition": {
+        "sourceIsEventPermanent": true
+      },
+      "actions": [
+        {
+          "effect": "top_cards_to_hand_bottom",
+          "player": "controller",
+          "amount": 2
+        }
+      ]
+    },
+    {
       "id": "card.fnd_per_011.entry",
       "kind": "triggered",
       "trigger": "permanent.enters_battlefield",
@@ -1401,6 +1800,46 @@
           "effect": "heal_territory",
           "player": "controller",
           "amount": 2
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_per_016.entry",
+      "kind": "triggered",
+      "trigger": "permanent.enters_battlefield",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Capitão Israelita - Entrada" },
+      "description": { "pt": "Crie uma ficha de personagem Soldado Israelita 0/2." },
+      "condition": {
+        "sourceIsEventPermanent": true
+      },
+      "actions": [
+        {
+          "effect": "create_token",
+          "controller": "controller",
+          "tokenId": "SOLDIER_ISRAELITE",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_per_017.entry",
+      "kind": "triggered",
+      "trigger": "permanent.enters_battlefield",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Capitão Filisteu - Entrada" },
+      "description": { "pt": "Crie uma ficha de personagem Soldado Filisteu 1/1." },
+      "condition": {
+        "sourceIsEventPermanent": true
+      },
+      "actions": [
+        {
+          "effect": "create_token",
+          "controller": "controller",
+          "tokenId": "SOLDIER_PHILISTINE",
+          "amount": 1
         }
       ]
     },
@@ -1469,6 +1908,985 @@
           "effect": "prevent_damage",
           "event": "current",
           "amount": "all"
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_pec_022.resolved",
+      "kind": "triggered",
+      "trigger": "card.resolved",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Assassinato de Urias" },
+      "description": { "pt": "Destrua o personagem alvo desativado." },
+      "actions": [
+        {
+          "effect": "destroy_permanent",
+          "target": {
+            "zone": "battlefield",
+            "controller": "all",
+            "type": "PER",
+            "exhausted": true,
+            "choice": true,
+            "count": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_pec_021.resolved",
+      "kind": "triggered",
+      "trigger": "card.resolved",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Sacrifício de Saul" },
+      "description": { "pt": "Busque uma carta em seu baralho ou em sua Reserva e coloque-a em sua mão. Se buscou em seu baralho, embaralhe-o." },
+      "actions": [
+        {
+          "effect": "search_library_or_reserve_to_hand",
+          "player": "controller",
+          "filter": {},
+          "shuffleAfter": true
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_pec_023.resolved",
+      "kind": "triggered",
+      "trigger": "card.resolved",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Orgulho do Rei" },
+      "description": { "pt": "Cada oponente descarta até 2 cartas." },
+      "actions": [
+        {
+          "effect": "discard_cards",
+          "player": "opponent",
+          "amount": 2,
+          "upTo": true,
+          "choice": "manual"
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_pec_024.resolved",
+      "kind": "triggered",
+      "trigger": "card.resolved",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Censo Proibido" },
+      "description": { "pt": "Cause 3 de dano a cada território. O controlador compra 1 carta." },
+      "actions": [
+        {
+          "effect": "deal_damage",
+          "target": {
+            "zone": "territory",
+            "controller": "all",
+            "count": "all"
+          },
+          "amount": 3,
+          "damageType": "effect"
+        },
+        {
+          "effect": "draw_cards",
+          "player": "controller",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_pec_025.resolved",
+      "kind": "triggered",
+      "trigger": "card.resolved",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Rebelião de Absalão" },
+      "description": { "pt": "Cada jogador renuncia um personagem. Crie duas fichas de personagem Rebelde 1/1." },
+      "actions": [
+        {
+          "effect": "renounce_permanent",
+          "player": "all",
+          "filter": {
+            "type": "PER"
+          }
+        },
+        {
+          "effect": "create_token",
+          "controller": "controller",
+          "tokenId": "REBEL",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_pec_026.resolved",
+      "kind": "triggered",
+      "trigger": "card.resolved",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Idolatria em Israel" },
+      "description": { "pt": "Destrua todos os personagens." },
+      "actions": [
+        {
+          "effect": "destroy_permanent",
+          "target": {
+            "zone": "battlefield",
+            "controller": "all",
+            "type": "PER",
+            "count": "all"
+          }
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_pec_028.resolved",
+      "kind": "triggered",
+      "trigger": "card.resolved",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Zombar de Deus" },
+      "description": { "pt": "Desative todos os personagens com poder 2 ou menos." },
+      "actions": [
+        {
+          "effect": "tap",
+          "target": {
+            "zone": "battlefield",
+            "controller": "all",
+            "type": "PER",
+            "power": { "lte": 2 },
+            "count": "all"
+          }
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_per_019.entry",
+      "kind": "triggered",
+      "trigger": "permanent.enters_battlefield",
+      "usesStack": true,
+      "optional": false,
+      "label": { "pt": "Traidor do Reino - Entrada" },
+      "description": { "pt": "O oponente descarta 1 carta." },
+      "condition": {
+        "sourceIsEventPermanent": true
+      },
+      "actions": [
+        {
+          "effect": "discard_cards",
+          "player": "opponent",
+          "amount": 1,
+          "choice": "manual"
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_per_001.prevent_animal_giant_damage",
+      "kind": "replacement",
+      "trigger": "damage.would_be_dealt",
+      "usesStack": false,
+      "optional": false,
+      "label": {
+        "pt": "Davi, Ungido do Senhor - Proteção"
+      },
+      "description": {
+        "pt": "Previna todo o dano que seria causado a Davi por um Animal ou Gigante."
+      },
+      "condition": {
+        "targetIsSource": true,
+        "sourceType": "character",
+        "sourceSubtype": [
+          6,
+          10
+        ]
+      },
+      "actions": [
+        {
+          "effect": "prevent_damage",
+          "event": "current",
+          "amount": "all"
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_per_008.entry",
+      "kind": "triggered",
+      "trigger": "permanent.enters_battlefield",
+      "usesStack": true,
+      "optional": false,
+      "label": {
+        "pt": "Absalão, Rebelde - Entrada"
+      },
+      "description": {
+        "pt": "Ganhe controle de um personagem que um oponente controla até o Reagrupamento e prepare-o."
+      },
+      "condition": {
+        "sourceIsEventPermanent": true
+      },
+      "actions": [
+        {
+          "effect": "gain_control",
+          "controller": "controller",
+          "target": {
+            "zone": "battlefield",
+            "controller": "opponent",
+            "type": "PER",
+            "choice": true,
+            "count": 1
+          },
+          "duration": "until_regroup",
+          "untapAfter": true
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_pec_027.resolved",
+      "kind": "triggered",
+      "trigger": "card.resolved",
+      "usesStack": true,
+      "optional": false,
+      "label": {
+        "pt": "Traição no Reino"
+      },
+      "description": {
+        "pt": "Ganhe controle de um personagem que um oponente controla até o Reagrupamento e prepare-o."
+      },
+      "actions": [
+        {
+          "effect": "gain_control",
+          "controller": "controller",
+          "target": {
+            "zone": "battlefield",
+            "controller": "opponent",
+            "type": "PER",
+            "choice": true,
+            "count": 1
+          },
+          "duration": "until_regroup",
+          "untapAfter": true
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_ter_043.attack",
+      "kind": "triggered",
+      "trigger": "combat.attackers.declared",
+      "usesStack": true,
+      "optional": false,
+      "label": {
+        "pt": "Vale de Elá"
+      },
+      "description": {
+        "pt": "Toda vez que você declarar ataque com exatamente um personagem, aquele personagem recebe +2/+0 até o Reagrupamento."
+      },
+      "condition": {
+        "attacker": "controller",
+        "attackerCount": {
+          "eq": 1
+        }
+      },
+      "actions": [
+        {
+          "effect": "modify_power_resistance",
+          "target": "eventAttackers",
+          "power": 2,
+          "resistance": 0,
+          "duration": "until_regroup"
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_ter_041.combat_begin",
+      "kind": "triggered",
+      "trigger": "phase.combat.begin",
+      "usesStack": true,
+      "optional": true,
+      "label": {
+        "pt": "Belém, Campo do Pastor"
+      },
+      "description": {
+        "pt": "Revele 2 cartas do topo do seu baralho. Escolha uma carta de personagem com menor custo entre as reveladas, coloque-a na sua mão e coloque as demais no fundo do seu baralho."
+      },
+      "condition": {
+        "activePlayer": "controller"
+      },
+      "actions": [
+        {
+          "effect": "top_lowest_type_to_hand_bottom",
+          "player": "controller",
+          "amount": 2,
+          "filter": {
+            "type": "PER"
+          }
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_ter_042.damage_replacement",
+      "kind": "replacement",
+      "trigger": "damage.would_be_dealt",
+      "usesStack": false,
+      "optional": false,
+      "label": {
+        "pt": "Jerusalém, Trono de Sangue"
+      },
+      "description": {
+        "pt": "Durante o combate, se dano seria causado ao seu território, aquela quantidade de dano aumenta em 1."
+      },
+      "condition": {
+        "damageType": "combat",
+        "targetType": "territory",
+        "targetController": "controller"
+      },
+      "actions": [
+        {
+          "effect": "modify_damage_amount",
+          "event": "current",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_ter_042.combat_damage_heal",
+      "kind": "triggered",
+      "trigger": "damage.dealt",
+      "usesStack": true,
+      "optional": false,
+      "label": {
+        "pt": "Jerusalém, Trono de Sangue - Cura"
+      },
+      "description": {
+        "pt": "Durante o combate, quando um personagem que você controla causar dano de combate a um território oponente, cure 2 de dano do seu território."
+      },
+      "condition": {
+        "damageType": "combat",
+        "sourceType": "character",
+        "sourceController": "controller",
+        "targetType": "territory",
+        "targetController": "opponent"
+      },
+      "actions": [
+        {
+          "effect": "heal_territory",
+          "player": "controller",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_ter_044.combat_begin",
+      "kind": "triggered",
+      "trigger": "phase.combat.begin",
+      "usesStack": true,
+      "optional": false,
+      "label": {
+        "pt": "Deserto da Provação"
+      },
+      "description": {
+        "pt": "No início do seu combate, escolha: descarte uma carta e cure 2 de dano do seu território; ou compre 1 carta e cause 2 de dano ao seu território."
+      },
+      "condition": {
+        "activePlayer": "controller"
+      },
+      "actions": [
+        {
+          "effect": "choose_effect_bundle",
+          "description": {
+            "pt": "Escolha a provação deste combate."
+          },
+          "choices": [
+            {
+              "id": "discard_heal",
+              "label": {
+                "pt": "Descartar e curar"
+              },
+              "costs": [
+                {
+                  "effect": "discard_cards",
+                  "player": "controller",
+                  "amount": 1,
+                  "upTo": true,
+                  "choice": "manual"
+                }
+              ],
+              "actions": [
+                {
+                  "effect": "heal_territory",
+                  "player": "controller",
+                  "amount": 2
+                }
+              ]
+            },
+            {
+              "id": "draw_damage",
+              "label": {
+                "pt": "Comprar e sofrer dano"
+              },
+              "actions": [
+                {
+                  "effect": "draw_cards",
+                  "player": "controller",
+                  "amount": 1
+                },
+                {
+                  "effect": "deal_damage",
+                  "target": {
+                    "zone": "territory",
+                    "controller": "controller",
+                    "count": 1
+                  },
+                  "amount": 2,
+                  "damageType": "effect"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_tem_052.profane",
+      "kind": "triggered",
+      "trigger": "action.profane.after",
+      "usesStack": true,
+      "optional": false,
+      "label": {
+        "pt": "Altar do Pecado Oculto"
+      },
+      "description": {
+        "pt": "Sempre que você Profanar durante sua etapa de Consagração, cause 3 de dano ao seu território. A próxima carta que você jogar neste turno custa 3 Essências a menos."
+      },
+      "condition": {
+        "eventPlayer": "controller"
+      },
+      "actions": [
+        {
+          "effect": "deal_damage",
+          "target": {
+            "zone": "territory",
+            "controller": "controller",
+            "count": 1
+          },
+          "amount": 3,
+          "damageType": "effect"
+        },
+        {
+          "effect": "reduce_next_cost",
+          "player": "controller",
+          "amount": 3,
+          "duration": "until_regroup"
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_per_001.equipped_attack",
+      "kind": "triggered",
+      "trigger": "combat.attackers.declared",
+      "usesStack": true,
+      "optional": true,
+      "label": {
+        "pt": "Davi, Ungido do Senhor - Funda certeira"
+      },
+      "description": {
+        "pt": "Quando Davi atacar enquanto estiver equipado, ele causa 1 de dano a até um personagem alvo."
+      },
+      "condition": {
+        "sourceIsEventAttacker": true,
+        "sourceEquipped": true
+      },
+      "actions": [
+        {
+          "effect": "deal_damage",
+          "target": {
+            "zone": "battlefield",
+            "controller": "all",
+            "type": "PER",
+            "excludeSource": true,
+            "choice": true,
+            "count": 1
+          },
+          "amount": 1,
+          "damageType": "effect"
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_per_013.activated",
+      "kind": "activated",
+      "usesStack": false,
+      "optional": false,
+      "tags": ["essence_generator"],
+      "label": {
+        "pt": "Pastor de Belém"
+      },
+      "description": {
+        "pt": "Desative o Pastor de Belém: gere {E}."
+      },
+      "costs": [
+        {
+          "effect": "tap",
+          "target": "source"
+        }
+      ],
+      "actions": [
+        {
+          "effect": "generate_essence",
+          "player": "controller",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_per_014.static",
+      "kind": "static",
+      "tags": ["reject_equipment"],
+      "label": {
+        "pt": "Leão do Deserto"
+      },
+      "description": {
+        "pt": "Este personagem não pode ter equipamentos anexados a ele."
+      }
+    },
+    {
+      "id": "card.fnd_per_015.static",
+      "kind": "static",
+      "tags": ["reject_equipment"],
+      "label": {
+        "pt": "Urso das Colinas"
+      },
+      "description": {
+        "pt": "Este personagem não pode ter equipamentos anexados a ele."
+      }
+    },
+    {
+      "id": "card.fnd_art_037.activated",
+      "kind": "activated",
+      "usesStack": true,
+      "optional": false,
+      "label": {
+        "pt": "Funda de Davi"
+      },
+      "description": {
+        "pt": "Desative o personagem equipado: cause 1 de dano a um personagem alvo. Se ele tiver poder 6 ou mais, destrua-o em vez disso."
+      },
+      "condition": {
+        "sourceAttached": true
+      },
+      "costs": [
+        {
+          "effect": "tap",
+          "target": "attachedCharacter"
+        }
+      ],
+      "actions": [
+        {
+          "effect": "destroy_if_power_gte_else_damage",
+          "target": {
+            "zone": "battlefield",
+            "controller": "all",
+            "type": "PER",
+            "choice": true,
+            "count": 1
+          },
+          "powerGte": 6,
+          "amount": 1,
+          "damageType": "effect"
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_art_038.activated",
+      "kind": "activated",
+      "usesStack": true,
+      "optional": false,
+      "requiresAllActions": true,
+      "label": {
+        "pt": "Harpa Real"
+      },
+      "description": {
+        "pt": "Desative o personagem equipado: desative um personagem alvo que um oponente controla. Aquele oponente aplica +1 a uma Virtude com valor inferior a 4."
+      },
+      "condition": {
+        "sourceAttached": true
+      },
+      "costs": [
+        {
+          "effect": "tap",
+          "target": "attachedCharacter"
+        }
+      ],
+      "actions": [
+        {
+          "effect": "tap",
+          "target": {
+            "zone": "battlefield",
+            "controller": "opponent",
+            "type": "PER",
+            "exhausted": false,
+            "choice": true,
+            "count": 1
+          }
+        },
+        {
+          "effect": "adjust_moral_choice",
+          "player": "opponent",
+          "polarity": "virtue",
+          "delta": 1,
+          "maxBefore": 4,
+          "description": {
+            "pt": "Escolha uma Virtude do oponente para receber +1."
+          }
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_art_039.static",
+      "kind": "static",
+      "label": {
+        "pt": "Espada de Golias"
+      },
+      "description": {
+        "pt": "Só pode ser anexada a personagens com poder 4 ou mais. O personagem equipado recebe +2/+0 e SOBREPUJAR."
+      }
+    },
+    {
+      "id": "card.fnd_art_040.static",
+      "kind": "static",
+      "label": {
+        "pt": "Coroa de Israel"
+      },
+      "description": {
+        "pt": "O personagem equipado recebe +2/+2."
+      }
+    },
+    {
+      "id": "card.fnd_art_040.character_entry",
+      "kind": "triggered",
+      "trigger": "permanent.enters_battlefield",
+      "usesStack": true,
+      "optional": false,
+      "label": {
+        "pt": "Coroa de Israel"
+      },
+      "description": {
+        "pt": "Toda vez que um personagem entrar no campo de batalha sob seu controle, anexe a Coroa a ele, se puder."
+      },
+      "condition": {
+        "eventPlayer": "controller",
+        "eventCardType": "PER"
+      },
+      "actions": [
+        {
+          "effect": "attach_equipment",
+          "equipment": "source",
+          "target": "eventPermanent"
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_cmp_045.faith",
+      "kind": "activated",
+      "usesStack": true,
+      "optional": false,
+      "requiresAllActions": true,
+      "label": { "pt": "Davi, Ungido e Rei - Fé" },
+      "description": { "pt": "Fé Nv3 — Um personagem que você controla recebe +1/+1 até o Reagrupamento. Reduza em 1 uma Desvirtude de sua escolha." },
+      "condition": {
+        "moralRequirement": { "virtueId": 1, "level": 3 }
+      },
+      "costs": [
+        { "effect": "cover_champion", "player": "controller" }
+      ],
+      "actions": [
+        {
+          "effect": "modify_power_resistance",
+          "target": {
+            "zone": "battlefield",
+            "controller": "controller",
+            "type": "PER",
+            "choice": true,
+            "choiceKey": "daviFaithTarget",
+            "count": 1
+          },
+          "power": 1,
+          "resistance": 1,
+          "duration": "until_regroup"
+        },
+        {
+          "effect": "adjust_moral_choice",
+          "player": "controller",
+          "polarity": "vice",
+          "delta": -1,
+          "minBefore": 1,
+          "description": { "pt": "Escolha uma Desvirtude para reduzir em 1." }
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_cmp_045.iniquity",
+      "kind": "activated",
+      "usesStack": true,
+      "optional": false,
+      "requiresAllActions": true,
+      "label": { "pt": "Davi, Ungido e Rei - Iniquidade" },
+      "description": { "pt": "Iniquidade Nv1 — Compre duas cartas. Davi causa 4 de dano ao seu próprio território." },
+      "condition": {
+        "moralRequirement": { "virtueId": 6, "level": 1 }
+      },
+      "costs": [
+        { "effect": "cover_champion", "player": "controller" }
+      ],
+      "actions": [
+        {
+          "effect": "draw_cards",
+          "player": "controller",
+          "amount": 2
+        },
+        {
+          "effect": "deal_damage",
+          "target": {
+            "zone": "territory",
+            "controller": "controller",
+            "count": 1
+          },
+          "amount": 4,
+          "damageType": "effect"
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_cmp_046.doubt",
+      "kind": "activated",
+      "usesStack": true,
+      "optional": false,
+      "requiresAllActions": true,
+      "label": { "pt": "Golias, o Gigante Profano - Dúvida" },
+      "description": { "pt": "Dúvida Nv1 — Desative um personagem alvo com poder 2 ou menos." },
+      "condition": {
+        "moralRequirement": { "virtueId": 2, "level": 1 }
+      },
+      "costs": [
+        { "effect": "cover_champion", "player": "controller" }
+      ],
+      "actions": [
+        {
+          "effect": "tap",
+          "target": {
+            "zone": "battlefield",
+            "controller": "all",
+            "type": "PER",
+            "power": { "lte": 2 },
+            "exhausted": false,
+            "choice": true,
+            "count": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_cmp_046.folly",
+      "kind": "activated",
+      "usesStack": true,
+      "optional": false,
+      "requiresAllActions": true,
+      "label": { "pt": "Golias, o Gigante Profano - Insensatez" },
+      "description": { "pt": "Insensatez Nv2 — Escolha um personagem que você controla e outro personagem alvo. Esses personagens lutam entre si. Esse dano não é dano de combate." },
+      "condition": {
+        "moralRequirement": { "virtueId": 12, "level": 2 }
+      },
+      "costs": [
+        { "effect": "cover_champion", "player": "controller" }
+      ],
+      "actions": [
+        {
+          "effect": "fight",
+          "sourceTarget": {
+            "zone": "battlefield",
+            "controller": "controller",
+            "type": "PER",
+            "choice": true,
+            "count": 1
+          },
+          "target": {
+            "zone": "battlefield",
+            "controller": "all",
+            "type": "PER",
+            "choice": true,
+            "count": 1
+          },
+          "damageType": "effect"
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_cmp_047.faith",
+      "kind": "activated",
+      "usesStack": true,
+      "optional": false,
+      "requiresAllActions": true,
+      "label": { "pt": "Samuel, Profeta do Ungido - Fé" },
+      "description": { "pt": "Fé Nv1 — Revele da sua mão uma carta de personagem com custo menor que o custo de um personagem que você controla. Se fizer isso, cure 2 de dano do seu território." },
+      "condition": {
+        "moralRequirement": { "virtueId": 1, "level": 1 }
+      },
+      "costs": [
+        { "effect": "cover_champion", "player": "controller" }
+      ],
+      "actions": [
+        {
+          "effect": "reveal_lower_cost_character_from_hand_then_heal",
+          "player": "controller",
+          "healAmount": 2
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_cmp_047.hope",
+      "kind": "activated",
+      "usesStack": true,
+      "optional": false,
+      "requiresAllActions": true,
+      "label": { "pt": "Samuel, Profeta do Ungido - Esperança" },
+      "description": { "pt": "Esperança Nv3 — Cure 1 de dano de cada personagem que você controla." },
+      "condition": {
+        "moralRequirement": { "virtueId": 9, "level": 3 }
+      },
+      "costs": [
+        { "effect": "cover_champion", "player": "controller" }
+      ],
+      "actions": [
+        {
+          "effect": "heal_character",
+          "target": {
+            "zone": "battlefield",
+            "controller": "controller",
+            "type": "PER",
+            "damaged": true,
+            "count": "all"
+          },
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_cmp_048.fortitude",
+      "kind": "activated",
+      "usesStack": true,
+      "optional": false,
+      "requiresAllActions": true,
+      "label": { "pt": "Saul, Rei Rejeitado - Fortaleza" },
+      "description": { "pt": "Fortaleza Nv2 — Um personagem alvo recebe +2/+0 e SOBREPUJAR até o Reagrupamento." },
+      "condition": {
+        "moralRequirement": { "virtueId": 7, "level": 2 }
+      },
+      "costs": [
+        { "effect": "cover_champion", "player": "controller" }
+      ],
+      "actions": [
+        {
+          "effect": "modify_power_resistance",
+          "target": {
+            "zone": "battlefield",
+            "controller": "all",
+            "type": "PER",
+            "choice": true,
+            "choiceKey": "saulFortitudeTarget",
+            "count": 1
+          },
+          "power": 2,
+          "resistance": 0,
+          "duration": "until_regroup"
+        },
+        {
+          "effect": "grant_keyword",
+          "target": {
+            "zone": "battlefield",
+            "controller": "all",
+            "type": "PER",
+            "choice": true,
+            "choiceKey": "saulFortitudeTarget",
+            "count": 1
+          },
+          "keyword": "SOBREPUJAR",
+          "duration": "until_regroup"
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_cmp_048.despair",
+      "kind": "activated",
+      "usesStack": true,
+      "optional": false,
+      "requiresAllActions": true,
+      "label": { "pt": "Saul, Rei Rejeitado - Desespero" },
+      "description": { "pt": "Desespero Nv1 — Renuncie um personagem: um personagem alvo recebe +3/+0 e IMBLOQUEÁVEL até o Reagrupamento." },
+      "condition": {
+        "moralRequirement": { "virtueId": 10, "level": 1 }
+      },
+      "costs": [
+        { "effect": "cover_champion", "player": "controller" },
+        {
+          "effect": "renounce_permanent",
+          "player": "controller",
+          "filter": { "type": "PER" },
+          "description": { "pt": "Escolha um Personagem para renunciar." }
+        }
+      ],
+      "actions": [
+        {
+          "effect": "modify_power_resistance",
+          "target": {
+            "zone": "battlefield",
+            "controller": "all",
+            "type": "PER",
+            "choice": true,
+            "choiceKey": "saulDespairTarget",
+            "count": 1
+          },
+          "power": 3,
+          "resistance": 0,
+          "duration": "until_regroup"
+        },
+        {
+          "effect": "grant_keyword",
+          "target": {
+            "zone": "battlefield",
+            "controller": "all",
+            "type": "PER",
+            "choice": true,
+            "choiceKey": "saulDespairTarget",
+            "count": 1
+          },
+          "keyword": "IMBLOQUEAVEL",
+          "duration": "until_regroup"
+        }
+      ]
+    },
+    {
+      "id": "card.fnd_tem_049.consecration_begin",
+      "kind": "triggered",
+      "trigger": "phase.consecration.begin",
+      "usesStack": true,
+      "optional": true,
+      "label": { "pt": "Altar da Aliança Renovada" },
+      "description": { "pt": "Durante sua Consagração, você pode colocar três cartas da sua mão no fundo do seu baralho. Se fizer isso, escolha uma característica e aplique +1 ou -1." },
+      "condition": {
+        "activePlayer": "controller",
+        "controllerHandSize": { "gte": 3 }
+      },
+      "costs": [
+        {
+          "effect": "put_cards_from_hand_on_bottom",
+          "player": "controller",
+          "amount": 3,
+          "choice": "manual"
+        }
+      ],
+      "actions": [
+        {
+          "effect": "adjust_moral_flexible",
+          "player": "controller",
+          "amount": 1,
+          "description": { "pt": "Escolha uma Virtude ou Desvirtude para receber +1 ou -1." }
         }
       ]
     }

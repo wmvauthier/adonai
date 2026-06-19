@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-06-16",
+  "updatedAt": "2026-06-17",
   "links": [
     {
       "sourceType": "virtue",
@@ -322,15 +322,141 @@
     },
     {
       "sourceType": "card",
+      "sourceId": "FND-MIL-029",
+      "zone": "resolution",
+      "abilityId": "card.fnd_mil_029.resolved"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-MIL-030",
+      "zone": "resolution",
+      "abilityId": "card.fnd_mil_030.resolved"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-MIL-031",
+      "zone": "resolution",
+      "abilityId": "card.fnd_mil_031.resolved"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-MIL-032",
+      "zone": "resolution",
+      "abilityId": "card.fnd_mil_032.resolved"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-MIL-033",
+      "zone": "resolution",
+      "abilityId": "card.fnd_mil_033.resolved"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-MIL-034",
+      "zone": "resolution",
+      "abilityId": "card.fnd_mil_034.resolved"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-MIL-035",
+      "zone": "resolution",
+      "abilityId": "card.fnd_mil_035.resolved"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-MIL-036",
+      "zone": "resolution",
+      "abilityId": "card.fnd_mil_036.resolved"
+    },
+    {
+      "sourceType": "card",
       "sourceId": "FND-PER-011",
       "zone": "battlefield",
       "abilityId": "card.fnd_per_011.entry"
     },
     {
       "sourceType": "card",
+      "sourceId": "FND-PER-004",
+      "zone": "battlefield",
+      "abilityId": "card.fnd_per_004.entry"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-PER-002",
+      "zone": "battlefield",
+      "abilityId": "card.fnd_per_002.attack"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-PER-005",
+      "zone": "battlefield",
+      "abilityId": "card.fnd_per_005.opponent_entry"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-PER-005",
+      "zone": "leaves",
+      "abilityId": "card.fnd_per_005.leaves"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-PER-006",
+      "zone": "battlefield",
+      "abilityId": "card.fnd_per_006.entry"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-PER-007",
+      "zone": "battlefield",
+      "abilityId": "card.fnd_per_007.other_dies"
+    },
+    {
+      "sourceType": "card",
       "sourceId": "FND-PER-003",
       "zone": "battlefield",
       "abilityId": "card.fnd_per_003.entry"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-PER-016",
+      "zone": "battlefield",
+      "abilityId": "card.fnd_per_016.entry"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-PER-017",
+      "zone": "battlefield",
+      "abilityId": "card.fnd_per_017.entry"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-PER-012",
+      "zone": "battlefield",
+      "abilityId": "card.fnd_per_012.entry"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-PER-013",
+      "zone": "battlefield",
+      "abilityId": "card.fnd_per_013.activated"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-PER-014",
+      "zone": "battlefield",
+      "abilityId": "card.fnd_per_014.static"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-PER-015",
+      "zone": "battlefield",
+      "abilityId": "card.fnd_per_015.static"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-PER-018",
+      "zone": "battlefield",
+      "abilityId": "card.fnd_per_018.entry"
     },
     {
       "sourceType": "card",
@@ -343,6 +469,204 @@
       "sourceId": "FND-PER-010",
       "zone": "battlefield",
       "abilityId": "card.fnd_per_010.damage_replacement"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-PEC-022",
+      "zone": "resolution",
+      "abilityId": "card.fnd_pec_022.resolved"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-PEC-021",
+      "zone": "resolution",
+      "abilityId": "card.fnd_pec_021.resolved"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-PEC-023",
+      "zone": "resolution",
+      "abilityId": "card.fnd_pec_023.resolved"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-PEC-024",
+      "zone": "resolution",
+      "abilityId": "card.fnd_pec_024.resolved"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-PEC-025",
+      "zone": "resolution",
+      "abilityId": "card.fnd_pec_025.resolved"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-PEC-026",
+      "zone": "resolution",
+      "abilityId": "card.fnd_pec_026.resolved"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-PEC-028",
+      "zone": "resolution",
+      "abilityId": "card.fnd_pec_028.resolved"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-PER-019",
+      "zone": "battlefield",
+      "abilityId": "card.fnd_per_019.entry"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-PER-020",
+      "zone": "battlefield",
+      "abilityId": "card.fnd_per_020.entry"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-PER-001",
+      "zone": "battlefield",
+      "abilityId": "card.fnd_per_001.prevent_animal_giant_damage"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-PER-001",
+      "zone": "battlefield",
+      "abilityId": "card.fnd_per_001.equipped_attack"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-PER-008",
+      "zone": "battlefield",
+      "abilityId": "card.fnd_per_008.entry"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-PEC-027",
+      "zone": "resolution",
+      "abilityId": "card.fnd_pec_027.resolved"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-TER-043",
+      "zone": "identity",
+      "abilityId": "card.fnd_ter_043.attack"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-TER-041",
+      "zone": "identity",
+      "abilityId": "card.fnd_ter_041.combat_begin"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-TER-042",
+      "zone": "identity",
+      "abilityId": "card.fnd_ter_042.damage_replacement"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-TER-042",
+      "zone": "identity",
+      "abilityId": "card.fnd_ter_042.combat_damage_heal"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-TER-044",
+      "zone": "identity",
+      "abilityId": "card.fnd_ter_044.combat_begin"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-TEM-052",
+      "zone": "identity",
+      "abilityId": "card.fnd_tem_052.profane"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-ART-037",
+      "zone": "battlefield",
+      "abilityId": "card.fnd_art_037.activated"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-ART-038",
+      "zone": "battlefield",
+      "abilityId": "card.fnd_art_038.activated"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-ART-039",
+      "zone": "battlefield",
+      "abilityId": "card.fnd_art_039.static"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-ART-040",
+      "zone": "battlefield",
+      "abilityId": "card.fnd_art_040.static"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-ART-040",
+      "zone": "battlefield",
+      "abilityId": "card.fnd_art_040.character_entry"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-CMP-045",
+      "zone": "identity",
+      "abilityId": "card.fnd_cmp_045.faith"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-CMP-045",
+      "zone": "identity",
+      "abilityId": "card.fnd_cmp_045.iniquity"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-CMP-046",
+      "zone": "identity",
+      "abilityId": "card.fnd_cmp_046.doubt"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-CMP-046",
+      "zone": "identity",
+      "abilityId": "card.fnd_cmp_046.folly"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-CMP-047",
+      "zone": "identity",
+      "abilityId": "card.fnd_cmp_047.faith"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-CMP-047",
+      "zone": "identity",
+      "abilityId": "card.fnd_cmp_047.hope"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-CMP-048",
+      "zone": "identity",
+      "abilityId": "card.fnd_cmp_048.fortitude"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-CMP-048",
+      "zone": "identity",
+      "abilityId": "card.fnd_cmp_048.despair"
+    },
+    {
+      "sourceType": "card",
+      "sourceId": "FND-TEM-049",
+      "zone": "identity",
+      "abilityId": "card.fnd_tem_049.consecration_begin"
     }
   ]
 }

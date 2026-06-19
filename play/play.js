@@ -50,20 +50,100 @@ const INTERNAL_TOKEN_CARDS = [
     subtypes: ["Incenso"],
     text: "{T}, renuncie esta ficha: Gere {E}.",
     images: {
-      art: "../assets/icons/03-temperanca.webp",
-      card: "../assets/icons/03-temperanca.webp"
+      card: "../assets/tokens/cards/Artefato - Foundations-24.webp",
+      art: "../assets/tokens/imgs/Artefato - Foundations-24 - img.webp"
     },
     stats: {}
+  },
+  {
+    code: "TOKEN-SOLDIER-ISRAELITE",
+    typeCode: "PER",
+    token: true,
+    cost: 0,
+    name: {
+      pt: "Soldado Israelita",
+      en: "Israelite Soldier"
+    },
+    subtypes: ["Soldado"],
+    text: "Ficha de personagem Soldado Israelita 0/2.",
+    images: {
+      card: "../assets/tokens/cards/Personagem - Foundations-21.webp",
+      art: "../assets/tokens/imgs/Personagem - Foundations-21 - img.webp"
+    },
+    stats: {
+      attack: 0,
+      resistance: 2
+    }
+  },
+  {
+    code: "TOKEN-SOLDIER-PHILISTINE",
+    typeCode: "PER",
+    token: true,
+    cost: 0,
+    name: {
+      pt: "Soldado Filisteu",
+      en: "Philistine Soldier"
+    },
+    subtypes: ["Soldado"],
+    text: "Ficha de personagem Soldado Filisteu 1/1.",
+    images: {
+      card: "../assets/tokens/cards/Personagem - Foundations-22.webp",
+      art: "../assets/tokens/imgs/Personagem - Foundations-22 - img.webp"
+    },
+    stats: {
+      attack: 1,
+      resistance: 1
+    }
+  },
+  {
+    code: "TOKEN-REBEL",
+    typeCode: "PER",
+    token: true,
+    cost: 0,
+    name: {
+      pt: "Rebelde",
+      en: "Rebel"
+    },
+    subtypes: ["Rebelde"],
+    text: "Ficha de personagem Rebelde 1/1.",
+    images: {
+      card: "../assets/tokens/cards/Personagem - Foundations-23.webp",
+      art: "../assets/tokens/imgs/Personagem - Foundations-23 - img.webp"
+    },
+    stats: {
+      attack: 1,
+      resistance: 1
+    }
   }
 ];
 const VIRTUE_AXIS_DISPLAY_ORDER = [6, 1, 7, 4, 3, 5, 2];
 const VIRTUE_IDS = {
+  faith: 1,
+  doubt: 2,
+  temperance: 3,
+  lackOfControl: 4,
   justice: 5,
   iniquity: 6,
   fortitude: 7,
   cowardice: 8,
+  hope: 9,
+  despair: 10,
+  prudence: 11,
+  folly: 12,
   charity: 13,
   egoism: 14
+};
+const TEMPLE_IDS = {
+  renewedCovenant: "FND-TEM-049",
+  judgment: "FND-TEM-050",
+  presence: "FND-TEM-051",
+  hiddenSin: "FND-TEM-052"
+};
+const EQUIPMENT_IDS = {
+  sling: "FND-ART-037",
+  harp: "FND-ART-038",
+  sword: "FND-ART-039",
+  crown: "FND-ART-040"
 };
 
 function getVirtueAxisSortWeight(axis) {
@@ -165,6 +245,8 @@ const app = {
   preloadPromises: new Map(),
   setupPreloadToken: 0,
   setupAssetsReady: false,
+  startingGame: false,
+  resultViewingBoard: false,
   isLocalDebugHost: window.location.hostname === "127.0.0.1",
   virtueDebugEnabled: false,
   drawAnimationPending: false,
@@ -301,6 +383,38 @@ function getActiveAbilitySources(game) {
   return sources;
 }
 
+function getEventAbilitySources(game, triggerId, payload = {}) {
+  if (!game || !payload.cardId || !payload.playerId) return [];
+  if (!["card.played", "card.resolved", "permanent.leaves_battlefield"].includes(triggerId)) return [];
+  const card = app.cardByCode.get(payload.cardId);
+  if (!card) return [];
+  if (triggerId === "permanent.leaves_battlefield") {
+    return [
+      {
+        sourceType: "card",
+        sourceId: payload.cardId,
+        zone: "leaves",
+        controllerId: payload.playerId,
+        instanceUid: payload.instanceUid,
+        cardId: payload.cardId,
+        label: getCardName(card),
+        icon: getCardArt(card)
+      }
+    ];
+  }
+  return [
+    {
+      sourceType: "card",
+      sourceId: payload.cardId,
+      zone: triggerId === "card.played" ? "stack" : "resolution",
+      controllerId: payload.playerId,
+      cardId: payload.cardId,
+      label: getCardName(card),
+      icon: getCardArt(card)
+    }
+  ];
+}
+
 function findAbilityLinksForSource(source) {
   const links = [];
   const exact = app.engine.abilityLinksBySource.get(getSourceCandidateKey(source)) || [];
@@ -320,6 +434,115 @@ function findAbilityLinksForSource(source) {
   return links;
 }
 
+function cardHasEngineTag(card, tag, zone = "battlefield") {
+  if (!card?.code || !tag) return false;
+  return findAbilityLinksForSource({
+    sourceType: "card",
+    sourceId: card.code,
+    zone
+  }).some((link) => {
+    const ability = app.engine.abilityById.get(link.abilityId);
+    return Array.isArray(ability?.tags) && ability.tags.includes(tag);
+  });
+}
+
+function hasEngineAbilityForSource(source, triggerId) {
+  return findAbilityLinksForSource(source).some((link) => {
+    const ability = app.engine.abilityById.get(link.abilityId);
+    return ability?.trigger === triggerId;
+  });
+}
+
+function hasCardResolutionAbility(cardId, playerId) {
+  return hasEngineAbilityForSource({
+    sourceType: "card",
+    sourceId: cardId,
+    zone: "resolution",
+    controllerId: playerId,
+    cardId
+  }, "card.resolved");
+}
+
+function getCardResolutionStackObjects(cardId, playerId) {
+  const game = app.game;
+  const trigger = app.engine.triggerById.get("card.resolved");
+  const card = app.cardByCode.get(cardId);
+  if (!game || !trigger || !card) return [];
+  const source = {
+    sourceType: "card",
+    sourceId: cardId,
+    zone: "resolution",
+    controllerId: playerId,
+    cardId,
+    label: getCardName(card),
+    icon: getCardArt(card)
+  };
+  const payload = {
+    game,
+    playerId,
+    cardId,
+    cardType: getCardTypeCode(card),
+    result: ["PER", "ART"].includes(getCardTypeCode(card)) ? "battlefield" : "cemetery"
+  };
+  return findAbilityLinksForSource(source)
+    .map((link) => {
+      const ability = app.engine.abilityById.get(link.abilityId);
+      if (!ability || ability.trigger !== "card.resolved") return null;
+      if (!evaluateAbilityCondition(ability, source, payload)) return null;
+      return {
+        id: `playability-${cardId}-${ability.id}`,
+        type: "ability",
+        label: localize(ability.label) || source.label || ability.id,
+        owner: source.controllerId,
+        controllerId: source.controllerId,
+        cardId,
+        triggerId: trigger.id,
+        abilityId: ability.id,
+        ability,
+        source,
+        payload,
+        optional: Boolean(ability.optional)
+      };
+    })
+    .filter(Boolean)
+    .filter((stackObject) => isEngineStackObjectViable(stackObject));
+}
+
+function canResolveCardWhenPlayed(cardId, playerId) {
+  if (!hasCardResolutionAbility(cardId, playerId)) return true;
+  return getCardResolutionStackObjects(cardId, playerId).length > 0;
+}
+
+function createCardPlayStackObject(game, playerId, cardId) {
+  const card = app.cardByCode.get(cardId);
+  if (!game || !card) return null;
+  const typeCode = getCardTypeCode(card);
+  return {
+    id: `play-${cardId}-${playerId}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+    type: "play",
+    label: getCardName(card),
+    owner: playerId,
+    controllerId: playerId,
+    cardId,
+    triggerId: "card.played",
+    source: {
+      sourceType: "card",
+      sourceId: cardId,
+      zone: "stack",
+      controllerId: playerId,
+      cardId,
+      label: getCardName(card),
+      icon: getCardArt(card)
+    },
+    payload: {
+      game,
+      playerId,
+      cardId,
+      cardType: typeCode
+    }
+  };
+}
+
 function collectEngineStackObjects(triggerId, payload = {}) {
   const trigger = app.engine.triggerById.get(triggerId);
   if (!trigger) return [];
@@ -328,14 +551,16 @@ function collectEngineStackObjects(triggerId, payload = {}) {
   const stackObjects = [];
   const consumedDelayedEffects = new Set();
 
-  getActiveAbilitySources(game).forEach((source) => {
+  [...getActiveAbilitySources(game), ...getEventAbilitySources(game, triggerId, payload)].forEach((source) => {
     findAbilityLinksForSource(source).forEach((link) => {
       const ability = app.engine.abilityById.get(link.abilityId);
       if (!ability || ability.trigger !== triggerId) return;
+      if (isEngineOncePerTurnConsumed(game, ability, source)) return;
       if (!evaluateAbilityCondition(ability, source, payload)) return;
       const stackObject = createEngineStackObject(game, trigger, ability, source, payload);
       if (!stackObject) return;
       if (!isEngineStackObjectViable(stackObject)) return;
+      consumeEngineOncePerTurn(game, ability, source);
       stackObjects.push(stackObject);
     });
   });
@@ -451,6 +676,28 @@ function getCardTypeCode(card) {
   return card?.typeCode || getTypeCodeFromIds(card?.type);
 }
 
+function cardMatchesTypeFilter(card, filter = {}) {
+  if (!card) return false;
+  const typeFilter = filter.type || filter.types;
+  if (!typeFilter) return true;
+  return (Array.isArray(typeFilter) ? typeFilter : [typeFilter])
+    .map(String)
+    .includes(String(getCardTypeCode(card)));
+}
+
+function cardHasSubtype(card, expectedSubtype) {
+  if (!card || typeof expectedSubtype === "undefined" || expectedSubtype === null) return false;
+  const expected = (Array.isArray(expectedSubtype) ? expectedSubtype : [expectedSubtype])
+    .map((value) => normalizeKeywordText(value))
+    .filter(Boolean);
+  if (!expected.length) return false;
+  const actual = [
+    ...(Array.isArray(card.subtype) ? card.subtype : []),
+    ...(Array.isArray(card.subtypes) ? card.subtypes : [])
+  ].map((value) => normalizeKeywordText(value));
+  return expected.some((value) => actual.includes(value));
+}
+
 function getCardTypeLabel(card) {
   const code = getCardTypeCode(card);
   return TYPE_LABELS[code] || code;
@@ -479,6 +726,18 @@ function getEffectivePlayCost(player, card) {
   const baseCost = getCost(card);
   if (getCardTypeCode(card) === "PEC") return baseCost;
   return Math.max(0, baseCost - getPendingPlayCostDiscount(player, card));
+}
+
+function getEssencePool(player) {
+  return Math.max(0, toNumber(player?.essencePool, 0));
+}
+
+function getReadyEssenceCount(player) {
+  return Math.max(0, (player?.essence?.length || 0) - toNumber(player?.spentEssence, 0));
+}
+
+function getTotalEssenceCapacity(player) {
+  return (player?.essence?.length || 0) + getEssencePool(player);
 }
 
 function consumePendingPlayCostDiscount(player) {
@@ -604,7 +863,9 @@ function markVirtueChange(playerId, change) {
 }
 
 function markMoralResultFeedback(playerId, result) {
-  (result?.changes || []).forEach((change) => markVirtueChange(playerId, change));
+  (result?.changes || []).forEach((change, index) => {
+    window.setTimeout(() => markVirtueChange(playerId, change), index * 420);
+  });
 }
 
 function applyMoralShift(player, targetId, delta = 1) {
@@ -705,6 +966,11 @@ function getMoralChoicePreview(player, targetId, delta = 1) {
   };
 }
 
+function moralChoiceWouldChange(player, targetId, delta = 1) {
+  const afterState = simulateMoralShiftValues(player, targetId, delta);
+  return app.virtues.some((virtue) => getVirtueValue(player, virtue.id) !== (afterState.get(Number(virtue.id)) || 0));
+}
+
 function formatMoralChange(change) {
   const name = getVirtueName(change.virtue);
   return `${name} ${change.before}->${change.after}`;
@@ -742,6 +1008,29 @@ function formatMoralResultForAlert(result) {
   return result.changes
     .map((change) => `${getVirtueName(change.virtue)} ${change.before}->${change.after}`)
     .join(" · ");
+}
+
+function getPrimaryMoralChange(result) {
+  if (!result?.changes?.length) return null;
+  const activeGain = result.changes.find((change) => change.after > change.before && change.after > 0);
+  return activeGain || result.changes.find((change) => change.after > 0) || result.changes[0];
+}
+
+function getMoralResultAlertData(result) {
+  const change = getPrimaryMoralChange(result);
+  if (!change) return null;
+  const increased = change.after > change.before;
+  const positive = change.virtue?.polarity === "virtue" ? increased : !increased;
+  return {
+    virtueId: change.virtue.id,
+    virtueName: getVirtueName(change.virtue),
+    icon: getVirtueIcon(change.virtue),
+    before: change.before,
+    after: change.after,
+    direction: increased ? "up" : "down",
+    tone: positive ? "positive" : "negative",
+    label: `${getVirtueName(change.virtue)} Nv${change.after}`
+  };
 }
 
 function applyCardMoralPips(playerId, card) {
@@ -790,13 +1079,14 @@ function sortMoralChoices(choices = []) {
   });
 }
 
-function getConsecrationMoralChoices(player) {
+function getConsecrationMoralChoices(player, amount = 1) {
+  const delta = Math.max(1, toNumber(amount, 1));
   const activeVices = getVirtuesByPolarity("vice").filter((virtue) => getVirtueValue(player, virtue.id) > 0);
   if (activeVices.length) {
     const lowest = Math.min(...activeVices.map((virtue) => getVirtueValue(player, virtue.id)));
     return sortMoralChoices(activeVices
       .filter((virtue) => getVirtueValue(player, virtue.id) === lowest)
-      .map((virtue) => buildMoralChoice(player, virtue, virtue.oppositeId, 1, `Redimir para ${getVirtueName(getVirtueById(virtue.oppositeId))} +1`))
+      .map((virtue) => buildMoralChoice(player, virtue, virtue.oppositeId, delta, `Redimir para ${getVirtueName(getVirtueById(virtue.oppositeId))} +${delta}`))
       .filter(Boolean));
   }
 
@@ -806,14 +1096,24 @@ function getConsecrationMoralChoices(player) {
     const highest = Math.max(...activeVirtues.map((virtue) => getVirtueValue(player, virtue.id)));
     return sortMoralChoices(activeVirtues
       .filter((virtue) => getVirtueValue(player, virtue.id) === highest)
-      .map((virtue) => buildMoralChoice(player, virtue, virtue.id, 1, `${getVirtueName(virtue)} +1`))
+      .map((virtue) => buildMoralChoice(player, virtue, virtue.id, delta, `${getVirtueName(virtue)} +${delta}`))
       .filter(Boolean));
   }
 
   return sortMoralChoices(getVirtuesByPolarity("virtue")
     .filter((virtue) => getVirtueValue(player, virtue.id) < 4)
-    .map((virtue) => buildMoralChoice(player, virtue, virtue.id, 1, `${getVirtueName(virtue)} +1`))
+    .map((virtue) => buildMoralChoice(player, virtue, virtue.id, delta, `${getVirtueName(virtue)} +${delta}`))
     .filter(Boolean));
+}
+
+function getFlexibleMoralChoices(player, amount = 1) {
+  const delta = Math.max(1, toNumber(amount, 1));
+  return sortMoralChoices(app.virtues.flatMap((virtue) => ([
+    buildMoralChoice(player, virtue, virtue.id, delta, `${getVirtueName(virtue)} +${delta}`),
+    buildMoralChoice(player, virtue, virtue.id, -delta, `${getVirtueName(virtue)} -${delta}`)
+  ]))
+    .filter(Boolean)
+    .filter((choice) => moralChoiceWouldChange(player, choice.targetId, choice.delta)));
 }
 
 function getProfanationMoralChoices(player) {
@@ -865,19 +1165,25 @@ function queueMoralChoice(player, title, description, choices, context, onComple
   });
 }
 
-function queueConsecrationMoralAdjustment(player, onComplete) {
+function queueConsecrationMoralAdjustment(player, onComplete, amount = 1) {
   queueMoralChoice(
     player,
     "Escolha moral da Consagração",
     "Escolha uma das opções possíveis pelas regras de Consagração.",
-    getConsecrationMoralChoices(player),
+    getConsecrationMoralChoices(player, amount),
     "Consagração",
     onComplete
   );
 }
 
-function queueConsecrationMoralAdjustmentAsync(player) {
-  return new Promise((resolve) => queueConsecrationMoralAdjustment(player, resolve));
+function queueConsecrationMoralAdjustmentAsync(player, amount = 1) {
+  return new Promise((resolve) => queueConsecrationMoralAdjustment(player, resolve, amount));
+}
+
+function playerHasTemple(player, templeId) {
+  const currentTempleId = player?.identity?.temple || "";
+  const currentTemple = app.cardByCode.get(currentTempleId);
+  return Boolean(currentTempleId === templeId || currentTemple?.code === templeId);
 }
 
 function queueConsecrationSinMoralAdjustment(player) {
@@ -1195,7 +1501,8 @@ function preloadImageAsset(url) {
 }
 
 function preloadDeckImages(...decks) {
-  const urls = [...new Set(decks.flatMap(getDeckAssetUrls).filter(Boolean))];
+  const tokenUrls = INTERNAL_TOKEN_CARDS.flatMap((card) => [getCardImage(card), getCardArt(card)]);
+  const urls = [...new Set([...decks.flatMap(getDeckAssetUrls), ...tokenUrls].filter(Boolean))];
   return Promise.all(urls.map(preloadImageAsset));
 }
 
@@ -1285,6 +1592,7 @@ function createCardInstance(cardId, owner) {
     uid: `${owner}-${cardId}-${Math.random().toString(36).slice(2, 9)}`,
     cardId,
     owner,
+    attachedTo: "",
     exhausted: false,
     declaredAttacker: false,
     damage: 0
@@ -1294,6 +1602,9 @@ function createCardInstance(cardId, owner) {
 function getTokenCardId(tokenId) {
   const normalized = normalizeKeywordText(tokenId);
   if (normalized === "INCENSE" || normalized === "INCENSO") return "TOKEN-INCENSE";
+  if (normalized === "SOLDIER_ISRAELITE" || normalized === "SOLDADO_ISRAELITA") return "TOKEN-SOLDIER-ISRAELITE";
+  if (normalized === "SOLDIER_PHILISTINE" || normalized === "SOLDADO_FILISTEU") return "TOKEN-SOLDIER-PHILISTINE";
+  if (normalized === "REBEL" || normalized === "REBELDE") return "TOKEN-REBEL";
   return tokenId;
 }
 
@@ -1380,7 +1691,6 @@ function pulverizeCards(player, amount, reason = "fadiga por pulverizacao imposs
 }
 
 function createPlayer(id, label, deck, isBot = false) {
-  const seed = `${deck.id}-${id}-${Date.now()}-${Math.random()}`;
   const player = {
     id,
     label,
@@ -1392,7 +1702,7 @@ function createPlayer(id, label, deck, isBot = false) {
       territory: deck.identity.territories[0],
       temple: deck.identity.temples[0]
     },
-    deck: shuffle(deck.cards, seed),
+    deck: [...deck.cards],
     hand: [],
     battlefield: [],
     essence: [],
@@ -1403,15 +1713,16 @@ function createPlayer(id, label, deck, isBot = false) {
     territoryDamage: 0,
     maxTerritory: getTerritoryLife(deck.identity.territories[0]),
     spentEssence: 0,
+    essencePool: 0,
     territoryDamageTakenThisTurn: 0,
     characterDamageTakenThisTurn: 0,
     cardsPlayedThisTurn: 0,
     consecratedThisTurn: false,
     consecrationActionTaken: false,
     drewThisTurn: false,
-    combatDeclaredThisTurn: false
+    combatDeclaredThisTurn: false,
+    championCovered: false
   };
-  drawCards(player, INITIAL_HAND_SIZE);
   return player;
 }
 
@@ -1452,7 +1763,61 @@ function getTerritoryLife(cardId) {
 }
 
 function getAvailableEssence(player) {
-  return Math.max(0, player.essence.length - player.spentEssence);
+  return getReadyEssenceCount(player) + getEssencePool(player);
+}
+
+function getReadyEssenceGeneratorInstances(player) {
+  return (player?.battlefield || [])
+    .filter((instance) => !instance.exhausted && isEssenceGeneratorInstance(instance));
+}
+
+function getPotentialGeneratedEssence(player) {
+  return getReadyEssenceGeneratorInstances(player).length;
+}
+
+function getPotentialAvailableEssence(player) {
+  return getAvailableEssence(player) + getPotentialGeneratedEssence(player);
+}
+
+function ensureGeneratedEssenceForCost(player, amount) {
+  const cost = Math.max(0, toNumber(amount, 0));
+  if (!player || getAvailableEssence(player) >= cost) return true;
+  const generators = getReadyEssenceGeneratorInstances(player);
+  for (const generator of generators) {
+    if (getAvailableEssence(player) >= cost) break;
+    activateEssenceGeneratorForPayment(player, generator);
+  }
+  return getAvailableEssence(player) >= cost;
+}
+
+function clearEssencePool(player) {
+  if (!player) return 0;
+  const cleared = getEssencePool(player);
+  player.essencePool = 0;
+  return cleared;
+}
+
+function clearAllEssencePools(game) {
+  Object.values(game?.players || {}).forEach(clearEssencePool);
+}
+
+function generateEssence(player, amount = 1) {
+  if (!player) return 0;
+  const generated = Math.max(0, toNumber(amount, 0));
+  player.essencePool = getEssencePool(player) + generated;
+  return generated;
+}
+
+function spendEssenceCost(player, amount) {
+  const cost = Math.max(0, toNumber(amount, 0));
+  if (!player || getAvailableEssence(player) < cost) return null;
+  const poolSpent = Math.min(getEssencePool(player), cost);
+  player.essencePool = Math.max(0, getEssencePool(player) - poolSpent);
+  const physicalSpent = cost - poolSpent;
+  if (physicalSpent > 0) {
+    player.spentEssence = Math.min(player.essence.length, toNumber(player.spentEssence, 0) + physicalSpent);
+  }
+  return { poolSpent, physicalSpent };
 }
 
 function getPlayer(game, playerId) {
@@ -1504,7 +1869,7 @@ function waitForEngineStack(game, callback) {
     return;
   }
   if (hasBlockingEngineWork(game)) {
-    window.setTimeout(() => waitForEngineStack(game, callback), 140);
+    window.setTimeout(() => waitForEngineStack(game, callback), 220);
     return;
   }
   callback();
@@ -1525,7 +1890,7 @@ function setGamePhase(game, phase, playerId = game.activePlayer, force = false) 
   if (phaseIndex < 0) return false;
   const changed = game.phaseIndex !== phaseIndex;
   game.phaseIndex = phaseIndex;
-  if ((changed || force) && (phase === "prepare" || phase === "combat")) {
+  if ((changed || force) && phase === "prepare") {
     showPhaseAlert(phase, playerId);
   }
   return true;
@@ -1552,6 +1917,10 @@ function hasBlockingEngineWork(game = app.game) {
       app.pendingVirtueDebug
     )
   );
+}
+
+function hasPendingEngineChoiceWork() {
+  return Boolean(app.pendingEngineChoice || app.pendingMoralChoice || app.pendingVirtueDebug);
 }
 
 function hasBlockingBotWork(game = app.game) {
@@ -1608,6 +1977,211 @@ function createGame(humanDeck, botDeck, botMode, options = {}) {
   return game;
 }
 
+function applyDeckReductionDecision(player, reserveIndexes = []) {
+  if (!player?.deck?.length) return { kept: 0, reserved: 0 };
+  const reserveSet = new Set(reserveIndexes.map(Number));
+  const nextDeck = [];
+  const movedToReserve = [];
+  player.deck.forEach((cardId, index) => {
+    if (reserveSet.has(index)) {
+      movedToReserve.push(cardId);
+    } else {
+      nextDeck.push(cardId);
+    }
+  });
+  player.deck = nextDeck;
+  player.reserve.push(...movedToReserve);
+  return { kept: nextDeck.length, reserved: movedToReserve.length };
+}
+
+function showPreGameReductionModal(player) {
+  if (!player || player.id !== "human") return Promise.resolve([]);
+  return new Promise((resolve) => {
+    let overlay = document.getElementById("zoneModal");
+    if (!overlay) {
+      overlay = document.createElement("div");
+      overlay.id = "zoneModal";
+      overlay.className = "zone-modal";
+      document.body.appendChild(overlay);
+    }
+    const selected = new Set();
+    const minDeckSize = Math.min(30, player.deck.length);
+    const maxReserve = Math.max(0, player.deck.length - minDeckSize);
+    app.pendingEngineChoice = { type: "pregame-reduction", title: "Redução do baralho" };
+
+    const render = () => {
+      const deckCount = player.deck.length - selected.size;
+      const valid = deckCount >= minDeckSize && deckCount <= player.deck.length;
+      overlay.className = "zone-modal is-visible";
+      overlay.innerHTML = `
+        <div class="zone-modal-panel zone-modal-panel--pregame-reduction" role="dialog" aria-modal="true" aria-label="Redução do baralho">
+          <div class="zone-modal-head">
+            <div>
+              <span>Pré-jogo</span>
+              <b>Redução do baralho</b>
+            </div>
+          </div>
+          <p class="zone-modal-description">Escolha até ${maxReserve} carta${maxReserve === 1 ? "" : "s"} para mover para a Reserva. O baralho de partida deve ficar com ${minDeckSize} a ${player.deck.length} cartas.</p>
+          <div class="zone-modal-grid pregame-card-grid">
+            ${player.deck.map((cardId, index) => {
+              const card = app.cardByCode.get(cardId);
+              const active = selected.has(index);
+              return `
+                <button class="zone-modal-card pregame-card-choice ${active ? "is-selected" : ""}" type="button" data-pregame-reduction-card="${index}" title="${escapeHtml(getCardName(card))}">
+                  <img src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" draggable="false" />
+                  <span>${active ? "Reserva" : "Deck"}</span>
+                </button>
+              `;
+            }).join("")}
+          </div>
+          <div class="zone-modal-actions zone-modal-actions--pregame">
+            <button type="button" data-pregame-reduction-skip>Manter ${player.deck.length}</button>
+            <button type="button" class="primary-action" data-pregame-reduction-confirm ${valid ? "" : "disabled"}>
+              Confirmar ${deckCount}/${player.deck.length}
+            </button>
+          </div>
+        </div>
+      `;
+
+      overlay.querySelectorAll("[data-pregame-reduction-card]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const index = toNumber(button.dataset.pregameReductionCard, -1);
+          if (selected.has(index)) {
+            selected.delete(index);
+          } else if (selected.size < maxReserve) {
+            selected.add(index);
+          }
+          render();
+        }, { once: true });
+      });
+      overlay.querySelector("[data-pregame-reduction-skip]")?.addEventListener("click", () => {
+        overlay.classList.remove("is-visible");
+        app.pendingEngineChoice = null;
+        resolve([]);
+      }, { once: true });
+      overlay.querySelector("[data-pregame-reduction-confirm]")?.addEventListener("click", () => {
+        if (!valid) return;
+        overlay.classList.remove("is-visible");
+        app.pendingEngineChoice = null;
+        resolve([...selected]);
+      }, { once: true });
+    };
+
+    render();
+  });
+}
+
+function showPreGameMulliganModal(player, attempt) {
+  if (!player || player.id !== "human") return Promise.resolve([]);
+  return new Promise((resolve) => {
+    let overlay = document.getElementById("zoneModal");
+    if (!overlay) {
+      overlay = document.createElement("div");
+      overlay.id = "zoneModal";
+      overlay.className = "zone-modal";
+      document.body.appendChild(overlay);
+    }
+    const handSnapshot = player.hand.map((cardId, index) => ({ cardId, index }));
+    const selected = new Set();
+    app.pendingEngineChoice = { type: "pregame-mulligan", title: "Mulligan" };
+
+    const render = () => {
+      overlay.className = "zone-modal is-visible";
+      overlay.innerHTML = `
+        <div class="zone-modal-panel zone-modal-panel--pregame-mulligan" role="dialog" aria-modal="true" aria-label="Mulligan">
+          <div class="zone-modal-head">
+            <div>
+              <span>Pré-jogo</span>
+              <b>Mulligan ${attempt}/3</b>
+            </div>
+          </div>
+          <p class="zone-modal-description">Escolha qualquer quantidade de cartas para devolver, embaralhar e comprar novamente. Você também pode manter esta mão.</p>
+          <div class="zone-modal-grid pregame-card-grid">
+            ${handSnapshot.map(({ cardId, index }) => {
+              const card = app.cardByCode.get(cardId);
+              const active = selected.has(index);
+              return `
+                <button class="zone-modal-card pregame-card-choice ${active ? "is-selected" : ""}" type="button" data-pregame-mulligan-card="${index}" title="${escapeHtml(getCardName(card))}">
+                  <img src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" draggable="false" />
+                  <span>${active ? "Trocar" : "Manter"}</span>
+                </button>
+              `;
+            }).join("")}
+          </div>
+          <div class="zone-modal-actions zone-modal-actions--pregame">
+            <button type="button" data-pregame-mulligan-keep>Manter mão</button>
+            <button type="button" class="primary-action" data-pregame-mulligan-confirm ${selected.size ? "" : "disabled"}>
+              Mulligan (${selected.size})
+            </button>
+          </div>
+        </div>
+      `;
+
+      overlay.querySelectorAll("[data-pregame-mulligan-card]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const index = toNumber(button.dataset.pregameMulliganCard, -1);
+          if (selected.has(index)) selected.delete(index);
+          else selected.add(index);
+          render();
+        }, { once: true });
+      });
+      overlay.querySelector("[data-pregame-mulligan-keep]")?.addEventListener("click", () => {
+        overlay.classList.remove("is-visible");
+        app.pendingEngineChoice = null;
+        resolve([]);
+      }, { once: true });
+      overlay.querySelector("[data-pregame-mulligan-confirm]")?.addEventListener("click", () => {
+        if (!selected.size) return;
+        overlay.classList.remove("is-visible");
+        app.pendingEngineChoice = null;
+        resolve([...selected]);
+      }, { once: true });
+    };
+
+    render();
+  });
+}
+
+function applyPartialMulligan(player, selectedIndexes, game, attempt) {
+  const selected = new Set(selectedIndexes.map(Number));
+  if (!player || !selected.size) return 0;
+  const returned = [];
+  player.hand = player.hand.filter((cardId, index) => {
+    if (!selected.has(index)) return true;
+    returned.push(cardId);
+    return false;
+  });
+  if (!returned.length) return 0;
+  player.deck.push(...returned);
+  player.deck = shuffle(player.deck, `${game.id}-${player.id}-mulligan-${attempt}-${Date.now()}`);
+  drawCards(player, returned.length);
+  return returned.length;
+}
+
+async function runPregameProcedures(game) {
+  if (!game) return;
+  const human = game.players.human;
+  const bot = game.players.bot;
+  const reserveIndexes = await showPreGameReductionModal(human);
+  const humanReduction = applyDeckReductionDecision(human, reserveIndexes);
+  const botReduction = applyDeckReductionDecision(bot, []);
+  addLog(game, `reduziu o baralho para ${humanReduction.kept} carta${humanReduction.kept === 1 ? "" : "s"} e ${humanReduction.reserved} na Reserva.`, human.label);
+  addLog(game, `manteve ${botReduction.kept} carta${botReduction.kept === 1 ? "" : "s"} no baralho principal.`, bot.label);
+  human.deck = shuffle(human.deck, `${game.id}-human-pregame-shuffle`);
+  bot.deck = shuffle(bot.deck, `${game.id}-bot-pregame-shuffle`);
+  drawCards(human, INITIAL_HAND_SIZE);
+  drawCards(bot, INITIAL_HAND_SIZE);
+  renderGame();
+
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    const selected = await showPreGameMulliganModal(human, attempt);
+    if (!selected.length) break;
+    const changed = applyPartialMulligan(human, selected, game, attempt);
+    addLog(game, `realizou mulligan parcial com ${changed} carta${changed === 1 ? "" : "s"}.`, human.label);
+    renderGame();
+  }
+}
+
 function beginTurn(game) {
   const player = currentPlayer(game);
   game.turnsElapsed = toNumber(game.turnsElapsed, 0) + 1;
@@ -1617,12 +2191,14 @@ function beginTurn(game) {
     turnPlayer.territoryDamageTakenThisTurn = 0;
     turnPlayer.characterDamageTakenThisTurn = 0;
     turnPlayer.cardsPlayedThisTurn = 0;
+    clearEssencePool(turnPlayer);
   });
   player.spentEssence = 0;
   player.consecratedThisTurn = false;
   player.consecrationActionTaken = false;
   player.drewThisTurn = false;
   player.combatDeclaredThisTurn = false;
+  player.championCovered = false;
   player.battlefield.forEach((instance) => {
     if (!isCowardiceReadyLocked(player, instance)) {
       instance.exhausted = false;
@@ -1670,75 +2246,99 @@ function beginTurn(game) {
             applyDraw(player.id);
             renderGame();
           });
-        }, 1450);
+        }, 1900);
       });
     });
-  }, 1350);
+  }, 1800);
 }
 
-function startGame() {
+async function startGame() {
   if (!app.setupAssetsReady) return;
+  if (app.startingGame) return;
+  app.startingGame = true;
   const humanDeck = getDeckOption(els.humanDeckSelect.value);
   const botDeck = app.decks.find((deck) => deck.id === els.botDeckSelect.value);
   const humanError = validateDeck(humanDeck);
   const botError = validateDeck(botDeck);
   if (humanError || botError) {
     updateSetupStatus();
+    app.startingGame = false;
     return;
   }
 
-  app.lastConfig = {
-    humanDeckId: humanDeck.id,
-    botDeckId: botDeck.id,
-    botMode: els.botModeSelect.value,
-    virtueDebugEnabled: app.isLocalDebugHost && app.virtueDebugEnabled
-  };
-  writePlayStorage(app.lastConfig);
-  app.game = createGame(humanDeck, botDeck, els.botModeSelect.value, {
-    virtueDebugEnabled: app.isLocalDebugHost && app.virtueDebugEnabled
-  });
-  app.selected = null;
-  app.expandedTemplePlayer = "";
-  app.territorySnapshot.clear();
-  clearHumanAutoPass();
-  collapseHand();
-  clearTransientOverlays();
-  els.setupView.classList.add("is-hidden");
-  els.gameView.classList.remove("is-hidden");
-  emitGameEvent("game.start", { game: app.game });
-  beginTurn(app.game);
-  playTone("shuffle");
-  window.setTimeout(() => playTone("start"), 180);
-  renderGame();
-  if (app.game.activePlayer === "bot") scheduleBotTurn(app.game);
+  try {
+    app.lastConfig = {
+      humanDeckId: humanDeck.id,
+      botDeckId: botDeck.id,
+      botMode: els.botModeSelect.value,
+      virtueDebugEnabled: app.isLocalDebugHost && app.virtueDebugEnabled
+    };
+    writePlayStorage(app.lastConfig);
+    app.game = createGame(humanDeck, botDeck, els.botModeSelect.value, {
+      virtueDebugEnabled: app.isLocalDebugHost && app.virtueDebugEnabled
+    });
+    app.selected = null;
+    app.expandedTemplePlayer = "";
+    app.resultViewingBoard = false;
+    app.territorySnapshot.clear();
+    clearHumanAutoPass();
+    collapseHand();
+    clearTransientOverlays();
+    els.setupView.classList.add("is-hidden");
+    els.gameView.classList.remove("is-hidden");
+    renderGame();
+    await runPregameProcedures(app.game);
+    emitGameEvent("game.start", { game: app.game });
+    beginTurn(app.game);
+    playTone("shuffle");
+    window.setTimeout(() => playTone("start"), 180);
+    renderGame();
+    if (app.game.activePlayer === "bot") scheduleBotTurn(app.game);
+  } finally {
+    app.startingGame = false;
+  }
 }
 
-function restartGame() {
+async function restartGame() {
   if (!app.lastConfig) return;
+  if (app.startingGame) return;
+  app.startingGame = true;
   const humanDeck = getDeckOption(app.lastConfig.humanDeckId);
   const botDeck = app.decks.find((deck) => deck.id === app.lastConfig.botDeckId);
-  if (!humanDeck || !botDeck) return;
-  app.game = createGame(humanDeck, botDeck, app.lastConfig.botMode || "basic", {
-    virtueDebugEnabled: Boolean(app.lastConfig.virtueDebugEnabled)
-  });
-  app.selected = null;
-  app.expandedTemplePlayer = "";
-  app.territorySnapshot.clear();
-  clearHumanAutoPass();
-  collapseHand();
-  clearTransientOverlays();
-  els.gameResult.classList.add("is-hidden");
-  beginTurn(app.game);
-  playTone("shuffle");
-  window.setTimeout(() => playTone("start"), 180);
-  renderGame();
-  if (app.game.activePlayer === "bot") scheduleBotTurn(app.game);
+  if (!humanDeck || !botDeck) {
+    app.startingGame = false;
+    return;
+  }
+  try {
+    app.game = createGame(humanDeck, botDeck, app.lastConfig.botMode || "basic", {
+      virtueDebugEnabled: Boolean(app.lastConfig.virtueDebugEnabled)
+    });
+    app.selected = null;
+    app.expandedTemplePlayer = "";
+    app.resultViewingBoard = false;
+    app.territorySnapshot.clear();
+    clearHumanAutoPass();
+    collapseHand();
+    clearTransientOverlays();
+    els.gameResult.classList.add("is-hidden");
+    renderGame();
+    await runPregameProcedures(app.game);
+    emitGameEvent("game.start", { game: app.game });
+    beginTurn(app.game);
+    playTone("shuffle");
+    window.setTimeout(() => playTone("start"), 180);
+    renderGame();
+    if (app.game.activePlayer === "bot") scheduleBotTurn(app.game);
+  } finally {
+    app.startingGame = false;
+  }
 }
 
 function showSetup() {
   app.game = null;
   app.selected = null;
   app.expandedTemplePlayer = "";
+  app.resultViewingBoard = false;
   app.territorySnapshot.clear();
   clearHumanAutoPass();
   collapseHand();
@@ -1764,15 +2364,44 @@ function isHumanPriorityOpen() {
   return Boolean(app.priority?.waiting && app.priority.game === app.game && app.game?.status === "active");
 }
 
+function isPureEssenceGeneratorAbility(ability) {
+  if (!ability) return false;
+  if ((ability.tags || []).includes("essence_generator")) return true;
+  const actions = ability.actions || [];
+  return actions.length > 0 && actions.every((action) => action?.effect === "generate_essence");
+}
+
+function hasHumanPriorityPermanentAction(game = app.game) {
+  const human = game?.players?.human;
+  if (!human) return false;
+  if (canUseChampionAction(human)) return true;
+  return human.battlefield.some((instance) => (
+    getViableActivatedAbilitiesForPermanent(human, instance)
+      .some(({ ability }) => !isPureEssenceGeneratorAbility(ability))
+  ));
+}
+
 function hasHumanPriorityPlay(game = app.game) {
   if (!game || game.status !== "active") return false;
   if (game.combat.awaitingBlockers || game.combat.resolving) return false;
-  return game.players.human.hand.some((cardId) => {
-    const card = app.cardByCode.get(cardId);
-    return getCardTypeCode(card) === "MIL" &&
-      ["combat", "regroup"].includes(currentPhase(game)) &&
-      getEffectivePlayCost(game.players.human, card) <= getAvailableEssence(game.players.human);
-  });
+  if (hasHumanPriorityPermanentAction(game)) {
+    return true;
+  }
+  return game.players.human.hand.some((cardId) => canPlayCardInPriorityWindow(game.players.human, cardId, game));
+}
+
+function cardCanUseMiracleTiming(card) {
+  return getCardTypeCode(card) === "MIL" || cardHasKeyword(card, "INESPERADO");
+}
+
+function canPlayCardInPriorityWindow(player, cardId, game = app.game) {
+  if (!game || !player?.hand?.includes(cardId)) return false;
+  const card = app.cardByCode.get(cardId);
+  if (!cardCanUseMiracleTiming(card)) return false;
+  const hasWindow = isHumanPriorityOpen() || game.stack.length > 0 || ["combat", "regroup"].includes(currentPhase(game));
+  if (!hasWindow) return false;
+  if (getEffectivePlayCost(player, card) > getPotentialAvailableEssence(player)) return false;
+  return canResolveCardWhenPlayed(cardId, player.id);
 }
 
 function requestHumanPriority(game, key, label, resume) {
@@ -1848,28 +2477,32 @@ function canDiscardForHandLimit(player, cardId) {
 }
 
 function canPlayCard(player, cardId) {
-  if (hasBlockingEngineWork(app.game)) return false;
+  const priorityOpen = isHumanPriorityOpen();
+  if (!priorityOpen && hasBlockingEngineWork(app.game)) return false;
   if (!player.hand.includes(cardId)) return false;
   const card = app.cardByCode.get(cardId);
   const phase = currentPhase(app.game);
   const typeCode = getCardTypeCode(card);
   const isOwnTurn = app.game.activePlayer === player.id;
+  const canResolve = canResolveCardWhenPlayed(cardId, player.id);
+  if (!canResolve) return false;
 
-  if (!isOwnTurn) {
-    return isHumanPriorityOpen() &&
+  if (priorityOpen) {
+    return app.priority?.game === app.game &&
       player.id === "human" &&
-      typeCode === "MIL" &&
-      ["preparation", "combat", "regroup"].includes(phase) &&
-      getEffectivePlayCost(player, card) <= getAvailableEssence(player);
+      cardCanUseMiracleTiming(card) &&
+      canPlayCardInPriorityWindow(player, cardId, app.game);
   }
+
+  if (!isOwnTurn) return false;
 
   if (phase === "preparation") {
     if (typeCode === "PEC") return true;
-    return getEffectivePlayCost(player, card) <= getAvailableEssence(player);
+    return getEffectivePlayCost(player, card) <= getPotentialAvailableEssence(player);
   }
 
-  if ((phase === "combat" || phase === "regroup") && typeCode === "MIL") {
-    return getEffectivePlayCost(player, card) <= getAvailableEssence(player);
+  if ((phase === "combat" || phase === "regroup") && cardCanUseMiracleTiming(card)) {
+    return getEffectivePlayCost(player, card) <= getPotentialAvailableEssence(player);
   }
 
   return false;
@@ -1879,6 +2512,490 @@ function canBotSurviveSinCost(bot, cardId) {
   const card = app.cardByCode.get(cardId);
   if (getCardTypeCode(card) !== "PEC") return true;
   return bot.territoryDamage + getCost(card) < bot.maxTerritory;
+}
+
+function isIncenseTokenCard(card) {
+  return card?.code === "TOKEN-INCENSE" || normalizeKeywordText(getCardName(card)) === "INCENSO";
+}
+
+function isBethlehemPastorCard(card) {
+  return card?.code === "FND-PER-013" || cardHasEngineTag(card, "essence_generator");
+}
+
+function isEssenceGeneratorInstance(instance) {
+  const card = app.cardByCode.get(instance?.cardId);
+  return isIncenseTokenCard(card) || isBethlehemPastorCard(card);
+}
+
+function isEquipmentCard(card) {
+  if (!card || card.token || isIncenseTokenCard(card)) return false;
+  if (Object.values(EQUIPMENT_IDS).includes(card.code)) return true;
+  return getCardTypeCode(card) === "ART" && normalizeKeywordText(card.text).includes("EQUIPAVEL");
+}
+
+function isEquipmentInstance(instance) {
+  return isEquipmentCard(app.cardByCode.get(instance?.cardId));
+}
+
+function findBattlefieldEntryByUid(game, uid) {
+  if (!game || !uid) return null;
+  for (const player of Object.values(game.players)) {
+    const instance = findBattlefieldInstance(player, uid);
+    if (instance) return { playerId: player.id, player, instance };
+  }
+  return null;
+}
+
+function getAttachedEquipmentInstances(instance, game = app.game) {
+  if (!instance || !game) return [];
+  return Object.values(game.players)
+    .flatMap((player) => player.battlefield.map((equipment) => ({ player, equipment })))
+    .filter(({ equipment }) => isEquipmentInstance(equipment) && equipment.attachedTo === instance.uid)
+    .map(({ player, equipment }) => ({ playerId: player.id, player, instance: equipment }));
+}
+
+function isCharacterEquipped(instance, game = app.game) {
+  return getAttachedEquipmentInstances(instance, game).length > 0;
+}
+
+function getEquipmentAttachmentTarget(equipment, game = app.game) {
+  if (!equipment?.attachedTo) return null;
+  return findBattlefieldEntryByUid(game, equipment.attachedTo);
+}
+
+function cardRejectsEquipment(card) {
+  const text = normalizeKeywordText(card?.text);
+  return cardHasEngineTag(card, "reject_equipment") || text.includes("NAO PODE TER EQUIPAMENTOS ANEXADOS");
+}
+
+function canAttachEquipmentTo(equipment, target, equipmentControllerId = "", targetControllerId = equipmentControllerId) {
+  if (!equipment || !target || equipment.uid === target.uid) return false;
+  const equipmentCard = app.cardByCode.get(equipment.cardId);
+  const targetCard = app.cardByCode.get(target.cardId);
+  if (!isEquipmentCard(equipmentCard)) return false;
+  if (getCardTypeCode(targetCard) !== "PER") return false;
+  if (equipmentControllerId && targetControllerId && equipmentControllerId !== targetControllerId) return false;
+  if (cardRejectsEquipment(targetCard)) return false;
+  if (equipment.cardId === EQUIPMENT_IDS.sword && equipment.attachedTo !== target.uid && getCharacterPower(target) < 4) return false;
+  return true;
+}
+
+function detachEquipmentInstance(equipment) {
+  if (!equipment?.attachedTo) return false;
+  equipment.attachedTo = "";
+  return true;
+}
+
+function attachEquipmentTo(game, equipmentRef, targetRef) {
+  if (!game || !equipmentRef?.instance || !targetRef?.instance) return false;
+  if (!canAttachEquipmentTo(equipmentRef.instance, targetRef.instance, equipmentRef.playerId, targetRef.playerId)) return false;
+  equipmentRef.instance.attachedTo = targetRef.instance.uid;
+  const equipmentCard = app.cardByCode.get(equipmentRef.instance.cardId);
+  const targetCard = app.cardByCode.get(targetRef.instance.cardId);
+  addLog(game, `${getCardName(equipmentCard)} foi anexado a ${getCardName(targetCard)}.`, getPlayer(game, equipmentRef.playerId)?.label || "Engine");
+  enforceEquipmentState(game);
+  return true;
+}
+
+function cleanupAttachmentsForLeaving(game, uid) {
+  if (!game || !uid) return;
+  Object.values(game.players).forEach((player) => {
+    player.battlefield.forEach((instance) => {
+      if (instance.uid === uid && isEquipmentInstance(instance)) instance.attachedTo = "";
+      if (isEquipmentInstance(instance) && instance.attachedTo === uid) instance.attachedTo = "";
+    });
+  });
+}
+
+function enforceEquipmentState(game = app.game) {
+  if (!game) return;
+  Object.values(game.players).forEach((player) => {
+    player.battlefield.forEach((equipment) => {
+      if (!isEquipmentInstance(equipment) || !equipment.attachedTo) return;
+      const targetRef = findBattlefieldEntryByUid(game, equipment.attachedTo);
+      if (!targetRef || !canAttachEquipmentTo(equipment, targetRef.instance, player.id, targetRef.playerId)) {
+        const card = app.cardByCode.get(equipment.cardId);
+        equipment.attachedTo = "";
+        addLog(game, `${getCardName(card)} foi desanexado por regra de estado.`, player.label);
+      }
+    });
+  });
+}
+
+function getEquipmentStatBonusForCharacter(instance) {
+  const bonuses = { power: 0, resistance: 0 };
+  if (!instance) return bonuses;
+  if (instance.cardId === "FND-PER-001" && isCharacterEquipped(instance)) {
+    bonuses.power += 1;
+  }
+  getAttachedEquipmentInstances(instance).forEach(({ instance: equipment }) => {
+    if (equipment.cardId === EQUIPMENT_IDS.sword) {
+      bonuses.power += 2;
+    }
+    if (equipment.cardId === EQUIPMENT_IDS.crown) {
+      bonuses.power += 2;
+      bonuses.resistance += 2;
+    }
+  });
+  return bonuses;
+}
+
+function getEquipmentGrantedKeywords(instance) {
+  const keywords = [];
+  getAttachedEquipmentInstances(instance).forEach(({ instance: equipment }) => {
+    if (equipment.cardId === EQUIPMENT_IDS.sword) keywords.push("SOBREPUJAR");
+  });
+  return keywords;
+}
+
+function canActivateEssenceGenerator(player, uid) {
+  const game = app.game;
+  if (!game || game.status !== "active" || !player || hasBlockingEngineWork(game)) return false;
+  if (game.combat.awaitingBlockers || game.combat.resolving) return false;
+  const instance = player.battlefield.find((item) => item.uid === uid);
+  if (!instance || instance.exhausted || !isEssenceGeneratorInstance(instance)) return false;
+  const card = app.cardByCode.get(instance.cardId);
+  if (!isIncenseTokenCard(card)) return false;
+  const phase = currentPhase(game);
+  const hasTurnAccess = game.activePlayer === player.id && ["preparation", "combat", "regroup"].includes(phase);
+  const hasPriorityAccess = player.id === "human" && isHumanPriorityOpen();
+  if (!hasTurnAccess && !hasPriorityAccess) return false;
+  if (player.id === "human" && isBethlehemPastorCard(card) && phase === "combat" && !hasPriorityAccess) return false;
+  return true;
+}
+
+function removeBattlefieldInstance(player, uid) {
+  const index = player?.battlefield?.findIndex((instance) => instance.uid === uid) ?? -1;
+  if (index < 0) return null;
+  const [instance] = player.battlefield.splice(index, 1);
+  return instance || null;
+}
+
+function applyActivateEssenceGenerator(playerId, uid) {
+  const game = app.game;
+  const player = getPlayer(game, playerId);
+  if (!canActivateEssenceGenerator(player, uid)) return false;
+  const instance = player.battlefield.find((item) => item.uid === uid);
+  const card = app.cardByCode.get(instance.cardId);
+  const isIncense = isIncenseTokenCard(card);
+  if (isIncense) {
+    const removed = removeBattlefieldInstance(player, uid);
+    if (!removed) return false;
+    emitGameEvent("permanent.leaves_battlefield", {
+      game,
+      playerId,
+      instanceUid: removed.uid,
+      cardId: removed.cardId,
+      destination: "void"
+    });
+    addLog(game, `renunciou ${getCardName(card)}.`, player.label);
+  } else {
+    instance.exhausted = true;
+  }
+  generateEssence(player, 1);
+  addLog(game, `${getCardName(card)} gerou 1 {E}.`, player.label);
+  playTone("soft");
+  return true;
+}
+
+function activateEssenceGeneratorForPayment(player, instance) {
+  const game = app.game;
+  if (!game || !player || !instance || instance.exhausted || !isEssenceGeneratorInstance(instance)) return false;
+  const card = app.cardByCode.get(instance.cardId);
+  const isIncense = isIncenseTokenCard(card);
+  if (isIncense) {
+    const removed = removeBattlefieldInstance(player, instance.uid);
+    if (!removed) return false;
+    emitGameEvent("permanent.leaves_battlefield", {
+      game,
+      playerId: player.id,
+      instanceUid: removed.uid,
+      cardId: removed.cardId,
+      destination: "void"
+    });
+    addLog(game, `renunciou ${getCardName(card)} para pagar custos.`, player.label);
+  } else {
+    instance.exhausted = true;
+    addLog(game, `despreparou ${getCardName(card)} para pagar custos.`, player.label);
+  }
+  generateEssence(player, 1);
+  playTone("soft");
+  return true;
+}
+
+function getPermanentAbilitySource(player, instance) {
+  const card = app.cardByCode.get(instance?.cardId);
+  if (!player || !instance || !card) return null;
+  return {
+    sourceType: "card",
+    sourceId: instance.cardId,
+    zone: "battlefield",
+    controllerId: player.id,
+    instanceUid: instance.uid,
+    cardId: instance.cardId,
+    label: getCardName(card),
+    icon: getCardArt(card)
+  };
+}
+
+function getChampionAbilitySource(player) {
+  const cardId = player?.identity?.champion;
+  const card = app.cardByCode.get(cardId);
+  if (!player || !cardId || !card) return null;
+  return {
+    sourceType: "card",
+    sourceId: cardId,
+    zone: "identity",
+    identityKind: "champion",
+    controllerId: player.id,
+    cardId,
+    label: getCardName(card),
+    icon: getCardArt(card)
+  };
+}
+
+function getActivatedAbilitiesForPermanent(player, instance) {
+  const source = getPermanentAbilitySource(player, instance);
+  if (!source) return [];
+  return findAbilityLinksForSource(source)
+    .map((link) => app.engine.abilityById.get(link.abilityId))
+    .filter((ability) => ability?.kind === "activated")
+    .map((ability) => ({ ability, source }));
+}
+
+function getActivatedAbilitiesForChampion(player) {
+  const source = getChampionAbilitySource(player);
+  if (!source) return [];
+  return findAbilityLinksForSource(source)
+    .map((link) => app.engine.abilityById.get(link.abilityId))
+    .filter((ability) => ability?.kind === "activated")
+    .map((ability) => ({ ability, source }));
+}
+
+function createActivatedStackObject(game, ability, source) {
+  return createEngineStackObject(game, { id: "activated.ability" }, ability, source, {
+    game,
+    playerId: source.controllerId,
+    activated: true
+  });
+}
+
+function getViableActivatedAbilitiesForPermanent(player, instance) {
+  if (!player || !instance) return [];
+  return getActivatedAbilitiesForPermanent(player, instance)
+    .map(({ ability, source }) => ({ ability, source, stackObject: createActivatedStackObject(app.game, ability, source) }))
+    .filter(({ ability, source, stackObject }) => evaluateAbilityCondition(ability, source, stackObject?.payload || {}))
+    .filter(({ stackObject }) => isEngineStackObjectViable(stackObject));
+}
+
+function getViableActivatedAbilitiesForChampion(player) {
+  if (!player || player.championCovered) return [];
+  return getActivatedAbilitiesForChampion(player)
+    .map(({ ability, source }) => ({ ability, source, stackObject: createActivatedStackObject(app.game, ability, source) }))
+    .filter(({ ability, source, stackObject }) => evaluateAbilityCondition(ability, source, stackObject?.payload || {}))
+    .filter(({ stackObject }) => isEngineStackObjectViable(stackObject));
+}
+
+function hasBlockingActionSelectionWork(game, player) {
+  if (!game || game.status !== "active") return true;
+  if (hasPendingEngineChoiceWork()) return true;
+  if (player?.id === "human" && isHumanPriorityOpen()) return false;
+  return Boolean(game.stackResolving || game.stack.length);
+}
+
+function canUseChampionAction(player) {
+  const game = app.game;
+  if (!player || !game || game.status !== "active" || player.championCovered || hasBlockingActionSelectionWork(game, player)) return false;
+  if (game.combat.awaitingBlockers || game.combat.resolving) return false;
+  const phase = currentPhase(game);
+  const hasTurnAccess = game.activePlayer === player.id && ["preparation", "combat", "regroup"].includes(phase);
+  const hasPriorityAccess = player.id === "human" && isHumanPriorityOpen();
+  if (!hasTurnAccess && !hasPriorityAccess) return false;
+  return getViableActivatedAbilitiesForChampion(player).length > 0;
+}
+
+function canAttachEquipmentFromBattlefield(player, instance) {
+  if (!player || !instance || !isEquipmentInstance(instance)) return false;
+  return player.battlefield.some((target) => (
+    target.uid !== instance.uid && canAttachEquipmentTo(instance, target, player.id, player.id)
+  ));
+}
+
+function canUsePermanentAction(player, instance) {
+  if (!player || !instance) return false;
+  if (canActivateEssenceGenerator(player, instance.uid)) return true;
+  const game = app.game;
+  if (!game || game.status !== "active" || hasBlockingActionSelectionWork(game, player)) return false;
+  if (game.combat.awaitingBlockers || game.combat.resolving) return false;
+  const phase = currentPhase(game);
+  const hasTurnAccess = game.activePlayer === player.id && ["preparation", "combat", "regroup"].includes(phase);
+  const hasPriorityAccess = player.id === "human" && isHumanPriorityOpen();
+  if (!hasTurnAccess && !hasPriorityAccess) return false;
+  if (getViableActivatedAbilitiesForPermanent(player, instance).length) return true;
+  return canAttachEquipmentFromBattlefield(player, instance);
+}
+
+function queueActivatedAbility(stackObject) {
+  const game = app.game;
+  if (!game || !stackObject) return false;
+  const ability = stackObject.ability || app.engine.abilityById.get(stackObject.abilityId);
+  if (ability?.usesStack === false) {
+    void resolveEngineStackObject(game, stackObject).then(() => {
+      if (app.game === game) renderGame();
+    });
+    return true;
+  }
+  game.stack.push(stackObject);
+  addLog(game, `${stackObject.label} foi colocada na pilha.`, "Pilha");
+  emitGameEvent("stack.object_added", { game, stackObject }, { resolveImmediately: true });
+  renderGame();
+  scheduleStackResolution(game);
+  return true;
+}
+
+async function chooseEquipmentAttachmentTarget(player, equipment) {
+  const refs = player.battlefield
+    .filter((target) => canAttachEquipmentTo(equipment, target, player.id, player.id))
+    .map((instance) => ({ playerId: player.id, instance }));
+  if (!refs.length) return null;
+  if (player.id !== "human") return chooseBotEngineTargetRef(refs, "attach");
+  return showEngineTargetChoiceModal({
+    title: "Anexar equipamento",
+    description: `Escolha um Personagem para anexar ${getCardName(app.cardByCode.get(equipment.cardId))}.`,
+    refs,
+    kind: "attach",
+    visualOnly: true,
+    showStats: true,
+    allowCancel: true,
+    autoSelectSingle: false
+  });
+}
+
+async function promptEquipmentAttachmentOnEntry(game, playerId, equipment) {
+  await wait(playerId === "human" ? 240 : 420);
+  if (!app.game || app.game !== game || game.status !== "active") return;
+  const player = getPlayer(game, playerId);
+  const liveEquipment = findBattlefieldInstance(player, equipment?.uid);
+  if (!player || !liveEquipment || !isEquipmentInstance(liveEquipment) || liveEquipment.attachedTo) return;
+  const target = await chooseEquipmentAttachmentTarget(player, liveEquipment);
+  if (!app.game || app.game !== game || game.status !== "active") return;
+  const currentEquipment = findBattlefieldInstance(player, liveEquipment.uid);
+  if (!target || !currentEquipment || currentEquipment.attachedTo) {
+    renderGame();
+    return;
+  }
+  attachEquipmentTo(game, { playerId, instance: currentEquipment }, target);
+  renderGame();
+}
+
+async function applyAttachEquipmentToTarget(playerId, equipmentUid, targetUid) {
+  const game = app.game;
+  const player = getPlayer(game, playerId);
+  if (!player || (!canAct(playerId) && !isHumanPriorityOpen())) return false;
+  const equipment = findBattlefieldInstance(player, equipmentUid);
+  const target = findBattlefieldInstance(player, targetUid);
+  if (!equipment || !target) return false;
+  const attached = attachEquipmentTo(game, { playerId, instance: equipment }, { playerId, instance: target });
+  if (attached) renderGame();
+  return attached;
+}
+
+function showChampionAbilityChoiceModal(player, activations) {
+  const options = (activations || []).filter((activation) => activation?.stackObject);
+  if (!options.length) return Promise.resolve(null);
+  if (options.length === 1) return Promise.resolve(options[0]);
+  return new Promise((resolve) => {
+    let overlay = document.getElementById("zoneModal");
+    if (!overlay) {
+      overlay = document.createElement("div");
+      overlay.id = "zoneModal";
+      overlay.className = "zone-modal";
+      document.body.appendChild(overlay);
+    }
+    const champion = app.cardByCode.get(player.identity.champion);
+    app.pendingEngineChoice = { type: "champion-ability", title: "Habilidade de Campeão" };
+    overlay.className = "zone-modal is-visible";
+    overlay.innerHTML = `
+      <div class="zone-modal-panel zone-modal-panel--engine-choice" role="dialog" aria-modal="true" aria-label="Habilidade de Campeão">
+        <div class="zone-modal-head">
+          <div>
+            <span>Campeão</span>
+            <b>${escapeHtml(getCardName(champion))}</b>
+          </div>
+        </div>
+        <div class="zone-modal-actions zone-modal-actions--choice">
+          ${options.map(({ stackObject }, index) => `
+            <button type="button" data-champion-ability-choice="${index}">
+              <strong>${escapeHtml(stackObject.label)}</strong>
+              <small>${escapeHtml(getStackObjectEffectDescription(stackObject))}</small>
+            </button>
+          `).join("")}
+        </div>
+      </div>
+    `;
+    overlay.querySelectorAll("[data-champion-ability-choice]").forEach((button) => {
+      button.addEventListener("click", () => {
+        overlay.classList.remove("is-visible");
+        app.pendingEngineChoice = null;
+        resolve(options[toNumber(button.dataset.championAbilityChoice, 0)] || null);
+      }, { once: true });
+    });
+  });
+}
+
+async function applyActivatePermanentAction(playerId, uid) {
+  const game = app.game;
+  const player = getPlayer(game, playerId);
+  if (!player) return false;
+  if (canActivateEssenceGenerator(player, uid)) return applyActivateEssenceGenerator(playerId, uid);
+  const instance = findBattlefieldInstance(player, uid);
+  if (!canUsePermanentAction(player, instance)) return false;
+  const activated = getViableActivatedAbilitiesForPermanent(player, instance)[0];
+  if (activated?.stackObject) {
+    return queueActivatedAbility(activated.stackObject);
+  }
+  if (isEquipmentInstance(instance)) {
+    const target = await chooseEquipmentAttachmentTarget(player, instance);
+    if (!target) return false;
+    const attached = attachEquipmentTo(game, { playerId, instance }, target);
+    if (attached) renderGame();
+    return attached;
+  }
+  return false;
+}
+
+async function applyActivateChampionAction(playerId) {
+  const game = app.game;
+  const player = getPlayer(game, playerId);
+  if (!canUseChampionAction(player)) return false;
+  const activations = getViableActivatedAbilitiesForChampion(player);
+  const activated = player.id === "human"
+    ? await showChampionAbilityChoiceModal(player, activations)
+    : activations[0];
+  if (!activated?.stackObject) return false;
+  return queueActivatedAbility(activated.stackObject);
+}
+
+function isBotChampionActivationAcceptable(player, stackObject) {
+  const remainingTerritory = Math.max(0, toNumber(player?.maxTerritory, 0) - toNumber(player?.territoryDamage, 0));
+  const actions = [
+    ...(stackObject?.ability?.costs || []),
+    ...(stackObject?.ability?.actions || [])
+  ];
+  return !actions.some((action) => {
+    if (action?.effect !== "deal_damage") return false;
+    const amount = getActionAmount(action.amount, 0);
+    const refs = getEngineTargetRefs(action.target, stackObject, { ignoreCount: true });
+    return refs.some((ref) => ref.territory && ref.playerId === player.id && amount >= remainingTerritory);
+  });
+}
+
+function activateBotChampionIfUseful(player) {
+  if (!player || player.id !== "bot" || !canUseChampionAction(player)) return false;
+  const activated = getViableActivatedAbilitiesForChampion(player)
+    .find(({ stackObject }) => isBotChampionActivationAcceptable(player, stackObject));
+  if (!activated?.stackObject) return false;
+  return queueActivatedAbility(activated.stackObject);
 }
 
 function isDamagedCharacterInstance(instance) {
@@ -1920,15 +3037,54 @@ function cardHasKeyword(card, keyword) {
     .some((part) => accepted.has(part));
 }
 
+function instanceHasKeyword(instance, keyword) {
+  const card = app.cardByCode.get(instance?.cardId);
+  if (cardHasKeyword(card, keyword)) return true;
+  const normalizedKeyword = normalizeKeywordText(keyword);
+  if (getEquipmentGrantedKeywords(instance).some((granted) => normalizeKeywordText(granted) === normalizedKeyword)) return true;
+  return (app.game?.effects || []).some((effect) =>
+    effect.type === "keyword" &&
+    normalizeKeywordText(effect.keyword) === normalizedKeyword &&
+    effectTargetsInstance(effect, instance)
+  );
+}
+
 function effectTargetsInstance(effect, instance) {
   if (!effect?.target || !instance) return false;
-  return effect.target.uid === instance.uid &&
-    (!effect.target.playerId || effect.target.playerId === instance.owner);
+  if (effect.target.uid !== instance.uid) return false;
+  if (!effect.target.playerId) return true;
+  const controller = getInstanceController(instance);
+  return effect.target.playerId === instance.owner || effect.target.playerId === controller?.id;
+}
+
+function getInstanceController(instance) {
+  if (!instance || !app.game) return null;
+  return getInstanceControllerInGame(app.game, instance.uid);
+}
+
+function getInstanceControllerInGame(game, uid) {
+  if (!game || !uid) return null;
+  return Object.values(game.players).find((player) => player.battlefield.some((item) => item.uid === uid)) || null;
+}
+
+function hasDaviKingStaticBuff(player, instance) {
+  if (!player || !instance) return false;
+  return player.battlefield.some((item) => item.uid !== instance.uid && item.cardId === "FND-PER-002");
+}
+
+function isProtectedFromStackController(instance, playerId, stackObject) {
+  if (!instance || !stackObject?.controllerId || stackObject.controllerId === playerId) return false;
+  return (app.game?.effects || []).some((effect) =>
+    effect.type === "cantBeTargetedByOpponents" &&
+    effectTargetsInstance(effect, { uid: instance.uid, owner: playerId })
+  );
 }
 
 function getCharacterPower(instance) {
   const card = app.cardByCode.get(instance?.cardId);
   let power = toNumber(card?.stats?.attack, 0);
+  if (hasDaviKingStaticBuff(getInstanceController(instance), instance)) power += 1;
+  power += getEquipmentStatBonusForCharacter(instance).power;
   (app.game?.effects || []).forEach((effect) => {
     if (effect.type === "modifyStats" && effectTargetsInstance(effect, instance)) {
       power += toNumber(effect.power, 0);
@@ -1940,6 +3096,8 @@ function getCharacterPower(instance) {
 function getCharacterResistance(instance) {
   const card = app.cardByCode.get(instance?.cardId);
   let resistance = toNumber(card?.stats?.resistance, 0);
+  if (hasDaviKingStaticBuff(getInstanceController(instance), instance)) resistance += 1;
+  resistance += getEquipmentStatBonusForCharacter(instance).resistance;
   (app.game?.effects || []).forEach((effect) => {
     if (effect.type === "setBaseResistance" && effectTargetsInstance(effect, instance)) {
       resistance = toNumber(effect.value, resistance);
@@ -2035,8 +3193,14 @@ function canBlockAttack(defender, blockerUid, attacker, attackerUid) {
   if (!canBlockWithOptions(defender, blockerUid, {
     allowExhausted: targetsDefenderCharacter && hasVirtueLevel(defender, VIRTUE_IDS.charity, 4)
   })) return false;
-  const attackerCard = app.cardByCode.get(attackerInstance.cardId);
-  return !cardHasKeyword(attackerCard, "IMBLOQUEAVEL");
+  return !instanceHasKeyword(attackerInstance, "IMBLOQUEAVEL");
+}
+
+function getMinimumBlockersRequired(attackerInstance) {
+  const card = app.cardByCode.get(attackerInstance?.cardId);
+  const text = normalizeKeywordText(card?.text);
+  if (text.includes("NAO PODE SER BLOQUEADO EXCETO POR DOIS OU MAIS PERSONAGENS")) return 2;
+  return 1;
 }
 
 function formatAttackTarget(target) {
@@ -2056,6 +3220,10 @@ function setAttackTarget(attackerId, attackerUid, target) {
 
 function hasPlayableAlistamento(player) {
   return player.hand.some((cardId) => canPlayCard(player, cardId));
+}
+
+function hasAvailablePermanentAction(player) {
+  return canUseChampionAction(player) || player?.battlefield?.some((instance) => canUsePermanentAction(player, instance)) || false;
 }
 
 function hasPlayableMiracle(player) {
@@ -2079,15 +3247,15 @@ function getHumanAutoPassReason(game) {
   const human = game.players.human;
   const phase = currentPhase(game);
 
-  if (phase === "preparation" && !hasPlayableAlistamento(human)) {
+  if (phase === "preparation" && !hasPlayableAlistamento(human) && !hasAvailablePermanentAction(human)) {
     return "sem jogadas disponiveis no Alistamento";
   }
 
-  if (phase === "combat" && !hasPlayableMiracle(human) && !hasCombatAttack(human)) {
+  if (phase === "combat" && !hasPlayableMiracle(human) && !hasCombatAttack(human) && !hasAvailablePermanentAction(human)) {
     return "sem ataques ou Milagres disponiveis no Combate";
   }
 
-  if (phase === "regroup" && !hasPlayableMiracle(human)) {
+  if (phase === "regroup" && !hasPlayableMiracle(human) && !hasAvailablePermanentAction(human)) {
     return "sem Milagres disponiveis no Reagrupamento";
   }
 
@@ -2180,11 +3348,27 @@ function evaluateAbilityCondition(ability, source, payload = {}) {
     if (payload.cardId && payload.cardId !== source.cardId) return false;
   }
 
+  if (condition.sourceIsNotEventPermanent) {
+    if (payload.instanceUid && payload.instanceUid === source.instanceUid) return false;
+    if (!payload.instanceUid && payload.cardId && payload.cardId === source.cardId) return false;
+  }
+
   if (condition.activePlayer === "controller" && game.activePlayer !== source.controllerId) return false;
   if (condition.activePlayer === "opponent" && game.activePlayer === source.controllerId) return false;
 
+  if (condition.moralRequirement) {
+    const requirement = condition.moralRequirement;
+    const controller = getPlayer(game, source.controllerId);
+    if (!controller || getVirtueValue(controller, requirement.virtueId) < toNumber(requirement.level, 1)) return false;
+  }
+
   if (condition.eventPlayer === "controller" && payload.playerId !== source.controllerId) return false;
   if (condition.eventPlayer === "opponent" && payload.playerId === source.controllerId) return false;
+
+  if (condition.eventCardType) {
+    const eventCard = app.cardByCode.get(payload.cardId);
+    if (!matchesConditionValue(getCardTypeCode(eventCard), condition.eventCardType)) return false;
+  }
 
   if (condition.damageType && !matchesConditionValue(payload.damageType, condition.damageType)) return false;
 
@@ -2227,6 +3411,12 @@ function evaluateAbilityCondition(ability, source, payload = {}) {
   if (condition.attacker === "controller" && payload.attackerId !== source.controllerId) return false;
   if (condition.attacker === "opponent" && payload.attackerId === source.controllerId) return false;
 
+  if (condition.sourceIsEventAttacker) {
+    if (payload.attackerId !== source.controllerId) return false;
+    const isSourceAttacker = (payload.attackers || []).some((attacker) => attacker.uid === source.instanceUid);
+    if (!isSourceAttacker) return false;
+  }
+
   if (condition.attackerCount) {
     if (!evaluateNumericRule((payload.attackers || []).length, condition.attackerCount)) return false;
   }
@@ -2247,12 +3437,30 @@ function evaluateAbilityCondition(ability, source, payload = {}) {
     if (!instance?.exhausted) return false;
   }
 
+  if (condition.sourceEquipped) {
+    const instance = getEngineSourceInstance(source, game);
+    if (!instance || !isCharacterEquipped(instance, game)) return false;
+  }
+
+  if (condition.sourceAttached) {
+    const instance = getEngineSourceInstance(source, game);
+    if (!instance?.attachedTo) return false;
+  }
+
   if (condition.sourceType) {
     const sourceInstance = getEngineSourceInstance(source, game);
     const sourceCard = app.cardByCode.get(payload.source?.cardId || sourceInstance?.cardId || source.cardId);
     const expectedType = condition.sourceType === "character" ? "PER" : condition.sourceType;
     const eventSourceType = payload.source?.type || getCardTypeCode(sourceCard);
     if (eventSourceType !== expectedType) return false;
+  }
+
+  if (condition.sourceSubtype) {
+    const sourceInstance = payload.source?.uid
+      ? findBattlefieldInstance(getPlayer(game, payload.source.playerId), payload.source.uid)
+      : getEngineSourceInstance(source, game);
+    const sourceCard = app.cardByCode.get(payload.source?.cardId || sourceInstance?.cardId || source.cardId);
+    if (!cardHasSubtype(sourceCard, condition.sourceSubtype)) return false;
   }
 
   if (condition.sourcePower) {
@@ -2287,30 +3495,126 @@ function createEngineStackObject(game, trigger, ability, source, payload = {}) {
   };
 }
 
+function getEngineOncePerTurnKey(game, ability, source) {
+  return [
+    game.turnNumber,
+    source.controllerId,
+    source.instanceUid || source.identityKind || source.sourceId,
+    ability.id
+  ].join(":");
+}
+
+function isEngineOncePerTurnConsumed(game, ability, source) {
+  if (!ability?.oncePerTurn) return false;
+  const key = getEngineOncePerTurnKey(game, ability, source);
+  return Boolean(game.engineOncePerTurn?.[key]);
+}
+
+function consumeEngineOncePerTurn(game, ability, source) {
+  if (!ability?.oncePerTurn) return;
+  const key = getEngineOncePerTurnKey(game, ability, source);
+  game.engineOncePerTurn ||= {};
+  game.engineOncePerTurn[key] = true;
+}
+
 function scheduleStackResolution(game) {
   if (!game || game !== app.game || game.stackResolving || !game.stack.length) return;
   if (app.drawAnimationPending || document.getElementById("drawAnimation")?.classList.contains("is-visible")) {
-    window.setTimeout(() => scheduleStackResolution(game), 240);
+    window.setTimeout(() => scheduleStackResolution(game), 320);
     return;
   }
   game.stackResolving = true;
-  window.setTimeout(() => resolveEngineStackLoop(game), 760);
+  window.setTimeout(() => resolveEngineStackLoop(game), 1040);
+}
+
+function requestStackPriorityBeforeResolve(game, stackObject) {
+  return new Promise((resolve) => {
+    if (!game || game !== app.game || game.status !== "active" || !stackObject) {
+      resolve();
+      return;
+    }
+    game.stackPrioritySeq = toNumber(game.stackPrioritySeq, 0) + 1;
+    const label = `Prioridade antes de resolver ${stackObject.label}.`;
+    if (!requestHumanPriority(game, `stack:${stackObject.id}:${game.stackPrioritySeq}`, label, resolve)) {
+      resolve();
+    }
+  });
 }
 
 async function resolveEngineStackLoop(game) {
   while (app.game === game && game.status === "active" && game.stack.length) {
-    const stackObject = game.stack.pop();
+    const stackObject = game.stack[game.stack.length - 1];
+    await requestStackPriorityBeforeResolve(game, stackObject);
+    if (app.game !== game || game.status !== "active") return;
+    const currentTop = game.stack[game.stack.length - 1];
+    if (!currentTop || currentTop.id !== stackObject.id) continue;
+    game.stack.pop();
     renderGame();
-    await wait(560);
+    await wait(860);
     await resolveEngineStackObject(game, stackObject);
     renderGame();
-    await wait(360);
+    await wait(620);
   }
-  if (game) game.stackResolving = false;
+  if (game) {
+    game.stackResolving = false;
+    if (app.game === game && game.status === "active") renderGame();
+  }
+}
+
+async function resolveCardPlayStackObject(game, stackObject) {
+  if (!game || !stackObject?.cardId) return false;
+  const playerId = stackObject.controllerId;
+  const player = getPlayer(game, playerId);
+  const card = app.cardByCode.get(stackObject.cardId);
+  if (!player || !card) return false;
+  const cardId = stackObject.cardId;
+  const typeCode = getCardTypeCode(card);
+  const hasResolvedAbility = hasCardResolutionAbility(cardId, playerId);
+  let enteredPermanent = null;
+
+  if (typeCode === "PER" || typeCode === "ART") {
+    const instance = createCardInstance(cardId, playerId);
+    enteredPermanent = instance;
+    player.battlefield.push(instance);
+    addLog(game, `${getCardName(card)} resolveu e entrou no campo.`, player.label);
+    emitGameEvent("permanent.enters_battlefield", {
+      game,
+      playerId,
+      instanceUid: instance.uid,
+      cardId
+    });
+  } else {
+    player.cemetery.push(cardId);
+    addLog(game, `resolveu ${getCardName(card)}.`, player.label);
+  }
+
+  const resolvedObjects = await resolveImmediateGameEvent("card.resolved", {
+    game,
+    playerId,
+    cardId,
+    stackObjectId: stackObject.id,
+    result: typeCode === "PER" || typeCode === "ART" ? "battlefield" : "cemetery"
+  });
+  if (typeCode !== "PER" && typeCode !== "ART" && !resolvedObjects.length) {
+    if (hasResolvedAbility) {
+      addLog(game, `${getCardName(card)} nao encontrou alvos ou condicoes validas para resolver.`, player.label);
+    } else {
+      resolveSimpleSpell(playerId, card);
+    }
+  }
+  applyCardMoralAfterEngineResolution(game, playerId, card);
+  checkGameEnd(game);
+  if (enteredPermanent && isEquipmentInstance(enteredPermanent)) {
+    void promptEquipmentAttachmentOnEntry(game, playerId, enteredPermanent);
+  }
+  return true;
 }
 
 async function resolveEngineStackObject(game, stackObject) {
   if (!game || !stackObject) return false;
+  if (stackObject.type === "play") {
+    return resolveCardPlayStackObject(game, stackObject);
+  }
   const ability = stackObject.ability || app.engine.abilityById.get(stackObject.abilityId);
   if (!ability) return false;
 
@@ -2419,11 +3723,31 @@ function describeEngineAction(action) {
   if (action.effect === "pulverize") return `Pulverize ${amount} carta${amount === "1" ? "" : "s"}.`;
   if (action.effect === "tap_essence") return `Desative ${amount} Essencia${amount === "1" ? "" : "s"}.`;
   if (action.effect === "untap_essence") return `Ative ${amount} Essencia${amount === "1" ? "" : "s"}.`;
+  if (action.effect === "generate_essence") return `Gere ${amount} {E}.`;
+  if (action.effect === "counter_stack_object") {
+    return action.target?.objectType === "play"
+      ? "Anule uma jogada alvo na pilha."
+      : "Anule uma jogada ou habilidade na pilha.";
+  }
+  if (action.effect === "reduce_next_cost") return `A próxima carta custa ${amount} Essência${amount === "1" ? "" : "s"} a menos.`;
+  if (action.effect === "cover_champion") return "Encubra seu Campeao como custo desta habilidade.";
   if (action.effect === "discard_cards") return `Descarte ${amount} carta${amount === "1" ? "" : "s"}.`;
   if (action.effect === "create_token") return `Crie ${amount || "1"} ficha${amount === "1" ? "" : "s"}.`;
+  if (action.effect === "return_permanent_to_hand") return "Retorne um permanente para a mao de seu dono.";
+  if (action.effect === "move_cemetery_card_to_hand") return "Retorne uma carta do cemiterio para a mao.";
+  if (action.effect === "search_library_to_top") return "Busque uma carta no baralho e coloque-a no topo.";
+  if (action.effect === "search_library_or_reserve_to_hand") return "Busque uma carta no baralho ou na Reserva e coloque-a na mao.";
+  if (action.effect === "top_cards_to_hand_bottom") return "Olhe cartas do topo, coloque uma na mao e o restante no fundo.";
+  if (action.effect === "top_lowest_type_to_hand_bottom") return "Revele cartas do topo, coloque uma carta de menor custo do tipo indicado na mão e o restante no fundo.";
+  if (action.effect === "reorder_top_cards") return "Reordene cartas do topo do baralho.";
+  if (action.effect === "renounce_permanent") return "Renuncie um permanente.";
+  if (action.effect === "grant_keyword") return `Conceda ${escapeHtml(action.keyword || "palavra-chave")} ate o Reagrupamento.`;
+  if (action.effect === "protect_from_opponents") return "O alvo nao pode ser alvo de jogadas ou habilidades dos oponentes neste turno.";
+  if (action.effect === "prevent_damage_to_character") return "Previna todo o dano que seria causado a um Personagem neste turno.";
   if (action.effect === "heal_territory") return `Cure ${amount} de dano do Territorio.`;
   if (action.effect === "heal_character") return `Cure ${amount} de dano de um Personagem.`;
   if (action.effect === "deal_damage") return `Cause ${amount} de dano.`;
+  if (action.effect === "modify_damage_amount") return `Modifique o dano atual em ${formatSignedStat(action.amount)}.`;
   if (action.effect === "distribute_healing") return `Distribua ${amount} de cura entre alvos validos.`;
   if (action.effect === "distribute_damage") return `Distribua ${amount} de dano entre alvos validos.`;
   if (action.effect === "modify_power_resistance") {
@@ -2431,6 +3755,10 @@ function describeEngineAction(action) {
   }
   if (action.effect === "set_base_resistance") return `Altere a resistencia base para ${describeEngineAmount(action.value, "X")}.`;
   if (action.effect === "adjust_moral") return "Ajuste uma virtude ou desvirtude.";
+  if (action.effect === "adjust_moral_choice") return "Escolha uma Virtude ou Desvirtude para ajustar.";
+  if (action.effect === "adjust_moral_flexible") return "Escolha uma característica para receber +1 ou -1.";
+  if (action.effect === "fight") return "Dois Personagens lutam entre si.";
+  if (action.effect === "reveal_lower_cost_character_from_hand_then_heal") return "Revele um Personagem de custo menor da mão e cure seu Território.";
   if (action.effect === "create_temp_effect") {
     const temp = action.temporaryEffect || {};
     if (temp.action === "modify_event_amount") {
@@ -2467,10 +3795,8 @@ function showEngineChoiceModal({ title, description, confirmText, cancelText, ef
         <div class="zone-modal-head">
           <div>
             <span>Pilha</span>
-            <strong>${escapeHtml(title)}</strong>
           </div>
         </div>
-        <p class="zone-modal-description">${escapeHtml(description)}</p>
         ${(effectText || sourceLabel) ? `
           <div class="engine-choice-source">
             ${sourceIcon ? `<img src="${escapeHtml(sourceIcon)}" alt="${escapeHtml(sourceLabel || title)}" draggable="false" />` : ""}
@@ -2515,7 +3841,7 @@ function showEngineHandChoiceModal(player, amount, { title, description, confirm
           <div class="zone-modal-head">
             <div>
               <span>Escolha</span>
-              <strong>${escapeHtml(title)}</strong>
+              <b>${escapeHtml(title)}</b>
             </div>
           </div>
           <p class="zone-modal-description">${escapeHtml(description)}</p>
@@ -2559,7 +3885,67 @@ function showEngineHandChoiceModal(player, amount, { title, description, confirm
   });
 }
 
-function showEngineDeckReviewModal(player, cardIds, { title, description, maxCemetery = 0 }) {
+function showEngineSingleCardChoiceModal({ title, description, entries, confirmText = "Escolher" }) {
+  const availableEntries = (entries || []).filter((entry) => entry?.cardId && app.cardByCode.has(entry.cardId));
+  if (!availableEntries.length) return Promise.resolve(null);
+  if (availableEntries.length === 1) return Promise.resolve(availableEntries[0]);
+  return new Promise((resolve) => {
+    let overlay = document.getElementById("zoneModal");
+    if (!overlay) {
+      overlay = document.createElement("div");
+      overlay.id = "zoneModal";
+      overlay.className = "zone-modal";
+      document.body.appendChild(overlay);
+    }
+    app.pendingEngineChoice = { type: "single-card", title };
+    let selectedIndex = -1;
+    const render = () => {
+      overlay.className = "zone-modal is-visible";
+      overlay.innerHTML = `
+        <div class="zone-modal-panel zone-modal-panel--engine-card-choice" role="dialog" aria-modal="true" aria-label="${escapeHtml(title)}">
+          <div class="zone-modal-head">
+            <div>
+              <span>Escolha</span>
+              <b>${escapeHtml(title)}</b>
+            </div>
+          </div>
+          <p class="zone-modal-description">${escapeHtml(description)}</p>
+          <div class="zone-modal-grid engine-card-choice-grid">
+            ${availableEntries.map((entry, index) => {
+              const card = app.cardByCode.get(entry.cardId);
+              return `
+                <button class="zone-modal-card engine-card-choice ${selectedIndex === index ? "is-selected" : ""}" type="button" data-engine-single-card-choice="${index}">
+                  <img src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" draggable="false" />
+                  ${entry.meta ? `<small>${escapeHtml(entry.meta)}</small>` : ""}
+                </button>
+              `;
+            }).join("")}
+          </div>
+          <div class="zone-modal-actions">
+            <button type="button" class="primary-action" data-engine-single-card-confirm ${selectedIndex >= 0 ? "" : "disabled"}>
+              ${escapeHtml(confirmText)}
+            </button>
+          </div>
+        </div>
+      `;
+      overlay.querySelectorAll("[data-engine-single-card-choice]").forEach((button) => {
+        button.addEventListener("click", () => {
+          selectedIndex = toNumber(button.dataset.engineSingleCardChoice, -1);
+          render();
+        }, { once: true });
+      });
+      overlay.querySelector("[data-engine-single-card-confirm]")?.addEventListener("click", () => {
+        if (selectedIndex < 0) return;
+        overlay.classList.remove("is-visible");
+        app.pendingEngineChoice = null;
+        resolve(availableEntries[selectedIndex] || null);
+      }, { once: true });
+    };
+    render();
+  });
+}
+
+function showEngineDeckReviewModal(player, cardIds, { title, description, maxCemetery = 0, allowBottom = true }) {
   if (!Array.isArray(cardIds) || !cardIds.length) return Promise.resolve(null);
   return new Promise((resolve) => {
     let overlay = document.getElementById("zoneModal");
@@ -2589,11 +3975,19 @@ function showEngineDeckReviewModal(player, cardIds, { title, description, maxCem
       removeIndex(state.cemetery, index);
     };
 
-    const moveTo = (index, target) => {
+    const moveTo = (index, target, beforeIndex = -1) => {
+      if (target === "bottom" && !allowBottom) return;
       if (target === "cemetery" && maxCemetery <= 0) return;
       if (target === "cemetery" && !state.cemetery.includes(index) && state.cemetery.length >= maxCemetery) return;
+      if (index === beforeIndex) return;
       removeEverywhere(index);
-      state[target].push(index);
+      const collection = state[target];
+      const beforePosition = collection.indexOf(beforeIndex);
+      if (beforePosition >= 0) {
+        collection.splice(beforePosition, 0, index);
+      } else {
+        collection.push(index);
+      }
       state.selectedIndex = -1;
       render();
     };
@@ -2629,14 +4023,11 @@ function showEngineDeckReviewModal(player, cardIds, { title, description, maxCem
                   class="engine-review-card ${state.selectedIndex === index ? "is-selected" : ""}"
                   draggable="true"
                   data-engine-review-card="${index}"
+                  data-engine-review-card-zone="${target}"
+                  data-zoom-card="${escapeHtml(cardId)}"
                   title="${escapeHtml(getCardName(card))}"
                 >
-                  <img src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" draggable="false" />
-                  <strong>${escapeHtml(getCardName(card))}</strong>
-                  <div class="engine-review-card-order">
-                    <button type="button" data-engine-review-order="${index}" data-engine-review-pile="${target}" data-engine-review-shift="-1" ${position === 0 ? "disabled" : ""}>↑</button>
-                    <button type="button" data-engine-review-order="${index}" data-engine-review-pile="${target}" data-engine-review-shift="1" ${position === indexes.length - 1 ? "disabled" : ""}>↓</button>
-                  </div>
+                  <img src="${escapeHtml(getCardArt(card))}" alt="${escapeHtml(getCardName(card))}" draggable="false" />
                 </article>
               `;
             }).join("") : `<p>${emptyLabel}</p>`}
@@ -2652,13 +4043,13 @@ function showEngineDeckReviewModal(player, cardIds, { title, description, maxCem
           <div class="zone-modal-head">
             <div>
               <span>Revisar topo</span>
-              <strong>${escapeHtml(title)}</strong>
+              <b>${escapeHtml(title)}</b>
             </div>
           </div>
           <p class="zone-modal-description">${escapeHtml(description)}</p>
           <div class="engine-review-grid">
             ${renderPile("top", "Topo do baralho")}
-            ${renderPile("bottom", "Fundo do baralho")}
+            ${allowBottom ? renderPile("bottom", "Fundo do baralho") : ""}
             ${maxCemetery > 0 ? renderPile("cemetery", `Cemiterio (${state.cemetery.length}/${maxCemetery})`) : ""}
           </div>
           <div class="zone-modal-actions zone-modal-actions--engine-review">
@@ -2683,6 +4074,25 @@ function showEngineDeckReviewModal(player, cardIds, { title, description, maxCem
         cardNode.addEventListener("dragend", () => {
           overlay.classList.remove("is-engine-review-dragging");
         }, { once: true });
+        cardNode.addEventListener("dragover", (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          cardNode.classList.add("is-drop-before");
+        });
+        cardNode.addEventListener("dragleave", () => {
+          cardNode.classList.remove("is-drop-before");
+        });
+        cardNode.addEventListener("drop", (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          cardNode.classList.remove("is-drop-before");
+          overlay.classList.remove("is-engine-review-dragging");
+          const index = toNumber(event.dataTransfer?.getData("text/plain"), -1);
+          const beforeIndex = toNumber(cardNode.dataset.engineReviewCard, -1);
+          const target = cardNode.dataset.engineReviewCardZone || "top";
+          if (index < 0 || beforeIndex < 0) return;
+          moveTo(index, target, beforeIndex);
+        });
       });
 
       overlay.querySelectorAll("[data-engine-review-target]").forEach((button) => {
@@ -2699,6 +4109,16 @@ function showEngineDeckReviewModal(player, cardIds, { title, description, maxCem
             button.dataset.engineReviewPile,
             toNumber(button.dataset.engineReviewOrder, 0),
             toNumber(button.dataset.engineReviewShift, 0)
+          );
+        }, { once: true });
+      });
+
+      overlay.querySelectorAll("[data-engine-review-move]").forEach((button) => {
+        button.addEventListener("click", (event) => {
+          event.stopPropagation();
+          moveTo(
+            toNumber(button.dataset.engineReviewMove, -1),
+            button.dataset.engineReviewMoveTarget
           );
         }, { once: true });
       });
@@ -2754,7 +4174,7 @@ function showEngineAmountChoiceModal({ title, description, min, max, confirmPref
         <div class="zone-modal-head">
           <div>
             <span>Escolha</span>
-            <strong>${escapeHtml(title)}</strong>
+            <b>${escapeHtml(title)}</b>
           </div>
         </div>
         <p class="zone-modal-description">${escapeHtml(description)}</p>
@@ -2882,6 +4302,47 @@ function chooseBotEngineTargetRef(refs, kind = "target") {
   return sorted[0] || null;
 }
 
+function chooseBotEngineTargetRefForStack(stackObject, refs, kind = "target") {
+  if (!refs.length) return null;
+  const controllerId = stackObject?.controllerId || "";
+  const opponentId = controllerId ? getOpponentId(controllerId) : "";
+  const scored = refs.map((ref) => {
+    let score = 0;
+    if (kind === "damage") {
+      if (ref.playerId === opponentId) score += 100;
+      if (!ref.territory) score += 20;
+      score += getCharacterPower(ref.instance) * 2;
+      score -= getLethalDamageNeeded(ref.instance);
+    } else if (kind === "buff") {
+      if (ref.playerId === controllerId) score += 100;
+      if (ref.territory) score -= 50;
+      score += getCharacterPower(ref.instance) + getCharacterResistance(ref.instance);
+    } else if (kind === "heal") {
+      if (ref.playerId === controllerId) score += 100;
+      score += getEngineHealingCapacity(ref) * 4;
+      if (ref.territory) score += 10;
+    } else if (kind === "self-damage") {
+      if (ref.playerId === controllerId) score += 100;
+      score -= getEngineDamageCapacity(ref, 99);
+    } else if (kind === "bounce" || kind === "destroy") {
+      if (ref.playerId === opponentId) score += 100;
+      if (ref.playerId === controllerId) score -= 80;
+      score += getCharacterPower(ref.instance) + getCharacterResistance(ref.instance);
+    } else if (kind === "control") {
+      if (ref.playerId === opponentId) score += 120;
+      if (ref.playerId === controllerId) score -= 100;
+      score += getCharacterPower(ref.instance) * 2 + getCharacterResistance(ref.instance);
+      if (ref.instance?.exhausted) score -= 2;
+    } else if (kind === "renounce") {
+      if (ref.playerId === controllerId) score += 20;
+      score -= getCharacterPower(ref.instance) + getCharacterResistance(ref.instance);
+    }
+    return { ref, score };
+  });
+  scored.sort((left, right) => right.score - left.score);
+  return scored[0]?.ref || chooseBotEngineTargetRef(refs, kind);
+}
+
 function scoreBotDeckReviewCard(player, cardId) {
   const card = app.cardByCode.get(cardId);
   if (!card) return -999;
@@ -2931,6 +4392,61 @@ function applyDeckReviewDecision(player, decision = {}) {
   return { reviewedCount, top, bottom, cemetery };
 }
 
+function getFilteredDeckEntries(player, filter = {}) {
+  return (player?.deck || [])
+    .map((cardId, index) => ({ cardId, index, zone: "deck" }))
+    .filter((entry) => cardMatchesTypeFilter(app.cardByCode.get(entry.cardId), filter));
+}
+
+function getFilteredReserveEntries(player, filter = {}) {
+  return (player?.reserve || [])
+    .map((cardId, index) => ({ cardId, index, zone: "reserve" }))
+    .filter((entry) => cardMatchesTypeFilter(app.cardByCode.get(entry.cardId), filter));
+}
+
+function getFilteredCemeteryEntries(player, filter = {}) {
+  return (player?.cemetery || [])
+    .map((cardId, index) => ({ cardId, index, zone: "cemetery" }))
+    .filter((entry) => {
+      const card = app.cardByCode.get(entry.cardId);
+      return card && !card.token && cardMatchesTypeFilter(card, filter);
+    });
+}
+
+function chooseBotCardEntry(entries, player) {
+  return [...entries]
+    .sort((left, right) => scoreBotDeckReviewCard(player, right.cardId) - scoreBotDeckReviewCard(player, left.cardId))[0] || null;
+}
+
+function removeBattlefieldCardToZone(game, playerId, instance, destination) {
+  const controller = getPlayer(game, playerId);
+  if (!controller || !instance) return false;
+  cleanupAttachmentsForLeaving(game, instance.uid);
+  controller.battlefield = controller.battlefield.filter((item) => item.uid !== instance.uid);
+  const card = app.cardByCode.get(instance.cardId);
+  const owner = getPlayer(game, instance.owner) || controller;
+  const isToken = Boolean(instance.token || card?.token);
+  const finalDestination = isToken ? "void" : destination;
+  if (!isToken && destination === "hand") owner.hand.push(instance.cardId);
+  if (!isToken && destination === "cemetery") owner.cemetery.push(instance.cardId);
+  emitGameEvent("permanent.leaves_battlefield", {
+    game,
+    playerId,
+    instanceUid: instance.uid,
+    cardId: instance.cardId,
+    destination: finalDestination
+  });
+  if (destination === "cemetery") {
+    emitGameEvent("permanent.dies", {
+      game,
+      playerId,
+      instanceUid: instance.uid,
+      cardId: instance.cardId
+    });
+  }
+  return true;
+}
+
 function isEngineActionViable(action, stackObject) {
   if (!action) return false;
   const game = stackObject?.payload?.game || app.game;
@@ -2949,10 +4465,76 @@ function isEngineActionViable(action, stackObject) {
     return getEngineTargetRefs(action.target, stackObject, { ignoreCount: true }).length > 0;
   }
 
+  if (action.effect === "cover_champion") {
+    const player = getPlayer(game, getStackPlayerId(action.player || "controller", stackObject));
+    return Boolean(player && !player.championCovered);
+  }
+
+  if (action.effect === "counter_stack_object") {
+    return getEngineStackTargetRefs(action.target || { zone: "stack", controller: "all" }, stackObject, { ignoreCount: true }).length > 0;
+  }
+
+  if (action.effect === "destroy_permanent") {
+    return getEngineTargetRefs(action.target, stackObject, { ignoreCount: true }).length > 0;
+  }
+
+  if (action.effect === "attach_equipment") {
+    const equipmentRefs = getEngineTargetRefs(action.equipment || "source", stackObject, { ignoreCount: true });
+    const targetRefs = getEngineTargetRefs(action.target, stackObject, { ignoreCount: true });
+    return equipmentRefs.some((equipmentRef) =>
+      targetRefs.some((targetRef) => canAttachEquipmentTo(equipmentRef.instance, targetRef.instance, equipmentRef.playerId, targetRef.playerId))
+    );
+  }
+
+  if (action.effect === "detach_equipment") {
+    return getEngineTargetRefs(action.equipment || action.target || "source", stackObject, { ignoreCount: true })
+      .some((ref) => ref.instance?.attachedTo);
+  }
+
+  if (action.effect === "destroy_if_power_gte_else_damage") {
+    return getEngineTargetRefs(action.target, stackObject, { ignoreCount: true }).length > 0;
+  }
+
+  if (action.effect === "adjust_moral_choice") {
+    const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
+    const maxBefore = Number.isFinite(action.maxBefore) ? action.maxBefore : Infinity;
+    const minBefore = Number.isFinite(action.minBefore) ? action.minBefore : -Infinity;
+    const polarities = action.polarity === "all" ? ["virtue", "vice"] : [action.polarity || "virtue"];
+    return Boolean(player) && app.virtues.some((virtue) => (
+      polarities.includes(virtue.polarity) &&
+      getVirtueValue(player, virtue.id) < maxBefore &&
+      getVirtueValue(player, virtue.id) >= minBefore
+    ));
+  }
+
+  if (action.effect === "adjust_moral_flexible") {
+    const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
+    return Boolean(player) && getFlexibleMoralChoices(player, getActionAmount(action.amount, 1)).length > 0;
+  }
+
+  if (action.effect === "tap" || action.effect === "untap") {
+    return getEngineTargetRefs(action.target, stackObject, { ignoreCount: true })
+      .some((ref) => Boolean(ref.instance) && Boolean(ref.instance.exhausted) !== (action.effect === "tap"));
+  }
+
+  if (["return_permanent_to_hand", "gain_control", "grant_keyword", "protect_from_opponents", "prevent_damage_to_character"].includes(action.effect)) {
+    return getEngineTargetRefs(action.target, stackObject, { ignoreCount: true }).length > 0;
+  }
+
+  if (action.effect === "renounce_permanent") {
+    const players = action.player === "all"
+      ? Object.values(game.players)
+      : [getPlayer(game, getStackPlayerId(action.player, stackObject))].filter(Boolean);
+    return players.some((player) => player.battlefield.some((instance) => {
+      const card = app.cardByCode.get(instance.cardId);
+      return cardMatchesTypeFilter(card, action.filter || action.target || {});
+    }));
+  }
+
   if (action.effect === "tap_essence") {
     const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
     const amount = getActionAmount(action.amount, 0);
-    const available = getAvailableEssence(player);
+    const available = getReadyEssenceCount(player);
     return action.upTo ? Boolean(player) : available >= amount;
   }
 
@@ -2961,10 +4543,22 @@ function isEngineActionViable(action, stackObject) {
     return toNumber(player?.spentEssence, 0) > 0;
   }
 
+  if (action.effect === "generate_essence") {
+    const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
+    return Boolean(player) && getActionAmount(action.amount, 0) > 0;
+  }
+
   if (action.effect === "discard_cards") {
     const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
     const amount = getActionAmount(action.amount, 0);
-    return amount > 0 && (player?.hand?.length || 0) >= amount;
+    const handSize = player?.hand?.length || 0;
+    return Boolean(player) && amount > 0 && (action.upTo ? true : handSize >= amount);
+  }
+
+  if (action.effect === "put_cards_from_hand_on_bottom" || action.effect === "put_cards_from_hand_on_top") {
+    const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
+    const amount = getActionAmount(action.amount, 0);
+    return Boolean(player) && amount > 0 && (action.upTo ? player.hand.length > 0 : player.hand.length >= amount);
   }
 
   if (action.effect === "create_token") {
@@ -2995,6 +4589,55 @@ function isEngineActionViable(action, stackObject) {
     return Boolean(player?.deck?.length);
   }
 
+  if (action.effect === "reorder_top_cards") {
+    const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
+    return Boolean(player?.deck?.length);
+  }
+
+  if (action.effect === "top_cards_to_hand_bottom") {
+    const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
+    return Boolean(player?.deck?.length);
+  }
+
+  if (action.effect === "top_lowest_type_to_hand_bottom") {
+    const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
+    return Boolean(player?.deck?.length);
+  }
+
+  if (action.effect === "fight") {
+    const leftRefs = getEngineTargetRefs(action.sourceTarget || action.left || action.target, stackObject, { ignoreCount: true });
+    const rightRefs = getEngineTargetRefs(action.target || action.right, stackObject, { ignoreCount: true });
+    return leftRefs.some((left) => rightRefs.some((right) => left.instance && right.instance && left.instance.uid !== right.instance.uid));
+  }
+
+  if (action.effect === "reveal_lower_cost_character_from_hand_then_heal") {
+    const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
+    if (!player) return false;
+    const maxControlledCost = player.battlefield
+      .filter((instance) => getCardTypeCode(app.cardByCode.get(instance.cardId)) === "PER")
+      .reduce((max, instance) => Math.max(max, getCost(app.cardByCode.get(instance.cardId))), -Infinity);
+    return Number.isFinite(maxControlledCost) && player.hand.some((cardId) => {
+      const card = app.cardByCode.get(cardId);
+      return getCardTypeCode(card) === "PER" && getCost(card) < maxControlledCost;
+    });
+  }
+
+  if (action.effect === "move_cemetery_card_to_hand") {
+    const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
+    return getFilteredCemeteryEntries(player, action.filter || {}).length > 0;
+  }
+
+  if (action.effect === "search_library_to_top") {
+    const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
+    return getFilteredDeckEntries(player, action.filter || {}).length > 0;
+  }
+
+  if (action.effect === "search_library_or_reserve_to_hand") {
+    const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
+    return getFilteredDeckEntries(player, action.filter || {}).length > 0 ||
+      getFilteredReserveEntries(player, action.filter || {}).length > 0;
+  }
+
   if (action.effect === "choose_effect_bundle") {
     return (action.choices || []).some((choice) => isEngineChoiceValid(choice, stackObject));
   }
@@ -3008,18 +4651,59 @@ function isEngineStackObjectViable(stackObject) {
   if (costs.some((cost) => !isEngineActionViable(cost, stackObject))) return false;
   const actions = ability?.actions || [];
   if (!actions.length) return true;
-  return actions.some((action) => isEngineActionViable(action, stackObject));
+  const actionResults = actions.map((action) => isEngineActionViable(action, stackObject));
+  return ability?.requiresAllActions ? actionResults.every(Boolean) : actionResults.some(Boolean);
 }
 
 function isEngineChoiceValid(choice, stackObject) {
+  const costs = Array.isArray(choice?.costs) ? choice.costs : [];
   const actions = Array.isArray(choice?.actions) ? choice.actions : [];
+  if (costs.some((cost) => !isEngineActionViable(cost, stackObject))) return false;
   if (!actions.length) return false;
   return actions.some((action) => isEngineActionViable(action, stackObject));
 }
 
-function showEngineTargetChoiceModal({ title, description, refs, kind = "target" }) {
+function renderEngineTargetChoiceVisual(ref, kind, { visualOnly = false, showStats = false } = {}) {
+  const card = getEngineRefCard(ref);
+  if (!card) return "";
+  const instance = ref?.instance || null;
+  const isCharacter = instance && getCardTypeCode(card) === "PER";
+  const damage = toNumber(instance?.damage, 0);
+  const statModifier = isCharacter ? getCharacterStatModifier(instance) : null;
+  const equipment = isCharacter ? getAttachedEquipmentInstances(instance) : [];
+  return `
+    <span class="engine-target-choice-art ${isCharacter ? "is-character" : ""}">
+      <img src="${escapeHtml(getCardArt(card))}" alt="${escapeHtml(getEngineRefLabel(ref))}" draggable="false" />
+      ${showStats && isCharacter ? `<strong class="engine-target-choice-stats ${statModifier ? `is-${statModifier.tone}` : ""}">${getCharacterPower(instance)}/${getCharacterResistance(instance)}</strong>` : ""}
+      ${showStats && isCharacter && damage > 0 ? `<em class="engine-target-choice-damage">${damage}</em>` : ""}
+      ${showStats && equipment.length ? `
+        <span class="engine-target-choice-equipment" aria-label="Equipamentos anexados">
+          ${equipment.map(({ instance: equipmentInstance }) => {
+            const equipmentCard = app.cardByCode.get(equipmentInstance.cardId);
+            return `<img src="${escapeHtml(getCardArt(equipmentCard))}" alt="${escapeHtml(getCardName(equipmentCard))}" draggable="false" />`;
+          }).join("")}
+        </span>
+      ` : ""}
+    </span>
+    ${visualOnly ? "" : `
+      <strong>${escapeHtml(getEngineRefLabel(ref))}</strong>
+      <small>${escapeHtml(getEngineRefMeta(ref, kind))}</small>
+    `}
+  `;
+}
+
+function showEngineTargetChoiceModal({
+  title,
+  description,
+  refs,
+  kind = "target",
+  visualOnly = false,
+  showStats = false,
+  allowCancel = false,
+  autoSelectSingle = true
+}) {
   if (!refs.length) return Promise.resolve(null);
-  if (refs.length === 1) return Promise.resolve(refs[0]);
+  if (refs.length === 1 && autoSelectSingle && !allowCancel) return Promise.resolve(refs[0]);
   return new Promise((resolve) => {
     let overlay = document.getElementById("zoneModal");
     if (!overlay) {
@@ -3031,26 +4715,28 @@ function showEngineTargetChoiceModal({ title, description, refs, kind = "target"
     app.pendingEngineChoice = { type: "target", title };
     overlay.className = "zone-modal is-visible";
     overlay.innerHTML = `
-      <div class="zone-modal-panel zone-modal-panel--engine-target-choice" role="dialog" aria-modal="true" aria-label="${escapeHtml(title)}">
+      <div class="zone-modal-panel zone-modal-panel--engine-target-choice ${visualOnly ? "is-visual-only" : ""}" role="dialog" aria-modal="true" aria-label="${escapeHtml(title)}">
         <div class="zone-modal-head">
           <div>
             <span>Escolha</span>
-            <strong>${escapeHtml(title)}</strong>
+            <b>${escapeHtml(title)}</b>
           </div>
         </div>
         <p class="zone-modal-description">${escapeHtml(description)}</p>
         <div class="zone-modal-grid engine-target-choice-grid">
           ${refs.map((ref, index) => {
-            const card = getEngineRefCard(ref);
             return `
               <button class="zone-modal-card engine-target-choice-card" type="button" data-engine-target-choice="${index}">
-                <img src="${escapeHtml(getCardArt(card))}" alt="${escapeHtml(getEngineRefLabel(ref))}" draggable="false" />
-                <strong>${escapeHtml(getEngineRefLabel(ref))}</strong>
-                <small>${escapeHtml(getEngineRefMeta(ref, kind))}</small>
+                ${renderEngineTargetChoiceVisual(ref, kind, { visualOnly, showStats })}
               </button>
             `;
           }).join("")}
         </div>
+        ${allowCancel ? `
+          <div class="zone-modal-actions zone-modal-actions--target-choice">
+            <button type="button" data-engine-target-cancel>Nao anexar</button>
+          </div>
+        ` : ""}
       </div>
     `;
     overlay.querySelectorAll("[data-engine-target-choice]").forEach((button) => {
@@ -3060,31 +4746,190 @@ function showEngineTargetChoiceModal({ title, description, refs, kind = "target"
         resolve(refs[toNumber(button.dataset.engineTargetChoice, 0)] || null);
       }, { once: true });
     });
+    overlay.querySelector("[data-engine-target-cancel]")?.addEventListener("click", () => {
+      overlay.classList.remove("is-visible");
+      app.pendingEngineChoice = null;
+      resolve(null);
+    }, { once: true });
   });
+}
+
+function getEngineStackTargetRefs(targetSpec = {}, stackObject, options = {}) {
+  const game = stackObject?.payload?.game || app.game;
+  if (!game?.stack?.length) return [];
+  const controller = targetSpec.controller || "all";
+  const objectTypes = targetSpec.objectType || targetSpec.objectTypes;
+  const allowedTypes = objectTypes
+    ? (Array.isArray(objectTypes) ? objectTypes : [objectTypes]).map(String)
+    : [];
+  let refs = game.stack
+    .map((item, index) => ({ stackObject: item, stackIndex: index }))
+    .filter((ref) => ref.stackObject?.id !== stackObject?.id);
+  if (allowedTypes.length) {
+    refs = refs.filter((ref) => allowedTypes.includes(String(ref.stackObject.type || "ability")));
+  }
+  if (controller === "controller") {
+    refs = refs.filter((ref) => ref.stackObject.controllerId === stackObject.controllerId);
+  } else if (controller === "opponent") {
+    refs = refs.filter((ref) => ref.stackObject.controllerId !== stackObject.controllerId);
+  }
+  if (targetSpec.excludeSourceCard) {
+    refs = refs.filter((ref) => ref.stackObject.cardId !== stackObject.cardId);
+  }
+  if (options.ignoreCount) return refs;
+  return targetSpec.count === "all" ? refs : refs.slice(0, toNumber(targetSpec.count, 1));
+}
+
+function showEngineStackChoiceModal({ title, description, refs }) {
+  if (!refs.length) return Promise.resolve(null);
+  if (refs.length === 1) return Promise.resolve(refs[0]);
+  return new Promise((resolve) => {
+    let overlay = document.getElementById("zoneModal");
+    if (!overlay) {
+      overlay = document.createElement("div");
+      overlay.id = "zoneModal";
+      overlay.className = "zone-modal";
+      document.body.appendChild(overlay);
+    }
+    app.pendingEngineChoice = { type: "stack-target", title };
+    overlay.className = "zone-modal is-visible";
+    overlay.innerHTML = `
+      <div class="zone-modal-panel zone-modal-panel--engine-stack-choice" role="dialog" aria-modal="true" aria-label="${escapeHtml(title)}">
+        <div class="zone-modal-head">
+          <div>
+            <span>Escolha</span>
+            <b>${escapeHtml(title)}</b>
+          </div>
+        </div>
+        <p class="zone-modal-description">${escapeHtml(description)}</p>
+        <div class="engine-stack-choice-list">
+          ${refs.map((ref, index) => {
+            const item = ref.stackObject;
+            const controller = getPlayer(app.game, item.controllerId);
+            const icon = getStackObjectSourceIcon(item);
+            return `
+              <button type="button" class="engine-stack-choice-card" data-engine-stack-target="${index}">
+                ${icon ? `<img src="${escapeHtml(icon)}" alt="" draggable="false" />` : ""}
+                <span>
+                  <strong>${escapeHtml(item.label || "Objeto na pilha")}</strong>
+                  <small>${escapeHtml(controller?.label || item.controllerId || "Controlador")}</small>
+                </span>
+              </button>
+            `;
+          }).join("")}
+        </div>
+      </div>
+    `;
+    overlay.querySelectorAll("[data-engine-stack-target]").forEach((button) => {
+      button.addEventListener("click", () => {
+        overlay.classList.remove("is-visible");
+        app.pendingEngineChoice = null;
+        resolve(refs[toNumber(button.dataset.engineStackTarget, 0)] || null);
+      }, { once: true });
+    });
+  });
+}
+
+function chooseBotStackTargetRef(refs, controllerId) {
+  return [...refs].sort((left, right) => {
+    const leftOwn = left.stackObject.controllerId === controllerId ? 1 : 0;
+    const rightOwn = right.stackObject.controllerId === controllerId ? 1 : 0;
+    if (leftOwn !== rightOwn) return leftOwn - rightOwn;
+    return right.stackIndex - left.stackIndex;
+  })[0] || null;
+}
+
+async function chooseEngineStackTargetRef(action, stackObject) {
+  const refs = getEngineStackTargetRefs(action.target || { zone: "stack", controller: "all" }, stackObject, {
+    ignoreCount: Boolean(action.target?.choice)
+  });
+  if (!refs.length) return null;
+  if (stackObject.controllerId !== "human") return chooseBotStackTargetRef(refs, stackObject.controllerId);
+  return showEngineStackChoiceModal({
+    title: stackObject.label,
+    description: localize(action.description) || "Escolha um objeto na pilha para anular.",
+    refs
+  });
+}
+
+function playerControlsSubtype(player, subtype) {
+  if (!player) return false;
+  return player.battlefield.some((instance) => {
+    const card = app.cardByCode.get(instance.cardId);
+    return getCardTypeCode(card) === "PER" && cardHasSubtype(card, subtype);
+  });
+}
+
+function canPayEssenceTax(player, amount) {
+  return Boolean(player) && getPotentialAvailableEssence(player) >= Math.max(0, toNumber(amount, 0));
+}
+
+function payEssenceTax(player, amount) {
+  const cost = Math.max(0, toNumber(amount, 0));
+  if (cost <= 0) return true;
+  if (!ensureGeneratedEssenceForCost(player, cost)) return false;
+  const payment = spendEssenceCost(player, cost);
+  return Boolean(payment);
+}
+
+function counterStackObject(game, targetObject, sourceLabel = "efeito") {
+  if (!game || !targetObject) return false;
+  const targetIndex = game.stack.findIndex((item) => item.id === targetObject.id);
+  if (targetIndex < 0) return false;
+  const [countered] = game.stack.splice(targetIndex, 1);
+  if (!countered) return false;
+  if (countered.type === "play" && countered.cardId) {
+    const owner = getPlayer(game, countered.owner || countered.controllerId);
+    if (owner) owner.cemetery.push(countered.cardId);
+  }
+  addLog(game, `${countered.label} foi anulada por ${sourceLabel}.`, "Pilha");
+  playTone("soft");
+  renderGame();
+  return true;
 }
 
 async function chooseEngineTargetRefs(action, stackObject, kind = "target") {
   const targetSpec = action?.target;
   if (!targetSpec) return [];
+  const choiceKey = targetSpec.choiceKey || action.choiceKey || "";
+  if (choiceKey && stackObject.choiceCache?.[choiceKey]) {
+    return [stackObject.choiceCache[choiceKey]];
+  }
   const refs = getEngineTargetRefs(targetSpec, stackObject, { ignoreCount: Boolean(targetSpec.choice) });
   if (!targetSpec.choice) return refs;
   const requestedCount = targetSpec.count === "all" ? refs.length : Math.max(1, toNumber(targetSpec.count, 1));
   if (!refs.length) return [];
   if (requestedCount !== 1) return refs.slice(0, requestedCount);
   if (stackObject.controllerId !== "human") {
-    const chosen = chooseBotEngineTargetRef(refs, kind);
+    const chosen = chooseBotEngineTargetRefForStack(stackObject, refs, kind);
+    if (chosen && choiceKey) {
+      stackObject.choiceCache ||= {};
+      stackObject.choiceCache[choiceKey] = chosen;
+    }
     return chosen ? [chosen] : [];
   }
+  const visualTargetKinds = new Set(["attach", "control", "buff"]);
+  const statTargetKinds = new Set(["attach", "control"]);
   const chosen = await showEngineTargetChoiceModal({
     title: stackObject.label,
     description: kind === "heal"
       ? "Escolha um alvo para receber a cura."
       : kind === "buff"
         ? "Escolha um Personagem para receber o bônus."
-        : "Escolha um alvo para receber o dano.",
+        : kind === "destroy"
+          ? "Escolha um alvo para destruir."
+          : kind === "control"
+            ? "Escolha um Personagem para tomar o controle ate o fim do turno."
+            : "Escolha um alvo para receber o dano.",
     refs,
-    kind
+    kind,
+    visualOnly: visualTargetKinds.has(kind),
+    showStats: statTargetKinds.has(kind)
   });
+  if (chosen && choiceKey) {
+    stackObject.choiceCache ||= {};
+    stackObject.choiceCache[choiceKey] = chosen;
+  }
   return chosen ? [chosen] : [];
 }
 
@@ -3106,7 +4951,7 @@ function showEngineBundleChoiceModal({ title, description, choices }) {
         <div class="zone-modal-head">
           <div>
             <span>Escolha</span>
-            <strong>${escapeHtml(title)}</strong>
+            <b>${escapeHtml(title)}</b>
           </div>
         </div>
         <p class="zone-modal-description">${escapeHtml(description)}</p>
@@ -3204,7 +5049,7 @@ function showEngineDistributionModal({ title, description, candidates, total, ki
           <div class="zone-modal-head">
             <div>
               <span>Distribuição</span>
-              <strong>${escapeHtml(title)}</strong>
+              <b>${escapeHtml(title)}</b>
             </div>
           </div>
           <p class="zone-modal-description">${escapeHtml(description)}</p>
@@ -3287,6 +5132,15 @@ function getEngineTargetRefs(targetSpec, stackObject, options = {}) {
     return instance ? [{ playerId: stackObject.source.controllerId, instance }] : [];
   }
 
+  if (targetSpec === "attachedCharacter" || targetSpec.zone === "attachedCharacter") {
+    const equipment = getEngineSourceInstance(stackObject.source, game);
+    const targetRef = getEquipmentAttachmentTarget(equipment, game);
+    if (!targetRef) return [];
+    const card = app.cardByCode.get(targetRef.instance.cardId);
+    if (targetSpec.type && getCardTypeCode(card) !== targetSpec.type) return [];
+    return [{ playerId: targetRef.playerId, instance: targetRef.instance }];
+  }
+
   if (targetSpec === "damageSource") {
     const damageSource = stackObject.payload?.source;
     if (!damageSource?.playerId || !damageSource?.uid) return [];
@@ -3299,6 +5153,17 @@ function getEngineTargetRefs(targetSpec, stackObject, options = {}) {
     if (!damageTarget?.playerId || !damageTarget?.uid) return [];
     const instance = findBattlefieldInstance(getPlayer(game, damageTarget.playerId), damageTarget.uid);
     return instance ? [{ playerId: damageTarget.playerId, instance }] : [];
+  }
+
+  if (targetSpec === "eventPermanent" || targetSpec.zone === "eventPermanent") {
+    const playerId = stackObject.payload?.playerId;
+    const instanceUid = stackObject.payload?.instanceUid;
+    if (!playerId || !instanceUid) return [];
+    const instance = findBattlefieldInstance(getPlayer(game, playerId), instanceUid);
+    if (!instance) return [];
+    const card = app.cardByCode.get(instance.cardId);
+    if (targetSpec.type && getCardTypeCode(card) !== targetSpec.type) return [];
+    return [{ playerId, instance }];
   }
 
   if (targetSpec === "eventAttackers" || targetSpec.zone === "eventAttackers") {
@@ -3334,6 +5199,9 @@ function getEngineTargetRefs(targetSpec, stackObject, options = {}) {
       player.battlefield.forEach((instance) => {
         const card = app.cardByCode.get(instance.cardId);
         if (targetSpec.type && getCardTypeCode(card) !== targetSpec.type) return;
+        if (targetSpec.excludeSource && stackObject.source?.instanceUid === instance.uid && stackObject.source?.controllerId === player.id) return;
+        if (targetSpec.choice && isProtectedFromStackController(instance, player.id, stackObject)) return;
+        if (typeof targetSpec.exhausted === "boolean" && Boolean(instance.exhausted) !== targetSpec.exhausted) return;
         if (targetSpec.power && !evaluateNumericRule(getCharacterPower(instance), targetSpec.power)) return;
         if (targetSpec.resistance && !evaluateNumericRule(getCharacterResistance(instance), targetSpec.resistance)) return;
         if (targetSpec.damaged && toNumber(instance.damage, 0) <= 0) return;
@@ -3374,6 +5242,15 @@ function moveHandCardsToDeck(player, selected, placement = "bottom") {
 async function executeEngineAction(action, stackObject, options = {}) {
   const game = stackObject.payload?.game || app.game;
   const effectId = action.effect;
+
+  if (effectId === "cover_champion") {
+    const player = getPlayer(game, getStackPlayerId(action.player || "controller", stackObject));
+    if (!player || player.championCovered) return false;
+    player.championCovered = true;
+    addLog(game, "encobriu seu Campeao.", player.label);
+    renderGame();
+    return true;
+  }
 
   if (effectId === "draw_cards") {
     const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
@@ -3453,6 +5330,173 @@ async function executeEngineAction(action, stackObject, options = {}) {
     return true;
   }
 
+  if (effectId === "reorder_top_cards") {
+    const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
+    const amount = Math.min(getActionAmount(action.amount, 0), player?.deck?.length || 0);
+    if (!player || amount <= 0) return false;
+    const topCards = player.deck.slice(0, amount);
+    const decision = player.id === "human"
+      ? await showEngineDeckReviewModal(player, topCards, {
+        title: stackObject.label,
+        description: localize(action.description) || "Reordene as cartas do topo do seu baralho.",
+        maxCemetery: 0,
+        allowBottom: false
+      })
+      : { top: [...topCards].sort((a, b) => scoreBotDeckReviewCard(player, b) - scoreBotDeckReviewCard(player, a)), bottom: [], cemetery: [] };
+    if (!decision) return false;
+    const result = applyDeckReviewDecision(player, decision);
+    addLog(game, `reordenou ${result.top.length} carta${result.top.length === 1 ? "" : "s"} do topo.`, player.label);
+    renderGame();
+    return result.reviewedCount > 0;
+  }
+
+  if (effectId === "top_cards_to_hand_bottom") {
+    const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
+    const amount = Math.min(getActionAmount(action.amount, 0), player?.deck?.length || 0);
+    if (!player || amount <= 0) return false;
+    const topCards = player.deck.slice(0, amount);
+    const entries = topCards.map((cardId, index) => ({ cardId, index, zone: "top" }));
+    const chosen = player.id === "human"
+      ? await showEngineSingleCardChoiceModal({
+        title: stackObject.label,
+        description: localize(action.description) || "Escolha uma carta para colocar na mão. O restante irá para o fundo do baralho.",
+        entries,
+        confirmText: "Colocar na mão"
+      })
+      : chooseBotCardEntry(entries, player);
+    if (!chosen) return false;
+    player.deck.splice(0, amount);
+    const chosenCardId = topCards[chosen.index];
+    player.hand.push(chosenCardId);
+    topCards.forEach((cardId, index) => {
+      if (index !== chosen.index) player.deck.push(cardId);
+    });
+    addLog(game, `colocou ${getCardName(app.cardByCode.get(chosenCardId))} na mao pelo topo do baralho.`, player.label);
+    renderGame();
+    return true;
+  }
+
+  if (effectId === "top_lowest_type_to_hand_bottom") {
+    const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
+    const amount = Math.min(getActionAmount(action.amount, 0), player?.deck?.length || 0);
+    if (!player || amount <= 0) return false;
+    const topCards = player.deck.slice(0, amount);
+    await showRevealCardsAnimation(topCards, player.id, {
+      title: stackObject.label,
+      detail: `${player.label} revelou ${amount} carta${amount === 1 ? "" : "s"} do topo.`
+    });
+    const typeFilter = action.filter?.type || action.type || "PER";
+    const matching = topCards
+      .map((cardId, index) => ({ cardId, index, zone: "top" }))
+      .filter((entry) => cardMatchesTypeFilter(app.cardByCode.get(entry.cardId), { type: typeFilter }));
+    const minimumCost = matching.reduce((min, entry) => Math.min(min, getCost(app.cardByCode.get(entry.cardId))), Infinity);
+    const candidates = matching.filter((entry) => getCost(app.cardByCode.get(entry.cardId)) === minimumCost);
+    const chosen = candidates.length
+      ? player.id === "human"
+        ? await showEngineSingleCardChoiceModal({
+          title: stackObject.label,
+          description: localize(action.description) || "Escolha uma carta de menor custo entre as reveladas para colocar na mão.",
+          entries: candidates.map((entry) => ({ ...entry, meta: `Custo ${getCost(app.cardByCode.get(entry.cardId))}` })),
+          confirmText: "Colocar na mão"
+        })
+        : chooseBotCardEntry(candidates, player)
+      : null;
+    player.deck.splice(0, amount);
+    if (chosen) {
+      const chosenCardId = topCards[chosen.index];
+      player.hand.push(chosenCardId);
+      topCards.forEach((cardId, index) => {
+        if (index !== chosen.index) player.deck.push(cardId);
+      });
+      addLog(game, `revelou ${amount} carta${amount === 1 ? "" : "s"} e colocou ${getCardName(app.cardByCode.get(chosenCardId))} na mao.`, player.label);
+    } else {
+      topCards.forEach((cardId) => player.deck.push(cardId));
+      addLog(game, `revelou ${amount} carta${amount === 1 ? "" : "s"}, mas nao encontrou carta valida.`, player.label);
+    }
+    renderGame();
+    return true;
+  }
+
+  if (effectId === "move_cemetery_card_to_hand") {
+    const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
+    const entries = getFilteredCemeteryEntries(player, action.filter || {});
+    const chosen = player?.id === "human"
+      ? await showEngineSingleCardChoiceModal({
+        title: stackObject.label,
+        description: localize(action.description) || "Escolha uma carta do seu cemitério para retornar à mão.",
+        entries,
+        confirmText: "Retornar"
+      })
+      : chooseBotCardEntry(entries, player);
+    if (!player || !chosen) return false;
+    const [cardId] = player.cemetery.splice(chosen.index, 1);
+    if (!cardId) return false;
+    player.hand.push(cardId);
+    addLog(game, `retornou ${getCardName(app.cardByCode.get(cardId))} do cemiterio para a mao.`, player.label);
+    renderGame();
+    return true;
+  }
+
+  if (effectId === "search_library_to_top") {
+    const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
+    const entries = getFilteredDeckEntries(player, action.filter || {});
+    const chosen = player?.id === "human"
+      ? await showEngineSingleCardChoiceModal({
+        title: stackObject.label,
+        description: localize(action.description) || "Escolha uma carta do seu baralho para colocar no topo.",
+        entries,
+        confirmText: "Colocar no topo"
+      })
+      : chooseBotCardEntry(entries, player);
+    if (!player || !chosen) return false;
+    const [cardId] = player.deck.splice(chosen.index, 1);
+    if (!cardId) return false;
+    if (!action.secret) {
+      await showRevealCardsAnimation([cardId], player.id, {
+        title: stackObject.label,
+        detail: `${player.label} revelou a carta buscada.`
+      });
+    }
+    if (action.shuffleAfter) player.deck = shuffle(player.deck, `${game.id}-${game.turnNumber}-${stackObject.abilityId}`);
+    player.deck.unshift(cardId);
+    addLog(game, `buscou ${getCardName(app.cardByCode.get(cardId))} e colocou no topo do baralho.`, player.label);
+    renderGame();
+    return true;
+  }
+
+  if (effectId === "search_library_or_reserve_to_hand") {
+    const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
+    const entries = [
+      ...getFilteredDeckEntries(player, action.filter || {}),
+      ...getFilteredReserveEntries(player, action.filter || {})
+    ].map((entry) => ({ ...entry, meta: entry.zone === "reserve" ? "Reserva" : "Baralho" }));
+    const chosen = player?.id === "human"
+      ? await showEngineSingleCardChoiceModal({
+        title: stackObject.label,
+        description: localize(action.description) || "Escolha uma carta do seu baralho ou da Reserva para colocar na mão.",
+        entries,
+        confirmText: "Colocar na mão"
+      })
+      : chooseBotCardEntry(entries, player);
+    if (!player || !chosen) return false;
+    const zone = chosen.zone === "reserve" ? player.reserve : player.deck;
+    const [cardId] = zone.splice(chosen.index, 1);
+    if (!cardId) return false;
+    if (!action.secret) {
+      await showRevealCardsAnimation([cardId], player.id, {
+        title: stackObject.label,
+        detail: `${player.label} revelou a carta buscada.`
+      });
+    }
+    if (chosen.zone === "deck" && action.shuffleAfter !== false) {
+      player.deck = shuffle(player.deck, `${game.id}-${game.turnNumber}-${stackObject.abilityId}`);
+    }
+    player.hand.push(cardId);
+    addLog(game, `buscou ${getCardName(app.cardByCode.get(cardId))} e colocou na mao.`, player.label);
+    renderGame();
+    return true;
+  }
+
   if (effectId === "pulverize") {
     const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
     const amount = getActionAmount(action.amount, 0);
@@ -3474,11 +5518,11 @@ async function executeEngineAction(action, stackObject, options = {}) {
     const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
     const requestedAmount = getActionAmount(action.amount, 0);
     const amount = action.upTo
-      ? Math.min(requestedAmount, getAvailableEssence(player))
+      ? Math.min(requestedAmount, getReadyEssenceCount(player))
       : requestedAmount;
     if (!player) return false;
     if (amount <= 0) return action.upTo ? true : false;
-    if (getAvailableEssence(player) < amount) return false;
+    if (getReadyEssenceCount(player) < amount) return false;
     player.spentEssence = Math.min(player.essence.length, toNumber(player.spentEssence, 0) + amount);
     addLog(game, `desativou ${amount} Essencia${amount === 1 ? "" : "s"}.`, player.label);
     return true;
@@ -3494,10 +5538,38 @@ async function executeEngineAction(action, stackObject, options = {}) {
     return true;
   }
 
-  if (effectId === "discard_cards") {
+  if (effectId === "generate_essence") {
     const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
     const amount = getActionAmount(action.amount, 0);
-    if (!player || amount <= 0 || player.hand.length < amount) return false;
+    const generated = generateEssence(player, amount);
+    if (generated <= 0) return false;
+    addLog(game, `gerou ${generated} {E}.`, player.label);
+    return true;
+  }
+
+  if (effectId === "reduce_next_cost") {
+    const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
+    const amount = getActionAmount(action.amount, 0);
+    if (!player || amount <= 0) return false;
+    createTemporaryEffect(game, {
+      controllerId: player.id,
+      type: "nextPlayCostDiscount",
+      amount,
+      duration: action.duration || "until_regroup",
+      source: stackObject.source,
+      label: stackObject.label
+    });
+    addLog(game, `a próxima carta de ${player.label} custa ${amount} Essência${amount === 1 ? "" : "s"} a menos.`, "Engine");
+    return true;
+  }
+
+  if (effectId === "discard_cards") {
+    const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
+    const requestedAmount = getActionAmount(action.amount, 0);
+    if (!player || requestedAmount <= 0) return false;
+    const amount = action.upTo ? Math.min(requestedAmount, player.hand.length) : requestedAmount;
+    if (amount <= 0) return Boolean(action.upTo);
+    if (player.hand.length < amount) return false;
     const selected = action.choice === "random"
       ? shuffle([...player.hand], `${game.id}-${game.engineEventSeq}-${stackObject.abilityId}`).slice(0, amount)
       : player.id === "human" && action.choice === "manual"
@@ -3524,6 +5596,15 @@ async function executeEngineAction(action, stackObject, options = {}) {
       if (!instance) continue;
       player.battlefield.push(instance);
       created.push(instance);
+      if (action.combatTarget === "same_as_source_attacker" && stackObject.source?.instanceUid) {
+        const sourceTarget = getAttackTarget(player.id, stackObject.source.instanceUid);
+        if (sourceTarget && game.combat?.attackerId === player.id && game.combat.attackers.includes(stackObject.source.instanceUid)) {
+          instance.exhausted = true;
+          instance.declaredAttacker = true;
+          game.combat.attackers.push(instance.uid);
+          game.combat.attackTargets[instance.uid] = { ...sourceTarget };
+        }
+      }
       emitGameEvent("permanent.enters_battlefield", {
         game,
         playerId: player.id,
@@ -3587,6 +5668,10 @@ async function executeEngineAction(action, stackObject, options = {}) {
       addLog(game, `${stackObject.label} nao encontrou escolha valida.`, "Engine");
       return false;
     }
+    for (const nestedCost of choice.costs || []) {
+      const paid = await executeEngineAction(nestedCost, stackObject, { isCost: true });
+      if (paid === false) return false;
+    }
     for (const nestedAction of choice.actions || []) {
       await executeEngineAction(nestedAction, stackObject, options);
     }
@@ -3601,8 +5686,124 @@ async function executeEngineAction(action, stackObject, options = {}) {
     return true;
   }
 
+  if (effectId === "attach_equipment") {
+    const equipmentRefs = getEngineTargetRefs(action.equipment || "source", stackObject, { ignoreCount: true });
+    const targetRefs = action.target?.choice
+      ? await chooseEngineTargetRefs(action, stackObject, "attach")
+      : getEngineTargetRefs(action.target, stackObject, { ignoreCount: true });
+    let attached = 0;
+    equipmentRefs.forEach((equipmentRef) => {
+      const targetRef = targetRefs.find((candidate) =>
+        canAttachEquipmentTo(equipmentRef.instance, candidate.instance, equipmentRef.playerId, candidate.playerId)
+      );
+      if (targetRef && attachEquipmentTo(game, equipmentRef, targetRef)) attached += 1;
+    });
+    if (attached) {
+      renderGame();
+      playTone("soft");
+    }
+    return attached > 0;
+  }
+
+  if (effectId === "detach_equipment") {
+    const refs = getEngineTargetRefs(action.equipment || action.target || "source", stackObject, { ignoreCount: true });
+    let detached = 0;
+    refs.forEach(({ playerId, instance }) => {
+      if (!instance?.attachedTo) return;
+      const card = app.cardByCode.get(instance.cardId);
+      if (detachEquipmentInstance(instance)) {
+        detached += 1;
+        addLog(game, `${getCardName(card)} foi desanexado.`, getPlayer(game, playerId)?.label || "Engine");
+      }
+    });
+    if (detached) {
+      destroyLethalCharacters(game);
+      checkGameEnd(game);
+      renderGame();
+    }
+    return detached > 0;
+  }
+
+  if (effectId === "return_permanent_to_hand") {
+    const refs = await chooseEngineTargetRefs(action, stackObject, "bounce");
+    refs.forEach(({ playerId, instance }) => {
+      const card = app.cardByCode.get(instance.cardId);
+      const returned = removeBattlefieldCardToZone(game, playerId, instance, "hand");
+      if (returned) addLog(game, `${getCardName(card)} retornou para a mao de seu dono.`, getPlayer(game, playerId).label);
+    });
+    destroyLethalCharacters(game);
+    checkGameEnd(game);
+    renderGame();
+    return refs.length > 0;
+  }
+
+  if (effectId === "gain_control") {
+    const refs = await chooseEngineTargetRefs(action, stackObject, "control");
+    let moved = 0;
+    refs.forEach(({ playerId, instance }) => {
+      const currentController = getPlayer(game, playerId);
+      const newController = getPlayer(game, getStackPlayerId(action.controller || action.player || "controller", stackObject));
+      if (!currentController || !newController || !instance) return;
+      const card = app.cardByCode.get(instance.cardId);
+      if (currentController.id !== newController.id) {
+        currentController.battlefield = currentController.battlefield.filter((item) => item.uid !== instance.uid);
+        newController.battlefield.push(instance);
+        createTemporaryEffect(game, {
+          controllerId: stackObject.controllerId,
+          type: "temporaryControl",
+          target: { uid: instance.uid, playerId: instance.owner },
+          previousControllerId: currentController.id,
+          newControllerId: newController.id,
+          duration: action.duration || "until_regroup",
+          source: stackObject.source,
+          label: stackObject.label
+        });
+        moved += 1;
+        addLog(game, `${newController.label} ganhou controle de ${getCardName(card)} ate o Reagrupamento.`, "Engine");
+      }
+      if (action.untapAfter || action.readyAfter) {
+        instance.exhausted = false;
+        addLog(game, `${getCardName(card)} foi preparado.`, newController.label);
+      }
+    });
+    renderGame();
+    return refs.length > 0 && (moved > 0 || Boolean(action.untapAfter || action.readyAfter));
+  }
+
+  if (effectId === "renounce_permanent") {
+    const players = action.player === "all"
+      ? Object.values(game.players)
+      : [getPlayer(game, getStackPlayerId(action.player, stackObject))].filter(Boolean);
+    let renounced = 0;
+    for (const player of players) {
+      const refs = player.battlefield
+        .filter((instance) => cardMatchesTypeFilter(app.cardByCode.get(instance.cardId), action.filter || action.target || {}))
+        .map((instance) => ({ playerId: player.id, instance }));
+      const chosen = player.id === "human"
+        ? await showEngineTargetChoiceModal({
+          title: stackObject.label,
+          description: localize(action.description) || "Escolha um permanente para renunciar.",
+          refs,
+          kind: "destroy"
+        })
+        : chooseBotEngineTargetRefForStack(stackObject, refs, "renounce");
+      if (!chosen) continue;
+      const card = app.cardByCode.get(chosen.instance.cardId);
+      if (removeBattlefieldCardToZone(game, chosen.playerId, chosen.instance, "cemetery")) {
+        renounced += 1;
+        addLog(game, `renunciou ${getCardName(card)}.`, getPlayer(game, chosen.playerId).label);
+      }
+    }
+    destroyLethalCharacters(game);
+    checkGameEnd(game);
+    renderGame();
+    if (renounced > 0) await wait(360);
+    return renounced > 0;
+  }
+
   if (effectId === "modify_power_resistance") {
-    getEngineTargetRefs(action.target, stackObject).forEach(({ playerId, instance }) => {
+    const refs = await chooseEngineTargetRefs(action, stackObject, "buff");
+    refs.forEach(({ playerId, instance }) => {
       createTemporaryEffect(game, {
         controllerId: stackObject.controllerId,
         type: "modifyStats",
@@ -3614,11 +5815,67 @@ async function executeEngineAction(action, stackObject, options = {}) {
         label: stackObject.label
       });
     });
-    return true;
+    if (refs.length) {
+      addLog(game, `${stackObject.label}: ${formatSignedStat(action.power)}/${formatSignedStat(action.resistance)} ate o Reagrupamento.`, "Engine");
+    }
+    return refs.length > 0;
+  }
+
+  if (effectId === "grant_keyword") {
+    const refs = await chooseEngineTargetRefs(action, stackObject, "buff");
+    refs.forEach(({ playerId, instance }) => {
+      createTemporaryEffect(game, {
+        controllerId: stackObject.controllerId,
+        type: "keyword",
+        target: { playerId, uid: instance.uid },
+        keyword: action.keyword,
+        duration: action.duration || "until_regroup",
+        source: stackObject.source,
+        label: stackObject.label
+      });
+      addLog(game, `${getCardName(app.cardByCode.get(instance.cardId))} recebeu ${action.keyword} ate o Reagrupamento.`, getPlayer(game, playerId).label);
+    });
+    renderGame();
+    return refs.length > 0;
+  }
+
+  if (effectId === "protect_from_opponents") {
+    const refs = await chooseEngineTargetRefs(action, stackObject, "buff");
+    refs.forEach(({ playerId, instance }) => {
+      createTemporaryEffect(game, {
+        controllerId: stackObject.controllerId,
+        type: "cantBeTargetedByOpponents",
+        target: { playerId, uid: instance.uid },
+        duration: action.duration || "until_regroup",
+        source: stackObject.source,
+        label: stackObject.label
+      });
+      addLog(game, `${getCardName(app.cardByCode.get(instance.cardId))} nao pode ser alvo dos oponentes ate o Reagrupamento.`, getPlayer(game, playerId).label);
+    });
+    renderGame();
+    return refs.length > 0;
+  }
+
+  if (effectId === "prevent_damage_to_character") {
+    const refs = await chooseEngineTargetRefs(action, stackObject, "buff");
+    refs.forEach(({ playerId, instance }) => {
+      createTemporaryEffect(game, {
+        controllerId: stackObject.controllerId,
+        type: "preventDamageToInstance",
+        target: { playerId, uid: instance.uid },
+        duration: action.duration || "until_regroup",
+        source: stackObject.source,
+        label: stackObject.label
+      });
+      addLog(game, `${getCardName(app.cardByCode.get(instance.cardId))} teve dano prevenido ate o Reagrupamento.`, getPlayer(game, playerId).label);
+    });
+    renderGame();
+    return refs.length > 0;
   }
 
   if (effectId === "set_base_resistance") {
-    getEngineTargetRefs(action.target, stackObject).forEach(({ playerId, instance }) => {
+    const refs = await chooseEngineTargetRefs(action, stackObject, "target");
+    refs.forEach(({ playerId, instance }) => {
       createTemporaryEffect(game, {
         controllerId: stackObject.controllerId,
         type: "setBaseResistance",
@@ -3629,7 +5886,7 @@ async function executeEngineAction(action, stackObject, options = {}) {
         label: stackObject.label
       });
     });
-    return true;
+    return refs.length > 0;
   }
 
   if (effectId === "deal_damage") {
@@ -3757,6 +6014,38 @@ async function executeEngineAction(action, stackObject, options = {}) {
     return allocations.length > 0;
   }
 
+  if (effectId === "counter_stack_object") {
+    const targetRef = await chooseEngineStackTargetRef(action, stackObject);
+    if (!targetRef?.stackObject) return false;
+    const targetObject = game.stack.find((item) => item.id === targetRef.stackObject.id);
+    if (!targetObject) return false;
+    const targetController = getPlayer(game, targetObject.controllerId);
+    const tax = toNumber(action.unlessControllerPays ?? action.tax ?? 0, 0);
+    const bypassSubtype = action.paymentBypassIfControllerControlsSubtype ?? action.ignorePaymentIfControllerControlsSubtype;
+    const controllerBypassesTax = typeof bypassSubtype !== "undefined" &&
+      playerControlsSubtype(getPlayer(game, stackObject.controllerId), bypassSubtype);
+
+    if (!controllerBypassesTax && tax > 0 && canPayEssenceTax(targetController, tax)) {
+      const shouldPay = targetController.id === "human"
+        ? await showEngineChoiceModal({
+          title: stackObject.label,
+          description: `${targetObject.label} seria anulada. Pagar ${tax} {E} para impedir?`,
+          confirmText: `Pagar ${tax}`,
+          cancelText: "Deixar anular",
+          effectText: localize(action.description) || getStackObjectEffectDescription(stackObject),
+          sourceLabel: targetObject.label,
+          sourceIcon: getStackObjectSourceIcon(targetObject)
+        })
+        : Boolean(targetController) && targetObject.controllerId === targetController.id;
+      if (shouldPay && payEssenceTax(targetController, tax)) {
+        addLog(game, `${targetController.label} pagou ${tax} {E}; ${targetObject.label} nao foi anulada.`, "Pilha");
+        return true;
+      }
+    }
+
+    return counterStackObject(game, targetObject, stackObject.label);
+  }
+
   if (effectId === "prevent_damage") {
     const damageEvent = stackObject.payload?.damageEvent;
     if (!damageEvent) return false;
@@ -3772,6 +6061,13 @@ async function executeEngineAction(action, stackObject, options = {}) {
     if (prevented <= 0) return false;
     damageEvent.preventedAmount = Math.min(damageEvent.amount, getCurrentPreventedAmount(damageEvent) + prevented);
     spendEngineTurnBudget(game, stackObject, action, prevented);
+    return true;
+  }
+
+  if (effectId === "modify_damage_amount") {
+    const damageEvent = stackObject.payload?.damageEvent;
+    if (!damageEvent) return false;
+    damageEvent.amount = Math.max(0, toNumber(damageEvent.amount, 0) + getActionAmount(action.amount, 0));
     return true;
   }
 
@@ -3826,27 +6122,178 @@ async function executeEngineAction(action, stackObject, options = {}) {
     return true;
   }
 
-  if (effectId === "destroy_permanent") {
-    getEngineTargetRefs(action.target, stackObject).forEach(({ playerId, instance }) => {
-      const player = getPlayer(game, playerId);
-      player.battlefield = player.battlefield.filter((item) => item.uid !== instance.uid);
-      player.cemetery.push(instance.cardId);
-      emitGameEvent("permanent.leaves_battlefield", {
-        game,
-        playerId,
-        instanceUid: instance.uid,
-        cardId: instance.cardId,
-        destination: "cemetery"
-      });
-      emitGameEvent("permanent.dies", {
-        game,
-        playerId,
-        instanceUid: instance.uid,
-        cardId: instance.cardId
-      });
-      addLog(game, `${getCardName(app.cardByCode.get(instance.cardId))} foi destruido.`, player.label);
-    });
+  if (effectId === "adjust_moral_choice") {
+    const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
+    if (!player) return false;
+    const maxBefore = Number.isFinite(action.maxBefore) ? action.maxBefore : Infinity;
+    const minBefore = Number.isFinite(action.minBefore) ? action.minBefore : -Infinity;
+    const delta = toNumber(action.delta, 1);
+    const polarities = action.polarity === "all" ? ["virtue", "vice"] : [action.polarity || "virtue"];
+    const choices = app.virtues
+      .filter((virtue) => polarities.includes(virtue.polarity))
+      .filter((virtue) => getVirtueValue(player, virtue.id) < maxBefore && getVirtueValue(player, virtue.id) >= minBefore)
+      .map((virtue) => buildMoralChoice(player, virtue, virtue.id, delta, `${getVirtueName(virtue)} ${delta >= 0 ? "+" : ""}${delta}`))
+      .filter((choice) => choice && moralChoiceWouldChange(player, choice.targetId, choice.delta))
+      .filter(Boolean);
+    const result = await new Promise((resolve) => queueMoralChoice(
+      player,
+      stackObject.label,
+      localize(action.description) || "Escolha uma Virtude para ajustar.",
+      choices,
+      stackObject.label,
+      resolve
+    ));
+    return Boolean(result?.changes?.length);
+  }
+
+  if (effectId === "adjust_moral_flexible") {
+    const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
+    if (!player) return false;
+    const choices = getFlexibleMoralChoices(player, getActionAmount(action.amount, 1));
+    const result = await new Promise((resolve) => queueMoralChoice(
+      player,
+      stackObject.label,
+      localize(action.description) || "Escolha uma característica para receber +1 ou -1.",
+      choices,
+      stackObject.label,
+      resolve
+    ));
+    return Boolean(result?.changes?.length);
+  }
+
+  if (effectId === "fight") {
+    const leftRefs = await chooseEngineTargetRefs({ ...action, target: action.sourceTarget || action.left || action.target }, stackObject, "buff");
+    const left = leftRefs[0];
+    if (!left?.instance) return false;
+    const rightSpec = action.target || action.right;
+    let rightRefs = getEngineTargetRefs(rightSpec, stackObject, { ignoreCount: true })
+      .filter((ref) => ref.instance && ref.instance.uid !== left.instance.uid);
+    if (!rightRefs.length) return false;
+    const right = stackObject.controllerId === "human"
+      ? await showEngineTargetChoiceModal({
+        title: stackObject.label,
+        description: "Escolha o outro Personagem que lutará.",
+        refs: rightRefs,
+        kind: "damage",
+        visualOnly: true,
+        showStats: true
+      })
+      : chooseBotEngineTargetRefForStack(stackObject, rightRefs, "damage");
+    if (!right?.instance) return false;
+    const leftPower = getCharacterPower(left.instance);
+    const rightPower = getCharacterPower(right.instance);
+    await Promise.all([
+      applyEffectDamageEvent(game, {
+        type: "character",
+        playerId: right.playerId,
+        uid: right.instance.uid,
+        amount: leftPower,
+        reason: stackObject.label,
+        source: { ...stackObject.source, playerId: left.playerId, uid: left.instance.uid, cardId: left.instance.cardId },
+        damageType: action.damageType || "effect"
+      }),
+      applyEffectDamageEvent(game, {
+        type: "character",
+        playerId: left.playerId,
+        uid: left.instance.uid,
+        amount: rightPower,
+        reason: stackObject.label,
+        source: { ...stackObject.source, playerId: right.playerId, uid: right.instance.uid, cardId: right.instance.cardId },
+        damageType: action.damageType || "effect"
+      })
+    ]);
+    destroyLethalCharacters(game);
+    checkGameEnd(game);
     return true;
+  }
+
+  if (effectId === "reveal_lower_cost_character_from_hand_then_heal") {
+    const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
+    if (!player) return false;
+    const maxControlledCost = player.battlefield
+      .filter((instance) => getCardTypeCode(app.cardByCode.get(instance.cardId)) === "PER")
+      .reduce((max, instance) => Math.max(max, getCost(app.cardByCode.get(instance.cardId))), -Infinity);
+    const entries = player.hand
+      .map((cardId, index) => ({ cardId, index, zone: "hand" }))
+      .filter((entry) => {
+        const card = app.cardByCode.get(entry.cardId);
+        return getCardTypeCode(card) === "PER" && getCost(card) < maxControlledCost;
+      });
+    const chosen = player.id === "human"
+      ? await showEngineSingleCardChoiceModal({
+        title: stackObject.label,
+        description: "Revele um Personagem da sua mão com custo menor que o de um Personagem que você controla.",
+        entries,
+        confirmText: "Revelar"
+      })
+      : chooseBotCardEntry(entries, player);
+    if (!chosen) return false;
+    const cardId = chosen.cardId || player.hand[chosen.index];
+    if (!cardId) return false;
+    await showRevealCardsAnimation([cardId], player.id, {
+      title: stackObject.label,
+      detail: `${player.label} revelou ${getCardName(app.cardByCode.get(cardId))}.`
+    });
+    const healed = Math.min(getActionAmount(action.healAmount || action.amount, 2), player.territoryDamage);
+    player.territoryDamage = Math.max(0, player.territoryDamage - healed);
+    if (healed > 0) {
+      addLog(game, `curou ${healed} de dano do territorio.`, player.label);
+      emitGameEvent("heal.applied", {
+        game,
+        source: stackObject.source,
+        target: { type: "territory", playerId: player.id },
+        amount: healed
+      }, { resolveImmediately: true });
+      renderGame();
+      await animateResolutionEvents([{ type: "territory", playerId: player.id, amount: healed }], "heal");
+    }
+    return true;
+  }
+
+  if (effectId === "destroy_if_power_gte_else_damage") {
+    const threshold = toNumber(action.powerGte ?? action.powerAtLeast, 6);
+    const amount = getActionAmount(action.amount, 1);
+    const refs = await chooseEngineTargetRefs(action, stackObject, "damage");
+    let resolved = false;
+    for (const ref of refs) {
+      if (!ref.instance) continue;
+      if (getCharacterPower(ref.instance) >= threshold) {
+        const card = app.cardByCode.get(ref.instance.cardId);
+        if (removeBattlefieldCardToZone(game, ref.playerId, ref.instance, "cemetery")) {
+          addLog(game, `${getCardName(card)} foi destruido por ${stackObject.label}.`, getPlayer(game, ref.playerId).label);
+          resolved = true;
+        }
+        continue;
+      }
+      await applyEffectDamageEvent(game, {
+        type: "character",
+        playerId: ref.playerId,
+        uid: ref.instance.uid,
+        amount,
+        reason: stackObject.label,
+        source: stackObject.source,
+        damageType: action.damageType || "effect",
+        damageAsCost: Boolean(action.damageAsCost)
+      });
+      resolved = true;
+    }
+    destroyLethalCharacters(game);
+    checkGameEnd(game);
+    return resolved;
+  }
+
+  if (effectId === "destroy_permanent") {
+    const refs = await chooseEngineTargetRefs(action, stackObject, "destroy");
+    refs.forEach(({ playerId, instance }) => {
+      const player = getPlayer(game, playerId);
+      const card = app.cardByCode.get(instance.cardId);
+      if (removeBattlefieldCardToZone(game, playerId, instance, "cemetery")) {
+        addLog(game, `${getCardName(card)} foi destruido.`, player.label);
+      }
+    });
+    destroyLethalCharacters(game);
+    checkGameEnd(game);
+    return refs.length > 0;
   }
 
   addLog(game, `efeito ${effectId} ainda sem handler ativo.`, "Engine");
@@ -3869,8 +6316,24 @@ function createTemporaryEffect(game, effect) {
   return created;
 }
 
+function expireTemporaryEffect(game, effect) {
+  if (!game || !effect) return;
+  if (effect.type === "temporaryControl") {
+    const uid = effect.target?.uid;
+    const currentController = getInstanceControllerInGame(game, uid);
+    const previousController = getPlayer(game, effect.previousControllerId);
+    if (!uid || !currentController || !previousController || currentController.id === previousController.id) return;
+    const instance = removeBattlefieldInstance(currentController, uid);
+    if (!instance) return;
+    previousController.battlefield.push(instance);
+    addLog(game, `${getCardName(app.cardByCode.get(instance.cardId))} voltou ao controle de ${previousController.label}.`, "Engine");
+  }
+}
+
 function expireTemporaryEffects(game, duration) {
   if (!game?.effects?.length) return;
+  const expiring = game.effects.filter((effect) => effect.duration === duration);
+  expiring.forEach((effect) => expireTemporaryEffect(game, effect));
   game.effects = game.effects.filter((effect) => effect.duration !== duration);
 }
 
@@ -3901,7 +6364,7 @@ function clearHumanAutoPass() {
 }
 
 function schedulePriorityAutoPass(game) {
-  if (!isHumanPriorityOpen() || app.priority.game !== game || hasBlockingEngineWork(game) || hasHumanPriorityPlay(game)) return;
+  if (!isHumanPriorityOpen() || app.priority.game !== game || hasPendingEngineChoiceWork() || hasHumanPriorityPlay(game)) return;
   clearHumanAutoPass();
   const key = app.priority.key;
   app.autoPassTimer = window.setTimeout(() => {
@@ -4098,7 +6561,8 @@ async function chooseConsecrationCharacterTarget(player, sourceCard) {
     title: "Consagração de Personagem",
     description: `Escolha um Personagem para receber +1/+1 até o Reagrupamento por ${getCardName(sourceCard)}.`,
     refs,
-    kind: "buff"
+    kind: "buff",
+    visualOnly: true
   });
 }
 
@@ -4184,18 +6648,96 @@ async function applyConsecrationTypeEffect(player, card) {
   return null;
 }
 
+async function applyPresenceTempleReplacement(player, card) {
+  if (!playerHasTemple(player, TEMPLE_IDS.presence)) return null;
+  if (player.id !== "human") return null;
+  const temple = app.cardByCode.get(TEMPLE_IDS.presence);
+  const shouldReplace = await showEngineChoiceModal({
+    title: "Tenda da Presença",
+    description: "",
+    confirmText: "Comprar e descartar",
+    cancelText: "Aplicar efeito normal",
+    sourceLabel: "Tenda da Presença",
+    sourceIcon: getCardArt(temple),
+    effectText: `Substituir o efeito de tipo de ${getCardName(card)} por comprar 1 carta e descartar 1 carta. O ajuste moral ainda acontece.`
+  });
+  if (!shouldReplace) return null;
+
+  const { drawn, missing, fatigueDamage } = drawCardsWithFatigue(player, 1);
+  addPlayerStat(app.game, "cardsDrawn", player.id, drawn.length);
+  addLog(app.game, "substituiu o efeito de tipo pela Tenda da Presença.", player.label);
+  if (drawn.length) {
+    await new Promise((resolve) => showDrawAnimation(drawn, player.id, resolve));
+  }
+  if (missing > 0) {
+    addLog(app.game, `sofreu fadiga por nao conseguir comprar ${missing} carta${missing === 1 ? "" : "s"}.`, player.label);
+  }
+  if (fatigueDamage > 0) {
+    renderGame();
+    await animateResolutionEvents([{ type: "territory", playerId: player.id, amount: fatigueDamage }], "damage");
+  }
+  if (player.hand.length) {
+    const chosen = await showEngineSingleCardChoiceModal({
+      title: "Tenda da Presença",
+      description: "Escolha uma carta da sua mão para descartar.",
+      entries: player.hand.map((cardId, index) => ({ cardId, index })),
+      confirmText: "Descartar"
+    });
+    const discardId = chosen?.cardId || player.hand[chosen?.index];
+    if (discardId && discardCardFromHand(player, discardId)) {
+      addLog(app.game, `descartou ${getCardName(app.cardByCode.get(discardId))}.`, player.label);
+    }
+  }
+  renderGame();
+  return { label: "Tenda: comprou 1 e descartou 1" };
+}
+
+async function getConsecrationMoralAmount(player, card) {
+  if (!playerHasTemple(player, TEMPLE_IDS.judgment)) return 1;
+  if (getCardTypeCode(card) !== "PER") return 1;
+  if (!player.hand.length) return 1;
+
+  const temple = app.cardByCode.get(TEMPLE_IDS.judgment);
+  const shouldPay = player.id === "human"
+    ? await showEngineChoiceModal({
+      title: "Santuário do Julgamento",
+      description: "",
+      confirmText: "Colocar no fundo",
+      cancelText: "Manter ajuste +1",
+      sourceLabel: "Santuário do Julgamento",
+      sourceIcon: getCardArt(temple),
+      effectText: "Coloque 1 carta da sua mão no fundo do baralho. Se fizer isso, o ajuste moral da Consagração deste Personagem será 2 em vez de 1."
+    })
+    : player.hand.length >= 3;
+  if (!shouldPay) return 1;
+
+  const selected = player.id === "human"
+    ? await showEngineHandChoiceModal(player, 1, {
+      title: "Santuário do Julgamento",
+      description: "Escolha uma carta da sua mão para colocar no fundo do baralho.",
+      confirmText: "Colocar no fundo"
+    })
+    : chooseBotCardsForBottom(player, 1);
+  const moved = moveHandCardsToDeck(player, selected, "bottom");
+  if (!moved.length) return 1;
+  addLog(app.game, "colocou 1 carta no fundo pelo Santuário do Julgamento.", player.label);
+  renderGame();
+  return 2;
+}
+
 function formatConsecrationAlertDetail(typeResult, moralResult) {
-  const parts = [];
-  if (typeResult?.label) parts.push(typeResult.label);
-  const moralText = formatMoralResultForAlert(moralResult);
-  if (moralText) parts.push(moralText);
-  return parts.join(" · ");
+  return {
+    text: typeResult?.label || "",
+    moral: getMoralResultAlertData(moralResult)
+  };
 }
 
 async function resolveConsecrationSequence(game, player, card, cardId, playerId) {
-  const typeResult = await applyConsecrationTypeEffect(player, card);
+  const typeResult = await applyPresenceTempleReplacement(player, card) || await applyConsecrationTypeEffect(player, card);
   if (!app.game || app.game !== game || game.status !== "active") return;
-  const result = await queueConsecrationMoralAdjustmentAsync(player);
+  const moralAmount = await getConsecrationMoralAmount(player, card);
+  if (!app.game || app.game !== game || game.status !== "active") return;
+  const result = await queueConsecrationMoralAdjustmentAsync(player, moralAmount);
   if (!app.game || app.game !== game || game.status !== "active") return;
   emitGameEvent("action.consecrate.after", {
     game,
@@ -4246,7 +6788,9 @@ function applyProfane(playerId, index) {
       cardId,
       moralResult: result
     });
-    showCardActionAnimation(card, playerId, playerId === "human" ? "Voce profanou" : "Bot profanou", formatMoralResultForAlert(result));
+    showCardActionAnimation(card, playerId, playerId === "human" ? "Voce profanou" : "Bot profanou", {
+      moral: getMoralResultAlertData(result)
+    });
     waitForEngineStack(game, () => finishConsecrationAction(playerId));
   });
   return true;
@@ -4313,12 +6857,25 @@ function autoDiscardToHandLimit(game, playerId) {
   finishDiscardCheck(game, playerId);
 }
 
+function applyCardMoralAfterEngineResolution(game, playerId, card) {
+  waitForEngineStack(game, () => {
+    if (!app.game || app.game !== game || game.status !== "active") return;
+    applyCardMoralPips(playerId, card);
+    renderGame();
+    checkGameEnd(game);
+  });
+}
+
 function applyPlayCard(playerId, cardId) {
   const game = app.game;
   const player = getPlayer(game, playerId);
+  const card = app.cardByCode.get(cardId);
+  if (card && player?.hand?.includes(cardId) && !canResolveCardWhenPlayed(cardId, playerId)) {
+    showInteractionHint(`${getCardName(card)} nao possui alvo valido agora.`);
+    return false;
+  }
   if (!canPlayCard(player, cardId)) return false;
 
-  const card = app.cardByCode.get(cardId);
   const baseCost = getCost(card);
   const effectiveCost = getEffectivePlayCost(player, card);
   const typeCode = getCardTypeCode(card);
@@ -4327,48 +6884,36 @@ function applyPlayCard(playerId, cardId) {
     checkGameEnd(game);
     if (game.status !== "active") return true;
   } else {
-    player.spentEssence += effectiveCost;
+    if (!ensureGeneratedEssenceForCost(player, effectiveCost)) return false;
+    const payment = spendEssenceCost(player, effectiveCost);
+    if (!payment) return false;
+    if (payment.poolSpent > 0) {
+      addLog(game, `usou ${payment.poolSpent} {E} gerado para pagar ${getCardName(card)}.`, player.label);
+    }
   }
-  const consumedDiscount = consumePendingPlayCostDiscount(player);
+  const consumedDiscount = typeCode !== "PEC" ? consumePendingPlayCostDiscount(player) : 0;
   if (consumedDiscount > 0) {
     addLog(game, `desconto de Consagração de Artefato consumido (${consumedDiscount}).`, player.label);
   }
   player.hand = player.hand.filter((id) => id !== cardId);
   player.cardsPlayedThisTurn = toNumber(player.cardsPlayedThisTurn, 0) + 1;
   addPlayerStat(game, "cardsPlayed", playerId);
+  const playObject = createCardPlayStackObject(game, playerId, cardId);
+  if (!playObject) return false;
+  game.stack.push(playObject);
+  addLog(game, `jogou ${getCardName(card)} e colocou a jogada na pilha.`, player.label);
+  emitGameEvent("stack.object_added", { game, stackObject: playObject }, { resolveImmediately: true });
   emitGameEvent("card.played", {
     game,
     playerId,
     cardId,
-    cardType: typeCode
+    cardType: typeCode,
+    stackObjectId: playObject.id
   });
   showPlayedCardAnimation(card, playerId);
-
-  if (typeCode === "PER" || typeCode === "ART") {
-    const instance = createCardInstance(cardId, playerId);
-    player.battlefield.push(instance);
-    addLog(game, `jogou ${getCardName(card)} no campo.`, player.label);
-    emitGameEvent("permanent.enters_battlefield", {
-      game,
-      playerId,
-      instanceUid: instance.uid,
-      cardId
-    });
-  } else {
-    resolveSimpleSpell(playerId, card);
-    player.cemetery.push(cardId);
-    addLog(game, `resolveu ${getCardName(card)} em modo simplificado.`, player.label);
-  }
-
-  emitGameEvent("card.resolved", {
-    game,
-    playerId,
-    cardId,
-    result: typeCode === "PER" || typeCode === "ART" ? "battlefield" : "cemetery"
-  });
-  applyCardMoralPips(playerId, card);
   playTone(`play-${String(typeCode || "card").toLowerCase()}`);
   checkGameEnd(game);
+  scheduleStackResolution(game);
   return true;
 }
 
@@ -4378,21 +6923,12 @@ function resolveSimpleSpell(playerId, card) {
   const typeCode = getCardTypeCode(card);
 
   if (typeCode === "MIL") {
-    const { drawn, missing, fatigueDamage } = drawCardsWithFatigue(player, 1);
-    if (drawn.length) {
-      addPlayerStat(game, "cardsDrawn", playerId, drawn.length);
-      addLog(game, "efeito simplificado: comprou 1 carta.", player.label);
-    }
-    if (missing > 0) addLog(game, "efeito simplificado: sofreu fadiga por compra impossivel.", player.label);
-    if (fatigueDamage > 0) {
-      renderGame();
-      void animateResolutionEvents([{ type: "territory", playerId, amount: fatigueDamage }], "damage");
-    }
+    addLog(game, `${getCardName(card)} ainda nao possui efeito de Milagre cadastrado.`, player.label);
     return;
   }
 
   if (typeCode === "PEC") {
-    addLog(game, "Pecado sem efeito generico; apenas o custo foi pago.", player.label);
+    addLog(game, `${getCardName(card)} ainda nao possui efeito de Pecado cadastrado; apenas o custo foi pago.`, player.label);
     return;
   }
 
@@ -4498,9 +7034,10 @@ function hasBlockOptions(attackerId) {
     attackers.some((attacker) => canBlockAttack(defender, instance.uid, attackerPlayer, attacker.uid))
   );
   if (!blockers.length) return false;
-  return attackers.some((attacker) =>
-    blockers.some((blocker) => canBlockAttack(defender, blocker.uid, attackerPlayer, attacker.uid))
-  );
+  return attackers.some((attacker) => {
+    const availableForAttacker = blockers.filter((blocker) => canBlockAttack(defender, blocker.uid, attackerPlayer, attacker.uid));
+    return availableForAttacker.length >= getMinimumBlockersRequired(attacker);
+  });
 }
 
 function startBlockDeclaration(attackerId) {
@@ -4530,6 +7067,7 @@ function chooseAutoBlockers(attackerPlayer, defender, attackerInstance, availabl
   const attackerPower = getCharacterPower(attackerInstance);
   if (attackerPower <= 0) return [];
   const attackerLethal = Math.max(1, getLethalDamageNeeded(attackerInstance));
+  const minimumBlockers = getMinimumBlockersRequired(attackerInstance);
   const sorted = [...availableBlockers].sort((a, b) => {
     const powerDiff = getCharacterPower(b) - getCharacterPower(a);
     if (powerDiff) return powerDiff;
@@ -4541,10 +7079,10 @@ function chooseAutoBlockers(attackerPlayer, defender, attackerInstance, availabl
     if (!canBlockAttack(defender, blocker.uid, attackerPlayer, attackerInstance.uid)) continue;
     chosen.push(blocker);
     blockingPower += getCharacterPower(blocker);
-    if (blockingPower >= attackerLethal) break;
+    if (chosen.length >= minimumBlockers && blockingPower >= attackerLethal) break;
     if (chosen.length >= 3) break;
   }
-  return chosen;
+  return chosen.length >= minimumBlockers ? chosen : [];
 }
 
 function declareAutoBlockers(attackerId) {
@@ -4633,6 +7171,17 @@ function exhaustDeclaredBlockers(defender) {
 function finishHumanBlocks() {
   const game = app.game;
   if (!game || game.combat.awaitingBlockers !== "human") return false;
+  const attackerPlayer = getPlayer(game, game.combat.attackerId);
+  const invalidEntry = Object.entries(game.combat.blockers || {}).find(([attackerUid, blockerUids]) => {
+    if (!blockerUids.length) return false;
+    const attacker = findBattlefieldInstance(attackerPlayer, attackerUid);
+    return blockerUids.length < getMinimumBlockersRequired(attacker);
+  });
+  if (invalidEntry) {
+    const attacker = findBattlefieldInstance(attackerPlayer, invalidEntry[0]);
+    showInteractionHint(`${getCardName(app.cardByCode.get(attacker?.cardId))} só pode ser bloqueado por ${getMinimumBlockersRequired(attacker)} ou mais personagens.`);
+    return false;
+  }
   exhaustDeclaredBlockers(game.players.human);
   game.combat.awaitingBlockers = "";
   if (hasDeclaredBlockers(game)) {
@@ -4790,7 +7339,7 @@ function resolveDeclaredAttacks(playerId) {
       .map((blockerUid) => findBattlefieldInstance(opponent, blockerUid))
       .filter(Boolean);
 
-    if (blockers.length) {
+    if (blockers.length >= getMinimumBlockersRequired(attacker)) {
       assignBlockedCombatDamage(damageEvents, player, opponent, attacker, blockers, target);
       return;
     }
@@ -4929,7 +7478,7 @@ function assignDirectCharacterGroupDamage(events, attackerPlayer, defender, targ
 
 function assignBlockedCombatDamage(events, attackerPlayer, defender, attacker, blockers, target) {
   const attackerCard = app.cardByCode.get(attacker.cardId);
-  const hasOverrun = cardHasKeyword(attackerCard, "SOBREPUJAR");
+  const hasOverrun = instanceHasKeyword(attacker, "SOBREPUJAR");
   let remainingPower = getCharacterPower(attacker);
   const batch = getCombatBatch(attacker.uid);
 
@@ -4984,6 +7533,12 @@ async function applyDamageReplacementWindow(game, event) {
     amount: toNumber(event.amount, 0),
     preventedAmount: 0
   };
+  (game.effects || []).forEach((effect) => {
+    if (effect.type !== "preventDamageToInstance") return;
+    if (!effectTargetsInstance(effect, { uid: target.uid, owner: target.playerId })) return;
+    damageEvent.preventedAmount = "all";
+    addLog(game, `${effect.label || "Prevenção"} preveniu ${damageEvent.amount} de dano.`, "Engine");
+  });
   await resolveImmediateGameEvent("damage.would_be_dealt", {
     game,
     source,
@@ -5068,7 +7623,7 @@ function wait(ms) {
 }
 
 async function runCombatDamageSequence(game, attackerId, events, attackerCount) {
-  await wait(360);
+    await wait(560);
   emitGameEvent("combat.damage.before", {
     game,
     attackerId,
@@ -5083,10 +7638,10 @@ async function runCombatDamageSequence(game, attackerId, events, attackerCount) 
       await applyCombatDamageEvent(game, event);
     }
     renderGame();
-    await wait(520);
+    await wait(820);
     clearDamageFlashFlags(game);
     renderGame();
-    await wait(140);
+    await wait(260);
   }
 
   const dying = getLethalCharacterRefs(game);
@@ -5095,7 +7650,7 @@ async function runCombatDamageSequence(game, attackerId, events, attackerCount) 
       instance.dying = true;
     });
     renderGame();
-    await wait(620);
+    await wait(860);
   }
 
   destroyLethalCharacters(game);
@@ -5166,7 +7721,7 @@ async function animateResolutionEvents(events, kind = "damage") {
     bursts.push(burst);
   });
   playTone(kind === "heal" ? "heal" : "hit");
-  await wait(events.some((event) => getResolutionEventElement(event)) ? 760 : 340);
+  await wait(events.some((event) => getResolutionEventElement(event)) ? 1080 : 520);
   bursts.forEach((burst) => burst.remove());
   flashed.forEach((element) => {
     element.classList.remove("is-heal-flash", "is-damage-flash");
@@ -5194,7 +7749,7 @@ async function animateCombatDamageEvents(events) {
     bursts.push(burst);
   });
   playTone("hit");
-  await wait(events.some((event) => getDamageEventElement(event)) ? 560 : 260);
+  await wait(events.some((event) => getDamageEventElement(event)) ? 860 : 420);
   bursts.forEach((burst) => burst.remove());
   shaking.forEach((element) => element.classList.remove("is-combat-shaking"));
 }
@@ -5205,7 +7760,7 @@ function dealCharacterDamage(player, uid, amount, reason, source = "", options =
   const sourceRef = normalizeDamageSourceRef(source);
   const sourcePlayerId = sourceRef?.playerId || "";
   const card = app.cardByCode.get(instance.cardId);
-  if (cardHasKeyword(card, "INDESTRUTIVEL")) {
+  if (instanceHasKeyword(instance, "INDESTRUTIVEL")) {
     addLog(app.game, `${getCardName(card)} preveniu ${amount} de dano por INDESTRUTIVEL.`);
     return;
   }
@@ -5240,11 +7795,12 @@ function destroyLethalCharacters(game) {
       const resistance = getCharacterResistance(instance);
       const lethalByDamage = toNumber(instance.damage, 0) >= resistance && resistance > 0;
       const zeroResistance = resistance <= 0;
-      if (lethalByDamage && cardHasKeyword(card, "INDESTRUTIVEL")) {
+      if (lethalByDamage && instanceHasKeyword(instance, "INDESTRUTIVEL")) {
         survivors.push(instance);
         return;
       }
       if (lethalByDamage || zeroResistance) {
+        cleanupAttachmentsForLeaving(game, instance.uid);
         player.cemetery.push(instance.cardId);
         emitGameEvent("permanent.leaves_battlefield", {
           game,
@@ -5277,7 +7833,7 @@ function getLethalCharacterRefs(game) {
       const resistance = getCharacterResistance(instance);
       const lethalByDamage = toNumber(instance.damage, 0) >= resistance && resistance > 0;
       const zeroResistance = resistance <= 0;
-      if (lethalByDamage && cardHasKeyword(card, "INDESTRUTIVEL")) return;
+      if (lethalByDamage && instanceHasKeyword(instance, "INDESTRUTIVEL")) return;
       if (lethalByDamage || zeroResistance) refs.push({ player, instance });
     });
   });
@@ -5354,11 +7910,13 @@ function advancePhase(game) {
   const enteredCombat = previous === "preparation" && currentPhase(game) === "combat";
   if (enteredCombat) {
     game.combat.step = "attackers";
-    showPhaseAlert("combat", game.activePlayer);
   }
   const next = currentPhase(game);
   emitPhaseBeginEvent(game, next, game.activePlayer);
-  if (next === "regroup") expireTemporaryEffects(game, "until_regroup");
+  if (next === "regroup") {
+    clearAllEssencePools(game);
+    expireTemporaryEffects(game, "until_regroup");
+  }
   addLog(game, `avancou de ${PHASE_LABELS[previous]} para ${PHASE_LABELS[next]}.`, currentPlayer(game).label);
   renderGame();
   if (enteredCombat) {
@@ -5400,6 +7958,7 @@ function enterDiscardStepOrEndTurn(game) {
 
 function endTurn(game) {
   const previousPlayerId = game.activePlayer;
+  clearAllEssencePools(game);
   emitGameEvent("turn.end", {
     game,
     playerId: previousPlayerId,
@@ -5417,7 +7976,7 @@ function endTurn(game) {
 }
 
 function scheduleBotTurn(game, delay = null) {
-  const effectiveDelay = Number.isFinite(delay) ? delay : game.openingDrawSkipped ? 3400 : 1850;
+  const effectiveDelay = Number.isFinite(delay) ? delay : game.openingDrawSkipped ? 4300 : 2400;
   setTimeout(() => {
     if (!app.game || app.game !== game || game.status !== "active" || game.activePlayer !== "bot") return;
     runBotTurn();
@@ -5494,6 +8053,7 @@ function renderResultMatchMetric(label, value, caption = "Partida") {
 
 function showResult(title, text) {
   clearHumanAutoPass();
+  app.resultViewingBoard = false;
   const game = app.game;
   if (!game) {
     els.gameResult.innerHTML = `
@@ -5523,7 +8083,7 @@ function showResult(title, text) {
         <img class="result-avatar" src="${escapeHtml(getCardArt(winnerChampion))}" alt="${escapeHtml(getCardName(winnerChampion))}" draggable="false" />
         <div>
           <span class="section-kicker">Resultado</span>
-          <strong>${escapeHtml(title)}</strong>
+          <b>${escapeHtml(title)}</b>
           <p>${escapeHtml(text)}</p>
           <small>${escapeHtml(getCardName(winnerChampion))} - ${escapeHtml(winner.deckName)}</small>
         </div>
@@ -5544,7 +8104,10 @@ function showResult(title, text) {
         ${renderResultMetric("Cartas Compradas", stats.cardsDrawn.human, stats.cardsDrawn.bot)}
       </div>
 
-      <button type="button" data-result-new-game>Nova partida</button>
+      <div class="result-actions">
+        <button type="button" data-result-view-board>Ver campo de batalha</button>
+        <button type="button" data-result-new-game>Nova partida</button>
+      </div>
     </div>
   `;
   els.gameResult.classList.remove("is-hidden");
@@ -5554,7 +8117,12 @@ function showPhaseAlert(phase, playerId) {
   const player = app.game?.players?.[playerId];
   const champion = player ? app.cardByCode.get(player.identity.champion) : null;
   const avatar = champion ? getCardArt(champion) : "";
-  const label = PHASE_LABELS[phase] || phase;
+  const label = phase === "prepare"
+    ? (playerId === "human" ? "Seu turno" : "Turno do oponente")
+    : (PHASE_LABELS[phase] || phase);
+  const detail = phase === "prepare"
+    ? `Turno ${app.game?.turnNumber || 1}`
+    : (player?.label || "Turno");
   let overlay = document.getElementById("phaseAlert");
   if (!overlay) {
     overlay = document.createElement("div");
@@ -5566,7 +8134,7 @@ function showPhaseAlert(phase, playerId) {
   overlay.innerHTML = `
     <div class="phase-alert-card">
       ${avatar ? `<img class="phase-alert-avatar" src="${escapeHtml(avatar)}" alt="${escapeHtml(getCardName(champion))}" />` : ""}
-      <span>${escapeHtml(player?.label || "Turno")}</span>
+      <span>${escapeHtml(detail)}</span>
       <strong>${escapeHtml(label)}</strong>
     </div>
   `;
@@ -5574,7 +8142,7 @@ function showPhaseAlert(phase, playerId) {
   window.clearTimeout(overlay._hideTimer);
   overlay._hideTimer = window.setTimeout(() => {
     overlay.classList.remove("is-visible");
-  }, 1700);
+  }, 2300);
 }
 
 function showPlayedCardAnimation(card, playerId) {
@@ -5587,6 +8155,9 @@ function showConsecratedCardAnimation(card, playerId, detail = "") {
 
 function showCardActionAnimation(card, playerId, label, detail = "") {
   if (!card) return;
+  const detailData = typeof detail === "object" && detail !== null ? detail : { text: detail };
+  const detailText = detailData.text || `${getCardTypeLabel(card)} - custo ${getCost(card)}`;
+  const moral = detailData.moral || null;
   let overlay = document.getElementById("playedCardAnimation");
   if (!overlay) {
     overlay = document.createElement("div");
@@ -5600,13 +8171,21 @@ function showCardActionAnimation(card, playerId, label, detail = "") {
       <span>${escapeHtml(label)}</span>
       <img src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" draggable="false" />
       <strong>${escapeHtml(getCardName(card))}</strong>
-      <small>${escapeHtml(detail || `${getCardTypeLabel(card)} - custo ${getCost(card)}`)}</small>
+      ${moral ? `
+        <div class="played-card-moral is-${escapeHtml(moral.tone)}">
+          ${moral.icon ? `<img src="${escapeHtml(moral.icon)}" alt="${escapeHtml(moral.virtueName)}" draggable="false" />` : ""}
+          <span>${escapeHtml(moral.virtueName)}</span>
+          <strong>Nv${escapeHtml(moral.after)}</strong>
+          <i aria-hidden="true">${moral.direction === "up" ? "↑" : "↓"}</i>
+        </div>
+      ` : ""}
+      <small>${escapeHtml(detailText)}</small>
     </div>
   `;
   window.clearTimeout(overlay._hideTimer);
   overlay._hideTimer = window.setTimeout(() => {
     overlay.classList.remove("is-visible");
-  }, 1920);
+  }, 2600);
 }
 
 function showPulverizeAnimation(cardIds, playerId) {
@@ -5643,7 +8222,47 @@ function showPulverizeAnimation(cardIds, playerId) {
     overlay._hideTimer = window.setTimeout(() => {
       overlay.classList.remove("is-visible");
       resolve();
-    }, 1440);
+    }, 1900);
+  });
+}
+
+function showRevealCardsAnimation(cardIds, playerId, options = {}) {
+  const cards = (cardIds || []).map((cardId) => app.cardByCode.get(cardId)).filter(Boolean);
+  if (!cards.length) return Promise.resolve();
+  return new Promise((resolve) => {
+    playTone("soft");
+    let overlay = document.getElementById("revealAnimation");
+    if (!overlay) {
+      overlay = document.createElement("div");
+      overlay.id = "revealAnimation";
+      overlay.className = "reveal-animation";
+      document.body.appendChild(overlay);
+    }
+    const player = app.game?.players?.[playerId];
+    const title = options.title || "Cartas reveladas";
+    const detail = options.detail || `${player?.label || "Jogador"} revelou ${cards.length} carta${cards.length === 1 ? "" : "s"}.`;
+    overlay.className = `reveal-animation is-visible ${playerId === "human" ? "is-human-reveal" : "is-bot-reveal"}`;
+    overlay.innerHTML = `
+      <div class="reveal-animation-panel">
+        <span>${escapeHtml(detail)}</span>
+        <strong>${escapeHtml(title)}</strong>
+        <div class="reveal-animation-cards" style="--reveal-count:${cards.length};">
+          ${cards.map((card, index) => `
+            <figure style="--reveal-index:${index};">
+              <img src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" draggable="false" />
+              <figcaption>${escapeHtml(getCardName(card))}</figcaption>
+            </figure>
+          `).join("")}
+        </div>
+        <button type="button" data-reveal-confirm>Continuar</button>
+      </div>
+    `;
+    const finish = () => {
+      overlay.classList.remove("is-visible");
+      resolve();
+    };
+    window.clearTimeout(overlay._hideTimer);
+    overlay.querySelector("[data-reveal-confirm]")?.addEventListener("click", finish, { once: true });
   });
 }
 
@@ -5692,7 +8311,7 @@ function showDrawAnimation(cardIds, playerId, onComplete = () => {}) {
   if (requiresConfirm) {
     overlay.querySelector("[data-draw-confirm]")?.addEventListener("click", finish, { once: true });
   } else {
-    overlay._hideTimer = window.setTimeout(finish, 1680);
+    overlay._hideTimer = window.setTimeout(finish, 2200);
   }
 }
 
@@ -5731,7 +8350,7 @@ function runBotTurn() {
   const bot = game.players.bot;
   const mode = game.botMode || "basic";
 
-  scheduleBotPhaseStep(game, "consecration", 820, () => {
+  scheduleBotPhaseStep(game, "consecration", 1300, () => {
     const consecrateId = chooseBotConsecration(bot, mode);
     if (consecrateId) applyConsecrate("bot", consecrateId);
     if (currentPhase(app.game) === "consecration") {
@@ -5740,22 +8359,34 @@ function runBotTurn() {
     renderGame();
   });
 
-  scheduleBotPhaseStep(game, "preparation", 1820, () => {
+  scheduleBotPhaseStep(game, "preparation", 2600, () => {
+    if (activateBotChampionIfUseful(bot)) {
+      renderGame();
+      return;
+    }
     playBotCards(bot, mode, 1);
     renderGame();
   });
 
-  scheduleBotPhaseStep(game, "preparation", 2820, () => {
+  scheduleBotPhaseStep(game, "preparation", 3900, () => {
+    if (activateBotChampionIfUseful(bot)) {
+      renderGame();
+      return;
+    }
     playBotCards(bot, mode, 1);
     renderGame();
   });
 
-  scheduleBotPhaseStep(game, "preparation", 3820, () => {
+  scheduleBotPhaseStep(game, "preparation", 5200, () => {
+    if (activateBotChampionIfUseful(bot)) {
+      renderGame();
+      return;
+    }
     playBotCards(bot, mode, 1);
     renderGame();
   });
 
-  scheduleBotPhaseStep(game, "preparation", 5000, () => {
+  scheduleBotPhaseStep(game, "preparation", 6800, () => {
     const continueToCombat = () => {
       if (!app.game || app.game !== game || app.game.status !== "active") return;
       advanceBotTo("combat");
@@ -5769,7 +8400,7 @@ function runBotTurn() {
     continueToCombat();
   });
 
-  scheduleBotStep(game, 6500, () => {
+  scheduleBotStep(game, 9000, () => {
     endBotTurnWhenCombatIsReady(game);
   });
 }
@@ -5803,7 +8434,10 @@ function advanceBotTo(phase) {
   const changed = setGamePhase(game, phase, "bot");
   if (changed) {
     emitPhaseBeginEvent(game, phase, "bot");
-    if (phase === "regroup") expireTemporaryEffects(game, "until_regroup");
+    if (phase === "regroup") {
+      clearAllEssencePools(game);
+      expireTemporaryEffects(game, "until_regroup");
+    }
   }
   addLog(game, `entrou em ${PHASE_LABELS[phase]}.`, "Bot");
 }
@@ -5819,11 +8453,67 @@ function chooseBotConsecration(bot, mode) {
   return sorted[0] || "";
 }
 
+function getBotEssenceGeneratorUids(bot) {
+  return getReadyEssenceGeneratorInstances(bot).map((instance) => instance.uid);
+}
+
+function getCheapestReachableNonSinCost(player) {
+  const generatorCount = getBotEssenceGeneratorUids(player).length;
+  const availableAfterGenerators = getAvailableEssence(player) + generatorCount;
+  return [...player.hand]
+    .map((cardId) => app.cardByCode.get(cardId))
+    .filter((card) => card && getCardTypeCode(card) !== "PEC")
+    .map((card) => getEffectivePlayCost(player, card))
+    .filter((cost) => cost > getAvailableEssence(player) && cost <= availableAfterGenerators)
+    .sort((a, b) => a - b)[0] ?? Infinity;
+}
+
+function activateBotEssenceGeneratorsForHand(bot) {
+  let activated = 0;
+  let targetCost = getCheapestReachableNonSinCost(bot);
+  while (Number.isFinite(targetCost) && getAvailableEssence(bot) < targetCost) {
+    const uid = getBotEssenceGeneratorUids(bot)[0];
+    const instance = uid ? findBattlefieldInstance(bot, uid) : null;
+    if (!instance || !activateEssenceGeneratorForPayment(bot, instance)) break;
+    activated += 1;
+    targetCost = getCheapestReachableNonSinCost(bot);
+  }
+  return activated;
+}
+
+function scoreEquipmentAttachmentTarget(equipment, target) {
+  const power = getCharacterPower(target);
+  const resistance = getCharacterResistance(target);
+  let score = power * 2 + resistance;
+  if (equipment.cardId === EQUIPMENT_IDS.sword && power >= 4) score += 6;
+  if (equipment.cardId === EQUIPMENT_IDS.crown) score += resistance + 3;
+  if (target.cardId === "FND-PER-001") score += 4;
+  return score;
+}
+
+function autoAttachEquipmentForBot(bot) {
+  let attached = 0;
+  bot.battlefield
+    .filter((instance) => isEquipmentInstance(instance))
+    .forEach((equipment) => {
+      const target = bot.battlefield
+        .filter((candidate) => canAttachEquipmentTo(equipment, candidate, bot.id, bot.id))
+        .sort((left, right) => scoreEquipmentAttachmentTarget(equipment, right) - scoreEquipmentAttachmentTarget(equipment, left))[0];
+      if (!target) return;
+      if (equipment.attachedTo === target.uid) return;
+      if (attachEquipmentTo(app.game, { playerId: bot.id, instance: equipment }, { playerId: bot.id, instance: target })) {
+        attached += 1;
+      }
+    });
+  return attached;
+}
+
 function playBotCards(bot, mode, maxCards = Infinity) {
   let played = true;
   let playedCount = 0;
   while (played && playedCount < maxCards) {
     played = false;
+    activateBotEssenceGeneratorsForHand(bot);
     const candidates = [...bot.hand].sort((a, b) => {
       const cardA = app.cardByCode.get(a);
       const cardB = app.cardByCode.get(b);
@@ -5835,6 +8525,7 @@ function playBotCards(bot, mode, maxCards = Infinity) {
     const next = candidates.find((cardId) => canPlayCard(bot, cardId) && canBotSurviveSinCost(bot, cardId));
     if (next) {
       applyPlayCard("bot", next);
+      autoAttachEquipmentForBot(bot);
       playedCount += 1;
       played = mode === "test" ? false : getAvailableEssence(bot) > 0;
     }
@@ -5843,9 +8534,8 @@ function playBotCards(bot, mode, maxCards = Infinity) {
 }
 
 function attackWithBot(bot) {
-  const botHasTrick = hasPlayableMiracle(bot);
   const attackers = bot.battlefield.filter((instance) => (
-    canAttackWith(bot, instance.uid) && (getCharacterPower(instance) > 0 || botHasTrick)
+    canAttackWith(bot, instance.uid) && getCharacterPower(instance) > 0
   ));
   attackers.forEach((instance) => {
     selectAttackTarget("bot", instance.uid, chooseBotAttackTarget(instance));
@@ -5923,6 +8613,7 @@ function reorderHandCard(cardId, targetCardId = "") {
 function renderGame() {
   const game = app.game;
   if (!game) return;
+  enforceEquipmentState(game);
   const human = game.players.human;
   const bot = game.players.bot;
   const selectedHandId = getSelectedHandCardId();
@@ -5948,11 +8639,19 @@ function renderGame() {
   els.humanEssence.innerHTML = renderEssence(human);
   updatePhaseFocusHighlights(game, phase);
   els.humanHand.style.setProperty("--hand-count", String(human.hand.length));
-  els.humanHand.innerHTML = human.hand.map((cardId) => renderCardButton(cardId, {
-    selected: selectedHandId === cardId,
-    actionable: (canAct("human") || isHumanPriorityOpen()) && (canConsecrate(human, cardId) || canPlayCard(human, cardId) || canDiscardForHandLimit(human, cardId)),
-    zone: "hand"
-  })).join("");
+  els.humanHand.innerHTML = human.hand.map((cardId) => {
+    const card = app.cardByCode.get(cardId);
+    const baseCost = getCost(card);
+    const effectiveCost = getEffectivePlayCost(human, card);
+    const costDiscounted = getCardTypeCode(card) !== "PEC" && effectiveCost < baseCost;
+    return renderCardButton(cardId, {
+      selected: selectedHandId === cardId,
+      actionable: (canAct("human") || isHumanPriorityOpen()) && (canConsecrate(human, cardId) || canPlayCard(human, cardId) || canDiscardForHandLimit(human, cardId)),
+      costDiscounted,
+      effectiveCost,
+      zone: "hand"
+    });
+  }).join("");
   els.gameLog.innerHTML = `${renderCombatSummary(game)}${game.log.map((entry) => `
     <div class="log-entry">${entry.actor ? `<strong>${escapeHtml(entry.actor)}:</strong> ` : ""}${escapeHtml(entry.message)}</div>
   `).join("")}`;
@@ -6017,19 +8716,21 @@ function renderStackEdgePanel(game) {
     return;
   }
   els.stackEdgePanel.classList.add("is-visible");
+  const visibleStack = game.stack.slice().reverse();
   els.stackEdgePanel.innerHTML = `
     <span>Pilha</span>
-    ${game.stack.map((item) => {
+    ${visibleStack.map((item, index) => {
       const card = app.cardByCode.get(item.cardId);
       const owner = item.owner === "human" ? "Voce" : "Bot";
       const icon = card ? getCardArt(card) : item.source?.icon || "";
       const iconLabel = card ? getCardName(card) : item.source?.label || item.label;
+      const zoomCardId = card?.code || item.source?.cardId || item.source?.sourceId || "";
       return `
-        <div class="stack-edge-card">
+        <div class="stack-edge-card ${index === 0 ? "is-stack-top" : ""}" ${zoomCardId && app.cardByCode.has(zoomCardId) ? `data-zoom-card="${escapeHtml(zoomCardId)}"` : ""}>
           ${icon ? `<img src="${escapeHtml(icon)}" alt="${escapeHtml(iconLabel)}" />` : ""}
           <div>
             <strong>${escapeHtml(item.label)}</strong>
-            <small>${escapeHtml(owner)}</small>
+            <small>${index === 0 ? "Topo" : "Abaixo"} · ${escapeHtml(owner)}</small>
           </div>
         </div>
       `;
@@ -6246,17 +8947,21 @@ function renderIdentityTile(player, card, kind, attrs = "") {
   const isTemple = kind === "temple";
   const remaining = isTerritory ? Math.max(0, player.maxTerritory - player.territoryDamage) : 0;
   const currentValue = isTerritory ? remaining : isTemple ? getAvailableEssence(player) : "";
-  const totalValue = isTerritory ? player.maxTerritory : isTemple ? player.essence.length : "";
+  const totalValue = isTerritory ? player.maxTerritory : isTemple ? getTotalEssenceCapacity(player) : "";
   const labels = isTerritory ? getTerritoryCombatLabels(player.id) : [];
   const attackTargetClass = isTerritory && isHumanAttackTargetAvailable(getTerritoryAttackTarget(player.id)) ? " is-click-attack-target" : "";
   const damagedClass = isTerritory && labels.length ? " is-attack-target" : "";
+  const championCoveredClass = isChampion && player.championCovered ? " is-covered" : "";
+  const championActionClass = isChampion && player.id === "human" && canUseChampionAction(player) ? " is-actionable" : "";
   const image = getCardArt(card);
   const label = kind === "champion" ? "Campeao" : kind === "territory" ? "Territorio" : "Templo";
   const marker = isTerritory || isTemple
     ? `<strong class="identity-dock-value"><span>${escapeHtml(currentValue)}</span><small>/${escapeHtml(totalValue)}</small></strong>`
-    : "";
+    : isChampion && player.championCovered
+      ? `<strong class="identity-dock-state">Encoberto</strong>`
+      : "";
   return `
-    <button class="identity-dock-tile identity-dock-tile--${escapeHtml(kind)}${damagedClass}${attackTargetClass}" type="button" ${attrs}>
+    <button class="identity-dock-tile identity-dock-tile--${escapeHtml(kind)}${damagedClass}${attackTargetClass}${championCoveredClass}${championActionClass}" type="button" ${attrs}>
       <img class="${isLandscapeCard(card) ? "is-landscape" : ""}" src="${escapeHtml(image)}" alt="${escapeHtml(getCardName(card))}" loading="lazy" draggable="false" />
       <span>${escapeHtml(label)}</span>
       ${marker}
@@ -6304,7 +9009,7 @@ function renderPlayerArea(player, hideHand) {
       ${templeExpanded
         ? renderTempleDockExpansion(player, temple)
         : `
-          ${renderIdentityTile(player, champion, "champion", `data-zoom-card="${escapeHtml(player.identity.champion)}"`)}
+          ${renderIdentityTile(player, champion, "champion", `data-champion-player="${escapeHtml(player.id)}" data-zoom-card="${escapeHtml(player.identity.champion)}"`)}
           ${renderIdentityTile(player, territory, "territory", `data-territory-player="${escapeHtml(player.id)}" data-zoom-card="${escapeHtml(player.identity.territory)}"`)}
           ${renderIdentityTile(player, temple, "temple", `data-temple-player="${escapeHtml(player.id)}" data-zoom-card="${escapeHtml(player.identity.temple)}"`)}
         `}
@@ -6374,6 +9079,8 @@ function renderBattlefield(player, selectedUid, selectedAttackers = new Set()) {
           attackTarget: combatLabels.some((label) => label.startsWith("T")),
           blocking: combatLabels.some((label) => label.startsWith("B")),
           attackTargetable: isHumanAttackTargetAvailable(target),
+          actionable: player.id === "human" && canUsePermanentAction(player, instance),
+          essenceGenerator: isEssenceGeneratorInstance(instance),
           combatLabels,
           damage: instance.damage || 0,
           damageFlash: instance.damageFlash,
@@ -6399,14 +9106,18 @@ function renderCardButton(cardId, options = {}) {
   const typeCode = getCardTypeCode(card);
   const isCharacter = typeCode === "PER";
   const instance = options.instance || null;
+  const attachedEquipment = isFieldTile && isCharacter && instance ? getAttachedEquipmentInstances(instance) : [];
+  const isAttachedEquipment = isFieldTile && instance && isEquipmentInstance(instance) && Boolean(instance.attachedTo);
   const statModifier = isFieldTile && isCharacter && instance ? getCharacterStatModifier(instance) : null;
   const attack = isFieldTile && isCharacter && instance ? getCharacterPower(instance) : toNumber(card.stats?.attack, 0);
   const resistance = isFieldTile && isCharacter && instance ? getCharacterResistance(instance) : toNumber(card.stats?.resistance, 0);
+  const costDisplay = options.costDiscounted ? options.effectiveCost : getCost(card);
   const damage = toNumber(options.damage, 0);
   const virtuePips = isHandTile
     ? renderCardVirtuePips(card, 5, { fixedSlots: true })
     : renderCardVirtuePips(card);
   const statusPips = [
+    options.essenceGenerator ? `<span title="Gera Essência">{E}</span>` : "",
     ...(options.combatLabels || []).map((label) => `<span title="Combate">${escapeHtml(label)}</span>`),
     options.declared && !(options.combatLabels || []).some((label) => label.startsWith("A")) ? `<span title="Atacante declarado">A</span>` : ""
   ].filter(Boolean).join("");
@@ -6417,9 +9128,13 @@ function renderCardButton(cardId, options = {}) {
     isFieldTile ? `is-field-type-${String(typeCode || "CRD").toLowerCase()}` : "",
     isHandTile ? `is-hand-type-${String(typeCode || "CRD").toLowerCase()}` : "",
     isLandscapeCard(card) ? "is-landscape" : "",
+    options.costDiscounted ? "is-cost-discounted" : "",
     statModifier ? "is-stat-modified" : "",
     statModifier ? `is-stat-${statModifier.tone}` : "",
     options.actionable ? "is-actionable-card" : "",
+    options.essenceGenerator ? "is-essence-generator" : "",
+    attachedEquipment.length ? "is-equipped-card" : "",
+    isAttachedEquipment ? "is-attached-equipment" : "",
     options.attackSelected ? "is-attack-selected" : "",
     options.attackTarget ? "is-attack-target" : "",
     options.attackTargetable ? "is-click-attack-target" : "",
@@ -6443,12 +9158,22 @@ function renderCardButton(cardId, options = {}) {
   return `
     <button class="${classes}" type="button" ${data} ${draggable} ${style} data-zoom-card="${escapeHtml(cardId)}" title="${escapeHtml(getCardName(card))}">
       <img class="card-main-art" src="${escapeHtml(image)}" alt="${escapeHtml(getCardName(card))}" loading="lazy" draggable="false" />
-      ${isHandTile ? `<span class="hand-card-cost">${escapeHtml(getCost(card))}</span>` : ""}
+      ${isHandTile ? `<span class="hand-card-cost"><b>${escapeHtml(costDisplay)}</b></span>` : ""}
       ${isHandTile && virtuePips ? `<span class="hand-card-pips">${virtuePips}</span>` : ""}
       ${isHandTile ? `<span class="card-type-gem card-type-gem--${String(typeCode || "CRD").toLowerCase()}"></span>` : ""}
       ${isHandTile && isCharacter ? `<span class="hand-card-stats">${attack}/${resistance}</span>` : ""}
       ${isFieldTile && statusPips ? `<span class="field-card-pips">${statusPips}</span>` : ""}
-      ${isFieldTile && isCharacter && statModifier ? `<span class="field-card-modifier is-${statModifier.tone}">${escapeHtml(statModifier.label)}</span>` : ""}
+      ${isFieldTile && attachedEquipment.length ? `
+        <span class="field-card-equipment" title="${escapeHtml(attachedEquipment.map(({ instance: equipment }) => getCardName(app.cardByCode.get(equipment.cardId))).join(", "))}">
+          ${attachedEquipment.slice(0, 3).map(({ instance: equipment }) => {
+            const equipmentCard = app.cardByCode.get(equipment.cardId);
+            return `<img src="${escapeHtml(getCardArt(equipmentCard))}" alt="${escapeHtml(getCardName(equipmentCard))}" draggable="false" />`;
+          }).join("")}
+          ${attachedEquipment.length > 3 ? `<b>+${attachedEquipment.length - 3}</b>` : ""}
+        </span>
+      ` : ""}
+      ${isFieldTile && attachedEquipment.length ? `<span class="field-card-equipped-link" aria-hidden="true"></span>` : ""}
+      ${isAttachedEquipment ? `<span class="field-card-attachment" title="Anexado">EQ</span>` : ""}
       ${isFieldTile && isCharacter ? `<span class="field-card-stats ${statModifier ? `is-${statModifier.tone}` : ""}">${attack}/${resistance}</span>` : ""}
       ${isFieldTile && isCharacter && damage > 0 ? `<span class="field-card-damage">${damage}</span>` : ""}
     </button>
@@ -6488,7 +9213,7 @@ function showCemeteryModal(playerId) {
       <div class="zone-modal-head">
         <div>
           <span>Zona de cemiterio</span>
-          <strong>${escapeHtml(player.label)} - ${cards.length} carta${cards.length === 1 ? "" : "s"}</strong>
+          <b>${escapeHtml(player.label)} - ${cards.length} carta${cards.length === 1 ? "" : "s"}</b>
         </div>
         <button type="button" data-close-zone-modal>Fechar</button>
       </div>
@@ -6527,7 +9252,7 @@ function showReserveModal(playerId) {
       <div class="zone-modal-head">
         <div>
           <span>Zona de reserva</span>
-          <strong>${escapeHtml(player.label)} - ${cards.length} carta${cards.length === 1 ? "" : "s"}</strong>
+          <b>${escapeHtml(player.label)} - ${cards.length} carta${cards.length === 1 ? "" : "s"}</b>
         </div>
         <button type="button" data-close-zone-modal>Fechar</button>
       </div>
@@ -6577,7 +9302,7 @@ function showVirtuesModal(playerId) {
       <div class="zone-modal-head">
         <div>
           <span>Eixos morais</span>
-          <strong>${escapeHtml(player.label)}</strong>
+          <b>${escapeHtml(player.label)}</b>
         </div>
         <button type="button" data-close-zone-modal>Fechar</button>
       </div>
@@ -6667,7 +9392,7 @@ function renderVirtueDebugModal(playerId = "human") {
       <div class="zone-modal-head">
         <div>
           <span>Teste local</span>
-          <strong>Ajuste manual de virtudes</strong>
+          <b>Ajuste manual de virtudes</b>
         </div>
         <button type="button" data-close-virtue-debug>Continuar</button>
       </div>
@@ -6774,7 +9499,7 @@ function showMoralChoiceModal({ playerId, title, description, choices, context, 
       <div class="zone-modal-head">
         <div>
           <span>Ajuste moral</span>
-          <strong>${escapeHtml(title)}</strong>
+          <b>${escapeHtml(title)}</b>
         </div>
       </div>
       <p class="moral-choice-description">${escapeHtml(description)}</p>
@@ -6821,7 +9546,7 @@ function clearTransientOverlays() {
   app.pendingVirtueDebug = null;
   app.drawAnimationPending = false;
   clearAllVirtueFeedback();
-  ["phaseAlert", "playedCardAnimation", "pulverizeAnimation", "drawAnimation", "interactionHint", "cardZoomPreview", "zoneModal", "blockPrompt", "botBlockReview"].forEach((id) => {
+  ["phaseAlert", "playedCardAnimation", "pulverizeAnimation", "revealAnimation", "drawAnimation", "interactionHint", "cardZoomPreview", "zoneModal", "blockPrompt", "botBlockReview"].forEach((id) => {
     document.getElementById(id)?.classList.remove("is-visible");
   });
   document.querySelectorAll(".combat-damage-burst").forEach((node) => node.remove());
@@ -6879,6 +9604,23 @@ function renderSelectedPanel() {
 }
 
 function renderActionState() {
+  if (app.resultViewingBoard) {
+    els.selectedCardPanel.hidden = true;
+    els.drawButton.hidden = true;
+    els.consecrateButton.hidden = true;
+    els.playCardButton.hidden = true;
+    els.attackButton.hidden = true;
+    els.endTurnButton.hidden = true;
+    els.nextPhaseButton.hidden = false;
+    els.nextPhaseButton.disabled = false;
+    els.nextPhaseButton.textContent = "VER RESULTADOS";
+    els.nextPhaseButton.dataset.actionSubtitle = "Retornar para a tela final";
+    els.nextPhaseButton.classList.remove("is-priority-button");
+    els.actionGrid?.style.setProperty("--action-columns", "1");
+    if (els.concedeButton) els.concedeButton.disabled = true;
+    return;
+  }
+  els.selectedCardPanel.hidden = false;
   const human = app.game.players.human;
   const humanTurn = canAct("human");
   const priorityOpen = isHumanPriorityOpen();
@@ -6886,7 +9628,7 @@ function renderActionState() {
   const readyAttackers = human.battlefield.filter((instance) => canAttackWith(human, instance.uid));
   const selectedAttackers = getSelectedAttackers(human);
   const phase = currentPhase(app.game);
-  const showAttack = !priorityOpen && humanTurn && phase === "combat" && !combatLocked && !human.combatDeclaredThisTurn;
+  const showAttack = !priorityOpen && humanTurn && phase === "combat" && !combatLocked && !human.combatDeclaredThisTurn && readyAttackers.length > 0;
   const showNextPhase = priorityOpen || (humanTurn && ["consecration", "preparation", "combat"].includes(phase) && !combatLocked);
   const showEndTurn = !priorityOpen && humanTurn && phase === "regroup" && !combatLocked;
   const visibleActionCount = [showAttack, showNextPhase, showEndTurn].filter(Boolean).length;
@@ -6919,12 +9661,16 @@ function renderActionState() {
 function getNextActionSubtitle(game, priorityOpen = false) {
   if (priorityOpen) return "Não fazer nada nesta janela";
   const phase = currentPhase(game);
+  const activePlayer = currentPlayer(game);
+  const hasReadyAttackers = activePlayer?.battlefield?.some((instance) => canAttackWith(activePlayer, instance.uid));
   const subtitles = {
     prepare: "Continuar para a compra",
     draw: "Continuar para a Consagração",
     consecration: "Omitir a ação estrutural",
     preparation: "Avançar para o Combate",
-    combat: game.combat?.step === "attackers-declared" ? "Abrir declaração de bloqueadores" : "Encerrar a etapa de Combate",
+    combat: game.combat?.step === "attackers-declared"
+      ? "Abrir declaração de bloqueadores"
+      : hasReadyAttackers ? "Encerrar a etapa de Combate" : "Nenhum atacante preparado",
     regroup: "Finalizar o turno"
   };
   return subtitles[phase] || "Continuar a partida";
@@ -6933,12 +9679,16 @@ function getNextActionSubtitle(game, priorityOpen = false) {
 function getNextActionLabel(game, priorityOpen = false) {
   if (priorityOpen) return "Passar prioridade";
   const phase = currentPhase(game);
+  const activePlayer = currentPlayer(game);
+  const hasReadyAttackers = activePlayer?.battlefield?.some((instance) => canAttackWith(activePlayer, instance.uid));
   const nextLabels = {
     prepare: "Ir para compra",
     draw: "Ir para consagracao",
     consecration: "Nao quero consagrar",
     preparation: "Ir para combate",
-    combat: game.combat?.step === "attackers-declared" ? "Ir para bloqueadores" : "Nao quero atacar",
+    combat: game.combat?.step === "attackers-declared"
+      ? "Ir para bloqueadores"
+      : hasReadyAttackers ? "Nao quero atacar" : "Ir para reagrupamento",
     regroup: "Encerrar turno"
   };
   return nextLabels[phase] || "Avancar etapa";
@@ -6950,6 +9700,8 @@ function renderBlockMiniCard(player, instance, label, options = {}) {
   const typeCode = getCardTypeCode(card);
   const damage = toNumber(instance.damage, 0);
   const isCharacter = typeCode === "PER";
+  const statModifier = isCharacter ? getCharacterStatModifier(instance) : null;
+  const equipment = isCharacter ? getAttachedEquipmentInstances(instance) : [];
   const classes = [
     "block-mini-card",
     `is-type-${String(typeCode || "CRD").toLowerCase()}`,
@@ -6964,8 +9716,16 @@ function renderBlockMiniCard(player, instance, label, options = {}) {
     <div class="${classes}" role="button" tabindex="0" ${data} ${draggable} ${options.disabled ? "aria-disabled=\"true\"" : ""} title="${escapeHtml(getCardName(card))}">
       <img src="${escapeHtml(getCardArt(card))}" alt="${escapeHtml(getCardName(card))}" draggable="false" />
       <span class="block-mini-label">${escapeHtml(label)}</span>
-      ${isCharacter ? `<strong class="block-mini-stats">${toNumber(card.stats?.attack, 0)}/${toNumber(card.stats?.resistance, 0)}</strong>` : ""}
+      ${isCharacter ? `<strong class="block-mini-stats ${statModifier ? `is-${statModifier.tone}` : ""}">${getCharacterPower(instance)}/${getCharacterResistance(instance)}</strong>` : ""}
       ${isCharacter && damage > 0 ? `<em class="block-mini-damage">${damage}</em>` : ""}
+      ${equipment.length ? `
+        <span class="block-mini-equipment" aria-label="Equipamentos anexados">
+          ${equipment.map(({ instance: equipmentInstance }) => {
+            const equipmentCard = app.cardByCode.get(equipmentInstance.cardId);
+            return `<img src="${escapeHtml(getCardArt(equipmentCard))}" alt="${escapeHtml(getCardName(equipmentCard))}" draggable="false" />`;
+          }).join("")}
+        </span>
+      ` : ""}
     </div>
   `;
 }
@@ -7164,13 +9924,42 @@ function getNoiseBuffer(ctx) {
   return buffer;
 }
 
+function getSfxOutput(ctx) {
+  if (app.sfxOutput?.ctx === ctx) return app.sfxOutput.input;
+  const input = ctx.createGain();
+  const dry = ctx.createGain();
+  const delay = ctx.createDelay(.18);
+  const feedback = ctx.createGain();
+  const wet = ctx.createGain();
+  const compressor = ctx.createDynamicsCompressor();
+  dry.gain.value = .92;
+  wet.gain.value = .08;
+  delay.delayTime.value = .045;
+  feedback.gain.value = .12;
+  compressor.threshold.value = -18;
+  compressor.knee.value = 18;
+  compressor.ratio.value = 4;
+  compressor.attack.value = .003;
+  compressor.release.value = .12;
+  input.connect(dry);
+  input.connect(delay);
+  delay.connect(feedback);
+  feedback.connect(delay);
+  delay.connect(wet);
+  dry.connect(compressor);
+  wet.connect(compressor);
+  compressor.connect(ctx.destination);
+  app.sfxOutput = { ctx, input };
+  return input;
+}
+
 function connectEnvelope(ctx, volume, start, duration, attack = .006, releaseFloor = .0001) {
   const gain = ctx.createGain();
   gain.gain.cancelScheduledValues(start);
   gain.gain.setValueAtTime(releaseFloor, start);
   gain.gain.exponentialRampToValueAtTime(Math.max(releaseFloor, volume), start + attack);
   gain.gain.exponentialRampToValueAtTime(releaseFloor, start + Math.max(attack + .01, duration));
-  gain.connect(ctx.destination);
+  gain.connect(getSfxOutput(ctx));
   return gain;
 }
 
@@ -7473,6 +10262,12 @@ function bindEvents() {
   els.resetGameButton?.addEventListener("click", restartGame);
   els.resultNewGameButton?.addEventListener("click", showSetup);
   els.gameResult.addEventListener("click", (event) => {
+    if (event.target.closest("[data-result-view-board]")) {
+      app.resultViewingBoard = true;
+      els.gameResult.classList.add("is-hidden");
+      renderGame();
+      return;
+    }
     if (event.target.closest("[data-result-new-game]")) showSetup();
   });
   els.soundToggleButton?.addEventListener("click", toggleSound);
@@ -7495,14 +10290,19 @@ function bindEvents() {
   });
 
   document.addEventListener("contextmenu", (event) => {
-    if (event.target.closest(".play-card, .essence-card, .identity-dock-tile, .identity-dock-essence, .zone-modal-card, .combat-resolution-chip, .block-prompt, #cardZoomPreview, .played-card-animation, .pulverize-animation, .draw-animation")) {
+    if (event.target.closest(".play-card, .essence-card, .identity-dock-tile, .identity-dock-essence, .zone-modal-card, .engine-review-card, .stack-edge-card, .combat-resolution-chip, .block-prompt, #cardZoomPreview, .played-card-animation, .pulverize-animation, .draw-animation")) {
       event.preventDefault();
     }
   });
 
-  els.humanBattlefield.addEventListener("click", (event) => {
+  els.humanBattlefield.addEventListener("click", async (event) => {
     const button = event.target.closest("[data-battlefield-card]");
     if (!button) return;
+    if (await applyActivatePermanentAction("human", button.dataset.battlefieldCard)) {
+      app.selected = null;
+      renderGame();
+      return;
+    }
     if (canAct("human") && currentPhase(app.game) === "combat" && toggleAttackSelection("human", button.dataset.battlefieldCard)) {
       app.selected = null;
       renderGame();
@@ -7540,6 +10340,12 @@ function bindEvents() {
     }
   });
   els.nextPhaseButton.addEventListener("click", () => {
+    if (app.resultViewingBoard) {
+      app.resultViewingBoard = false;
+      els.gameResult.classList.remove("is-hidden");
+      renderGame();
+      return;
+    }
     if (isHumanPriorityOpen()) {
       passHumanPriority();
     } else {
@@ -7549,7 +10355,7 @@ function bindEvents() {
   });
   els.endTurnButton.addEventListener("click", applyEndTurn);
   els.concedeButton?.addEventListener("click", concede);
-  document.addEventListener("click", (event) => {
+  document.addEventListener("click", async (event) => {
     const moralChoiceButton = event.target.closest("[data-moral-choice]");
     if (moralChoiceButton) {
       resolveMoralChoice(moralChoiceButton.dataset.moralChoice);
@@ -7578,6 +10384,17 @@ function bindEvents() {
     if (event.target.closest("[data-close-temple-dock]")) {
       app.expandedTemplePlayer = "";
       renderGame();
+      return;
+    }
+    const championButton = event.target.closest("[data-champion-player]");
+    if (championButton) {
+      const playerId = championButton.dataset.championPlayer;
+      if (playerId === "human" && await applyActivateChampionAction(playerId)) {
+        app.selected = null;
+        renderGame();
+      } else if (playerId === "human") {
+        showInteractionHint("Nenhuma habilidade de Campeão está disponível agora.");
+      }
       return;
     }
     const templeButton = event.target.closest("[data-temple-player]");
@@ -7897,7 +10714,7 @@ function canDropHandCardToHumanCemetery(payload) {
   return payload?.zone === "hand" && canDiscardForHandLimit(app.game?.players?.human, payload.id);
 }
 
-function handleDrop(zone, payload, targetElement = null) {
+async function handleDrop(zone, payload, targetElement = null) {
   if (!payload || !app.game || app.game.status !== "active") return;
   if (payload.zone === "blocker" && zone?.matches?.("[data-block-attack]")) {
     if (toggleHumanBlocker(zone.dataset.blockAttack, payload.id)) {
@@ -7937,6 +10754,12 @@ function handleDrop(zone, payload, targetElement = null) {
   clearHumanAutoPass();
   let changed = false;
 
+  if (payload.zone === "battlefield" && zone === els.humanBattlefield) {
+    const targetUid = targetElement?.closest?.("[data-battlefield-card]")?.dataset.battlefieldCard || "";
+    if (targetUid && targetUid !== payload.id) {
+      changed = await applyAttachEquipmentToTarget("human", payload.id, targetUid);
+    }
+  } else
   if (!isHumanPriorityOpen() && payload.zone === "hand" && zone?.closest(".essence-panel--human")) {
     changed = applyConsecrate("human", payload.id);
   } else if (payload.zone === "hand" && zone === els.humanBattlefield) {

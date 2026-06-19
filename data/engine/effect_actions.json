@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-06-15",
+  "updatedAt": "2026-06-17",
   "actions": [
     {
       "id": "draw_cards",
@@ -33,6 +33,24 @@
       "params": ["player", "amount", "maxCemetery", "description"]
     },
     {
+      "id": "reorder_top_cards",
+      "label": { "pt": "Reordenar cartas do topo do baralho" },
+      "handler": "reorderTopCards",
+      "params": ["player", "amount", "description"]
+    },
+    {
+      "id": "top_cards_to_hand_bottom",
+      "label": { "pt": "Escolher carta do topo para a mão" },
+      "handler": "topCardsToHandBottom",
+      "params": ["player", "amount", "description"]
+    },
+    {
+      "id": "top_lowest_type_to_hand_bottom",
+      "label": { "pt": "Escolher menor custo revelado para a mão" },
+      "handler": "topLowestTypeToHandBottom",
+      "params": ["player", "amount", "filter", "description"]
+    },
+    {
       "id": "heal_territory",
       "label": { "pt": "Curar território" },
       "handler": "healTerritory",
@@ -63,10 +81,22 @@
       "params": ["event", "amount"]
     },
     {
+      "id": "prevent_damage_to_character",
+      "label": { "pt": "Prevenir dano a personagem" },
+      "handler": "preventDamageToCharacter",
+      "params": ["target", "duration"]
+    },
+    {
       "id": "replace_damage",
       "label": { "pt": "Substituir dano" },
       "handler": "replaceDamage",
       "params": ["event", "replacement"]
+    },
+    {
+      "id": "modify_damage_amount",
+      "label": { "pt": "Modificar dano atual" },
+      "handler": "modifyDamageAmount",
+      "params": ["event", "amount"]
     },
     {
       "id": "modify_power_resistance",
@@ -85,6 +115,12 @@
       "label": { "pt": "Conceder palavra-chave" },
       "handler": "grantKeyword",
       "params": ["target", "keyword", "duration"]
+    },
+    {
+      "id": "protect_from_opponents",
+      "label": { "pt": "Proteger contra alvos de oponentes" },
+      "handler": "protectFromOpponents",
+      "params": ["target", "duration"]
     },
     {
       "id": "tap",
@@ -111,6 +147,12 @@
       "params": ["player", "amount", "upTo"]
     },
     {
+      "id": "generate_essence",
+      "label": { "pt": "Gerar Essência" },
+      "handler": "generateEssence",
+      "params": ["player", "amount"]
+    },
+    {
       "id": "create_token",
       "label": { "pt": "Criar ficha" },
       "handler": "createToken",
@@ -121,6 +163,36 @@
       "label": { "pt": "Mover carta entre zonas" },
       "handler": "moveCard",
       "params": ["card", "from", "to", "owner"]
+    },
+    {
+      "id": "return_permanent_to_hand",
+      "label": { "pt": "Retornar permanente para a mão" },
+      "handler": "returnPermanentToHand",
+      "params": ["target"]
+    },
+    {
+      "id": "gain_control",
+      "label": { "pt": "Ganhar controle temporário" },
+      "handler": "gainControl",
+      "params": ["target", "controller", "duration", "untapAfter"]
+    },
+    {
+      "id": "move_cemetery_card_to_hand",
+      "label": { "pt": "Retornar carta do cemitério para a mão" },
+      "handler": "moveCemeteryCardToHand",
+      "params": ["player", "filter"]
+    },
+    {
+      "id": "search_library_to_top",
+      "label": { "pt": "Buscar no baralho para o topo" },
+      "handler": "searchLibraryToTop",
+      "params": ["player", "filter", "shuffleAfter"]
+    },
+    {
+      "id": "search_library_or_reserve_to_hand",
+      "label": { "pt": "Buscar no baralho ou reserva para a mão" },
+      "handler": "searchLibraryOrReserveToHand",
+      "params": ["player", "filter", "shuffleAfter"]
     },
     {
       "id": "discard_cards",
@@ -171,6 +243,12 @@
       "params": ["target", "reason"]
     },
     {
+      "id": "renounce_permanent",
+      "label": { "pt": "Renunciar permanente" },
+      "handler": "renouncePermanent",
+      "params": ["player", "filter"]
+    },
+    {
       "id": "attach_equipment",
       "label": { "pt": "Anexar equipamento" },
       "handler": "attachEquipment",
@@ -187,6 +265,42 @@
       "label": { "pt": "Anular objeto na pilha" },
       "handler": "counterStackObject",
       "params": ["target", "reason"]
+    },
+    {
+      "id": "destroy_if_power_gte_else_damage",
+      "label": { "pt": "Destruir por poder ou causar dano" },
+      "handler": "destroyIfPowerGteElseDamage",
+      "params": ["target", "powerGte", "amount", "damageType"]
+    },
+    {
+      "id": "adjust_moral_choice",
+      "label": { "pt": "Escolher ajuste moral" },
+      "handler": "adjustMoralChoice",
+      "params": ["player", "polarity", "delta", "maxBefore"]
+    },
+    {
+      "id": "adjust_moral_flexible",
+      "label": { "pt": "Escolher característica para ajustar" },
+      "handler": "adjustMoralFlexible",
+      "params": ["player", "amount"]
+    },
+    {
+      "id": "cover_champion",
+      "label": { "pt": "Encobrir Campeão" },
+      "handler": "coverChampion",
+      "params": ["player"]
+    },
+    {
+      "id": "fight",
+      "label": { "pt": "Personagens lutam" },
+      "handler": "fight",
+      "params": ["sourceTarget", "target", "damageType"]
+    },
+    {
+      "id": "reveal_lower_cost_character_from_hand_then_heal",
+      "label": { "pt": "Revelar personagem de menor custo e curar" },
+      "handler": "revealLowerCostCharacterFromHandThenHeal",
+      "params": ["player", "healAmount"]
     },
     {
       "id": "distribute_damage",

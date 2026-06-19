@@ -1360,11 +1360,11 @@
       },
       "role": 34,
       "reference": "2SA 24:1-10",
-      "text": "Cause 3 de dano a cada território. Cada jogador compra 1 carta.",
+      "text": "Cause 3 de dano a cada território. Você compra 1 carta.",
       "rulings": [
-        "O dano é causado a todos os territórios antes de qualquer jogador comprar carta.",
+        "O dano é causado a todos os territórios antes de o controlador comprar carta.",
         "Se o dano fizer um ou mais jogadores perderem, as ações baseadas no estado serão verificadas antes que jogadores recebam prioridade.",
-        "Cada jogador compra em ordem de turno se a ordem importar."
+        "Somente o controlador de Censo Proibido compra carta por este efeito."
       ]
     },
     {
