@@ -1,0 +1,614 @@
+/* Premium visual layer for the local play UI. Keep this file loaded after play.css. */
+:root {
+  --polish-bg-ink: #020404;
+  --polish-panel: rgba(5, 8, 8, .9);
+  --polish-panel-soft: rgba(16, 20, 18, .82);
+  --polish-gold: #d7b96d;
+  --polish-gold-strong: #ffe8a9;
+  --polish-cyan: #69e7ff;
+  --polish-red: #ff6f73;
+  --polish-ease: cubic-bezier(.16, 1, .3, 1);
+}
+
+body {
+  position: relative;
+  background:
+    radial-gradient(circle at 50% -12%, rgba(224, 190, 110, .15), transparent 32%),
+    radial-gradient(circle at 50% 62%, rgba(51, 138, 125, .14), transparent 38%),
+    linear-gradient(180deg, #050707 0%, var(--polish-bg-ink) 100%);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: -18vmax;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .72;
+  background:
+    radial-gradient(circle at 18% 22%, rgba(215, 185, 109, .16), transparent 22%),
+    radial-gradient(circle at 78% 16%, rgba(105, 231, 255, .12), transparent 24%),
+    radial-gradient(circle at 50% 78%, rgba(128, 82, 190, .11), transparent 30%),
+    conic-gradient(from 40deg at 50% 50%, transparent 0 16%, rgba(215, 185, 109, .08) 22%, transparent 34% 58%, rgba(105, 231, 255, .07) 66%, transparent 76% 100%);
+  filter: blur(18px) saturate(1.15);
+  animation: adonai-ambient-drift 26s ease-in-out infinite alternate;
+}
+
+.play-shell {
+  position: relative;
+  z-index: 2;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .025), transparent 16%),
+    radial-gradient(circle at 50% 20%, rgba(215, 185, 109, .09), transparent 28%),
+    transparent;
+}
+
+.play-board--new-ui {
+  --polish-hand-card-w: clamp(70px, 18.8vw, 90px);
+  --polish-hand-card-w-expanded: clamp(78px, 21vw, 104px);
+  position: relative;
+}
+
+.play-board--new-ui::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 18px;
+  opacity: .48;
+  background:
+    linear-gradient(90deg, transparent, rgba(215, 185, 109, .055), transparent),
+    repeating-linear-gradient(90deg, transparent 0 34px, rgba(255, 255, 255, .018) 35px),
+    repeating-linear-gradient(0deg, transparent 0 28px, rgba(215, 185, 109, .018) 29px);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+}
+
+/* Thin phase seal inspired by the prototypes. */
+.play-board--new-ui .battlefield-shell {
+  grid-template-rows: minmax(0, 1.08fr) clamp(30px, 5dvh, 36px) minmax(0, 1.08fr) !important;
+  gap: clamp(4px, 1.1vw, 7px) !important;
+}
+
+.play-board--new-ui .stack-log-panel,
+.play-board--new-ui .phase-panel {
+  min-height: clamp(30px, 5dvh, 36px) !important;
+  height: clamp(30px, 5dvh, 36px) !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.play-board--new-ui .phase-track {
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.play-board--new-ui .phase-current {
+  position: relative;
+  flex: 0 1 calc(100% - 18px);
+  width: calc(100% - 16px) !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: clamp(26px, 4.4dvh, 32px) !important;
+  min-height: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 auto !important;
+  padding: 2px 14px !important;
+  overflow: visible !important;
+  border: 1px solid rgba(215, 185, 109, .46) !important;
+  border-radius: 999px !important;
+  clip-path: none !important;
+  background:
+    linear-gradient(90deg, transparent, rgba(255, 232, 169, .13), transparent),
+    linear-gradient(180deg, rgba(70, 48, 19, .96), rgba(15, 14, 10, .96)) !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, .045),
+    0 8px 20px rgba(0, 0, 0, .42),
+    0 0 26px rgba(215, 185, 109, .14),
+    inset 0 0 16px rgba(255, 232, 169, .06) !important;
+}
+
+.play-board--new-ui .phase-panel.is-human-turn .phase-current {
+  /* border-color: rgba(105, 231, 255, .52) !important; */
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, .045),
+    0 8px 20px rgba(0, 0, 0, .42),
+    0 0 24px rgba(105, 231, 255, .16),
+    inset 0 0 16px rgba(105, 231, 255, .08) !important;
+}
+
+.play-board--new-ui .phase-panel.is-bot-turn .phase-current {
+  border-color: rgba(255, 111, 115, .5) !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, .045),
+    0 8px 20px rgba(0, 0, 0, .42),
+    0 0 24px rgba(255, 111, 115, .16),
+    inset 0 0 16px rgba(255, 111, 115, .08) !important;
+}
+
+.play-board--new-ui .phase-current::before,
+.play-board--new-ui .phase-current::after {
+  display: none !important;
+}
+
+.play-board--new-ui .phase-current strong {
+  max-width: 100%;
+  color: var(--polish-gold-strong);
+  font-size: clamp(.68rem, 2.7vw, .84rem) !important;
+  font-weight: 950;
+  line-height: 1 !important;
+  letter-spacing: .04em !important;
+  text-transform: uppercase;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  text-shadow: 0 0 12px rgba(255, 232, 169, .24), 0 2px 4px rgba(0, 0, 0, .78);
+}
+
+.play-board--new-ui .phase-current small,
+.play-board--new-ui .phase-current em,
+.play-board--new-ui #phaseIndicator {
+  display: none !important;
+}
+
+/* Bigger, glossier HUD metrics. */
+.play-board--new-ui .dock-metric:not(.dock-metric--virtues),
+.play-board--new-ui .player-dock-metrics > .player-dock-label {
+  position: relative;
+  overflow: hidden;
+  min-height: 31px !important;
+  padding: 3px 5px !important;
+  border-color: rgba(215, 185, 109, .22) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .05), transparent 42%),
+    rgba(2, 4, 4, .62) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .045),
+    inset 0 -1px 0 rgba(0, 0, 0, .55),
+    0 4px 12px rgba(0, 0, 0, .22) !important;
+}
+
+.play-board--new-ui .dock-metric:not(.dock-metric--virtues) span,
+.play-board--new-ui .player-dock-metrics > .player-dock-label span {
+  color: rgba(255, 232, 169, .8) !important;
+  font-size: clamp(.5rem, 1.95vw, .58rem) !important;
+  font-weight: 850 !important;
+  letter-spacing: .12em !important;
+}
+
+.play-board--new-ui .dock-metric:not(.dock-metric--virtues) strong,
+.play-board--new-ui .player-dock-metrics > .player-dock-label strong {
+  color: #fff8e9 !important;
+  font-size: clamp(.88rem, 3.7vw, 1.08rem) !important;
+  font-weight: 950 !important;
+  line-height: 1 !important;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, .85);
+}
+
+.play-board--new-ui .dock-metric--virtues {
+  border-color: rgba(215, 185, 109, .14) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .035), transparent),
+    rgba(1, 5, 5, .52) !important;
+}
+
+/* Shared premium reflection layer. */
+.play-board--new-ui .play-card,
+.play-board--new-ui .essence-card,
+.play-board--new-ui .identity-dock-tile,
+.play-board--new-ui .dock-metric,
+.play-board--new-ui .player-dock-metrics > .player-dock-label,
+.play-board--new-ui .action-grid button,
+.play-board--new-ui .setup-actions a,
+.play-board--new-ui .setup-actions button {
+  position: relative;
+  overflow: hidden;
+}
+
+.play-board--new-ui .play-card::after,
+.play-board--new-ui .essence-card::after,
+.play-board--new-ui .identity-dock-tile::after,
+.play-board--new-ui .dock-metric::after,
+.play-board--new-ui .player-dock-metrics > .player-dock-label::after,
+.play-board--new-ui .action-grid button::after {
+  content: "";
+  position: absolute;
+  inset: -45%;
+  z-index: 12;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(115deg, transparent 0 38%, rgba(255, 255, 255, .32) 47%, transparent 56% 100%);
+  transform: translateX(-74%) rotate(6deg);
+  transition: opacity .18s var(--polish-ease), transform .78s var(--polish-ease);
+  mix-blend-mode: screen;
+}
+
+.play-board--new-ui .play-card:hover::after,
+.play-board--new-ui .play-card:focus-visible::after,
+.play-board--new-ui .play-card.is-selected::after,
+.play-board--new-ui .play-card.is-actionable-card::after,
+.play-board--new-ui .essence-card:hover::after,
+.play-board--new-ui .essence-card:focus-visible::after,
+.play-board--new-ui .essence-card.is-actionable-essence::after,
+.play-board--new-ui .identity-dock-tile:hover::after,
+.play-board--new-ui .identity-dock-tile:focus-visible::after,
+.play-board--new-ui .dock-metric:hover::after,
+.play-board--new-ui .dock-metric:focus-visible::after,
+.play-board--new-ui .action-grid button:hover::after,
+.play-board--new-ui .action-grid button:focus-visible::after {
+  opacity: .78;
+  transform: translateX(72%) rotate(6deg);
+}
+
+.play-board--new-ui .battlefield-row,
+.play-board--new-ui .player-dock,
+.play-board--new-ui .action-dock,
+.play-board--new-ui .hand-dock {
+  border-color: rgba(215, 185, 109, .2) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .038), transparent 30%),
+    radial-gradient(circle at 50% 0, rgba(215, 185, 109, .08), transparent 42%),
+    rgba(2, 5, 5, .84) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .035),
+    inset 0 0 34px rgba(0, 0, 0, .38),
+    0 8px 24px rgba(0, 0, 0, .32) !important;
+}
+
+.play-board--new-ui .battlefield-row::before {
+  opacity: .22 !important;
+}
+
+/* Fan hand by default, straight carousel when expanded. */
+.play-board--new-ui .hand-dock {
+  touch-action: pan-x;
+  border-radius: 18px 18px 8px 8px !important;
+  overflow: hidden !important;
+}
+
+.play-board--new-ui .hand-dock::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .7;
+  background:
+    radial-gradient(ellipse at 50% 110%, rgba(215, 185, 109, .18), transparent 62%),
+    linear-gradient(90deg, rgba(105, 231, 255, .08), transparent 16% 84%, rgba(215, 185, 109, .08));
+}
+
+.play-board--new-ui .hand-row {
+  position: relative;
+  z-index: 1;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+  padding: 12px clamp(22px, 6vw, 34px) 8px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  overscroll-behavior-x: contain;
+  perspective: 900px;
+  scrollbar-width: none;
+}
+
+.play-board--new-ui .hand-row::-webkit-scrollbar {
+  display: none;
+}
+
+.play-board--new-ui .hand-row .play-card {
+  flex: 0 0 var(--polish-hand-card-w) !important;
+  width: var(--polish-hand-card-w) !important;
+  max-width: var(--polish-hand-card-w) !important;
+  height: calc(100% - 4px) !important;
+  max-height: calc(100% - 4px) !important;
+  margin-inline: clamp(-38px, -9.2vw, -24px) !important;
+  transform-origin: 50% 126% !important;
+  transition:
+    transform .24s var(--polish-ease),
+    border-color .2s var(--polish-ease),
+    box-shadow .2s var(--polish-ease),
+    filter .2s var(--polish-ease) !important;
+}
+
+.play-board--new-ui .hand-row .play-card:nth-child(1) {
+  transform: rotate(-30deg) translateY(18px) translateZ(-12px) !important;
+}
+
+.play-board--new-ui .hand-row .play-card:nth-child(2) {
+  transform: rotate(-22deg) translateY(11px) translateZ(-8px) !important;
+}
+
+.play-board--new-ui .hand-row .play-card:nth-child(3) {
+  transform: rotate(-14deg) translateY(6px) translateZ(-4px) !important;
+}
+
+.play-board--new-ui .hand-row .play-card:nth-child(4) {
+  transform: rotate(-6deg) translateY(2px) !important;
+}
+
+.play-board--new-ui .hand-row .play-card:nth-child(5) {
+  transform: rotate(6deg) translateY(2px) !important;
+}
+
+.play-board--new-ui .hand-row .play-card:nth-child(6) {
+  transform: rotate(14deg) translateY(6px) translateZ(-4px) !important;
+}
+
+.play-board--new-ui .hand-row .play-card:nth-child(7) {
+  transform: rotate(22deg) translateY(11px) translateZ(-8px) !important;
+}
+
+.play-board--new-ui .hand-row .play-card:nth-child(n+8) {
+  transform: rotate(30deg) translateY(18px) translateZ(-12px) !important;
+}
+
+.play-board--new-ui .hand-row .play-card:hover,
+.play-board--new-ui .hand-row .play-card.is-selected {
+  z-index: 30 !important;
+  /* border-color: rgba(105, 231, 255, .76) !important; */
+  box-shadow:
+    0 0 0 1px rgba(105, 231, 255, .25),
+    0 0 22px rgba(105, 231, 255, .2),
+    0 14px 26px rgba(0, 0, 0, .48) !important;
+  filter: saturate(1.08) contrast(1.04);
+}
+
+.play-board--new-ui .hand-dock.is-hand-expanded .hand-row {
+  justify-content: flex-start !important;
+  padding-inline: 10px !important;
+}
+
+.play-board--new-ui .hand-dock.is-hand-expanded .hand-row .play-card {
+  flex-basis: var(--polish-hand-card-w-expanded) !important;
+  width: var(--polish-hand-card-w-expanded) !important;
+  max-width: var(--polish-hand-card-w-expanded) !important;
+  margin-inline: clamp(-8px, -2vw, -3px) !important;
+  transform: rotate(0deg) translateY(0) translateZ(0) !important;
+}
+
+.play-board--new-ui .hand-dock.is-hand-expanded .hand-row .play-card:hover,
+.play-board--new-ui .hand-dock.is-hand-expanded .hand-row .play-card.is-selected {
+  transform: rotate(0deg) translateY(0) translateZ(0) !important;
+}
+
+@keyframes adonai-ambient-drift {
+  0% {
+    transform: translate3d(-1.8%, -1.2%, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(1.3%, .8%, 0) scale(1.035) rotate(.6deg);
+  }
+
+  100% {
+    transform: translate3d(2.2%, 1.6%, 0) scale(1.065) rotate(-.8deg);
+  }
+}
+
+@media (max-width: 390px) {
+  .play-board--new-ui {
+    --polish-hand-card-w: clamp(68px, 18vw, 82px);
+    --polish-hand-card-w-expanded: clamp(76px, 20vw, 94px);
+  }
+
+  .play-board--new-ui .dock-metric:not(.dock-metric--virtues) strong,
+  .play-board--new-ui .player-dock-metrics > .player-dock-label strong {
+    font-size: clamp(.82rem, 3.25vw, .98rem) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    animation: none;
+  }
+
+  .play-board--new-ui .play-card::after,
+  .play-board--new-ui .essence-card::after,
+  .play-board--new-ui .identity-dock-tile::after,
+  .play-board--new-ui .dock-metric::after,
+  .play-board--new-ui .player-dock-metrics > .player-dock-label::after,
+  .play-board--new-ui .action-grid button::after {
+    transition: none;
+  }
+}
+
+/* Final geometry lock: compact phase, equal battlefields, larger clipped hand. */
+.play-board--new-ui {
+  --phase-strip-h: clamp(18px, 2.75dvh, 22px);
+  --phase-pill-h: clamp(16px, 2.35dvh, 20px);
+  --polish-hand-card-w: clamp(66px, 19.5vw, 86px) !important;
+  --polish-hand-card-w-expanded: clamp(68px, 18.5vw, 86px) !important;
+}
+
+.play-board--new-ui .battlefield-shell,
+.play-board--new-ui.is-consecration-focus .battlefield-shell {
+  grid-template-rows: minmax(0, 1fr) var(--phase-strip-h) minmax(0, 1fr) !important;
+  gap: 2px !important;
+  min-height: 0 !important;
+}
+
+.play-board--new-ui .battlefield-column,
+.play-board--new-ui .battlefield-row {
+  min-height: 0 !important;
+}
+
+.play-board--new-ui .stack-log-panel,
+.play-board--new-ui .phase-panel {
+  min-height: var(--phase-strip-h) !important;
+  height: var(--phase-strip-h) !important;
+  max-height: var(--phase-strip-h) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.play-board--new-ui .phase-track {
+  width: 100% !important;
+  height: var(--phase-strip-h) !important;
+  min-height: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  line-height: 1 !important;
+  overflow: visible !important;
+}
+
+.play-board--new-ui .phase-current {
+  width: calc(100% - 14px) !important;
+  max-width: calc(100% - 14px) !important;
+  min-width: 0 !important;
+  height: var(--phase-pill-h) !important;
+  min-height: 0 !important;
+  max-height: var(--phase-pill-h) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  align-content: center !important;
+  justify-items: center !important;
+  grid-template-rows: none !important;
+  gap: 0 !important;
+  box-sizing: border-box !important;
+  margin: 0 auto !important;
+  padding: 0 10px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(215, 185, 109, .48) !important;
+  border-radius: 999px !important;
+  clip-path: none !important;
+  -webkit-clip-path: none !important;
+  transform: none !important;
+  line-height: 1 !important;
+}
+
+.play-board--new-ui .phase-current::before,
+.play-board--new-ui .phase-current::after {
+  content: none !important;
+  display: none !important;
+}
+
+.play-board--new-ui .phase-current strong {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  color: var(--polish-gold-strong) !important;
+  font-size: clamp(.52rem, 2.12vw, .66rem) !important;
+  font-weight: 950 !important;
+  line-height: 1 !important;
+  letter-spacing: .035em !important;
+  text-align: center !important;
+  text-overflow: clip !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .9) !important;
+  white-space: nowrap !important;
+}
+
+.play-board--new-ui .phase-current small,
+.play-board--new-ui .phase-current em,
+.play-board--new-ui #phaseIndicator {
+  display: none !important;
+}
+
+.play-board--new-ui .hand-dock {
+  overflow: hidden !important;
+}
+
+.play-board--new-ui .hand-row {
+  height: 100% !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+  padding: 0 clamp(14px, 4vw, 20px) 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
+}
+
+.play-board--new-ui .hand-row .play-card {
+  flex: 0 0 var(--polish-hand-card-w) !important;
+  width: var(--polish-hand-card-w) !important;
+  max-width: var(--polish-hand-card-w) !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  aspect-ratio: var(--play-card-ratio, .72) !important;
+  margin-inline: clamp(-22px, -5.9vw, -15px) !important;
+}
+
+.play-board--new-ui .hand-row .play-card:nth-child(1) {
+  transform: rotate(-28deg) translateY(42px) translateZ(-12px) !important;
+}
+
+.play-board--new-ui .hand-row .play-card:nth-child(2) {
+  transform: rotate(-20deg) translateY(34px) translateZ(-8px) !important;
+}
+
+.play-board--new-ui .hand-row .play-card:nth-child(3) {
+  transform: rotate(-12deg) translateY(28px) translateZ(-4px) !important;
+}
+
+.play-board--new-ui .hand-row .play-card:nth-child(4) {
+  transform: rotate(-5deg) translateY(24px) !important;
+}
+
+.play-board--new-ui .hand-row .play-card:nth-child(5) {
+  transform: rotate(5deg) translateY(24px) !important;
+}
+
+.play-board--new-ui .hand-row .play-card:nth-child(6) {
+  transform: rotate(12deg) translateY(28px) translateZ(-4px) !important;
+}
+
+.play-board--new-ui .hand-row .play-card:nth-child(7) {
+  transform: rotate(20deg) translateY(34px) translateZ(-8px) !important;
+}
+
+.play-board--new-ui .hand-row .play-card:nth-child(n+8) {
+  transform: rotate(28deg) translateY(42px) translateZ(-12px) !important;
+}
+
+.play-board--new-ui .hand-dock.is-hand-expanded {
+  overflow: hidden !important;
+}
+
+.play-board--new-ui .hand-dock.is-hand-expanded .hand-row {
+  justify-content: flex-start !important;
+  align-items: center !important;
+  padding: 4px 8px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+}
+
+.play-board--new-ui .hand-dock.is-hand-expanded .hand-row .play-card {
+  flex-basis: calc((var(--hand-h, 110px) - 8px) * var(--play-card-ratio, .72)) !important;
+  width: calc((var(--hand-h, 110px) - 8px) * var(--play-card-ratio, .72)) !important;
+  max-width: calc((var(--hand-h, 110px) - 8px) * var(--play-card-ratio, .72)) !important;
+  height: calc(100% - 8px) !important;
+  max-height: calc(100% - 8px) !important;
+  aspect-ratio: var(--play-card-ratio, .72) !important;
+  margin-inline: 3px !important;
+  transform: rotate(0deg) translateY(0) translateZ(0) !important;
+}
+
+.play-board--new-ui .hand-dock.is-hand-expanded .hand-row .play-card:nth-child(n) {
+  transform: rotate(0deg) translateY(0) translateZ(0) !important;
+}

@@ -3223,7 +3223,11 @@ function hasPlayableAlistamento(player) {
 }
 
 function hasAvailablePermanentAction(player) {
-  return canUseChampionAction(player) || player?.battlefield?.some((instance) => canUsePermanentAction(player, instance)) || false;
+  if (canUseChampionAction(player)) return true;
+  return player?.battlefield?.some((instance) => (
+    getViableActivatedAbilitiesForPermanent(player, instance)
+      .some(({ ability }) => !isPureEssenceGeneratorAbility(ability))
+  )) || false;
 }
 
 function hasPlayableMiracle(player) {
