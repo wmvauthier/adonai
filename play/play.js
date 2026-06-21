@@ -602,6 +602,9 @@ function emitGameEvent(triggerId, payload = {}, options = {}) {
       markVirtueTriggered(stackObject.controllerId, stackObject.source.sourceId);
     }
     if (ability?.kind === "replacement" || ability?.usesStack === false || options.resolveImmediately) {
+      if (ability?.kind === "replacement") {
+        void flashImmediateStackObject(game, stackObject);
+      }
       resolveEngineStackObject(game, stackObject);
       return;
     }
@@ -625,8 +628,12 @@ async function resolveImmediateGameEvent(triggerId, payload = {}) {
   const game = payload.game || app.game;
   const stackObjects = collectEngineStackObjects(triggerId, payload);
   for (const stackObject of stackObjects) {
+    const ability = stackObject.ability || app.engine.abilityById.get(stackObject.abilityId);
     if (stackObject.source?.sourceType === "virtue" && !stackObject.suppressTriggerFeedback) {
       markVirtueTriggered(stackObject.controllerId, stackObject.source.sourceId);
+    }
+    if (ability?.kind === "replacement") {
+      await flashImmediateStackObject(game, stackObject);
     }
     await resolveEngineStackObject(game, stackObject);
   }
@@ -634,6 +641,18 @@ async function resolveImmediateGameEvent(triggerId, payload = {}) {
     renderGame();
   }
   return stackObjects;
+}
+
+async function flashImmediateStackObject(game, stackObject, duration = 520) {
+  if (!game || game !== app.game || game.status !== "active" || !stackObject) return;
+  stackObject.immediateVisual = true;
+  game.stack.push(stackObject);
+  addLog(game, `${stackObject.label} esta sendo aplicada.`, "Pilha");
+  playTone("soft");
+  renderGame();
+  await wait(duration);
+  game.stack = game.stack.filter((object) => object.id !== stackObject.id);
+  renderGame();
 }
 
 function cssUrl(value) {
@@ -1649,6 +1668,18 @@ function shuffle(values, seedText) {
   return list;
 }
 
+function createShuffleSeed(label = "shuffle") {
+  const cryptoObj = window.crypto || window.msCrypto;
+  const now = typeof performance !== "undefined" && typeof performance.now === "function" ? performance.now() : 0;
+  const entropy = [Date.now(), now, Math.random(), label];
+  if (cryptoObj?.getRandomValues) {
+    const values = new Uint32Array(4);
+    cryptoObj.getRandomValues(values);
+    entropy.push([...values].join("-"));
+  }
+  return entropy.join(":");
+}
+
 function drawCards(player, amount) {
   const drawn = [];
   for (let index = 0; index < amount; index += 1) {
@@ -1939,7 +1970,7 @@ function chooseStartingPlayer() {
 function createGame(humanDeck, botDeck, botMode, options = {}) {
   const startingPlayer = chooseStartingPlayer();
   const game = {
-    id: `LOCAL-${Date.now()}`,
+    id: `LOCAL-${Date.now()}-${createShuffleSeed("game").slice(-12)}`,
     players: {
       human: createPlayer("human", "Voce", humanDeck, false),
       bot: createPlayer("bot", "Bot", botDeck, true)
@@ -2153,7 +2184,7 @@ function applyPartialMulligan(player, selectedIndexes, game, attempt) {
   });
   if (!returned.length) return 0;
   player.deck.push(...returned);
-  player.deck = shuffle(player.deck, `${game.id}-${player.id}-mulligan-${attempt}-${Date.now()}`);
+  player.deck = shuffle(player.deck, createShuffleSeed(`${game.id}-${player.id}-mulligan-${attempt}`));
   drawCards(player, returned.length);
   return returned.length;
 }
@@ -2167,8 +2198,8 @@ async function runPregameProcedures(game) {
   const botReduction = applyDeckReductionDecision(bot, []);
   addLog(game, `reduziu o baralho para ${humanReduction.kept} carta${humanReduction.kept === 1 ? "" : "s"} e ${humanReduction.reserved} na Reserva.`, human.label);
   addLog(game, `manteve ${botReduction.kept} carta${botReduction.kept === 1 ? "" : "s"} no baralho principal.`, bot.label);
-  human.deck = shuffle(human.deck, `${game.id}-human-pregame-shuffle`);
-  bot.deck = shuffle(bot.deck, `${game.id}-bot-pregame-shuffle`);
+  human.deck = shuffle(human.deck, createShuffleSeed(`${game.id}-human-pregame-shuffle`));
+  bot.deck = shuffle(bot.deck, createShuffleSeed(`${game.id}-bot-pregame-shuffle`));
   drawCards(human, INITIAL_HAND_SIZE);
   drawCards(bot, INITIAL_HAND_SIZE);
   renderGame();
@@ -2845,10 +2876,37 @@ function canUsePermanentAction(player, instance) {
   return canAttachEquipmentFromBattlefield(player, instance);
 }
 
+function getChampionCoverCostIndex(stackObject) {
+  if (stackObject?.source?.identityKind !== "champion") return -1;
+  const ability = stackObject.ability || app.engine.abilityById.get(stackObject.abilityId);
+  return (ability?.costs || []).findIndex((cost) => cost?.effect === "cover_champion");
+}
+
+function payChampionCoverCostOnActivation(game, stackObject) {
+  const costIndex = getChampionCoverCostIndex(stackObject);
+  if (costIndex < 0) return true;
+  const ability = stackObject.ability || app.engine.abilityById.get(stackObject.abilityId);
+  const cost = ability?.costs?.[costIndex];
+  const player = getPlayer(game, getStackPlayerId(cost?.player || "controller", stackObject));
+  if (!player || player.championCovered) return false;
+  player.championCovered = true;
+  stackObject.activationPaidCostIndexes = [
+    ...new Set([...(stackObject.activationPaidCostIndexes || []), costIndex])
+  ];
+  addLog(game, "encobriu seu Campeao.", player.label);
+  playTone("soft");
+  return true;
+}
+
 function queueActivatedAbility(stackObject) {
   const game = app.game;
   if (!game || !stackObject) return false;
   const ability = stackObject.ability || app.engine.abilityById.get(stackObject.abilityId);
+  if (!payChampionCoverCostOnActivation(game, stackObject)) {
+    showInteractionHint("Campeao ja esta encoberto.");
+    renderGame();
+    return false;
+  }
   if (ability?.usesStack === false) {
     void resolveEngineStackObject(game, stackObject).then(() => {
       if (app.game === game) renderGame();
@@ -3575,6 +3633,7 @@ async function resolveEngineStackLoop(game) {
     renderGame();
     await wait(860);
     await resolveEngineStackObject(game, stackObject);
+    applyStateBasedActions(game);
     renderGame();
     await wait(620);
   }
@@ -3649,7 +3708,9 @@ async function resolveEngineStackObject(game, stackObject) {
     }
   }
 
-  for (const cost of ability.costs || []) {
+  const paidActivationCostIndexes = new Set(stackObject.activationPaidCostIndexes || []);
+  for (const [index, cost] of (ability.costs || []).entries()) {
+    if (paidActivationCostIndexes.has(index)) continue;
     const paid = await executeEngineAction(cost, stackObject, { isCost: true });
     if (paid === false) {
       addLog(game, `${stackObject.label} nao teve custo pago.`, "Pilha");
@@ -6358,6 +6419,7 @@ function expireTemporaryEffects(game, duration) {
   const expiring = game.effects.filter((effect) => effect.duration === duration);
   expiring.forEach((effect) => expireTemporaryEffect(game, effect));
   game.effects = game.effects.filter((effect) => effect.duration !== duration);
+  if (expiring.length) applyStateBasedActions(game);
 }
 
 function getModifiedEventAmount(game, triggerId, baseAmount, payload = {}) {
@@ -7355,6 +7417,7 @@ function resolveDeclaredAttacks(playerId) {
   game.combat.resolving = true;
 
   const damageEvents = [];
+  const attackVisualEvents = buildCombatAttackVisualEvents(game, playerId, attackers);
   const directCharacterGroups = new Map();
   attackers.forEach((attacker) => {
     const target = getAttackTarget(playerId, attacker.uid);
@@ -7385,8 +7448,58 @@ function resolveDeclaredAttacks(playerId) {
   });
 
   renderGame();
-  runCombatDamageSequence(game, playerId, damageEvents, attackers.length);
+  runCombatDamageSequence(game, playerId, damageEvents, attackers.length, attackVisualEvents);
   return true;
+}
+
+function buildCombatAttackVisualEvents(game, attackerId, attackers) {
+  const attackerPlayer = getPlayer(game, attackerId);
+  const defender = getOpponent(game, attackerId);
+  const events = [];
+  attackers.forEach((attacker) => {
+    const target = getAttackTarget(attackerId, attacker.uid);
+    const blockerUids = game.combat.blockers[attacker.uid] || [];
+    const blockers = blockerUids
+      .map((blockerUid) => findBattlefieldInstance(defender, blockerUid))
+      .filter(Boolean);
+    const source = getDamageSource(attackerPlayer.id, attacker.uid);
+    const batch = getCombatBatch(attacker.uid);
+
+    if (blockers.length >= getMinimumBlockersRequired(attacker)) {
+      blockers.forEach((blocker) => {
+        events.push({
+          type: "character",
+          playerId: defender.id,
+          uid: blocker.uid,
+          source,
+          batch,
+          visualOnly: true
+        });
+      });
+      return;
+    }
+
+    if (target.type === "character") {
+      events.push({
+        type: "character",
+        playerId: target.playerId,
+        uid: target.uid,
+        source,
+        batch,
+        visualOnly: true
+      });
+      return;
+    }
+
+    events.push({
+      type: "territory",
+      playerId: target.playerId,
+      source,
+      batch,
+      visualOnly: true
+    });
+  });
+  return events;
 }
 
 function queueTerritoryDamage(events, playerId, amount, reason, meta = {}) {
@@ -7516,14 +7629,19 @@ function assignBlockedCombatDamage(events, attackerPlayer, defender, attacker, b
 
   blockers.forEach((blocker, index) => {
     if (remainingPower <= 0) return;
-    const isFirst = index === 0;
     const isLast = index === blockers.length - 1;
-    const lethal = getLethalDamageNeeded(blocker);
-    const assigned = isFirst || isLast || !hasOverrun ? remainingPower : Math.min(remainingPower, lethal);
-    queueCharacterDamage(events, defender.id, blocker.uid, assigned, `${getCardName(attackerCard)} causou dano ao bloqueador`, {
-      batch,
-      source: getDamageSource(attackerPlayer.id, attacker.uid)
-    });
+    const lethal = Math.max(0, getLethalDamageNeeded(blocker));
+    const assigned = hasOverrun
+      ? Math.min(remainingPower, lethal)
+      : isLast
+        ? remainingPower
+        : Math.min(remainingPower, lethal);
+    if (assigned > 0) {
+      queueCharacterDamage(events, defender.id, blocker.uid, assigned, `${getCardName(attackerCard)} causou dano ao bloqueador`, {
+        batch,
+        source: getDamageSource(attackerPlayer.id, attacker.uid)
+      });
+    }
     remainingPower -= assigned;
   });
 
@@ -7617,6 +7735,7 @@ async function applyEffectDamageEvent(game, event) {
     });
     renderGame();
     await animateResolutionEvents([{ type: "territory", playerId: nextEvent.playerId, amount: nextEvent.amount }], "damage");
+    applyStateBasedActions(game);
     return;
   }
   dealCharacterDamage(getPlayer(game, nextEvent.playerId), nextEvent.uid, nextEvent.amount, nextEvent.reason, nextEvent.source, {
@@ -7625,13 +7744,14 @@ async function applyEffectDamageEvent(game, event) {
   });
   renderGame();
   await animateResolutionEvents([{ type: "character", playerId: nextEvent.playerId, uid: nextEvent.uid, amount: nextEvent.amount }], "damage");
+  applyStateBasedActions(game);
 }
 
 async function applyCombatDamageEvents(game, events) {
   for (const event of events) {
     await applyCombatDamageEvent(game, event);
   }
-  destroyLethalCharacters(game);
+  applyStateBasedActions(game);
 }
 
 function clearDamageFlashFlags(game) {
@@ -7646,14 +7766,15 @@ function wait(ms) {
   return new Promise((resolve) => window.setTimeout(resolve, ms));
 }
 
-async function runCombatDamageSequence(game, attackerId, events, attackerCount) {
-    await wait(560);
+async function runCombatDamageSequence(game, attackerId, events, attackerCount, attackVisualEvents = []) {
+  await wait(560);
   emitGameEvent("combat.damage.before", {
     game,
     attackerId,
     events
   });
   await waitForEngineStackAsync(game);
+  await animateCombatAttackLunge(attackVisualEvents.length ? attackVisualEvents : events);
   const batches = groupDamageEvents(events);
   for (const batch of batches) {
     if (!app.game || app.game !== game || game.status !== "active") return;
@@ -7727,6 +7848,113 @@ function getResolutionEventElement(event) {
   return getDamageEventElement(event);
 }
 
+function getCombatAttackLungeGroups(events) {
+  const game = app.game;
+  const attackerUids = new Set(game?.combat?.attackers || []);
+  const groups = new Map();
+  (events || []).forEach((event) => {
+    const source = normalizeDamageSourceRef(event.source, game);
+    if (!source?.uid || !attackerUids.has(source.uid)) return;
+    const sourceElement = getBattlefieldCardElement(source.playerId, source.uid);
+    const targetElement = getDamageEventElement(event);
+    if (!sourceElement || !targetElement || sourceElement === targetElement) return;
+    const key = `${source.playerId}:${source.uid}`;
+    if (!groups.has(key)) {
+      groups.set(key, {
+        sourceElement,
+        targets: [],
+        targetKeys: new Set()
+      });
+    }
+    const group = groups.get(key);
+    const targetKey = `${event.type}:${event.playerId}:${event.uid || "territory"}`;
+    if (group.targetKeys.has(targetKey)) return;
+    group.targetKeys.add(targetKey);
+    group.targets.push(targetElement);
+  });
+  return [...groups.values()];
+}
+
+function createCombatAttackLungeClone(sourceElement) {
+  const sourceImage = sourceElement?.querySelector?.("img");
+  const imageSource = sourceImage?.getAttribute("src") || "";
+  if (!imageSource) return null;
+  const rect = sourceElement.getBoundingClientRect();
+  const clone = document.createElement("div");
+  clone.className = "combat-attack-lunge";
+  clone.style.left = `${rect.left}px`;
+  clone.style.top = `${rect.top}px`;
+  clone.style.width = `${rect.width}px`;
+  clone.style.height = `${rect.height}px`;
+  clone.innerHTML = `<img src="${escapeHtml(imageSource)}" alt="" draggable="false" />`;
+  document.body.appendChild(clone);
+  sourceElement.classList.add("is-attack-lunge-source");
+  return { clone, sourceElement };
+}
+
+async function animateCombatAttackSourceLunge(sourceElement, targetElements) {
+  const entry = createCombatAttackLungeClone(sourceElement);
+  if (!entry) return;
+  const { clone } = entry;
+  try {
+    for (const targetElement of targetElements) {
+      const sourceRect = sourceElement.getBoundingClientRect();
+      const targetRect = targetElement.getBoundingClientRect();
+      const dx = (targetRect.left + targetRect.width / 2) - (sourceRect.left + sourceRect.width / 2);
+      const dy = (targetRect.top + targetRect.height / 2) - (sourceRect.top + sourceRect.height / 2);
+      const impactTransform = `translate3d(${dx}px, ${dy}px, 0) scale(1.08)`;
+      await animateCombatLungeSegment(clone, "translate3d(0, 0, 0) scale(1)", impactTransform, 280);
+      await animateCombatImpactShake(clone, targetElement);
+      await animateCombatLungeSegment(clone, impactTransform, "translate3d(0, 0, 0) scale(1)", 320);
+      await wait(80);
+    }
+  } finally {
+    clone.remove();
+    sourceElement.classList.remove("is-attack-lunge-source");
+  }
+}
+
+async function animateCombatLungeSegment(clone, fromTransform, toTransform, duration) {
+  if (typeof clone.animate !== "function") {
+    clone.style.transform = toTransform;
+    await wait(duration);
+    return;
+  }
+  const animation = clone.animate([
+    { transform: fromTransform },
+    { transform: toTransform }
+  ], {
+    duration,
+    easing: "cubic-bezier(.2, .9, .2, 1)",
+    fill: "forwards"
+  });
+  if (animation?.finished) {
+    await animation.finished.catch(() => {});
+  } else {
+    await wait(duration);
+  }
+  clone.style.transform = toTransform;
+}
+
+async function animateCombatImpactShake(clone, targetElement) {
+  const shaking = [clone, targetElement].filter(Boolean);
+  shaking.forEach((element) => {
+    element.classList.remove("is-combat-shaking");
+    void element.offsetWidth;
+    element.classList.add("is-combat-shaking");
+  });
+  playTone("hit");
+  await wait(430);
+  shaking.forEach((element) => element.classList.remove("is-combat-shaking"));
+}
+
+async function animateCombatAttackLunge(events) {
+  const groups = getCombatAttackLungeGroups(events);
+  if (!groups.length) return;
+  playTone("soft");
+  await Promise.all(groups.map((group) => animateCombatAttackSourceLunge(group.sourceElement, group.targets)));
+}
+
 async function animateResolutionEvents(events, kind = "damage") {
   const bursts = [];
   const flashed = new Set();
@@ -7754,14 +7982,8 @@ async function animateResolutionEvents(events, kind = "damage") {
 
 async function animateCombatDamageEvents(events) {
   const bursts = [];
-  const shaking = new Set();
   events.forEach((event) => {
     const target = getDamageEventElement(event);
-    const source = event.source ? getBattlefieldCardElement(event.source.playerId, event.source.uid) : null;
-    [target, source].filter(Boolean).forEach((element) => {
-      element.classList.add("is-combat-shaking");
-      shaking.add(element);
-    });
     if (!target) return;
     const rect = target.getBoundingClientRect();
     const burst = document.createElement("div");
@@ -7775,7 +7997,6 @@ async function animateCombatDamageEvents(events) {
   playTone("hit");
   await wait(events.some((event) => getDamageEventElement(event)) ? 860 : 420);
   bursts.forEach((burst) => burst.remove());
-  shaking.forEach((element) => element.classList.remove("is-combat-shaking"));
 }
 
 function dealCharacterDamage(player, uid, amount, reason, source = "", options = {}) {
@@ -7846,6 +8067,15 @@ function destroyLethalCharacters(game) {
     });
     player.battlefield = survivors;
   });
+}
+
+function applyStateBasedActions(game) {
+  if (!game || game.status !== "active") return false;
+  const lethalRefs = getLethalCharacterRefs(game);
+  if (!lethalRefs.length) return false;
+  destroyLethalCharacters(game);
+  checkGameEnd(game);
+  return true;
 }
 
 function getLethalCharacterRefs(game) {

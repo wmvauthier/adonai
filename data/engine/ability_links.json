@@ -666,7 +666,7 @@
       "sourceType": "card",
       "sourceId": "FND-TEM-049",
       "zone": "identity",
-      "abilityId": "card.fnd_tem_049.consecration_begin"
+      "abilityId": "card.fnd_tem_049.prepare_begin"
     }
   ]
 }

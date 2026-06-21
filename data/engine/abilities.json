@@ -2864,13 +2864,13 @@
       ]
     },
     {
-      "id": "card.fnd_tem_049.consecration_begin",
+      "id": "card.fnd_tem_049.prepare_begin",
       "kind": "triggered",
-      "trigger": "phase.consecration.begin",
+      "trigger": "phase.prepare.begin",
       "usesStack": true,
       "optional": true,
       "label": { "pt": "Altar da Aliança Renovada" },
-      "description": { "pt": "Durante sua Consagração, você pode colocar três cartas da sua mão no fundo do seu baralho. Se fizer isso, escolha uma característica e aplique +1 ou -1." },
+      "description": { "pt": "Durante sua Preparação, você pode colocar três cartas da sua mão no fundo do seu baralho. Se fizer isso, escolha uma característica e aplique +1 ou -1." },
       "condition": {
         "activePlayer": "controller",
         "controllerHandSize": { "gte": 3 }

@@ -816,3 +816,46 @@ body::before {
     0 0 0 1px rgba(255, 232, 169, .2),
     0 14px 30px rgba(0, 0, 0, .55) !important;
 }
+
+.combat-attack-lunge {
+  position: fixed !important;
+  left: 0;
+  top: 0;
+  z-index: 2147483200 !important;
+  display: block !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  background: #050707 !important;
+  pointer-events: none !important;
+  filter: saturate(1.08) contrast(1.04);
+  box-shadow:
+    0 0 0 1px rgba(255, 232, 169, .26),
+    0 16px 30px rgba(0, 0, 0, .62),
+    0 0 20px rgba(255, 232, 169, .18) !important;
+  will-change: transform;
+}
+
+.combat-attack-lunge img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: cover !important;
+  border-radius: inherit !important;
+  background: #050707 !important;
+  user-select: none !important;
+  -webkit-user-drag: none;
+}
+
+.combat-attack-lunge.is-combat-shaking img {
+  animation: combat-card-shake .42s ease-in-out;
+}
+
+.is-attack-lunge-source {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
