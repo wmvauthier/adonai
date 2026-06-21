@@ -612,3 +612,207 @@ body::before {
 .play-board--new-ui .hand-dock.is-hand-expanded .hand-row .play-card:nth-child(n) {
   transform: rotate(0deg) translateY(0) translateZ(0) !important;
 }
+
+/* Final HUD metric sizing: keep "Cemiterio" readable by narrowing the name tile. */
+.play-board--new-ui .player-dock-metrics {
+  grid-template-columns:
+    minmax(38px, .88fr)
+    minmax(38px, .88fr)
+    minmax(46px, .76fr)
+    minmax(70px, 1.45fr)
+    minmax(48px, 1fr) !important;
+  gap: 3px !important;
+}
+
+.play-board--new-ui .player-dock-metrics > .player-dock-label {
+  min-width: 0 !important;
+}
+
+.play-board--new-ui .player-dock-metrics > .dock-metric:nth-child(4) {
+  min-width: 70px !important;
+}
+
+.play-board--new-ui .dock-metric:not(.dock-metric--virtues) span,
+.play-board--new-ui .player-dock-metrics > .player-dock-label span {
+  overflow: visible !important;
+  text-overflow: clip !important;
+  white-space: nowrap !important;
+}
+
+.play-board--new-ui .player-dock-metrics > .player-dock-label span {
+  letter-spacing: .07em !important;
+}
+
+.play-board--new-ui .player-dock-metrics > .player-dock-label strong {
+  font-size: clamp(.72rem, 2.7vw, .9rem) !important;
+}
+
+/* Drag previews must use the full composed card, not only the base art. */
+.native-drag-preview.play-board--new-ui,
+.drag-ghost.play-board--new-ui {
+  width: calc((var(--hand-h, 122px) - 12px) * var(--play-card-ratio, .72)) !important;
+  height: calc(var(--hand-h, 122px) - 12px) !important;
+  aspect-ratio: var(--play-card-ratio, .72) !important;
+  border-radius: 10px !important;
+  overflow: visible !important;
+  pointer-events: none !important;
+  background: transparent !important;
+}
+
+.native-drag-preview.play-board--new-ui {
+  position: fixed !important;
+  left: -9999px !important;
+  top: -9999px !important;
+}
+
+.native-drag-preview.play-board--new-ui::before,
+.drag-ghost.play-board--new-ui::before {
+  content: none !important;
+  display: none !important;
+}
+
+.drag-ghost.play-board--new-ui .is-drag-preview-card,
+.native-drag-preview.play-board--new-ui .is-drag-preview-card {
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  margin: 0 !important;
+  transform: none !important;
+  opacity: .92 !important;
+  pointer-events: none !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 232, 169, .2),
+    0 16px 26px rgba(0, 0, 0, .55),
+    0 0 18px rgba(105, 231, 255, .16) !important;
+}
+
+.drag-ghost.play-board--new-ui .is-drag-preview-card .card-main-art,
+.native-drag-preview.play-board--new-ui .is-drag-preview-card .card-main-art {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+.drag-ghost.play-board--new-ui .is-drag-preview-card .hand-card-pips img,
+.native-drag-preview.play-board--new-ui .is-drag-preview-card .hand-card-pips img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+}
+
+/* Dedicated drag surface: keeps the card chrome visible without inheriting board layout. */
+.drag-ghost.drag-ghost--composed.play-board--new-ui,
+.native-drag-preview.native-drag-preview--fallback.play-board--new-ui {
+  display: block !important;
+  grid-template-rows: none !important;
+  gap: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: calc((var(--hand-h, 122px) - 12px) * var(--play-card-ratio, .72)) !important;
+  height: calc(var(--hand-h, 122px) - 12px) !important;
+  max-width: none !important;
+  max-height: none !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 12px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  pointer-events: none !important;
+}
+
+.drag-ghost.drag-ghost--composed.play-board--new-ui > .is-drag-preview-card,
+.native-drag-preview.native-drag-preview--fallback.play-board--new-ui > .is-drag-preview-card {
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  transform: none !important;
+  opacity: .96 !important;
+  overflow: hidden !important;
+  border-radius: 12px !important;
+}
+
+.drag-ghost.drag-ghost--composed,
+.drag-ghost.drag-ghost--native {
+  z-index: 100000 !important;
+  opacity: .98 !important;
+  will-change: transform;
+}
+
+.zone-modal-panel--engine-target-choice.is-visual-only {
+  width: min(94vw, 380px) !important;
+}
+
+.zone-modal-panel--engine-target-choice.is-visual-only .engine-target-choice-grid {
+  grid-template-columns: repeat(auto-fit, minmax(58px, 72px)) !important;
+  justify-content: center !important;
+  align-content: start !important;
+  gap: 8px !important;
+  padding: 10px !important;
+}
+
+.zone-modal-panel--engine-target-choice.is-visual-only .engine-target-choice-card {
+  width: 100% !important;
+  min-width: 0 !important;
+  padding: 3px !important;
+}
+
+.zone-modal-panel--engine-target-choice.is-visual-only .engine-target-choice-art {
+  aspect-ratio: 1 !important;
+  border-radius: 9px !important;
+}
+
+.play-board--new-ui .phase-panel.is-bot-turn .phase-current {
+  border-color: rgba(215, 185, 109, .36) !important;
+  color: #ffe8e8 !important;
+  background:
+    linear-gradient(90deg, rgba(62, 11, 13, .84), rgba(116, 31, 34, .96), rgba(62, 11, 13, .84)),
+    linear-gradient(180deg, rgba(82, 18, 21, .98), rgba(28, 7, 8, .98)) !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, .04),
+    0 8px 20px rgba(0, 0, 0, .42),
+    0 0 22px rgba(255, 80, 84, .16),
+    inset 0 0 18px rgba(255, 170, 150, .08) !important;
+}
+
+.drag-ghost.drag-ghost--image {
+  position: fixed !important;
+  left: 0 !important;
+  top: 0 !important;
+  z-index: 2147483647 !important;
+  display: block !important;
+  width: clamp(82px, 22vw, 108px) !important;
+  height: auto !important;
+  aspect-ratio: 5 / 7 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 12px !important;
+  background: transparent !important;
+  opacity: .98 !important;
+  pointer-events: none !important;
+  filter: drop-shadow(0 18px 28px rgba(0, 0, 0, .72)) drop-shadow(0 0 16px rgba(105, 231, 255, .2)) !important;
+  will-change: transform;
+}
+
+.drag-ghost.drag-ghost--image img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  aspect-ratio: 5 / 7 !important;
+  object-fit: cover !important;
+  border-radius: 12px !important;
+  background: #050707 !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 232, 169, .2),
+    0 14px 30px rgba(0, 0, 0, .55) !important;
+}

@@ -601,7 +601,7 @@ function emitGameEvent(triggerId, payload = {}, options = {}) {
     if (stackObject.source?.sourceType === "virtue" && !stackObject.suppressTriggerFeedback) {
       markVirtueTriggered(stackObject.controllerId, stackObject.source.sourceId);
     }
-    if (ability?.kind === "replacement" || options.resolveImmediately) {
+    if (ability?.kind === "replacement" || ability?.usesStack === false || options.resolveImmediately) {
       resolveEngineStackObject(game, stackObject);
       return;
     }
@@ -2243,8 +2243,9 @@ function beginTurn(game) {
           waitForEngineStack(game, () => {
             if (!app.game || app.game !== game || game.status !== "active" || game.activePlayer !== player.id) return;
             if (currentPhase(game) !== "draw") return;
-            applyDraw(player.id);
-            renderGame();
+            void applyDraw(player.id).then((applied) => {
+              if (applied && app.game === game) renderGame();
+            });
           });
         }, 1900);
       });
@@ -2383,6 +2384,7 @@ function hasHumanPriorityPermanentAction(game = app.game) {
 
 function hasHumanPriorityPlay(game = app.game) {
   if (!game || game.status !== "active") return false;
+  if (hasPendingEngineChoiceWork()) return false;
   if (game.combat.awaitingBlockers || game.combat.resolving) return false;
   if (hasHumanPriorityPermanentAction(game)) {
     return true;
@@ -2417,6 +2419,7 @@ function requestHumanPriority(game, key, label, resume) {
   });
   addLog(game, label, "Prioridade");
   renderGame();
+  schedulePriorityAutoPass(game);
   return true;
 }
 
@@ -2814,10 +2817,17 @@ function canUseChampionAction(player) {
   return getViableActivatedAbilitiesForChampion(player).length > 0;
 }
 
+function canReequipEquipmentTo(equipment, target, equipmentControllerId = "", targetControllerId = equipmentControllerId) {
+  return canAttachEquipmentTo(equipment, target, equipmentControllerId, targetControllerId) && !target?.exhausted;
+}
+
 function canAttachEquipmentFromBattlefield(player, instance) {
   if (!player || !instance || !isEquipmentInstance(instance)) return false;
+  const game = app.game;
+  if (!game || game.activePlayer !== player.id || currentPhase(game) !== "preparation") return false;
+  if (isHumanPriorityOpen() || game.stackResolving || game.stack.length) return false;
   return player.battlefield.some((target) => (
-    target.uid !== instance.uid && canAttachEquipmentTo(instance, target, player.id, player.id)
+    target.uid !== instance.uid && canReequipEquipmentTo(instance, target, player.id, player.id)
   ));
 }
 
@@ -2853,15 +2863,20 @@ function queueActivatedAbility(stackObject) {
   return true;
 }
 
-async function chooseEquipmentAttachmentTarget(player, equipment) {
+async function chooseEquipmentAttachmentTarget(player, equipment, options = {}) {
+  const requiresPrepared = Boolean(options.requiresPrepared);
   const refs = player.battlefield
-    .filter((target) => canAttachEquipmentTo(equipment, target, player.id, player.id))
+    .filter((target) => requiresPrepared
+      ? canReequipEquipmentTo(equipment, target, player.id, player.id)
+      : canAttachEquipmentTo(equipment, target, player.id, player.id))
     .map((instance) => ({ playerId: player.id, instance }));
   if (!refs.length) return null;
   if (player.id !== "human") return chooseBotEngineTargetRef(refs, "attach");
   return showEngineTargetChoiceModal({
     title: "Anexar equipamento",
-    description: `Escolha um Personagem para anexar ${getCardName(app.cardByCode.get(equipment.cardId))}.`,
+    description: requiresPrepared
+      ? `Escolha um Personagem preparado para despreparar e anexar ${getCardName(app.cardByCode.get(equipment.cardId))}.`
+      : `Escolha um Personagem para anexar ${getCardName(app.cardByCode.get(equipment.cardId))}.`,
     refs,
     kind: "attach",
     visualOnly: true,
@@ -2955,9 +2970,13 @@ async function applyActivatePermanentAction(playerId, uid) {
     return queueActivatedAbility(activated.stackObject);
   }
   if (isEquipmentInstance(instance)) {
-    const target = await chooseEquipmentAttachmentTarget(player, instance);
+    const target = await chooseEquipmentAttachmentTarget(player, instance, { requiresPrepared: true });
     if (!target) return false;
-    const attached = attachEquipmentTo(game, { playerId, instance }, target);
+    const liveTarget = findBattlefieldInstance(player, target.instance?.uid);
+    if (!liveTarget || !canReequipEquipmentTo(instance, liveTarget, playerId, playerId)) return false;
+    liveTarget.exhausted = true;
+    addLog(game, `${getCardName(app.cardByCode.get(liveTarget.cardId))} foi despreparado para equipar.`, player.label);
+    const attached = attachEquipmentTo(game, { playerId, instance }, { playerId, instance: liveTarget });
     if (attached) renderGame();
     return attached;
   }
@@ -4912,7 +4931,7 @@ async function chooseEngineTargetRefs(action, stackObject, kind = "target") {
     }
     return chosen ? [chosen] : [];
   }
-  const visualTargetKinds = new Set(["attach", "control", "buff"]);
+  const visualTargetKinds = new Set(["attach", "control", "buff", "bounce"]);
   const statTargetKinds = new Set(["attach", "control"]);
   const chosen = await showEngineTargetChoiceModal({
     title: stackObject.label,
@@ -6487,7 +6506,7 @@ function chooseHumanAttackTarget(target) {
   return changed;
 }
 
-function applyDraw(playerId) {
+async function applyDraw(playerId) {
   const game = app.game;
   const player = getPlayer(game, playerId);
   if (!canDraw(player)) return false;
@@ -6509,7 +6528,6 @@ function applyDraw(playerId) {
   addLog(game, `comprou ${drawn.length} carta${drawn.length === 1 ? "" : "s"}.`, player.label);
   if (missing > 0) addLog(game, `sofreu fadiga por nao conseguir comprar ${missing} carta${missing === 1 ? "" : "s"}.`, player.label);
   app.drawAnimationPending = true;
-  emitGameEvent("phase.draw.after_auto_draw", { game, playerId, drawnCards: drawn });
   playTone("draw");
   checkGameEnd(game);
   const finishDraw = async () => {
@@ -6520,6 +6538,8 @@ function applyDraw(playerId) {
       await animateResolutionEvents([{ type: "territory", playerId, amount: fatigueDamage }], "damage");
       if (!app.game || app.game !== game || game.status !== "active" || game.activePlayer !== playerId) return;
     }
+    await resolveImmediateGameEvent("phase.draw.after_auto_draw", { game, playerId, drawnCards: drawn });
+    if (!app.game || app.game !== game || game.status !== "active" || game.activePlayer !== playerId) return;
     scheduleStackResolution(game);
     waitForEngineStack(game, () => {
       if (!app.game || app.game !== game || game.status !== "active" || game.activePlayer !== playerId) return;
@@ -9156,7 +9176,7 @@ function renderCardButton(cardId, options = {}) {
       : options.zone === "bot-battlefield"
         ? `data-bot-battlefield-card="${escapeHtml(options.uid)}"`
         : "";
-  const draggable = options.zone === "hand" || options.zone === "battlefield" ? "draggable=\"true\"" : "";
+  const draggable = options.zone === "hand" || options.zone === "battlefield" ? "draggable=\"false\"" : "";
   const style = "";
 
   return `
@@ -10277,6 +10297,10 @@ function bindEvents() {
   els.soundToggleButton?.addEventListener("click", toggleSound);
 
   els.humanHand.addEventListener("click", (event) => {
+    if (Date.now() < toNumber(app.suppressPlayClickUntil, 0)) {
+      event.preventDefault();
+      return;
+    }
     setHandExpanded(true);
     const button = event.target.closest("[data-hand-card]");
     if (!button) return;
@@ -10300,6 +10324,10 @@ function bindEvents() {
   });
 
   els.humanBattlefield.addEventListener("click", async (event) => {
+    if (Date.now() < toNumber(app.suppressPlayClickUntil, 0)) {
+      event.preventDefault();
+      return;
+    }
     const button = event.target.closest("[data-battlefield-card]");
     if (!button) return;
     if (await applyActivatePermanentAction("human", button.dataset.battlefieldCard)) {
@@ -10329,7 +10357,9 @@ function bindEvents() {
   });
 
   els.drawButton.addEventListener("click", () => {
-    if (applyDraw("human")) renderGame();
+    void applyDraw("human").then((applied) => {
+      if (applied) renderGame();
+    });
   });
   els.consecrateButton.addEventListener("click", () => {
     showInteractionHint("Arraste uma carta da mao para Suas Essencias.");
@@ -10469,11 +10499,12 @@ function bindDragAndDrop() {
     const battlefieldCard = event.target.closest("[data-battlefield-card]");
     const essenceCard = event.target.closest("[data-essence-index]");
     const blockerCard = event.target.closest("[data-blocker]");
-    if (handCard) {
-      app.dragPayload = { zone: "hand", id: handCard.dataset.handCard };
-    } else if (battlefieldCard) {
-      app.dragPayload = { zone: "battlefield", id: battlefieldCard.dataset.battlefieldCard };
-    } else if (essenceCard) {
+    if (handCard || battlefieldCard) {
+      event.preventDefault();
+      app.dragPayload = null;
+      return;
+    }
+    if (essenceCard) {
       if (!canProfane(app.game.players.human, Number(essenceCard.dataset.essenceIndex))) {
         event.preventDefault();
         app.dragPayload = null;
@@ -10493,12 +10524,20 @@ function bindDragAndDrop() {
     }
     event.dataTransfer.effectAllowed = "move";
     event.dataTransfer.setData("text/plain", JSON.stringify(app.dragPayload));
-    setNativeDragImage(event, getDragPreviewCardId(app.dragPayload));
+    const sourceElement = handCard || battlefieldCard || essenceCard || blockerCard;
+    const previewCardId = getDragPreviewCardId(app.dragPayload);
+    setNativeDragImage(event);
+    showNativeDragGhost(previewCardId, sourceElement, event.clientX, event.clientY);
   });
 
   document.addEventListener("dragend", () => {
     app.dragPayload = null;
+    cleanupNativeDragGhost();
     document.querySelectorAll(".is-drop-hover").forEach((node) => node.classList.remove("is-drop-hover"));
+  });
+
+  document.addEventListener("dragover", (event) => {
+    moveNativeDragGhost(event.clientX, event.clientY);
   });
 
   document.addEventListener("dragover", (event) => {
@@ -10522,6 +10561,7 @@ function bindDragAndDrop() {
     zone.classList.remove("is-drop-hover");
     handleDrop(zone, app.dragPayload, event.target);
     app.dragPayload = null;
+    cleanupNativeDragGhost();
   });
 
   [els.humanBattlefield, humanEssencePanel, els.botArea, els.botBattlefield, els.humanHand, els.handDock].forEach((zone) => {
@@ -10538,13 +10578,13 @@ function bindDragAndDrop() {
       zone.classList.remove("is-drop-hover");
       handleDrop(zone, app.dragPayload, event.target);
       app.dragPayload = null;
+      cleanupNativeDragGhost();
     });
   });
 
   document.addEventListener("pointerdown", (event) => {
     const blockerCard = event.target.closest("[data-blocker]");
     const essenceCard = event.target.closest("[data-essence-index]");
-    if (event.pointerType === "mouse" && !blockerCard && !essenceCard) return;
     const handCard = event.target.closest("[data-hand-card]");
     const battlefieldCard = event.target.closest("[data-battlefield-card]");
     if (blockerCard) return;
@@ -10562,7 +10602,7 @@ function bindDragAndDrop() {
     if (essenceCard && !canProfane(app.game.players.human, essenceIndex)) return;
     if (!sourceCard) return;
     const sourceElement = handCard || essenceCard || battlefieldCard || blockerCard;
-    if (essenceCard) event.preventDefault();
+    if (essenceCard || event.pointerType === "mouse") event.preventDefault();
     try {
       sourceElement?.setPointerCapture?.(event.pointerId);
     } catch (error) {
@@ -10594,7 +10634,7 @@ function bindDragAndDrop() {
     const dy = event.clientY - drag.startY;
     const isEssenceDrag = drag.payload.zone === "essence";
     if (isEssenceDrag) event.preventDefault();
-    if (!drag.longPress && !drag.moved && drag.payload.zone === "hand" && Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy) * 1.25) {
+    if (event.pointerType !== "mouse" && !drag.longPress && !drag.moved && drag.payload.zone === "hand" && Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy) * 1.25) {
       releasePointerDragCapture(drag);
       app.pointerDrag = null;
       hideCardZoom();
@@ -10605,7 +10645,7 @@ function bindDragAndDrop() {
     drag.moved = true;
     hideCardZoom();
     if (!drag.ghost) {
-      drag.ghost = createDragGhost(drag.cardId);
+      drag.ghost = createDragGhost(drag.cardId, drag.sourceElement);
       document.body.appendChild(drag.ghost);
     }
     drag.ghost.style.transform = `translate(${event.clientX - 38}px, ${event.clientY - 52}px)`;
@@ -10614,7 +10654,7 @@ function bindDragAndDrop() {
       if (node !== zone) node.classList.remove("is-drop-hover");
     });
     zone?.classList.add("is-drop-hover");
-  }, { passive: false });
+  }, { passive: false, capture: true });
 
   document.addEventListener("pointerup", (event) => {
     const drag = app.pointerDrag;
@@ -10625,9 +10665,10 @@ function bindDragAndDrop() {
     if (drag.ghost) drag.ghost.remove();
     document.querySelectorAll(".is-drop-hover").forEach((node) => node.classList.remove("is-drop-hover"));
     if (zone) handleDrop(zone, drag.payload, dropElement);
+    if (drag.moved) app.suppressPlayClickUntil = Date.now() + 350;
     releasePointerDragCapture(drag);
     app.pointerDrag = null;
-  });
+  }, true);
 }
 
 function showCardZoom(cardId) {
@@ -10670,12 +10711,61 @@ function releasePointerDragCapture(drag) {
   }
 }
 
-function createDragGhost(cardId) {
+function createDragPreviewNode(sourceElement, cardId) {
+  if (sourceElement) {
+    const clone = sourceElement.cloneNode(true);
+    clone.classList?.add("is-drag-preview-card");
+    clone.removeAttribute?.("id");
+    clone.setAttribute?.("draggable", "false");
+    clone.querySelectorAll?.("[id]").forEach((node) => node.removeAttribute("id"));
+    clone.querySelectorAll?.("[draggable]").forEach((node) => node.setAttribute("draggable", "false"));
+    clone.querySelectorAll?.("img").forEach((node) => {
+      node.removeAttribute("loading");
+      node.setAttribute("draggable", "false");
+      node.decoding = "sync";
+    });
+    return clone;
+  }
   const card = app.cardByCode.get(cardId);
+  const fallback = document.createElement("img");
+  fallback.src = getCardArt(card);
+  fallback.alt = "";
+  fallback.draggable = false;
+  return fallback;
+}
+
+function createDragGhost(cardId, sourceElement = null) {
+  const card = app.cardByCode.get(cardId);
+  const imageSource = card ? getCardArt(card) : sourceElement?.querySelector?.("img")?.getAttribute("src");
+  if (!imageSource) return document.createElement("div");
   const ghost = document.createElement("div");
-  ghost.className = "drag-ghost";
-  ghost.innerHTML = `<img src="${escapeHtml(getCardArt(card))}" alt="" />`;
+  ghost.className = "drag-ghost drag-ghost--image";
+  ghost.innerHTML = `<img src="${escapeHtml(imageSource)}" alt="" draggable="false" />`;
   return ghost;
+}
+
+function moveDragGhostElement(ghost, x, y) {
+  if (!ghost) return;
+  ghost.style.transform = `translate(${x - 48}px, ${y - 66}px)`;
+}
+
+function showNativeDragGhost(cardId, sourceElement, x, y) {
+  cleanupNativeDragGhost();
+  const ghost = createDragGhost(cardId, sourceElement);
+  ghost.classList.add("drag-ghost--native");
+  document.body.appendChild(ghost);
+  app.nativeDragGhost = ghost;
+  moveDragGhostElement(ghost, x, y);
+}
+
+function moveNativeDragGhost(x, y) {
+  if (!app.nativeDragGhost) return;
+  moveDragGhostElement(app.nativeDragGhost, x, y);
+}
+
+function cleanupNativeDragGhost() {
+  app.nativeDragGhost?.remove();
+  app.nativeDragGhost = null;
 }
 
 function getDragPreviewCardId(payload) {
@@ -10690,15 +10780,14 @@ function getDragPreviewCardId(payload) {
   return "";
 }
 
-function setNativeDragImage(event, cardId) {
-  const card = app.cardByCode.get(cardId);
-  if (!card || !event.dataTransfer?.setDragImage) return;
-  const ghost = document.createElement("div");
-  ghost.className = "native-drag-preview";
-  ghost.innerHTML = `<img src="${escapeHtml(getCardArt(card))}" alt="" />`;
-  document.body.appendChild(ghost);
-  event.dataTransfer.setDragImage(ghost, 38, 52);
-  window.setTimeout(() => ghost.remove(), 0);
+function setNativeDragImage(event) {
+  if (!event.dataTransfer?.setDragImage) return;
+  if (!app.transparentDragImage) {
+    app.transparentDragImage = document.createElement("canvas");
+    app.transparentDragImage.width = 1;
+    app.transparentDragImage.height = 1;
+  }
+  event.dataTransfer.setDragImage(app.transparentDragImage, 0, 0);
 }
 
 function getDropZoneFromPoint(x, y) {

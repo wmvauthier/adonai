@@ -97,6 +97,7 @@
           "temporaryEffect": {
             "trigger": "phase.draw.after_auto_draw",
             "label": { "pt": "Fé Nv3 - Revelação" },
+            "usesStack": false,
             "suppressTriggerFeedback": true,
             "condition": {
               "activePlayer": "controller",
@@ -152,6 +153,7 @@
           "temporaryEffect": {
             "trigger": "phase.draw.after_auto_draw",
             "label": { "pt": "Fé Nv4 - Providência" },
+            "usesStack": false,
             "suppressTriggerFeedback": true,
             "condition": {
               "activePlayer": "controller",
