@@ -255,7 +255,8 @@ const app = {
   priority: null,
   pendingEngineChoice: null,
   pendingMoralChoice: null,
-  pendingVirtueDebug: null
+  pendingVirtueDebug: null,
+  decisionBattlefieldView: false
 };
 
 function localize(value) {
@@ -271,6 +272,103 @@ function escapeHtml(value) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
+}
+
+function getModalElement(id = "zoneModal") {
+  let modal = document.getElementById(id);
+  if (!modal) {
+    modal = document.createElement("div");
+    modal.id = id;
+    modal.className = "zone-modal";
+    document.body.appendChild(modal);
+  }
+  return modal;
+}
+
+function hasPendingChoiceWork() {
+  return Boolean(app.pendingEngineChoice || app.pendingMoralChoice || app.pendingVirtueDebug);
+}
+
+function canInspectBattlefieldDuringChoice() {
+  const type = app.pendingEngineChoice?.type || "";
+  return Boolean(
+    app.game &&
+    app.game.status === "active" &&
+    hasPendingChoiceWork() &&
+    type !== "pregame-reduction" &&
+    type !== "pregame-mulligan"
+  );
+}
+
+function clearDecisionBattlefieldView() {
+  app.decisionBattlefieldView = false;
+  document.getElementById("decisionReturnButton")?.remove();
+  document.getElementById("fieldViewModal")?.classList.remove("is-visible");
+  document.getElementById("zoneModal")?.classList.remove("is-battlefield-view");
+}
+
+function closeDecisionModal(overlay) {
+  overlay?.classList.remove("is-visible", "is-battlefield-view");
+  clearDecisionBattlefieldView();
+}
+
+function showDecisionReturnButton() {
+  let button = document.getElementById("decisionReturnButton");
+  if (!button) {
+    button = document.createElement("button");
+    button.id = "decisionReturnButton";
+    button.className = "decision-return-button";
+    button.type = "button";
+    button.dataset.returnToDecision = "true";
+    button.textContent = "Voltar à escolha";
+    document.body.appendChild(button);
+  }
+}
+
+function enterDecisionBattlefieldView() {
+  if (!canInspectBattlefieldDuringChoice()) return false;
+  const overlay = document.getElementById("zoneModal");
+  if (!overlay) return false;
+  app.decisionBattlefieldView = true;
+  overlay.classList.remove("is-visible");
+  overlay.classList.add("is-battlefield-view");
+  showDecisionReturnButton();
+  renderGame();
+  return true;
+}
+
+function returnToDecisionModal() {
+  const overlay = document.getElementById("zoneModal");
+  if (!overlay || !hasPendingChoiceWork()) return false;
+  document.getElementById("fieldViewModal")?.classList.remove("is-visible");
+  document.getElementById("decisionReturnButton")?.remove();
+  app.decisionBattlefieldView = false;
+  overlay.classList.remove("is-battlefield-view");
+  overlay.classList.add("is-visible");
+  renderGame();
+  return true;
+}
+
+function getInformationalModalElement() {
+  return getModalElement(app.decisionBattlefieldView ? "fieldViewModal" : "zoneModal");
+}
+
+function hideFieldViewModal() {
+  document.getElementById("fieldViewModal")?.classList.remove("is-visible");
+}
+
+function decorateDecisionModal(overlay) {
+  if (!overlay || !canInspectBattlefieldDuringChoice()) return;
+  const panel = overlay.querySelector(".zone-modal-panel");
+  const head = overlay.querySelector(".zone-modal-head");
+  if (!panel || !head || head.querySelector("[data-view-battlefield]")) return;
+  panel.dataset.decisionModal = "true";
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "zone-modal-view-board";
+  button.dataset.viewBattlefield = "true";
+  button.textContent = "Ver campo de batalha";
+  head.appendChild(button);
 }
 
 function createEngineRegistry(payloads = {}) {
@@ -1590,7 +1688,7 @@ async function updateSetupStatus() {
     return;
   }
 
-  els.startGameButton.textContent = "Carregando assets...";
+  els.startGameButton.textContent = "Carregando";
   try {
     await preloadDeckImages(humanDeck, botDeck);
     if (token !== app.setupPreloadToken) return;
@@ -1601,7 +1699,7 @@ async function updateSetupStatus() {
   } catch (error) {
     if (token !== app.setupPreloadToken) return;
     app.setupAssetsReady = false;
-    els.startGameButton.textContent = "Assets incompletos";
+    els.startGameButton.textContent = "Carregando";
     els.startGameButton.disabled = true;
   }
 }
@@ -3006,9 +3104,10 @@ function showChampionAbilityChoiceModal(player, activations) {
         </div>
       </div>
     `;
+    decorateDecisionModal(overlay);
     overlay.querySelectorAll("[data-champion-ability-choice]").forEach((button) => {
       button.addEventListener("click", () => {
-        overlay.classList.remove("is-visible");
+        closeDecisionModal(overlay);
         app.pendingEngineChoice = null;
         resolve(options[toNumber(button.dataset.championAbilityChoice, 0)] || null);
       }, { once: true });
@@ -3896,9 +3995,10 @@ function showEngineChoiceModal({ title, description, confirmText, cancelText, ef
         </div>
       </div>
     `;
+    decorateDecisionModal(overlay);
     overlay.querySelectorAll("[data-engine-choice]").forEach((button) => {
       button.addEventListener("click", () => {
-        overlay.classList.remove("is-visible");
+        closeDecisionModal(overlay);
         app.pendingEngineChoice = null;
         resolve(button.dataset.engineChoice === "confirm");
       }, { once: true });
@@ -3947,6 +4047,7 @@ function showEngineHandChoiceModal(player, amount, { title, description, confirm
           </div>
         </div>
       `;
+      decorateDecisionModal(overlay);
       overlay.querySelectorAll("[data-engine-card-choice]").forEach((button) => {
         button.addEventListener("click", () => {
           const index = Number(button.dataset.engineCardChoice);
@@ -3960,7 +4061,7 @@ function showEngineHandChoiceModal(player, amount, { title, description, confirm
       });
       overlay.querySelector("[data-engine-card-confirm]")?.addEventListener("click", () => {
         if (selected.size !== amount) return;
-        overlay.classList.remove("is-visible");
+        closeDecisionModal(overlay);
         app.pendingEngineChoice = null;
         resolve(handSnapshot.filter((item) => selected.has(item.index)).map((item) => item.cardId).filter(Boolean));
       }, { once: true });
@@ -4012,6 +4113,7 @@ function showEngineSingleCardChoiceModal({ title, description, entries, confirmT
           </div>
         </div>
       `;
+      decorateDecisionModal(overlay);
       overlay.querySelectorAll("[data-engine-single-card-choice]").forEach((button) => {
         button.addEventListener("click", () => {
           selectedIndex = toNumber(button.dataset.engineSingleCardChoice, -1);
@@ -4020,7 +4122,7 @@ function showEngineSingleCardChoiceModal({ title, description, entries, confirmT
       });
       overlay.querySelector("[data-engine-single-card-confirm]")?.addEventListener("click", () => {
         if (selectedIndex < 0) return;
-        overlay.classList.remove("is-visible");
+        closeDecisionModal(overlay);
         app.pendingEngineChoice = null;
         resolve(availableEntries[selectedIndex] || null);
       }, { once: true });
@@ -4141,6 +4243,7 @@ function showEngineDeckReviewModal(player, cardIds, { title, description, maxCem
           </div>
         </div>
       `;
+      decorateDecisionModal(overlay);
 
       overlay.querySelectorAll("[data-engine-review-card]").forEach((cardNode) => {
         cardNode.addEventListener("click", () => {
@@ -4226,7 +4329,7 @@ function showEngineDeckReviewModal(player, cardIds, { title, description, maxCem
       });
 
       overlay.querySelector("[data-engine-review-confirm]")?.addEventListener("click", () => {
-        overlay.classList.remove("is-visible");
+        closeDecisionModal(overlay);
         app.pendingEngineChoice = null;
         resolve({
           top: state.top.map((index) => cardIds[index]),
@@ -4269,9 +4372,10 @@ function showEngineAmountChoiceModal({ title, description, min, max, confirmPref
         </div>
       </div>
     `;
+    decorateDecisionModal(overlay);
     overlay.querySelectorAll("[data-engine-amount-choice]").forEach((button) => {
       button.addEventListener("click", () => {
-        overlay.classList.remove("is-visible");
+        closeDecisionModal(overlay);
         app.pendingEngineChoice = null;
         resolve(toNumber(button.dataset.engineAmountChoice, min));
       }, { once: true });
@@ -4823,15 +4927,16 @@ function showEngineTargetChoiceModal({
         ` : ""}
       </div>
     `;
+    decorateDecisionModal(overlay);
     overlay.querySelectorAll("[data-engine-target-choice]").forEach((button) => {
       button.addEventListener("click", () => {
-        overlay.classList.remove("is-visible");
+        closeDecisionModal(overlay);
         app.pendingEngineChoice = null;
         resolve(refs[toNumber(button.dataset.engineTargetChoice, 0)] || null);
       }, { once: true });
     });
     overlay.querySelector("[data-engine-target-cancel]")?.addEventListener("click", () => {
-      overlay.classList.remove("is-visible");
+      closeDecisionModal(overlay);
       app.pendingEngineChoice = null;
       resolve(null);
     }, { once: true });
@@ -4904,9 +5009,10 @@ function showEngineStackChoiceModal({ title, description, refs }) {
         </div>
       </div>
     `;
+    decorateDecisionModal(overlay);
     overlay.querySelectorAll("[data-engine-stack-target]").forEach((button) => {
       button.addEventListener("click", () => {
-        overlay.classList.remove("is-visible");
+        closeDecisionModal(overlay);
         app.pendingEngineChoice = null;
         resolve(refs[toNumber(button.dataset.engineStackTarget, 0)] || null);
       }, { once: true });
@@ -5048,9 +5154,10 @@ function showEngineBundleChoiceModal({ title, description, choices }) {
         </div>
       </div>
     `;
+    decorateDecisionModal(overlay);
     overlay.querySelectorAll("[data-engine-bundle-choice]").forEach((button) => {
       button.addEventListener("click", () => {
-        overlay.classList.remove("is-visible");
+        closeDecisionModal(overlay);
         app.pendingEngineChoice = null;
         resolve(choices[toNumber(button.dataset.engineBundleChoice, 0)] || null);
       }, { once: true });
@@ -5164,6 +5271,7 @@ function showEngineDistributionModal({ title, description, candidates, total, ki
           </div>
         </div>
       `;
+      decorateDecisionModal(overlay);
       overlay.querySelectorAll("[data-engine-distribution-minus]").forEach((button) => {
         button.addEventListener("click", () => {
           const ref = candidates[toNumber(button.dataset.engineDistributionMinus, 0)];
@@ -5182,7 +5290,7 @@ function showEngineDistributionModal({ title, description, candidates, total, ki
         }, { once: true });
       });
       overlay.querySelector("[data-engine-distribution-confirm]")?.addEventListener("click", () => {
-        overlay.classList.remove("is-visible");
+        closeDecisionModal(overlay);
         app.pendingEngineChoice = null;
         resolve(candidates
           .map((ref) => ({ ref, amount: allocations.get(getEngineRefKey(ref)) || 0 }))
@@ -6685,7 +6793,11 @@ async function applySinConsecrationEffect(player) {
     addLog(app.game, "Consagração de Pecado sem Desvirtude ativa para redimir.", player.label);
     return null;
   }
-  return { label: `Pecado: ${formatMoralResultForAlert(result)}` };
+  return {
+    label: `Pecado: ${formatMoralResultForAlert(result)}`,
+    moralResult: result,
+    consumesGeneralMoralAdjustment: true
+  };
 }
 
 function applyArtifactConsecrationEffect(player, card) {
@@ -6821,9 +6933,12 @@ function formatConsecrationAlertDetail(typeResult, moralResult) {
 async function resolveConsecrationSequence(game, player, card, cardId, playerId) {
   const typeResult = await applyPresenceTempleReplacement(player, card) || await applyConsecrationTypeEffect(player, card);
   if (!app.game || app.game !== game || game.status !== "active") return;
-  const moralAmount = await getConsecrationMoralAmount(player, card);
-  if (!app.game || app.game !== game || game.status !== "active") return;
-  const result = await queueConsecrationMoralAdjustmentAsync(player, moralAmount);
+  let result = typeResult?.moralResult || null;
+  if (!typeResult?.consumesGeneralMoralAdjustment) {
+    const moralAmount = await getConsecrationMoralAmount(player, card);
+    if (!app.game || app.game !== game || game.status !== "active") return;
+    result = await queueConsecrationMoralAdjustmentAsync(player, moralAmount);
+  }
   if (!app.game || app.game !== game || game.status !== "active") return;
   emitGameEvent("action.consecrate.after", {
     game,
@@ -8045,14 +8160,15 @@ function destroyLethalCharacters(game) {
         return;
       }
       if (lethalByDamage || zeroResistance) {
+        const isToken = Boolean(instance.token || card?.token);
         cleanupAttachmentsForLeaving(game, instance.uid);
-        player.cemetery.push(instance.cardId);
+        if (!isToken) player.cemetery.push(instance.cardId);
         emitGameEvent("permanent.leaves_battlefield", {
           game,
           playerId: player.id,
           instanceUid: instance.uid,
           cardId: instance.cardId,
-          destination: "cemetery"
+          destination: isToken ? "void" : "cemetery"
         });
         emitGameEvent("permanent.dies", {
           game,
@@ -8060,7 +8176,9 @@ function destroyLethalCharacters(game) {
           instanceUid: instance.uid,
           cardId: instance.cardId
         });
-        addLog(game, `${getCardName(card)} foi destruido por dano.`, player.label);
+        addLog(game, isToken
+          ? `${getCardName(card)} foi destruido por dano e deixou de existir.`
+          : `${getCardName(card)} foi destruido por dano.`, player.label);
         return;
       }
       survivors.push(instance);
@@ -8237,10 +8355,25 @@ function scheduleBotTurn(game, delay = null) {
   }, effectiveDelay);
 }
 
+function finalizeResolutionQueue(game) {
+  if (!game) return;
+  game.stack = [];
+  game.stackResolving = false;
+  if (app.priority?.game === game) app.priority = null;
+  app.pendingEngineChoice = null;
+  app.pendingMoralChoice = null;
+  app.pendingVirtueDebug = null;
+  app.drawAnimationPending = false;
+  clearDecisionBattlefieldView();
+  clearHumanAutoPass();
+  if (app.game === game) renderStackEdgePanel(game);
+}
+
 function concede() {
   if (!app.game || app.game.status !== "active") return;
   app.game.status = "finished";
   app.game.winner = "bot";
+  finalizeResolutionQueue(app.game);
   addLog(app.game, "concedeu a partida.", "Voce");
   playTone("end");
   renderGame();
@@ -8259,6 +8392,7 @@ function checkGameEnd(game) {
 
   if (game.status === "finished") {
     const winner = getPlayer(game, game.winner);
+    finalizeResolutionQueue(game);
     playTone(game.winner === "human" ? "win" : "end");
     showResult(game.winner === "human" ? "Vitoria" : "Derrota", `${winner.label} venceu a partida.`);
   }
@@ -9454,13 +9588,7 @@ function renderEssence(player, compact = false) {
 function showCemeteryModal(playerId) {
   const player = app.game?.players?.[playerId];
   if (!player) return;
-  let modal = document.getElementById("zoneModal");
-  if (!modal) {
-    modal = document.createElement("div");
-    modal.id = "zoneModal";
-    modal.className = "zone-modal";
-    document.body.appendChild(modal);
-  }
+  const modal = getInformationalModalElement();
   const cards = [...player.cemetery].reverse();
   modal.innerHTML = `
     <div class="zone-modal-panel" role="dialog" aria-modal="true" aria-label="Cemiterio de ${escapeHtml(player.label)}">
@@ -9492,13 +9620,7 @@ function showCemeteryModal(playerId) {
 function showReserveModal(playerId) {
   const player = app.game?.players?.[playerId];
   if (!player) return;
-  let modal = document.getElementById("zoneModal");
-  if (!modal) {
-    modal = document.createElement("div");
-    modal.id = "zoneModal";
-    modal.className = "zone-modal";
-    document.body.appendChild(modal);
-  }
+  const modal = getInformationalModalElement();
   const cards = player.reserve || [];
   const canReveal = player.id === "human";
   modal.innerHTML = `
@@ -9536,13 +9658,7 @@ function showReserveModal(playerId) {
 function showVirtuesModal(playerId) {
   const player = app.game?.players?.[playerId];
   if (!player) return;
-  let modal = document.getElementById("zoneModal");
-  if (!modal) {
-    modal = document.createElement("div");
-    modal.id = "zoneModal";
-    modal.className = "zone-modal";
-    document.body.appendChild(modal);
-  }
+  const modal = getInformationalModalElement();
   const state = player.virtues || {};
   const activeVirtues = sortVirtuesByDisplayOrder(app.virtues
     .map((virtue) => ({
@@ -9770,6 +9886,7 @@ function showMoralChoiceModal({ playerId, title, description, choices, context, 
       </div>
     </div>
   `;
+  decorateDecisionModal(modal);
   modal.classList.add("is-visible");
 }
 
@@ -9782,7 +9899,7 @@ function resolveMoralChoice(index) {
   const result = applyMoralShift(player, choice.targetId, choice.delta);
   addMoralShiftLog(app.game, player, result, pending.context);
   app.pendingMoralChoice = null;
-  document.getElementById("zoneModal")?.classList.remove("is-visible");
+  closeDecisionModal(document.getElementById("zoneModal"));
   pending.onComplete?.(result);
   renderGame();
   return true;
@@ -9799,8 +9916,9 @@ function clearTransientOverlays() {
   app.pendingEngineChoice = null;
   app.pendingVirtueDebug = null;
   app.drawAnimationPending = false;
+  clearDecisionBattlefieldView();
   clearAllVirtueFeedback();
-  ["phaseAlert", "playedCardAnimation", "pulverizeAnimation", "revealAnimation", "drawAnimation", "interactionHint", "cardZoomPreview", "zoneModal", "blockPrompt", "botBlockReview"].forEach((id) => {
+  ["phaseAlert", "playedCardAnimation", "pulverizeAnimation", "revealAnimation", "drawAnimation", "interactionHint", "cardZoomPreview", "zoneModal", "fieldViewModal", "blockPrompt", "botBlockReview"].forEach((id) => {
     document.getElementById(id)?.classList.remove("is-visible");
   });
   document.querySelectorAll(".combat-damage-burst").forEach((node) => node.remove());
@@ -9875,6 +9993,18 @@ function renderActionState() {
     return;
   }
   els.selectedCardPanel.hidden = false;
+  if (app.decisionBattlefieldView && hasPendingChoiceWork()) {
+    els.selectedCardPanel.innerHTML = "<span>Escolha pendente</span><strong>Ver campo</strong><small>Volte à escolha para continuar</small>";
+    els.drawButton.hidden = true;
+    els.consecrateButton.hidden = true;
+    els.playCardButton.hidden = true;
+    els.attackButton.hidden = true;
+    els.nextPhaseButton.hidden = true;
+    els.endTurnButton.hidden = true;
+    els.actionGrid?.style.setProperty("--action-columns", "1");
+    if (els.concedeButton) els.concedeButton.disabled = true;
+    return;
+  }
   const human = app.game.players.human;
   const humanTurn = canAct("human");
   const priorityOpen = isHumanPriorityOpen();
@@ -10386,7 +10516,7 @@ function toggleSound() {
 }
 
 async function loadData() {
-  els.startGameButton.textContent = "Carregando dados...";
+  els.startGameButton.textContent = "Carregando";
   const [
     cardsResponse,
     decksResponse,
@@ -10610,6 +10740,10 @@ function bindEvents() {
       renderGame();
       return;
     }
+    if (app.decisionBattlefieldView && hasPendingChoiceWork()) {
+      showInteractionHint("Volte à escolha para continuar.");
+      return;
+    }
     if (isHumanPriorityOpen()) {
       passHumanPriority();
     } else {
@@ -10620,6 +10754,19 @@ function bindEvents() {
   els.endTurnButton.addEventListener("click", applyEndTurn);
   els.concedeButton?.addEventListener("click", concede);
   document.addEventListener("click", async (event) => {
+    if (event.target.closest("[data-return-to-decision]")) {
+      returnToDecisionModal();
+      return;
+    }
+    if (event.target.closest("[data-view-battlefield]")) {
+      enterDecisionBattlefieldView();
+      return;
+    }
+    const fieldViewCloseButton = event.target.closest("#fieldViewModal [data-close-zone-modal]");
+    if (fieldViewCloseButton || event.target.id === "fieldViewModal") {
+      hideFieldViewModal();
+      return;
+    }
     const moralChoiceButton = event.target.closest("[data-moral-choice]");
     if (moralChoiceButton) {
       resolveMoralChoice(moralChoiceButton.dataset.moralChoice);
@@ -10686,6 +10833,14 @@ function bindEvents() {
     showCemeteryModal(cemeteryButton.dataset.cemeteryPlayer);
   });
   document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && document.getElementById("fieldViewModal")?.classList.contains("is-visible")) {
+      hideFieldViewModal();
+      return;
+    }
+    if (event.key === "Escape" && app.decisionBattlefieldView) {
+      returnToDecisionModal();
+      return;
+    }
     if (event.key === "Escape" && app.pendingVirtueDebug) {
       closeVirtueDebugModal();
       return;
@@ -11039,6 +11194,7 @@ function canDropHandCardToHumanCemetery(payload) {
 
 async function handleDrop(zone, payload, targetElement = null) {
   if (!payload || !app.game || app.game.status !== "active") return;
+  if (app.decisionBattlefieldView && hasPendingChoiceWork()) return;
   if (payload.zone === "blocker" && zone?.matches?.("[data-block-attack]")) {
     if (toggleHumanBlocker(zone.dataset.blockAttack, payload.id)) {
       app.dragPayload = null;

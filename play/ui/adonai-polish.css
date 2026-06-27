@@ -859,3 +859,151 @@ body::before {
   opacity: 0 !important;
   visibility: hidden !important;
 }
+
+.zone-modal-view-board,
+.decision-return-button {
+  border: 1px solid rgba(225, 205, 150, .42);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(246, 229, 177, .16), rgba(42, 35, 24, .82)),
+    rgba(17, 15, 13, .94);
+  color: #f6e7bd;
+  font: 700 .72rem/1 Inter, sans-serif;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .36);
+  cursor: pointer;
+}
+
+.zone-modal-view-board {
+  min-height: 34px;
+  padding: 0 12px;
+  white-space: nowrap;
+}
+
+.zone-modal-view-board:hover,
+.zone-modal-view-board:focus-visible,
+.decision-return-button:hover,
+.decision-return-button:focus-visible {
+  border-color: rgba(255, 235, 174, .72);
+  background:
+    linear-gradient(180deg, rgba(255, 238, 185, .24), rgba(58, 45, 28, .88)),
+    rgba(20, 17, 13, .96);
+  outline: none;
+}
+
+.decision-return-button {
+  position: fixed;
+  top: calc(14px + env(safe-area-inset-top, 0px));
+  left: 50%;
+  z-index: 91;
+  min-height: 40px;
+  padding: 0 16px;
+  transform: translateX(-50%);
+}
+
+@media (max-width: 560px) {
+  .zone-modal-view-board {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .decision-return-button {
+    top: calc(10px + env(safe-area-inset-top, 0px));
+    width: min(280px, calc(100vw - 28px));
+  }
+}
+
+/* Responsive board repair for the current shell-based play markup. */
+.play-board.play-board--new-ui {
+  width: 100% !important;
+  max-width: none !important;
+  grid-template-areas:
+    "bot"
+    "field"
+    "human"
+    "actions"
+    "hand" !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: auto minmax(0, 1fr) auto var(--action-h) var(--hand-h) !important;
+  align-items: stretch !important;
+  justify-items: stretch !important;
+  box-sizing: border-box !important;
+}
+
+.play-board.play-board--new-ui > .player-dock-shell--opponent {
+  grid-area: bot !important;
+}
+
+.play-board.play-board--new-ui > .battlefield-shell {
+  grid-area: field !important;
+}
+
+.play-board.play-board--new-ui > .player-dock-shell--human {
+  grid-area: human !important;
+}
+
+.play-board.play-board--new-ui > .action-dock {
+  grid-area: actions !important;
+}
+
+.play-board.play-board--new-ui > .hand-dock {
+  grid-area: hand !important;
+}
+
+.play-board.play-board--new-ui > .player-dock-shell,
+.play-board.play-board--new-ui > .battlefield-shell,
+.play-board.play-board--new-ui > .action-dock,
+.play-board.play-board--new-ui > .hand-dock {
+  min-width: 0 !important;
+  min-height: 0 !important;
+}
+
+.play-board.play-board--new-ui > .battlefield-shell {
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: minmax(0, 1fr) var(--phase-strip-h) minmax(0, 1fr) !important;
+}
+
+@media (min-width: 860px) {
+  .play-shell {
+    padding: 10px !important;
+  }
+
+  .play-board.play-board--new-ui {
+    width: min(1680px, calc(100vw - 20px)) !important;
+    height: calc(100dvh - 20px) !important;
+    max-height: calc(100dvh - 20px) !important;
+  }
+}
+
+@media (min-width: 1180px) {
+  .play-board.play-board--new-ui {
+    --hand-h: clamp(124px, 15dvh, 168px) !important;
+    grid-template-areas:
+      "bot field actions"
+      "human field actions"
+      "hand hand actions" !important;
+    grid-template-columns: minmax(260px, 330px) minmax(0, 1fr) minmax(250px, 320px) !important;
+    grid-template-rows: minmax(0, 1fr) minmax(0, 1fr) var(--hand-h) !important;
+    gap: clamp(8px, .75vw, 12px) !important;
+    padding: clamp(8px, .65vw, 12px) !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock {
+    height: 100% !important;
+    min-height: 0 !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: auto minmax(0, 1fr) !important;
+    align-self: stretch !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock .action-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    align-content: start !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock button {
+    min-height: 36px !important;
+  }
+}

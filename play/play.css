@@ -10640,7 +10640,7 @@ textarea {
   flex-wrap: wrap;
   align-content: flex-start;
   gap: 6px;
-  min-height: 78px;
+  /* min-height: 78px; */
   padding: 7px;
   border: 1px dashed rgba(215, 193, 139, .18);
   border-radius: 12px;
