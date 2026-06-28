@@ -24,14 +24,9 @@
       <div class="play-setup-panel">
         <div class="setup-copy">
           <span class="section-kicker">Adonai Play</span>
-          <!-- <h1>Partida local contra bot</h1> -->
-          <!-- <p>
-            Carregue um deck pre-construido ou o deck atual do deckbuilder para validar fluxo, layout e regras basicas
-            antes da camada online.
-          </p> -->
         </div>
 
-        <div class="setup-grid setup-grid--hidden" hidden>
+        <div hidden>
           <label>
             Seu deck
             <select id="humanDeckSelect"></select>
@@ -80,7 +75,6 @@
             <div class="phase-track" id="phaseTracker"></div>
             <small id="phaseIndicator">-</small>
           </div>
-          <div class="game-log" id="gameLog"></div>
         </div>
 
         <div class="battlefield-column battlefield-column--human">
@@ -110,6 +104,7 @@
           <button type="button" id="nextPhaseButton">Avancar etapa</button>
           <button type="button" id="endTurnButton">Encerrar turno</button>
         </div>
+        <div class="game-log game-log--removed" id="gameLog" aria-label="Registro da partida" hidden></div>
       </aside>
 
       <section class="hand-dock">

@@ -201,7 +201,6 @@ body::before {
 }
 
 /* Shared premium reflection layer. */
-.play-board--new-ui .play-card,
 .play-board--new-ui .essence-card,
 .play-board--new-ui .identity-dock-tile,
 .play-board--new-ui .dock-metric,
@@ -213,7 +212,6 @@ body::before {
   overflow: hidden;
 }
 
-.play-board--new-ui .play-card::after,
 .play-board--new-ui .essence-card::after,
 .play-board--new-ui .identity-dock-tile::after,
 .play-board--new-ui .dock-metric::after,
@@ -231,10 +229,6 @@ body::before {
   mix-blend-mode: screen;
 }
 
-.play-board--new-ui .play-card:hover::after,
-.play-board--new-ui .play-card:focus-visible::after,
-.play-board--new-ui .play-card.is-selected::after,
-.play-board--new-ui .play-card.is-actionable-card::after,
 .play-board--new-ui .essence-card:hover::after,
 .play-board--new-ui .essence-card:focus-visible::after,
 .play-board--new-ui .essence-card.is-actionable-essence::after,
@@ -414,7 +408,6 @@ body::before {
     animation: none;
   }
 
-  .play-board--new-ui .play-card::after,
   .play-board--new-ui .essence-card::after,
   .play-board--new-ui .identity-dock-tile::after,
   .play-board--new-ui .dock-metric::after,
@@ -902,6 +895,121 @@ body::before {
   transform: translateX(-50%);
 }
 
+.zone-modal.is-visible,
+.zone-modal.is-closing {
+  display: grid;
+}
+
+.zone-modal.is-visible {
+  animation: adonai-modal-backdrop-in .18s ease-out both;
+}
+
+.zone-modal.is-closing {
+  animation: adonai-modal-backdrop-out .16s ease-in both;
+}
+
+.zone-modal.is-visible .zone-modal-panel {
+  transform-origin: center;
+  will-change: opacity, transform;
+  animation: adonai-modal-zoom-in .2s cubic-bezier(.16, 1, .3, 1) both;
+}
+
+.zone-modal.is-closing .zone-modal-panel {
+  pointer-events: none;
+  transform-origin: center;
+  will-change: opacity, transform;
+  animation: adonai-modal-zoom-out .16s cubic-bezier(.4, 0, 1, 1) both;
+}
+
+.block-prompt.is-visible,
+.block-prompt.is-closing {
+  display: flex;
+}
+
+.block-prompt.is-visible {
+  animation: adonai-modal-backdrop-in .18s ease-out both;
+}
+
+.block-prompt.is-closing {
+  animation: adonai-modal-backdrop-out .16s ease-in both;
+}
+
+.block-prompt.is-visible .block-prompt-panel {
+  transform-origin: center;
+  will-change: opacity, transform;
+  animation: adonai-modal-zoom-in .2s cubic-bezier(.16, 1, .3, 1) both;
+}
+
+.block-prompt.is-closing .block-prompt-panel {
+  pointer-events: none;
+  transform-origin: center;
+  will-change: opacity, transform;
+  animation: adonai-modal-zoom-out .16s cubic-bezier(.4, 0, 1, 1) both;
+}
+
+.game-result:not(.is-hidden) > div {
+  transform-origin: center;
+  animation: adonai-modal-zoom-in .2s cubic-bezier(.16, 1, .3, 1) both;
+}
+
+@keyframes adonai-modal-backdrop-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes adonai-modal-backdrop-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes adonai-modal-zoom-in {
+  from {
+    opacity: 0;
+    transform: scale(.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes adonai-modal-zoom-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(.96);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zone-modal.is-visible,
+  .zone-modal.is-closing,
+  .zone-modal.is-visible .zone-modal-panel,
+  .zone-modal.is-closing .zone-modal-panel,
+  .block-prompt.is-visible,
+  .block-prompt.is-closing,
+  .block-prompt.is-visible .block-prompt-panel,
+  .block-prompt.is-closing .block-prompt-panel,
+  .game-result:not(.is-hidden) > div {
+    animation: none !important;
+  }
+}
+
 @media (max-width: 560px) {
   .zone-modal-view-board {
     width: 100%;
@@ -964,46 +1072,292 @@ body::before {
   grid-template-rows: minmax(0, 1fr) var(--phase-strip-h) minmax(0, 1fr) !important;
 }
 
+.play-board.play-board--new-ui .game-log--removed {
+  display: none !important;
+}
+
 @media (min-width: 860px) {
   .play-shell {
     padding: 10px !important;
   }
 
   .play-board.play-board--new-ui {
-    width: min(1680px, calc(100vw - 20px)) !important;
+    width: min(1280px, calc(100vw - 20px)) !important;
     height: calc(100dvh - 20px) !important;
     max-height: calc(100dvh - 20px) !important;
   }
 }
 
-@media (min-width: 1180px) {
+@media (min-width: 980px) {
   .play-board.play-board--new-ui {
-    --hand-h: clamp(124px, 15dvh, 168px) !important;
+    --dock-identity-h: clamp(38px, 5dvh, 50px) !important;
+    --dock-virtues-h: clamp(28px, 3.7dvh, 34px) !important;
+    --dock-metric-h: clamp(32px, 4.1dvh, 38px) !important;
+    --hand-h: clamp(132px, 16dvh, 166px) !important;
     grid-template-areas:
-      "bot field actions"
-      "human field actions"
-      "hand hand actions" !important;
-    grid-template-columns: minmax(260px, 330px) minmax(0, 1fr) minmax(250px, 320px) !important;
-    grid-template-rows: minmax(0, 1fr) minmax(0, 1fr) var(--hand-h) !important;
+      "bot"
+      "field"
+      "human"
+      "hand" !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows:
+      clamp(108px, 12dvh, 132px)
+      minmax(0, 1fr)
+      clamp(126px, 14dvh, 150px)
+      var(--hand-h) !important;
     gap: clamp(8px, .75vw, 12px) !important;
     padding: clamp(8px, .65vw, 12px) !important;
   }
 
   .play-board.play-board--new-ui > .action-dock {
-    height: 100% !important;
+    position: absolute !important;
+    right: clamp(16px, 1.25vw, 24px) !important;
+    bottom: clamp(16px, 1.35vw, 24px) !important;
+    width: clamp(190px, 17vw, 240px) !important;
+    height: auto !important;
     min-height: 0 !important;
     display: grid !important;
     grid-template-columns: minmax(0, 1fr) !important;
-    grid-template-rows: auto minmax(0, 1fr) !important;
-    align-self: stretch !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    grid-template-areas:
+      "actions" !important;
+    z-index: 4 !important;
+    gap: 0 !important;
+    padding: 0 10px 10px 0 !important;
+    overflow: visible !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock .selected-card-panel {
+    display: none !important;
   }
 
   .play-board.play-board--new-ui > .action-dock .action-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    align-content: start !important;
+    grid-area: actions !important;
+    grid-template-columns: repeat(var(--action-columns, 2), minmax(0, 1fr)) !important;
+    align-content: end !important;
+    gap: 7px !important;
+    min-height: 0 !important;
+    width: 100% !important;
   }
 
   .play-board.play-board--new-ui > .action-dock button {
-    min-height: 36px !important;
+    min-height: 38px !important;
+    padding: 6px 10px !important;
+    line-height: 1.08 !important;
+    box-shadow:
+      0 0 0 1px rgba(255, 238, 184, .18),
+      0 10px 24px rgba(0, 0, 0, .38),
+      0 0 22px rgba(215, 185, 109, .14) !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock {
+    gap: 3px !important;
+    padding: 5px !important;
+    min-height: calc(var(--dock-identity-h) + var(--dock-virtues-h) + var(--dock-metric-h) + 12px) !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-identity:not(.is-expanded),
+  .play-board.play-board--new-ui .player-dock-identity:not(.is-expanded) .identity-dock-tile {
+    min-height: var(--dock-identity-h) !important;
+    height: var(--dock-identity-h) !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-metrics {
+    min-height: var(--dock-metric-h) !important;
+    height: var(--dock-metric-h) !important;
+    gap: 2px !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-metrics > .dock-metric:not(.dock-metric--virtues),
+  .play-board.play-board--new-ui .player-dock-metrics > .player-dock-label {
+    min-height: 0 !important;
+    height: 100% !important;
+    padding: 1px 3px !important;
+  }
+
+  .play-board.play-board--new-ui .dock-metric:not(.dock-metric--virtues) span,
+  .play-board.play-board--new-ui .player-dock-metrics > .player-dock-label span {
+    font-size: clamp(.34rem, .55vw, .42rem) !important;
+    line-height: .9 !important;
+  }
+
+  .play-board.play-board--new-ui .dock-metric:not(.dock-metric--virtues) strong {
+    font-size: clamp(.76rem, 1vw, .92rem) !important;
+    line-height: .9 !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-metrics > .player-dock-label strong {
+    font-size: clamp(.54rem, .8vw, .66rem) !important;
+    line-height: .92 !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues {
+    min-height: var(--dock-virtues-h) !important;
+    height: var(--dock-virtues-h) !important;
+    padding: 1px 6px !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-chip {
+    width: clamp(18px, 1.9vw, 24px) !important;
+    height: clamp(18px, 1.9vw, 24px) !important;
+  }
+
+  .play-board.play-board--new-ui > .battlefield-shell {
+    grid-template-areas:
+      "bot-field"
+      "phase"
+      "human-field" !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: minmax(0, 1fr) var(--phase-strip-h) minmax(0, 1fr) !important;
+    gap: clamp(6px, .55vw, 10px) !important;
+    overflow: hidden !important;
+  }
+
+  .play-board.play-board--new-ui .battlefield-column--bot {
+    grid-area: bot-field !important;
+  }
+
+  .play-board.play-board--new-ui .battlefield-column--human {
+    grid-area: human-field !important;
+  }
+
+  .play-board.play-board--new-ui .stack-log-panel {
+    display: contents !important;
+    width: auto !important;
+    height: auto !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .play-board.play-board--new-ui .phase-panel {
+    grid-area: phase !important;
+    align-self: center !important;
+    justify-self: stretch !important;
+    width: 100% !important;
+  }
+
+  .play-board.play-board--new-ui .game-log {
+    display: none !important;
+  }
+
+  .play-board.play-board--new-ui .game-log .log-entry,
+  .play-board.play-board--new-ui .game-log p {
+    padding: 7px 0 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, .055) !important;
+    line-height: 1.25 !important;
+  }
+
+  .play-board.play-board--new-ui .battlefield-column {
+    min-width: 0 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .play-board.play-board--new-ui .battlefield-row {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    align-content: center !important;
+    gap: clamp(8px, .75vw, 14px) !important;
+    padding: clamp(8px, .8vw, 14px) !important;
+    overflow: hidden !important;
+  }
+
+  .play-board.play-board--new-ui .battlefield-line {
+    width: 100% !important;
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: clamp(8px, .75vw, 14px) !important;
+  }
+
+  .play-board.play-board--new-ui > .player-dock-shell--human {
+    position: relative !important;
+    z-index: 3 !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock {
+    position: relative !important;
+    z-index: 1 !important;
+    overflow: hidden !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock .hand-row {
+    align-items: flex-end !important;
+    justify-content: center !important;
+    padding-inline: clamp(18px, 4vw, 28px) !important;
+    padding-top: 8px !important;
+    padding-bottom: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock .hand-row .play-card {
+    flex-basis: clamp(76px, 6.4vw, 92px) !important;
+    width: clamp(76px, 6.4vw, 92px) !important;
+    max-width: clamp(76px, 6.4vw, 92px) !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock .hand-row .play-card:nth-child(1) {
+    transform: rotate(-28deg) translateY(44px) translateZ(-12px) !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock .hand-row .play-card:nth-child(2) {
+    transform: rotate(-20deg) translateY(38px) translateZ(-8px) !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock .hand-row .play-card:nth-child(3) {
+    transform: rotate(-12deg) translateY(34px) translateZ(-4px) !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock .hand-row .play-card:nth-child(4) {
+    transform: rotate(-5deg) translateY(30px) !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock .hand-row .play-card:nth-child(5) {
+    transform: rotate(5deg) translateY(30px) !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock .hand-row .play-card:nth-child(6) {
+    transform: rotate(12deg) translateY(34px) translateZ(-4px) !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock .hand-row .play-card:nth-child(7) {
+    transform: rotate(20deg) translateY(38px) translateZ(-8px) !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock .hand-row .play-card:nth-child(n+8) {
+    transform: rotate(28deg) translateY(44px) translateZ(-12px) !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock.is-hand-expanded .hand-row {
+    align-items: center !important;
+    justify-content: flex-start !important;
+    padding: 8px clamp(230px, 20vw, 280px) 8px 12px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock.is-hand-expanded .hand-row .play-card:nth-child(n) {
+    flex-basis: calc((var(--hand-h) - 16px) * var(--play-card-ratio, .72)) !important;
+    width: calc((var(--hand-h) - 16px) * var(--play-card-ratio, .72)) !important;
+    max-width: calc((var(--hand-h) - 16px) * var(--play-card-ratio, .72)) !important;
+    height: calc(100% - 16px) !important;
+    max-height: calc(100% - 16px) !important;
+    margin-inline: 4px !important;
+    transform: rotate(0deg) translateY(0) translateZ(0) !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock .hand-row .play-card.is-selected {
+    transform: rotate(0deg) translateY(-8px) translateZ(0) !important;
   }
 }

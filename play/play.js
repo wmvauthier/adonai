@@ -12,6 +12,7 @@ const DATA_URLS = {
 };
 
 const CARD_BACK_IMAGE = "../assets/logo/Fundo - Foundation.webp";
+const ESSENCE_ICON_IMAGE = "../assets/icons/00.webp";
 const BUILDER_STORAGE_KEY = "adonai.deckbuilder.v1";
 const PLAY_STORAGE_KEY = "adonai.play.v1";
 const BUILDER_DECK_ID = "BUILDER_CURRENT";
@@ -175,9 +176,6 @@ const els = {
   botModeSelect: document.getElementById("botModeSelect"),
   setupMatchPreview: document.getElementById("setupMatchPreview"),
   startGameButton: document.getElementById("startGameButton"),
-  newGameButton: document.getElementById("newGameButton"),
-  resetGameButton: document.getElementById("resetGameButton"),
-  soundToggleButton: document.getElementById("soundToggleButton"),
   botArea: document.getElementById("botArea"),
   humanArea: document.getElementById("humanArea"),
   botBattlefield: document.getElementById("botBattlefield"),
@@ -199,7 +197,6 @@ const els = {
   attackButton: document.getElementById("attackButton"),
   nextPhaseButton: document.getElementById("nextPhaseButton"),
   endTurnButton: document.getElementById("endTurnButton"),
-  concedeButton: document.getElementById("concedeButton"),
   gameResult: document.getElementById("gameResult"),
   gameResultTitle: document.getElementById("gameResultTitle"),
   gameResultText: document.getElementById("gameResultText"),
@@ -241,6 +238,7 @@ const app = {
   territorySnapshot: new Map(),
   virtueFeedback: new Map(),
   virtueFeedbackTimers: new Map(),
+  statFeedbackTimers: new Map(),
   preloadedImages: new Set(),
   preloadPromises: new Map(),
   setupPreloadToken: 0,
@@ -274,6 +272,34 @@ function escapeHtml(value) {
     .replace(/'/g, "&#039;");
 }
 
+const MODAL_EXIT_ANIMATION_MS = 180;
+
+function showModalElement(modal) {
+  if (!modal) return;
+  window.clearTimeout(modal._modalExitTimer);
+  modal.classList.remove("is-closing");
+  modal.classList.add("is-visible");
+}
+
+function hideModalElement(modal, extraClasses = []) {
+  if (!modal) return;
+  window.clearTimeout(modal._modalExitTimer);
+  if (extraClasses.length) modal.classList.remove(...extraClasses);
+  if (!modal.classList.contains("is-visible")) {
+    modal.classList.remove("is-closing");
+    return;
+  }
+  modal.classList.add("is-closing");
+  modal.classList.remove("is-visible");
+  modal._modalExitTimer = window.setTimeout(() => {
+    modal.classList.remove("is-closing");
+  }, MODAL_EXIT_ANIMATION_MS);
+}
+
+function hideModalById(id, extraClasses = []) {
+  hideModalElement(document.getElementById(id), extraClasses);
+}
+
 function getModalElement(id = "zoneModal") {
   let modal = document.getElementById(id);
   if (!modal) {
@@ -303,12 +329,12 @@ function canInspectBattlefieldDuringChoice() {
 function clearDecisionBattlefieldView() {
   app.decisionBattlefieldView = false;
   document.getElementById("decisionReturnButton")?.remove();
-  document.getElementById("fieldViewModal")?.classList.remove("is-visible");
+  hideModalById("fieldViewModal");
   document.getElementById("zoneModal")?.classList.remove("is-battlefield-view");
 }
 
 function closeDecisionModal(overlay) {
-  overlay?.classList.remove("is-visible", "is-battlefield-view");
+  hideModalElement(overlay, ["is-battlefield-view"]);
   clearDecisionBattlefieldView();
 }
 
@@ -330,8 +356,8 @@ function enterDecisionBattlefieldView() {
   const overlay = document.getElementById("zoneModal");
   if (!overlay) return false;
   app.decisionBattlefieldView = true;
-  overlay.classList.remove("is-visible");
   overlay.classList.add("is-battlefield-view");
+  hideModalElement(overlay);
   showDecisionReturnButton();
   renderGame();
   return true;
@@ -340,11 +366,11 @@ function enterDecisionBattlefieldView() {
 function returnToDecisionModal() {
   const overlay = document.getElementById("zoneModal");
   if (!overlay || !hasPendingChoiceWork()) return false;
-  document.getElementById("fieldViewModal")?.classList.remove("is-visible");
+  hideModalById("fieldViewModal");
   document.getElementById("decisionReturnButton")?.remove();
   app.decisionBattlefieldView = false;
   overlay.classList.remove("is-battlefield-view");
-  overlay.classList.add("is-visible");
+  showModalElement(overlay);
   renderGame();
   return true;
 }
@@ -354,7 +380,7 @@ function getInformationalModalElement() {
 }
 
 function hideFieldViewModal() {
-  document.getElementById("fieldViewModal")?.classList.remove("is-visible");
+  hideModalById("fieldViewModal");
 }
 
 function decorateDecisionModal(overlay) {
@@ -881,6 +907,22 @@ function getVirtueIcon(virtue) {
   return virtue?.images?.icon || virtue?.images?.item || "";
 }
 
+function getVirtueArtwork(virtue) {
+  if (!virtue) return "";
+  return virtue.images?.img ||
+    virtue.images?.art ||
+    virtue.images?.background ||
+    `../assets/virtudes/imgs/Virtudes - Foundations-${Number(virtue.id)} - img.webp`;
+}
+
+function getVirtueVisualAssets(virtue) {
+  return [
+    virtue?.images?.icon,
+    virtue?.images?.item,
+    getVirtueArtwork(virtue)
+  ].filter(Boolean);
+}
+
 function createVirtueState() {
   return Object.fromEntries(app.virtues.map((virtue) => [String(virtue.id), 0]));
 }
@@ -944,6 +986,63 @@ function clearAllVirtueFeedback() {
   app.virtueFeedbackTimers.forEach((timer) => window.clearTimeout(timer));
   app.virtueFeedbackTimers.clear();
   app.virtueFeedback.clear();
+}
+
+function getStatFeedbackKey(playerId, uid) {
+  return `${playerId || ""}::${uid || ""}`;
+}
+
+function clearStatFeedback(key, shouldRender = true) {
+  const entry = app.statFeedbackTimers.get(key);
+  if (entry?.timer) window.clearTimeout(entry.timer);
+  app.statFeedbackTimers.delete(key);
+  const [fallbackPlayerId, fallbackUid] = key.split("::");
+  const playerId = entry?.playerId || fallbackPlayerId;
+  const uid = entry?.uid || fallbackUid;
+  const instance = app.game?.players?.[playerId]?.battlefield?.find((item) => item.uid === uid);
+  if (instance?.statFeedback) {
+    delete instance.statFeedback;
+    if (shouldRender && app.game) renderGame();
+  }
+}
+
+function clearAllStatFeedback() {
+  app.statFeedbackTimers.forEach((entry, key) => {
+    if (entry?.timer) window.clearTimeout(entry.timer);
+    const [fallbackPlayerId, fallbackUid] = key.split("::");
+    const playerId = entry?.playerId || fallbackPlayerId;
+    const uid = entry?.uid || fallbackUid;
+    const instance = app.game?.players?.[playerId]?.battlefield?.find((item) => item.uid === uid);
+    if (instance?.statFeedback) delete instance.statFeedback;
+  });
+  app.statFeedbackTimers.clear();
+}
+
+function markPositiveStatFeedback(refs, powerDelta = 0, resistanceDelta = 0) {
+  const power = toNumber(powerDelta, 0);
+  const resistance = toNumber(resistanceDelta, 0);
+  if (power <= 0 && resistance <= 0) return 0;
+  const uniqueRefs = new Map();
+  (refs || []).forEach(({ playerId, instance }) => {
+    if (!playerId || !instance?.uid) return;
+    uniqueRefs.set(getStatFeedbackKey(playerId, instance.uid), { playerId, instance });
+  });
+  if (!uniqueRefs.size) return 0;
+  const label = `${formatSignedStat(power)}/${formatSignedStat(resistance)}`;
+  uniqueRefs.forEach(({ playerId, instance }, key) => {
+    clearStatFeedback(key, false);
+    instance.statFeedback = {
+      tone: "buff",
+      label,
+      power,
+      resistance
+    };
+    const timer = window.setTimeout(() => clearStatFeedback(key), 1320);
+    app.statFeedbackTimers.set(key, { timer, playerId, uid: instance.uid });
+  });
+  playTone("buff");
+  if (app.game) renderGame();
+  return uniqueRefs.size;
 }
 
 function setVirtueFeedback(playerId, virtueId, feedback) {
@@ -1587,7 +1686,7 @@ function getDeckAssetUrls(deck) {
     });
     (card?.virtues || []).forEach((virtueId) => {
       const virtue = app.virtuesById.get(Number(virtueId));
-      [virtue?.images?.icon, virtue?.images?.item].forEach((url) => {
+      getVirtueVisualAssets(virtue).forEach((url) => {
         if (url) urls.push(url);
       });
     });
@@ -1619,7 +1718,8 @@ function preloadImageAsset(url) {
 
 function preloadDeckImages(...decks) {
   const tokenUrls = INTERNAL_TOKEN_CARDS.flatMap((card) => [getCardImage(card), getCardArt(card)]);
-  const urls = [...new Set([...decks.flatMap(getDeckAssetUrls), ...tokenUrls].filter(Boolean))];
+  const virtueUrls = app.virtues.flatMap(getVirtueVisualAssets);
+  const urls = [...new Set([...decks.flatMap(getDeckAssetUrls), ...tokenUrls, ...virtueUrls].filter(Boolean))];
   return Promise.all(urls.map(preloadImageAsset));
 }
 
@@ -1732,8 +1832,63 @@ function createTokenInstance(tokenId, owner, state = {}) {
     ...createCardInstance(cardId, owner),
     token: true,
     tokenId,
+    tokenQuantity: 1,
     exhausted: Boolean(state.exhausted || state.tapped || state.desativada)
   };
+}
+
+function getTokenQuantity(instance) {
+  return Math.max(1, toNumber(instance?.tokenQuantity, 1));
+}
+
+function isIncenseTokenInstance(instance) {
+  return isIncenseTokenCard(app.cardByCode.get(instance?.cardId));
+}
+
+function findIncenseTokenStack(player, state = {}) {
+  const exhausted = Boolean(state.exhausted || state.tapped || state.desativada);
+  return (player?.battlefield || []).find((instance) => (
+    isIncenseTokenInstance(instance) &&
+    Boolean(instance.exhausted) === exhausted
+  )) || null;
+}
+
+function addIncenseTokensToBattlefield(player, amount = 1, state = {}) {
+  if (!player) return null;
+  const quantity = Math.max(1, toNumber(amount, 1));
+  let instance = findIncenseTokenStack(player, state);
+  if (!instance) {
+    instance = createTokenInstance("incense", player.id, state);
+    if (!instance) return null;
+    instance.tokenQuantity = quantity;
+    player.battlefield.push(instance);
+    return instance;
+  }
+  instance.tokenQuantity = getTokenQuantity(instance) + quantity;
+  return instance;
+}
+
+function normalizeIncenseTokenStacks(player) {
+  if (!player?.battlefield?.length) return;
+  const stacks = new Map();
+  player.battlefield = player.battlefield.filter((instance) => {
+    if (!isIncenseTokenInstance(instance)) return true;
+    const key = Boolean(instance.exhausted) ? "exhausted" : "ready";
+    const existing = stacks.get(key);
+    if (!existing) {
+      instance.token = true;
+      instance.tokenId = instance.tokenId || "incense";
+      instance.tokenQuantity = getTokenQuantity(instance);
+      stacks.set(key, instance);
+      return true;
+    }
+    existing.tokenQuantity = getTokenQuantity(existing) + getTokenQuantity(instance);
+    return false;
+  });
+}
+
+function normalizeAllIncenseTokenStacks(game = app.game) {
+  Object.values(game?.players || {}).forEach(normalizeIncenseTokenStacks);
 }
 
 function createCombatState() {
@@ -1901,7 +2056,8 @@ function getReadyEssenceGeneratorInstances(player) {
 }
 
 function getPotentialGeneratedEssence(player) {
-  return getReadyEssenceGeneratorInstances(player).length;
+  return getReadyEssenceGeneratorInstances(player)
+    .reduce((total, instance) => total + (isIncenseTokenInstance(instance) ? getTokenQuantity(instance) : 1), 0);
 }
 
 function getPotentialAvailableEssence(player) {
@@ -1911,7 +2067,10 @@ function getPotentialAvailableEssence(player) {
 function ensureGeneratedEssenceForCost(player, amount) {
   const cost = Math.max(0, toNumber(amount, 0));
   if (!player || getAvailableEssence(player) >= cost) return true;
-  const generators = getReadyEssenceGeneratorInstances(player);
+  const generators = getReadyEssenceGeneratorInstances(player)
+    .flatMap((instance) => Array.from({
+      length: isIncenseTokenInstance(instance) ? getTokenQuantity(instance) : 1
+    }, () => instance));
   for (const generator of generators) {
     if (getAvailableEssence(player) >= cost) break;
     activateEssenceGeneratorForPayment(player, generator);
@@ -1930,10 +2089,13 @@ function clearAllEssencePools(game) {
   Object.values(game?.players || {}).forEach(clearEssencePool);
 }
 
-function generateEssence(player, amount = 1) {
+function generateEssence(player, amount = 1, options = {}) {
   if (!player) return 0;
   const generated = Math.max(0, toNumber(amount, 0));
   player.essencePool = getEssencePool(player) + generated;
+  if (generated > 0 && options.animate !== false) {
+    showEssenceBurst(player.id, generated, options.kind || "gain", options.sourceUid || "");
+  }
   return generated;
 }
 
@@ -1946,6 +2108,7 @@ function spendEssenceCost(player, amount) {
   if (physicalSpent > 0) {
     player.spentEssence = Math.min(player.essence.length, toNumber(player.spentEssence, 0) + physicalSpent);
   }
+  if (cost > 0) showEssenceBurst(player.id, cost, "spend");
   return { poolSpent, physicalSpent };
 }
 
@@ -2184,13 +2347,13 @@ function showPreGameReductionModal(player) {
         }, { once: true });
       });
       overlay.querySelector("[data-pregame-reduction-skip]")?.addEventListener("click", () => {
-        overlay.classList.remove("is-visible");
+        hideModalElement(overlay);
         app.pendingEngineChoice = null;
         resolve([]);
       }, { once: true });
       overlay.querySelector("[data-pregame-reduction-confirm]")?.addEventListener("click", () => {
         if (!valid) return;
-        overlay.classList.remove("is-visible");
+        hideModalElement(overlay);
         app.pendingEngineChoice = null;
         resolve([...selected]);
       }, { once: true });
@@ -2255,13 +2418,13 @@ function showPreGameMulliganModal(player, attempt) {
         }, { once: true });
       });
       overlay.querySelector("[data-pregame-mulligan-keep]")?.addEventListener("click", () => {
-        overlay.classList.remove("is-visible");
+        hideModalElement(overlay);
         app.pendingEngineChoice = null;
         resolve([]);
       }, { once: true });
       overlay.querySelector("[data-pregame-mulligan-confirm]")?.addEventListener("click", () => {
         if (!selected.size) return;
-        overlay.classList.remove("is-visible");
+        hideModalElement(overlay);
         app.pendingEngineChoice = null;
         resolve([...selected]);
       }, { once: true });
@@ -2429,41 +2592,6 @@ async function startGame() {
   }
 }
 
-async function restartGame() {
-  if (!app.lastConfig) return;
-  if (app.startingGame) return;
-  app.startingGame = true;
-  const humanDeck = getDeckOption(app.lastConfig.humanDeckId);
-  const botDeck = app.decks.find((deck) => deck.id === app.lastConfig.botDeckId);
-  if (!humanDeck || !botDeck) {
-    app.startingGame = false;
-    return;
-  }
-  try {
-    app.game = createGame(humanDeck, botDeck, app.lastConfig.botMode || "basic", {
-      virtueDebugEnabled: Boolean(app.lastConfig.virtueDebugEnabled)
-    });
-    app.selected = null;
-    app.expandedTemplePlayer = "";
-    app.resultViewingBoard = false;
-    app.territorySnapshot.clear();
-    clearHumanAutoPass();
-    collapseHand();
-    clearTransientOverlays();
-    els.gameResult.classList.add("is-hidden");
-    renderGame();
-    await runPregameProcedures(app.game);
-    emitGameEvent("game.start", { game: app.game });
-    beginTurn(app.game);
-    playTone("shuffle");
-    window.setTimeout(() => playTone("start"), 180);
-    renderGame();
-    if (app.game.activePlayer === "bot") scheduleBotTurn(app.game);
-  } finally {
-    app.startingGame = false;
-  }
-}
-
 function showSetup() {
   app.game = null;
   app.selected = null;
@@ -2501,13 +2629,48 @@ function isPureEssenceGeneratorAbility(ability) {
   return actions.length > 0 && actions.every((action) => action?.effect === "generate_essence");
 }
 
+const PRIORITY_ABILITY_MARKERS = new Set([
+  "INESPERADO",
+  "INSTANT",
+  "PRIORIDADE",
+  "PRIORITY",
+  "REATIVO",
+  "REACTION",
+  "RESPOSTA",
+  "RESPONSE"
+]);
+
+function abilityCanUsePriorityTiming(ability) {
+  if (!ability) return false;
+  const markers = [
+    ability.timing,
+    ability.speed,
+    ability.window,
+    ...(ability.tags || [])
+  ];
+  return markers.some((marker) => PRIORITY_ABILITY_MARKERS.has(normalizeKeywordText(marker)));
+}
+
+function hasNonGeneratorPermanentAction(player, options = {}) {
+  if (!player) return false;
+  const includeEquipment = options.includeEquipment !== false;
+  if (canUseChampionAction(player)) return true;
+  return player.battlefield.some((instance) => (
+    getViableActivatedAbilitiesForPermanent(player, instance)
+      .some(({ ability }) => !isPureEssenceGeneratorAbility(ability)) ||
+    (includeEquipment && canAttachEquipmentFromBattlefield(player, instance))
+  ));
+}
+
 function hasHumanPriorityPermanentAction(game = app.game) {
   const human = game?.players?.human;
   if (!human) return false;
-  if (canUseChampionAction(human)) return true;
+  const hasPriorityAbility = (entries) => entries.some(({ ability }) => (
+    !isPureEssenceGeneratorAbility(ability) && abilityCanUsePriorityTiming(ability)
+  ));
+  if (hasPriorityAbility(getViableActivatedAbilitiesForChampion(human))) return true;
   return human.battlefield.some((instance) => (
-    getViableActivatedAbilitiesForPermanent(human, instance)
-      .some(({ ability }) => !isPureEssenceGeneratorAbility(ability))
+    hasPriorityAbility(getViableActivatedAbilitiesForPermanent(human, instance))
   ));
 }
 
@@ -2533,6 +2696,20 @@ function canPlayCardInPriorityWindow(player, cardId, game = app.game) {
   if (!hasWindow) return false;
   if (getEffectivePlayCost(player, card) > getPotentialAvailableEssence(player)) return false;
   return canResolveCardWhenPlayed(cardId, player.id);
+}
+
+function hasPlayableCardInCurrentActionWindow(player, game = app.game) {
+  if (!game || game.status !== "active" || !player) return false;
+  if (player.id === "human" && isHumanPriorityOpen()) {
+    return player.hand.some((cardId) => canPlayCardInPriorityWindow(player, cardId, game));
+  }
+  if (game.activePlayer !== player.id) return false;
+  return player.hand.some((cardId) => canPlayCard(player, cardId));
+}
+
+function hasHumanEssenceGeneratorPurpose(player, game = app.game) {
+  if (!player || player.id !== "human") return true;
+  return hasPlayableCardInCurrentActionWindow(player, game) || hasNonGeneratorPermanentAction(player);
 }
 
 function requestHumanPriority(game, key, label, resume) {
@@ -2793,6 +2970,7 @@ function canActivateEssenceGenerator(player, uid) {
   const hasPriorityAccess = player.id === "human" && isHumanPriorityOpen();
   if (!hasTurnAccess && !hasPriorityAccess) return false;
   if (player.id === "human" && isBethlehemPastorCard(card) && phase === "combat" && !hasPriorityAccess) return false;
+  if (player.id === "human" && !hasHumanEssenceGeneratorPurpose(player, game)) return false;
   return true;
 }
 
@@ -2803,6 +2981,18 @@ function removeBattlefieldInstance(player, uid) {
   return instance || null;
 }
 
+function consumeIncenseTokenInstance(player, uid) {
+  const instance = player?.battlefield?.find((item) => item.uid === uid);
+  if (!instance || !isIncenseTokenInstance(instance)) return null;
+  const quantity = getTokenQuantity(instance);
+  if (quantity > 1) {
+    instance.tokenQuantity = quantity - 1;
+    return { instance, removed: false };
+  }
+  const removed = removeBattlefieldInstance(player, uid);
+  return removed ? { instance: removed, removed: true } : null;
+}
+
 function applyActivateEssenceGenerator(playerId, uid) {
   const game = app.game;
   const player = getPlayer(game, playerId);
@@ -2811,20 +3001,21 @@ function applyActivateEssenceGenerator(playerId, uid) {
   const card = app.cardByCode.get(instance.cardId);
   const isIncense = isIncenseTokenCard(card);
   if (isIncense) {
-    const removed = removeBattlefieldInstance(player, uid);
-    if (!removed) return false;
+    const consumed = consumeIncenseTokenInstance(player, uid);
+    if (!consumed) return false;
     emitGameEvent("permanent.leaves_battlefield", {
       game,
       playerId,
-      instanceUid: removed.uid,
-      cardId: removed.cardId,
+      instanceUid: consumed.instance.uid,
+      cardId: consumed.instance.cardId,
       destination: "void"
     });
     addLog(game, `renunciou ${getCardName(card)}.`, player.label);
   } else {
     instance.exhausted = true;
   }
-  generateEssence(player, 1);
+  generateEssence(player, 1, { animate: false });
+  showEssenceBurst(player.id, 1, "gain", uid);
   addLog(game, `${getCardName(card)} gerou 1 {E}.`, player.label);
   playTone("soft");
   return true;
@@ -2836,13 +3027,13 @@ function activateEssenceGeneratorForPayment(player, instance) {
   const card = app.cardByCode.get(instance.cardId);
   const isIncense = isIncenseTokenCard(card);
   if (isIncense) {
-    const removed = removeBattlefieldInstance(player, instance.uid);
-    if (!removed) return false;
+    const consumed = consumeIncenseTokenInstance(player, instance.uid);
+    if (!consumed) return false;
     emitGameEvent("permanent.leaves_battlefield", {
       game,
       playerId: player.id,
-      instanceUid: removed.uid,
-      cardId: removed.cardId,
+      instanceUid: consumed.instance.uid,
+      cardId: consumed.instance.cardId,
       destination: "void"
     });
     addLog(game, `renunciou ${getCardName(card)} para pagar custos.`, player.label);
@@ -2850,7 +3041,8 @@ function activateEssenceGeneratorForPayment(player, instance) {
     instance.exhausted = true;
     addLog(game, `despreparou ${getCardName(card)} para pagar custos.`, player.label);
   }
-  generateEssence(player, 1);
+  generateEssence(player, 1, { animate: false });
+  showEssenceBurst(player.id, 1, "gain", instance.uid);
   playTone("soft");
   return true;
 }
@@ -2970,7 +3162,12 @@ function canUsePermanentAction(player, instance) {
   const hasTurnAccess = game.activePlayer === player.id && ["preparation", "combat", "regroup"].includes(phase);
   const hasPriorityAccess = player.id === "human" && isHumanPriorityOpen();
   if (!hasTurnAccess && !hasPriorityAccess) return false;
-  if (getViableActivatedAbilitiesForPermanent(player, instance).length) return true;
+  const viableAbilities = getViableActivatedAbilitiesForPermanent(player, instance);
+  if (viableAbilities.length) {
+    const generatorOnly = viableAbilities.every(({ ability }) => isPureEssenceGeneratorAbility(ability));
+    if (player.id === "human" && generatorOnly && !hasHumanEssenceGeneratorPurpose(player, game)) return false;
+    return true;
+  }
   return canAttachEquipmentFromBattlefield(player, instance);
 }
 
@@ -3399,11 +3596,7 @@ function hasPlayableAlistamento(player) {
 }
 
 function hasAvailablePermanentAction(player) {
-  if (canUseChampionAction(player)) return true;
-  return player?.battlefield?.some((instance) => (
-    getViableActivatedAbilitiesForPermanent(player, instance)
-      .some(({ ability }) => !isPureEssenceGeneratorAbility(ability))
-  )) || false;
+  return hasNonGeneratorPermanentAction(player);
 }
 
 function hasPlayableMiracle(player) {
@@ -4609,12 +4802,31 @@ function chooseBotCardEntry(entries, player) {
 function removeBattlefieldCardToZone(game, playerId, instance, destination) {
   const controller = getPlayer(game, playerId);
   if (!controller || !instance) return false;
-  cleanupAttachmentsForLeaving(game, instance.uid);
-  controller.battlefield = controller.battlefield.filter((item) => item.uid !== instance.uid);
   const card = app.cardByCode.get(instance.cardId);
   const owner = getPlayer(game, instance.owner) || controller;
   const isToken = Boolean(instance.token || card?.token);
   const finalDestination = isToken ? "void" : destination;
+  if (isIncenseTokenCard(card) && getTokenQuantity(instance) > 1) {
+    instance.tokenQuantity = getTokenQuantity(instance) - 1;
+    emitGameEvent("permanent.leaves_battlefield", {
+      game,
+      playerId,
+      instanceUid: instance.uid,
+      cardId: instance.cardId,
+      destination: finalDestination
+    });
+    if (destination === "cemetery") {
+      emitGameEvent("permanent.dies", {
+        game,
+        playerId,
+        instanceUid: instance.uid,
+        cardId: instance.cardId
+      });
+    }
+    return true;
+  }
+  cleanupAttachmentsForLeaving(game, instance.uid);
+  controller.battlefield = controller.battlefield.filter((item) => item.uid !== instance.uid);
   if (!isToken && destination === "hand") owner.hand.push(instance.cardId);
   if (!isToken && destination === "cemetery") owner.cemetery.push(instance.cardId);
   emitGameEvent("permanent.leaves_battlefield", {
@@ -5716,6 +5928,7 @@ async function executeEngineAction(action, stackObject, options = {}) {
     if (amount <= 0) return action.upTo ? true : false;
     if (getReadyEssenceCount(player) < amount) return false;
     player.spentEssence = Math.min(player.essence.length, toNumber(player.spentEssence, 0) + amount);
+    showEssenceBurst(player.id, amount, "spend");
     addLog(game, `desativou ${amount} Essencia${amount === 1 ? "" : "s"}.`, player.label);
     return true;
   }
@@ -5733,7 +5946,9 @@ async function executeEngineAction(action, stackObject, options = {}) {
   if (effectId === "generate_essence") {
     const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
     const amount = getActionAmount(action.amount, 0);
-    const generated = generateEssence(player, amount);
+    const generated = generateEssence(player, amount, {
+      sourceUid: stackObject.source?.instanceUid || ""
+    });
     if (generated <= 0) return false;
     addLog(game, `gerou ${generated} {E}.`, player.label);
     return true;
@@ -5781,8 +5996,26 @@ async function executeEngineAction(action, stackObject, options = {}) {
 
   if (effectId === "create_token") {
     const player = getPlayer(game, getStackPlayerId(action.controller || action.player, stackObject));
+    if (!player) return false;
     const amount = Math.max(1, getActionAmount(action.amount, 1));
     const created = [];
+    const tokenCard = app.cardByCode.get(getTokenCardId(action.tokenId));
+    if (isIncenseTokenCard(tokenCard)) {
+      const instance = addIncenseTokensToBattlefield(player, amount, action.state || {});
+      if (!instance) return false;
+      for (let index = 0; index < amount; index += 1) {
+        emitGameEvent("permanent.enters_battlefield", {
+          game,
+          playerId: player.id,
+          instanceUid: instance.uid,
+          cardId: instance.cardId,
+          tokenId: instance.tokenId,
+          tokenQuantity: getTokenQuantity(instance)
+        });
+      }
+      addLog(game, `criou ${amount} ficha${amount === 1 ? "" : "s"} de ${getCardName(tokenCard)}.`, player.label);
+      return true;
+    }
     for (let index = 0; index < amount; index += 1) {
       const instance = createTokenInstance(action.tokenId, player.id, action.state || {});
       if (!instance) continue;
@@ -5995,20 +6228,23 @@ async function executeEngineAction(action, stackObject, options = {}) {
 
   if (effectId === "modify_power_resistance") {
     const refs = await chooseEngineTargetRefs(action, stackObject, "buff");
+    const power = toNumber(action.power, 0);
+    const resistance = toNumber(action.resistance, 0);
     refs.forEach(({ playerId, instance }) => {
       createTemporaryEffect(game, {
         controllerId: stackObject.controllerId,
         type: "modifyStats",
         target: { playerId, uid: instance.uid },
-        power: toNumber(action.power, 0),
-        resistance: toNumber(action.resistance, 0),
+        power,
+        resistance,
         duration: action.duration || "until_regroup",
         source: stackObject.source,
         label: stackObject.label
       });
     });
     if (refs.length) {
-      addLog(game, `${stackObject.label}: ${formatSignedStat(action.power)}/${formatSignedStat(action.resistance)} ate o Reagrupamento.`, "Engine");
+      addLog(game, `${stackObject.label}: ${formatSignedStat(power)}/${formatSignedStat(resistance)} ate o Reagrupamento.`, "Engine");
+      if (!markPositiveStatFeedback(refs, power, resistance)) renderGame();
     }
     return refs.length > 0;
   }
@@ -6783,7 +7019,7 @@ async function applyCharacterConsecrationEffect(player, card) {
   });
   const targetCard = app.cardByCode.get(target.instance.cardId);
   addLog(app.game, `${getCardName(targetCard)} recebeu +1/+1 até o Reagrupamento.`, player.label);
-  renderGame();
+  if (!markPositiveStatFeedback([target], 1, 1)) renderGame();
   return { label: `${getCardName(targetCard)} +1/+1` };
 }
 
@@ -7510,7 +7746,7 @@ function showBotBlockReview(attackerId, onContinue) {
     </div>
   `;
 
-  modal.classList.add("is-visible");
+  showModalElement(modal);
   modal.querySelector("[data-confirm-bot-blocks]")?.addEventListener("click", () => {
     const resume = app.blockReviewResume;
     app.blockReviewResume = null;
@@ -7519,7 +7755,7 @@ function showBotBlockReview(attackerId, onContinue) {
 }
 
 function hideBotBlockReview() {
-  document.getElementById("botBlockReview")?.classList.remove("is-visible");
+  hideModalById("botBlockReview");
 }
 
 function resolveDeclaredAttacks(playerId) {
@@ -7963,6 +8199,33 @@ function getResolutionEventElement(event) {
   return getDamageEventElement(event);
 }
 
+function getEssenceBurstElement(playerId, sourceUid = "") {
+  if (sourceUid) {
+    const source = getBattlefieldCardElement(playerId, sourceUid);
+    if (source) return source;
+  }
+  return playerId === "human"
+    ? els.humanEssence?.closest(".essence-panel") || els.humanArea
+    : els.botEssence?.closest(".essence-panel") || els.botArea;
+}
+
+function showEssenceBurst(playerId, amount = 1, kind = "gain", sourceUid = "") {
+  const target = getEssenceBurstElement(playerId, sourceUid);
+  if (!target) return;
+  const value = Math.max(1, toNumber(amount, 1));
+  const rect = target.getBoundingClientRect();
+  const burst = document.createElement("div");
+  burst.className = `essence-burst is-${kind}`;
+  burst.innerHTML = `
+    <img src="${escapeHtml(ESSENCE_ICON_IMAGE)}" alt="" draggable="false" />
+    <span>${kind === "spend" ? "-" : "+"}${value}</span>
+  `;
+  burst.style.left = `${rect.left + rect.width / 2}px`;
+  burst.style.top = `${rect.top + rect.height / 2}px`;
+  document.body.appendChild(burst);
+  window.setTimeout(() => burst.remove(), 1120);
+}
+
 function getCombatAttackLungeGroups(events) {
   const game = app.game;
   const attackerUids = new Set(game?.combat?.attackers || []);
@@ -8367,17 +8630,6 @@ function finalizeResolutionQueue(game) {
   clearDecisionBattlefieldView();
   clearHumanAutoPass();
   if (app.game === game) renderStackEdgePanel(game);
-}
-
-function concede() {
-  if (!app.game || app.game.status !== "active") return;
-  app.game.status = "finished";
-  app.game.winner = "bot";
-  finalizeResolutionQueue(app.game);
-  addLog(app.game, "concedeu a partida.", "Voce");
-  playTone("end");
-  renderGame();
-  showResult("Derrota", "Voce concedeu a partida.");
 }
 
 function checkGameEnd(game) {
@@ -8846,7 +9098,7 @@ function getBotEssenceGeneratorUids(bot) {
 }
 
 function getCheapestReachableNonSinCost(player) {
-  const generatorCount = getBotEssenceGeneratorUids(player).length;
+  const generatorCount = getPotentialGeneratedEssence(player);
   const availableAfterGenerators = getAvailableEssence(player) + generatorCount;
   return [...player.hand]
     .map((cardId) => app.cardByCode.get(cardId))
@@ -9002,6 +9254,7 @@ function renderGame() {
   const game = app.game;
   if (!game) return;
   enforceEquipmentState(game);
+  normalizeAllIncenseTokenStacks(game);
   const human = game.players.human;
   const bot = game.players.bot;
   const selectedHandId = getSelectedHandCardId();
@@ -9096,25 +9349,43 @@ function updateBattlefieldWallpapers(human, bot) {
   });
 }
 
+function getStackObjectVirtueBackground(stackObject) {
+  const source = stackObject?.source || {};
+  if (source.sourceType !== "virtue") return "";
+  return getVirtueArtwork(getVirtueById(source.sourceId));
+}
+
 function renderStackEdgePanel(game) {
   if (!els.stackEdgePanel) return;
   if (!game.stack.length) {
     els.stackEdgePanel.classList.remove("is-visible");
+    els.stackEdgePanel.classList.remove("has-virtue-bg");
+    els.stackEdgePanel.style.removeProperty("--stack-edge-bg");
     els.stackEdgePanel.innerHTML = "";
     return;
   }
   els.stackEdgePanel.classList.add("is-visible");
   const visibleStack = game.stack.slice().reverse();
+  const topVirtueBg = getStackObjectVirtueBackground(visibleStack[0]);
+  els.stackEdgePanel.classList.toggle("has-virtue-bg", Boolean(topVirtueBg));
+  if (topVirtueBg) {
+    els.stackEdgePanel.style.setProperty("--stack-edge-bg", `url("${cssUrl(topVirtueBg)}")`);
+  } else {
+    els.stackEdgePanel.style.removeProperty("--stack-edge-bg");
+  }
   els.stackEdgePanel.innerHTML = `
     <span>Pilha</span>
     ${visibleStack.map((item, index) => {
       const card = app.cardByCode.get(item.cardId);
-      const owner = item.owner === "human" ? "Voce" : "Bot";
+      const ownerId = item.owner || item.controllerId;
+      const owner = ownerId === "human" ? "Voce" : "Bot";
       const icon = card ? getCardArt(card) : item.source?.icon || "";
       const iconLabel = card ? getCardName(card) : item.source?.label || item.label;
       const zoomCardId = card?.code || item.source?.cardId || item.source?.sourceId || "";
+      const virtueBg = getStackObjectVirtueBackground(item);
+      const cardStyle = virtueBg ? `style="--stack-virtue-bg:url(&quot;${escapeHtml(cssUrl(virtueBg))}&quot;)"` : "";
       return `
-        <div class="stack-edge-card ${index === 0 ? "is-stack-top" : ""}" ${zoomCardId && app.cardByCode.has(zoomCardId) ? `data-zoom-card="${escapeHtml(zoomCardId)}"` : ""}>
+        <div class="stack-edge-card ${index === 0 ? "is-stack-top" : ""} ${virtueBg ? "has-virtue-bg" : ""}" ${cardStyle} ${zoomCardId && app.cardByCode.has(zoomCardId) ? `data-zoom-card="${escapeHtml(zoomCardId)}"` : ""}>
           ${icon ? `<img src="${escapeHtml(icon)}" alt="${escapeHtml(iconLabel)}" />` : ""}
           <div>
             <strong>${escapeHtml(item.label)}</strong>
@@ -9472,6 +9743,7 @@ function renderBattlefield(player, selectedUid, selectedAttackers = new Set()) {
           combatLabels,
           damage: instance.damage || 0,
           damageFlash: instance.damageFlash,
+          statFeedback: instance.statFeedback,
           dying: instance.dying,
           instance,
           zone: player.id === "human" ? "battlefield" : "bot-battlefield"
@@ -9499,15 +9771,16 @@ function renderCardButton(cardId, options = {}) {
   const statModifier = isFieldTile && isCharacter && instance ? getCharacterStatModifier(instance) : null;
   const attack = isFieldTile && isCharacter && instance ? getCharacterPower(instance) : toNumber(card.stats?.attack, 0);
   const resistance = isFieldTile && isCharacter && instance ? getCharacterResistance(instance) : toNumber(card.stats?.resistance, 0);
+  const tokenQuantity = isFieldTile && instance && isIncenseTokenCard(card) ? getTokenQuantity(instance) : 0;
   const costDisplay = options.costDiscounted ? options.effectiveCost : getCost(card);
   const damage = toNumber(options.damage, 0);
   const virtuePips = isHandTile
     ? renderCardVirtuePips(card, 5, { fixedSlots: true })
     : renderCardVirtuePips(card);
   const statusPips = [
-    options.essenceGenerator ? `<span title="Gera Essência">{E}</span>` : "",
-    ...(options.combatLabels || []).map((label) => `<span title="Combate">${escapeHtml(label)}</span>`),
-    options.declared && !(options.combatLabels || []).some((label) => label.startsWith("A")) ? `<span title="Atacante declarado">A</span>` : ""
+    options.essenceGenerator ? `<span class="field-card-pip field-card-pip--tap" title="Despreparar: gera Essência" aria-label="Despreparar para gerar Essência"></span>` : "",
+    ...(options.combatLabels || []).map((label) => `<span class="field-card-pip" title="Combate">${escapeHtml(label)}</span>`),
+    options.declared && !(options.combatLabels || []).some((label) => label.startsWith("A")) ? `<span class="field-card-pip" title="Atacante declarado">A</span>` : ""
   ].filter(Boolean).join("");
   const classes = [
     "play-card",
@@ -9519,6 +9792,9 @@ function renderCardButton(cardId, options = {}) {
     options.costDiscounted ? "is-cost-discounted" : "",
     statModifier ? "is-stat-modified" : "",
     statModifier ? `is-stat-${statModifier.tone}` : "",
+    options.statFeedback ? "has-stat-feedback" : "",
+    options.statFeedback ? `is-stat-feedback-${options.statFeedback.tone || "buff"}` : "",
+    tokenQuantity > 0 ? "has-token-count" : "",
     options.actionable ? "is-actionable-card" : "",
     options.essenceGenerator ? "is-essence-generator" : "",
     attachedEquipment.length ? "is-equipped-card" : "",
@@ -9551,6 +9827,7 @@ function renderCardButton(cardId, options = {}) {
       ${isHandTile ? `<span class="card-type-gem card-type-gem--${String(typeCode || "CRD").toLowerCase()}"></span>` : ""}
       ${isHandTile && isCharacter ? `<span class="hand-card-stats">${attack}/${resistance}</span>` : ""}
       ${isFieldTile && statusPips ? `<span class="field-card-pips">${statusPips}</span>` : ""}
+      ${tokenQuantity > 0 ? `<span class="field-card-token-count" title="${escapeHtml(`${tokenQuantity} ficha${tokenQuantity === 1 ? "" : "s"} de Incenso`)}">${tokenQuantity}</span>` : ""}
       ${isFieldTile && attachedEquipment.length ? `
         <span class="field-card-equipment" title="${escapeHtml(attachedEquipment.map(({ instance: equipment }) => getCardName(app.cardByCode.get(equipment.cardId))).join(", "))}">
           ${attachedEquipment.slice(0, 3).map(({ instance: equipment }) => {
@@ -9564,6 +9841,7 @@ function renderCardButton(cardId, options = {}) {
       ${isAttachedEquipment ? `<span class="field-card-attachment" title="Anexado">EQ</span>` : ""}
       ${isFieldTile && isCharacter ? `<span class="field-card-stats ${statModifier ? `is-${statModifier.tone}` : ""}">${attack}/${resistance}</span>` : ""}
       ${isFieldTile && isCharacter && damage > 0 ? `<span class="field-card-damage">${damage}</span>` : ""}
+      ${isFieldTile && isCharacter && options.statFeedback ? `<span class="field-card-stat-feedback is-${escapeHtml(options.statFeedback.tone || "buff")}">${escapeHtml(options.statFeedback.label || "")}</span>` : ""}
     </button>
   `;
 }
@@ -9614,7 +9892,7 @@ function showCemeteryModal(playerId) {
       </div>
     </div>
   `;
-  modal.classList.add("is-visible");
+  showModalElement(modal);
 }
 
 function showReserveModal(playerId) {
@@ -9652,7 +9930,7 @@ function showReserveModal(playerId) {
       </div>
     </div>
   `;
-  modal.classList.add("is-visible");
+  showModalElement(modal);
 }
 
 function showVirtuesModal(playerId) {
@@ -9697,7 +9975,7 @@ function showVirtuesModal(playerId) {
       </div>
     </div>
   `;
-  modal.classList.add("is-visible");
+  showModalElement(modal);
 }
 
 function shouldOfferVirtueDebug(game = app.game, playerId = "human") {
@@ -9802,7 +10080,7 @@ function renderVirtueDebugModal(playerId = "human") {
       </div>
     </div>
   `;
-  modal.classList.add("is-visible");
+  showModalElement(modal);
 }
 
 function showVirtueDebugModal(playerId = "human") {
@@ -9826,7 +10104,7 @@ function showVirtueDebugModal(playerId = "human") {
 function closeVirtueDebugModal() {
   if (!app.pendingVirtueDebug) return;
   app.pendingVirtueDebug = null;
-  document.getElementById("zoneModal")?.classList.remove("is-visible");
+  hideModalById("zoneModal");
   renderGame();
 }
 
@@ -9887,7 +10165,7 @@ function showMoralChoiceModal({ playerId, title, description, choices, context, 
     </div>
   `;
   decorateDecisionModal(modal);
-  modal.classList.add("is-visible");
+  showModalElement(modal);
 }
 
 function resolveMoralChoice(index) {
@@ -9907,7 +10185,7 @@ function resolveMoralChoice(index) {
 
 function hideZoneModal() {
   if (app.pendingMoralChoice || app.pendingEngineChoice || app.pendingVirtueDebug) return;
-  document.getElementById("zoneModal")?.classList.remove("is-visible");
+  hideModalById("zoneModal");
 }
 
 function clearTransientOverlays() {
@@ -9918,8 +10196,9 @@ function clearTransientOverlays() {
   app.drawAnimationPending = false;
   clearDecisionBattlefieldView();
   clearAllVirtueFeedback();
+  clearAllStatFeedback();
   ["phaseAlert", "playedCardAnimation", "pulverizeAnimation", "revealAnimation", "drawAnimation", "interactionHint", "cardZoomPreview", "zoneModal", "fieldViewModal", "blockPrompt", "botBlockReview"].forEach((id) => {
-    document.getElementById(id)?.classList.remove("is-visible");
+    document.getElementById(id)?.classList.remove("is-visible", "is-closing");
   });
   document.querySelectorAll(".combat-damage-burst").forEach((node) => node.remove());
   cleanupPointerDrag();
@@ -9989,7 +10268,6 @@ function renderActionState() {
     els.nextPhaseButton.dataset.actionSubtitle = "Retornar para a tela final";
     els.nextPhaseButton.classList.remove("is-priority-button");
     els.actionGrid?.style.setProperty("--action-columns", "1");
-    if (els.concedeButton) els.concedeButton.disabled = true;
     return;
   }
   els.selectedCardPanel.hidden = false;
@@ -10002,7 +10280,6 @@ function renderActionState() {
     els.nextPhaseButton.hidden = true;
     els.endTurnButton.hidden = true;
     els.actionGrid?.style.setProperty("--action-columns", "1");
-    if (els.concedeButton) els.concedeButton.disabled = true;
     return;
   }
   const human = app.game.players.human;
@@ -10039,7 +10316,6 @@ function renderActionState() {
   els.attackButton.disabled = combatLocked || !humanTurn || phase !== "combat" || !readyAttackers.length;
   els.nextPhaseButton.disabled = !showNextPhase;
   els.endTurnButton.disabled = !showEndTurn;
-  if (els.concedeButton) els.concedeButton.disabled = !app.game || app.game.status !== "active";
 }
 
 function getNextActionSubtitle(game, priorityOpen = false) {
@@ -10186,7 +10462,7 @@ function bindBlockPromptDrag(modal) {
 function renderBlockPrompt(game) {
   let modal = document.getElementById("blockPrompt");
   if (game?.combat?.awaitingBlockers !== "human") {
-    modal?.classList.remove("is-visible");
+    hideModalElement(modal);
     return;
   }
 
@@ -10263,7 +10539,7 @@ function renderBlockPrompt(game) {
     </div>
   `;
 
-  modal.classList.add("is-visible");
+  showModalElement(modal);
   modal.querySelectorAll("[data-blocker]").forEach((button) => {
     button.addEventListener("dragstart", (event) => {
       if (button.getAttribute("aria-disabled") === "true") {
@@ -10280,7 +10556,7 @@ function renderBlockPrompt(game) {
 }
 
 function hideBlockPrompt() {
-  document.getElementById("blockPrompt")?.classList.remove("is-visible");
+  hideModalById("blockPrompt");
 }
 
 function getAudioContext() {
@@ -10316,15 +10592,15 @@ function getSfxOutput(ctx) {
   const feedback = ctx.createGain();
   const wet = ctx.createGain();
   const compressor = ctx.createDynamicsCompressor();
-  dry.gain.value = .92;
-  wet.gain.value = .08;
-  delay.delayTime.value = .045;
-  feedback.gain.value = .12;
-  compressor.threshold.value = -18;
-  compressor.knee.value = 18;
-  compressor.ratio.value = 4;
-  compressor.attack.value = .003;
-  compressor.release.value = .12;
+  dry.gain.value = .84;
+  wet.gain.value = .16;
+  delay.delayTime.value = .058;
+  feedback.gain.value = .18;
+  compressor.threshold.value = -20;
+  compressor.knee.value = 20;
+  compressor.ratio.value = 5;
+  compressor.attack.value = .002;
+  compressor.release.value = .18;
   input.connect(dry);
   input.connect(delay);
   delay.connect(feedback);
@@ -10382,16 +10658,16 @@ function playNoiseLayer(ctx, options = {}) {
   source.stop(start + duration + .04);
 }
 
-function playCardChime(ctx, frequencies, baseDelay = 0) {
+function playCardChime(ctx, frequencies, baseDelay = 0, options = {}) {
   frequencies.forEach((frequency, index) => {
     playOscLayer(ctx, {
       frequency,
-      endFrequency: frequency * 1.015,
-      delay: baseDelay + index * .035,
-      duration: .18,
-      volume: .023,
-      type: "triangle",
-      attack: .01
+      endFrequency: frequency * (options.endRatio || 1.015),
+      delay: baseDelay + index * (options.spacing || .035),
+      duration: options.duration || .18,
+      volume: options.volume || .023,
+      type: options.type || "triangle",
+      attack: options.attack || .01
     });
   });
 }
@@ -10403,9 +10679,10 @@ function playTone(kind) {
   const cardType = normalized.startsWith("play-") ? normalized.replace("play-", "") : "";
 
   if (normalized === "draw") {
-    playNoiseLayer(ctx, { frequency: 1900, endFrequency: 620, duration: .16, volume: .034, filterType: "bandpass", q: 1.9 });
-    playNoiseLayer(ctx, { frequency: 3100, endFrequency: 1300, delay: .055, duration: .11, volume: .02, filterType: "highpass", q: .8 });
-    playOscLayer(ctx, { frequency: 720, endFrequency: 960, delay: .03, duration: .11, volume: .018, type: "triangle" });
+    playNoiseLayer(ctx, { frequency: 2600, endFrequency: 720, duration: .14, volume: .038, filterType: "bandpass", q: 2.4 });
+    playNoiseLayer(ctx, { frequency: 5200, endFrequency: 1800, delay: .045, duration: .13, volume: .018, filterType: "highpass", q: .9 });
+    playOscLayer(ctx, { frequency: 520, endFrequency: 760, delay: .03, duration: .12, volume: .016, type: "triangle" });
+    playOscLayer(ctx, { frequency: 1040, endFrequency: 1220, delay: .07, duration: .1, volume: .01, type: "sine" });
     return;
   }
 
@@ -10426,60 +10703,76 @@ function playTone(kind) {
   }
 
   if (normalized === "hit") {
-    playOscLayer(ctx, { frequency: 105, endFrequency: 46, duration: .18, volume: .06, type: "sawtooth", attack: .002 });
-    playNoiseLayer(ctx, { frequency: 180, endFrequency: 70, duration: .18, volume: .052, filterType: "lowpass", q: .7 });
-    playNoiseLayer(ctx, { frequency: 1800, duration: .035, volume: .032, filterType: "bandpass", q: 2.2 });
+    playOscLayer(ctx, { frequency: 92, endFrequency: 38, duration: .2, volume: .07, type: "sawtooth", attack: .0015 });
+    playNoiseLayer(ctx, { frequency: 210, endFrequency: 58, duration: .2, volume: .06, filterType: "lowpass", q: .7 });
+    playNoiseLayer(ctx, { frequency: 2100, endFrequency: 760, duration: .055, volume: .035, filterType: "bandpass", q: 2.6 });
+    playNoiseLayer(ctx, { frequency: 4600, delay: .018, duration: .035, volume: .012, filterType: "highpass", q: .8 });
     return;
   }
 
   if (normalized === "heal") {
-    playCardChime(ctx, [420, 560, 760], 0);
-    playNoiseLayer(ctx, { frequency: 2400, endFrequency: 4200, duration: .24, volume: .014, filterType: "highpass", q: .8 });
+    playCardChime(ctx, [392, 523, 659, 784], 0, { spacing: .03, duration: .22, volume: .019, endRatio: 1.025 });
+    playNoiseLayer(ctx, { frequency: 2300, endFrequency: 5200, duration: .3, volume: .016, filterType: "highpass", q: .8 });
+    playOscLayer(ctx, { frequency: 196, endFrequency: 262, duration: .28, volume: .018, type: "sine" });
+    return;
+  }
+
+  if (normalized === "buff") {
+    playNoiseLayer(ctx, { frequency: 1700, endFrequency: 5800, duration: .28, volume: .022, filterType: "highpass", q: .7 });
+    playNoiseLayer(ctx, { frequency: 620, endFrequency: 1800, delay: .015, duration: .18, volume: .018, filterType: "bandpass", q: 1.8 });
+    playOscLayer(ctx, { frequency: 196, endFrequency: 247, duration: .26, volume: .025, type: "triangle" });
+    playCardChime(ctx, [494, 659, 988, 1318], .035, { spacing: .026, duration: .2, volume: .018, endRatio: 1.035 });
+    playOscLayer(ctx, { frequency: 1760, endFrequency: 2349, delay: .1, duration: .12, volume: .008, type: "sine" });
     return;
   }
 
   if (normalized === "pulverize") {
-    playNoiseLayer(ctx, { frequency: 420, endFrequency: 90, duration: .32, volume: .052, filterType: "lowpass", q: .9 });
-    playNoiseLayer(ctx, { frequency: 2400, endFrequency: 620, delay: .035, duration: .22, volume: .03, filterType: "bandpass", q: 1.8 });
-    playOscLayer(ctx, { frequency: 148, endFrequency: 72, delay: .03, duration: .28, volume: .032, type: "sawtooth" });
+    playNoiseLayer(ctx, { frequency: 460, endFrequency: 72, duration: .36, volume: .06, filterType: "lowpass", q: .9 });
+    playNoiseLayer(ctx, { frequency: 2800, endFrequency: 520, delay: .03, duration: .26, volume: .034, filterType: "bandpass", q: 2 });
+    playOscLayer(ctx, { frequency: 132, endFrequency: 52, delay: .025, duration: .32, volume: .038, type: "sawtooth" });
+    playNoiseLayer(ctx, { frequency: 6000, delay: .18, duration: .08, volume: .012, filterType: "highpass" });
     return;
   }
 
   if (normalized === "consecrate") {
-    playNoiseLayer(ctx, { frequency: 1800, endFrequency: 4200, duration: .22, volume: .018, filterType: "highpass", q: .7 });
-    playCardChime(ctx, [330, 495, 660, 990], .02);
+    playNoiseLayer(ctx, { frequency: 1600, endFrequency: 5200, duration: .32, volume: .022, filterType: "highpass", q: .7 });
+    playOscLayer(ctx, { frequency: 98, endFrequency: 147, duration: .42, volume: .022, type: "sine" });
+    playCardChime(ctx, [330, 495, 660, 990, 1320], .02, { spacing: .032, duration: .24, volume: .021, endRatio: 1.02 });
     return;
   }
 
   if (normalized === "profane") {
-    playNoiseLayer(ctx, { frequency: 1300, endFrequency: 380, duration: .24, volume: .03, filterType: "bandpass", q: 1.4 });
-    playOscLayer(ctx, { frequency: 392, endFrequency: 196, delay: .035, duration: .22, volume: .026, type: "triangle" });
+    playNoiseLayer(ctx, { frequency: 1500, endFrequency: 260, duration: .3, volume: .036, filterType: "bandpass", q: 1.6 });
+    playOscLayer(ctx, { frequency: 392, endFrequency: 147, delay: .028, duration: .28, volume: .032, type: "triangle" });
+    playNoiseLayer(ctx, { frequency: 280, endFrequency: 80, delay: .08, duration: .18, volume: .022, filterType: "lowpass" });
     return;
   }
 
   if (normalized === "phase" || normalized === "phase-opponent") {
     const root = normalized === "phase-opponent" ? 220 : 294;
-    playOscLayer(ctx, { frequency: root, endFrequency: root * 1.5, duration: .16, volume: .026, type: "triangle" });
-    playOscLayer(ctx, { frequency: root * 2, delay: .055, duration: .18, volume: .018, type: "sine" });
-    playNoiseLayer(ctx, { frequency: 1800, endFrequency: 900, delay: .02, duration: .11, volume: .012, filterType: "bandpass" });
+    playOscLayer(ctx, { frequency: root, endFrequency: root * 1.5, duration: .18, volume: .026, type: "triangle" });
+    playOscLayer(ctx, { frequency: root * 2, delay: .055, duration: .2, volume: .016, type: "sine" });
+    playNoiseLayer(ctx, { frequency: 2200, endFrequency: 900, delay: .015, duration: .12, volume: .014, filterType: "bandpass" });
     return;
   }
 
   if (normalized === "start") {
-    playCardChime(ctx, [220, 330, 440, 660], 0);
-    playOscLayer(ctx, { frequency: 110, endFrequency: 146, duration: .36, volume: .025, type: "sine" });
+    playNoiseLayer(ctx, { frequency: 1600, endFrequency: 4200, duration: .34, volume: .016, filterType: "highpass" });
+    playCardChime(ctx, [220, 330, 440, 660, 880], 0, { spacing: .04, duration: .24, volume: .02 });
+    playOscLayer(ctx, { frequency: 110, endFrequency: 146, duration: .42, volume: .026, type: "sine" });
     return;
   }
 
   if (normalized === "win") {
-    playCardChime(ctx, [392, 494, 587, 784], 0);
-    playOscLayer(ctx, { frequency: 196, endFrequency: 392, duration: .52, volume: .032, type: "triangle" });
+    playCardChime(ctx, [392, 494, 587, 784, 988], 0, { spacing: .045, duration: .28, volume: .024, endRatio: 1.018 });
+    playOscLayer(ctx, { frequency: 196, endFrequency: 392, duration: .58, volume: .034, type: "triangle" });
+    playNoiseLayer(ctx, { frequency: 2600, endFrequency: 5200, delay: .08, duration: .34, volume: .014, filterType: "highpass" });
     return;
   }
 
   if (normalized === "end") {
-    playOscLayer(ctx, { frequency: 164, endFrequency: 82, duration: .24, volume: .035, type: "triangle" });
-    playNoiseLayer(ctx, { frequency: 500, endFrequency: 120, delay: .02, duration: .18, volume: .018, filterType: "lowpass" });
+    playOscLayer(ctx, { frequency: 164, endFrequency: 74, duration: .28, volume: .038, type: "triangle" });
+    playNoiseLayer(ctx, { frequency: 520, endFrequency: 100, delay: .02, duration: .22, volume: .02, filterType: "lowpass" });
     return;
   }
 
@@ -10495,24 +10788,17 @@ function playTone(kind) {
     const notes = palettes[cardType] || [260, 390, 520];
     if (cardType === "pec") {
       playTone("hit");
-      playOscLayer(ctx, { frequency: 260, endFrequency: 210, delay: .08, duration: .16, volume: .018, type: "square" });
+      playOscLayer(ctx, { frequency: 260, endFrequency: 185, delay: .08, duration: .18, volume: .02, type: "square" });
       return;
     }
-    playNoiseLayer(ctx, { frequency: 1250, endFrequency: 2200, duration: .1, volume: .018, filterType: "bandpass" });
-    playCardChime(ctx, notes, .02);
+    playNoiseLayer(ctx, { frequency: 900, endFrequency: 2600, duration: .13, volume: .022, filterType: "bandpass", q: 1.5 });
+    playOscLayer(ctx, { frequency: notes[0] / 2, endFrequency: notes[0] * .72, duration: .2, volume: .016, type: "sine" });
+    playCardChime(ctx, notes, .025, { spacing: .03, duration: .2, volume: .02 });
     return;
   }
 
-  playOscLayer(ctx, { frequency: normalized === "play" ? 520 : 330, duration: .08, volume: .025, type: "triangle" });
-}
-
-function toggleSound() {
-  app.soundEnabled = !app.soundEnabled;
-  if (els.soundToggleButton) {
-    els.soundToggleButton.textContent = app.soundEnabled ? "Som ligado" : "Som desligado";
-    els.soundToggleButton.setAttribute("aria-pressed", String(!app.soundEnabled));
-  }
-  writePlayStorage({ soundEnabled: app.soundEnabled });
+  playNoiseLayer(ctx, { frequency: 1800, endFrequency: 900, duration: .08, volume: .01, filterType: "bandpass" });
+  playOscLayer(ctx, { frequency: normalized === "play" ? 520 : 330, endFrequency: normalized === "play" ? 660 : 392, duration: .11, volume: .022, type: "triangle" });
 }
 
 async function loadData() {
@@ -10600,7 +10886,6 @@ async function loadData() {
   const saved = readPlayStorage();
   if (typeof saved.soundEnabled === "boolean") {
     app.soundEnabled = saved.soundEnabled;
-    if (els.soundToggleButton) els.soundToggleButton.textContent = app.soundEnabled ? "Som ligado" : "Som desligado";
   }
   if (app.isLocalDebugHost && typeof saved.virtueDebugEnabled === "boolean") {
     app.virtueDebugEnabled = saved.virtueDebugEnabled;
@@ -10642,8 +10927,6 @@ function bindEvents() {
     updateSetupPreview(getDeckOption(els.humanDeckSelect.value), app.decks.find((deck) => deck.id === els.botDeckSelect.value));
   });
   els.startGameButton.addEventListener("click", startGame);
-  els.newGameButton?.addEventListener("click", showSetup);
-  els.resetGameButton?.addEventListener("click", restartGame);
   els.resultNewGameButton?.addEventListener("click", showSetup);
   els.gameResult.addEventListener("click", (event) => {
     if (event.target.closest("[data-result-view-board]")) {
@@ -10654,8 +10937,6 @@ function bindEvents() {
     }
     if (event.target.closest("[data-result-new-game]")) showSetup();
   });
-  els.soundToggleButton?.addEventListener("click", toggleSound);
-
   els.humanHand.addEventListener("click", (event) => {
     if (Date.now() < toNumber(app.suppressPlayClickUntil, 0)) {
       event.preventDefault();
@@ -10752,7 +11033,6 @@ function bindEvents() {
     renderGame();
   });
   els.endTurnButton.addEventListener("click", applyEndTurn);
-  els.concedeButton?.addEventListener("click", concede);
   document.addEventListener("click", async (event) => {
     if (event.target.closest("[data-return-to-decision]")) {
       returnToDecisionModal();
