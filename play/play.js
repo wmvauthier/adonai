@@ -38,6 +38,8 @@ const TYPE_LABELS = {
   TEM: "Templo",
   TER: "Territorio"
 };
+const EDGE_EVENT_TTL_MS = 4200;
+const EDGE_EVENT_MAX_ITEMS = 3;
 const INTERNAL_TOKEN_CARDS = [
   {
     code: "TOKEN-INCENSE",
@@ -188,6 +190,7 @@ const els = {
   gameLog: document.getElementById("gameLog"),
   handDock: document.querySelector(".hand-dock"),
   humanHand: document.getElementById("humanHand"),
+  actionDock: document.querySelector(".action-dock"),
   actionGrid: document.querySelector(".action-grid"),
   stackEdgePanel: document.getElementById("stackEdgePanel"),
   selectedCardPanel: document.getElementById("selectedCardPanel"),
@@ -248,6 +251,9 @@ const app = {
   isLocalDebugHost: window.location.hostname === "127.0.0.1",
   virtueDebugEnabled: false,
   drawAnimationPending: false,
+  edgeEvents: [],
+  edgeEventTimers: new Map(),
+  edgeEventSeq: 0,
   autoPassTimer: null,
   blockReviewResume: null,
   priority: null,
@@ -273,12 +279,74 @@ function escapeHtml(value) {
 }
 
 const MODAL_EXIT_ANIMATION_MS = 180;
+let viewportDensityFrame = 0;
+let modalRenderObserver = null;
+
+function getViewportDensity() {
+  const width = window.innerWidth || document.documentElement.clientWidth || 0;
+  const height = window.innerHeight || document.documentElement.clientHeight || 0;
+  const aspect = height > 0 ? width / height : 1;
+  const coarsePointer = window.matchMedia?.("(pointer: coarse)")?.matches || false;
+  const finePointer = window.matchMedia?.("(pointer: fine)")?.matches || false;
+  return {
+    width,
+    height,
+    aspect,
+    compact: width < 860,
+    short: height < 740,
+    veryShort: height < 620,
+    wide: width >= 1180 && aspect >= 1.35,
+    landscape: width > height,
+    portrait: height >= width,
+    coarsePointer,
+    finePointer: finePointer || !coarsePointer
+  };
+}
+
+function updateViewportDensityState() {
+  const view = els.gameView;
+  if (!view) return;
+  const viewport = getViewportDensity();
+  view.dataset.viewportWidth = String(Math.round(viewport.width));
+  view.dataset.viewportHeight = String(Math.round(viewport.height));
+  view.classList.toggle("is-viewport-compact", viewport.compact);
+  view.classList.toggle("is-viewport-short", viewport.short);
+  view.classList.toggle("is-viewport-very-short", viewport.veryShort);
+  view.classList.toggle("is-viewport-wide", viewport.wide);
+  view.classList.toggle("is-viewport-landscape", viewport.landscape);
+  view.classList.toggle("is-viewport-portrait", viewport.portrait);
+  view.classList.toggle("is-coarse-pointer", viewport.coarsePointer);
+  view.classList.toggle("is-fine-pointer", viewport.finePointer);
+}
+
+function scheduleViewportDensityUpdate() {
+  if (viewportDensityFrame) window.cancelAnimationFrame(viewportDensityFrame);
+  viewportDensityFrame = window.requestAnimationFrame(() => {
+    viewportDensityFrame = 0;
+    updateViewportDensityState();
+  });
+}
+
+function syncFeedbackOverlayState() {
+  const view = els.gameView;
+  if (!view) return;
+  const hasVisibleOverlay = Boolean(document.querySelector(".zone-modal.is-visible, .block-prompt.is-visible, .game-result:not(.is-hidden), .played-card-animation.is-visible, .draw-animation.is-visible, .reveal-animation.is-visible, .pulverize-animation.is-visible, .phase-alert.is-visible"));
+  view.classList.toggle("is-feedback-overlay-active", hasVisibleOverlay);
+}
 
 function showModalElement(modal) {
   if (!modal) return;
   window.clearTimeout(modal._modalExitTimer);
+  updateOverlayStateClasses(modal);
   modal.classList.remove("is-closing");
+  modal.classList.remove("is-modal-updating");
   modal.classList.add("is-visible");
+  modal.dataset.modalOpening = "true";
+  window.setTimeout(() => {
+    if (modal.classList.contains("is-visible")) modal.dataset.modalRendered = "true";
+    delete modal.dataset.modalOpening;
+  }, 0);
+  syncFeedbackOverlayState();
 }
 
 function hideModalElement(modal, extraClasses = []) {
@@ -286,18 +354,79 @@ function hideModalElement(modal, extraClasses = []) {
   window.clearTimeout(modal._modalExitTimer);
   if (extraClasses.length) modal.classList.remove(...extraClasses);
   if (!modal.classList.contains("is-visible")) {
-    modal.classList.remove("is-closing");
+    modal.classList.remove("is-closing", "is-modal-updating");
+    delete modal.dataset.modalRendered;
+    delete modal.dataset.modalOpening;
     return;
   }
   modal.classList.add("is-closing");
-  modal.classList.remove("is-visible");
+  modal.classList.remove("is-visible", "is-modal-updating");
+  delete modal.dataset.modalRendered;
+  delete modal.dataset.modalOpening;
   modal._modalExitTimer = window.setTimeout(() => {
     modal.classList.remove("is-closing");
+    syncFeedbackOverlayState();
   }, MODAL_EXIT_ANIMATION_MS);
+  syncFeedbackOverlayState();
 }
 
 function hideModalById(id, extraClasses = []) {
   hideModalElement(document.getElementById(id), extraClasses);
+}
+
+function updateOverlayStateClasses(modal) {
+  if (!modal) return;
+  const panel = modal.querySelector(".zone-modal-panel, .block-prompt-panel, .result-panel");
+  const modalStateClasses = [
+    "is-decision-modal",
+    "is-field-view-modal",
+    "is-moral-modal",
+    "is-virtue-modal",
+    "is-engine-modal",
+    "is-card-choice-modal",
+    "is-stack-choice-modal",
+    "is-pregame-modal",
+    "is-gallery-modal",
+    "is-blocking-modal"
+  ];
+  modal.classList.remove(...modalStateClasses);
+  if (!panel) return;
+  const classList = panel.classList;
+  const isEngine = [...classList].some((className) => className.includes("engine"));
+  modal.classList.toggle("is-decision-modal", panel.dataset.decisionModal === "true");
+  modal.classList.toggle("is-field-view-modal", modal.id === "fieldViewModal");
+  modal.classList.toggle("is-moral-modal", classList.contains("zone-modal-panel--moral-choice"));
+  modal.classList.toggle("is-virtue-modal", classList.contains("zone-modal-panel--virtues") || classList.contains("zone-modal-panel--virtue-debug"));
+  modal.classList.toggle("is-engine-modal", isEngine);
+  modal.classList.toggle("is-card-choice-modal", classList.contains("zone-modal-panel--engine-card-choice") || classList.contains("zone-modal-panel--engine-target-choice"));
+  modal.classList.toggle("is-stack-choice-modal", classList.contains("zone-modal-panel--engine-stack-choice"));
+  modal.classList.toggle("is-pregame-modal", classList.contains("zone-modal-panel--pregame-reduction") || classList.contains("zone-modal-panel--pregame-mulligan"));
+  modal.classList.toggle("is-gallery-modal", Boolean(panel.querySelector(".zone-modal-grid")));
+  modal.classList.toggle("is-blocking-modal", classList.contains("block-prompt-panel"));
+}
+
+function observeModalRenders() {
+  if (modalRenderObserver || typeof MutationObserver === "undefined") return;
+  modalRenderObserver = new MutationObserver((mutations) => {
+    const modal = document.getElementById("zoneModal");
+    if (!modal || !modal.classList.contains("is-visible")) return;
+    const changedModal = mutations.some((mutation) => {
+      const target = mutation.target;
+      if (target === modal) return true;
+      if (target instanceof Element && target.closest("#zoneModal")) return true;
+      return [...mutation.addedNodes].some((node) => node === modal || (node instanceof Element && (node.id === "zoneModal" || node.closest("#zoneModal"))));
+    });
+    if (!changedModal) return;
+    const alreadyRendered = modal.dataset.modalRendered === "true" && modal.dataset.modalOpening !== "true";
+    modal.classList.toggle("is-modal-updating", alreadyRendered);
+    modal.dataset.modalRendered = "true";
+    updateOverlayStateClasses(modal);
+    syncFeedbackOverlayState();
+  });
+  modalRenderObserver.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
 }
 
 function getModalElement(id = "zoneModal") {
@@ -358,7 +487,6 @@ function enterDecisionBattlefieldView() {
   app.decisionBattlefieldView = true;
   overlay.classList.add("is-battlefield-view");
   hideModalElement(overlay);
-  showDecisionReturnButton();
   renderGame();
   return true;
 }
@@ -915,11 +1043,19 @@ function getVirtueArtwork(virtue) {
     `../assets/virtudes/imgs/Virtudes - Foundations-${Number(virtue.id)} - img.webp`;
 }
 
+function getVirtueCardImage(virtue) {
+  if (!virtue) return "";
+  return virtue.images?.card ||
+    virtue.images?.full ||
+    `../assets/virtudes/cards/Virtudes - Foundations-${Number(virtue.id)}.webp`;
+}
+
 function getVirtueVisualAssets(virtue) {
   return [
     virtue?.images?.icon,
     virtue?.images?.item,
-    getVirtueArtwork(virtue)
+    getVirtueArtwork(virtue),
+    getVirtueCardImage(virtue)
   ].filter(Boolean);
 }
 
@@ -1241,6 +1377,7 @@ function getMoralResultAlertData(result) {
     virtueId: change.virtue.id,
     virtueName: getVirtueName(change.virtue),
     icon: getVirtueIcon(change.virtue),
+    cardImage: getVirtueCardImage(change.virtue),
     before: change.before,
     after: change.after,
     direction: increased ? "up" : "down",
@@ -4633,14 +4770,19 @@ function getEngineRefMeta(ref, kind = "target") {
   if (ref.territory) {
     const remaining = Math.max(0, player.maxTerritory - player.territoryDamage);
     return kind === "heal"
-      ? `Dano atual ${player.territoryDamage}`
-      : `Vida ${remaining}/${player.maxTerritory}`;
+      ? `${player?.label || ref.playerId} · dano atual ${player.territoryDamage}`
+      : `${player?.label || ref.playerId} · Vida ${remaining}/${player.maxTerritory}`;
   }
+  const owner = player?.label || ref.playerId || "Jogador";
   const card = getEngineRefCard(ref);
-  const attack = toNumber(card?.stats?.attack, 0);
+  if (getCardTypeCode(card) !== "PER") {
+    return `${owner} · ${getCardTypeLabel(card)}${ref.instance?.exhausted ? " · despreparado" : ""}`;
+  }
+  const attack = getCharacterPower(ref.instance);
   const resistance = getCharacterResistance(ref.instance);
   const damage = toNumber(ref.instance?.damage, 0);
-  return `${attack}/${resistance}${damage > 0 ? ` · dano ${damage}` : ""}`;
+  const state = ref.instance?.exhausted ? "despreparado" : "preparado";
+  return `${owner} · ${attack}/${resistance} · dano ${damage} · ${state}`;
 }
 
 function getEngineHealingCapacity(ref) {
@@ -5075,7 +5217,7 @@ function renderEngineTargetChoiceVisual(ref, kind, { visualOnly = false, showSta
     <span class="engine-target-choice-art ${isCharacter ? "is-character" : ""}">
       <img src="${escapeHtml(getCardArt(card))}" alt="${escapeHtml(getEngineRefLabel(ref))}" draggable="false" />
       ${showStats && isCharacter ? `<strong class="engine-target-choice-stats ${statModifier ? `is-${statModifier.tone}` : ""}">${getCharacterPower(instance)}/${getCharacterResistance(instance)}</strong>` : ""}
-      ${showStats && isCharacter && damage > 0 ? `<em class="engine-target-choice-damage">${damage}</em>` : ""}
+      ${showStats && isCharacter ? `<em class="engine-target-choice-damage ${damage > 0 ? "" : "is-empty"}">${damage}</em>` : ""}
       ${showStats && equipment.length ? `
         <span class="engine-target-choice-equipment" aria-label="Equipamentos anexados">
           ${equipment.map(({ instance: equipmentInstance }) => {
@@ -5085,7 +5227,12 @@ function renderEngineTargetChoiceVisual(ref, kind, { visualOnly = false, showSta
         </span>
       ` : ""}
     </span>
-    ${visualOnly ? "" : `
+    ${visualOnly ? `
+      <span class="engine-target-choice-caption">
+        <strong>${escapeHtml(getEngineRefLabel(ref))}</strong>
+        <small>${escapeHtml(getEngineRefMeta(ref, kind))}</small>
+      </span>
+    ` : `
       <strong>${escapeHtml(getEngineRefLabel(ref))}</strong>
       <small>${escapeHtml(getEngineRefMeta(ref, kind))}</small>
     `}
@@ -5104,6 +5251,7 @@ function showEngineTargetChoiceModal({
 }) {
   if (!refs.length) return Promise.resolve(null);
   if (refs.length === 1 && autoSelectSingle && !allowCancel) return Promise.resolve(refs[0]);
+  const targetShowStats = showStats || refs.some((ref) => ref.instance || ref.territory);
   return new Promise((resolve) => {
     let overlay = document.getElementById("zoneModal");
     if (!overlay) {
@@ -5127,7 +5275,7 @@ function showEngineTargetChoiceModal({
           ${refs.map((ref, index) => {
             return `
               <button class="zone-modal-card engine-target-choice-card" type="button" data-engine-target-choice="${index}">
-                ${renderEngineTargetChoiceVisual(ref, kind, { visualOnly, showStats })}
+                ${renderEngineTargetChoiceVisual(ref, kind, { visualOnly, showStats: targetShowStats })}
               </button>
             `;
           }).join("")}
@@ -5461,12 +5609,9 @@ function showEngineDistributionModal({ title, description, candidates, total, ki
               const key = getEngineRefKey(ref);
               const allocated = allocations.get(key) || 0;
               const capacity = kind === "heal" ? getEngineHealingCapacity(ref) : getEngineDamageCapacity(ref, total);
-              const card = getEngineRefCard(ref);
               return `
                 <article class="engine-distribution-card">
-                  <img src="${escapeHtml(getCardArt(card))}" alt="${escapeHtml(getEngineRefLabel(ref))}" draggable="false" />
-                  <strong>${escapeHtml(getEngineRefLabel(ref))}</strong>
-                  <small>${escapeHtml(getEngineRefMeta(ref, kind))}</small>
+                  ${renderEngineTargetChoiceVisual(ref, kind, { visualOnly: true, showStats: true })}
                   <div class="engine-distribution-controls">
                     <button type="button" data-engine-distribution-minus="${index}" ${allocated <= 0 ? "disabled" : ""}>-</button>
                     <span>${allocated}</span>
@@ -6879,7 +7024,6 @@ function selectAllAttackersForTerritory(playerId) {
   game.combat.selectedAttackerUid = selected[0] || "";
   if (selected.length) {
     playTone("soft");
-    showInteractionHint(`${selected.length} atacante${selected.length === 1 ? "" : "s"} selecionado${selected.length === 1 ? "" : "s"}. Confirme para atacar.`);
   }
   return selected;
 }
@@ -8344,7 +8488,7 @@ async function animateResolutionEvents(events, kind = "damage") {
     flashed.add(target);
     const burst = document.createElement("div");
     burst.className = `combat-damage-burst is-${event.type} is-${kind}`;
-    burst.textContent = `${kind === "heal" ? "+" : "-"}${event.amount}`;
+    burst.textContent = `${Math.abs(toNumber(event.amount, 0))}`;
     burst.style.left = `${rect.left + rect.width / 2}px`;
     burst.style.top = `${rect.top + rect.height / 2}px`;
     document.body.appendChild(burst);
@@ -8366,7 +8510,7 @@ async function animateCombatDamageEvents(events) {
     const rect = target.getBoundingClientRect();
     const burst = document.createElement("div");
     burst.className = `combat-damage-burst is-${event.type}`;
-    burst.textContent = `-${event.amount}`;
+    burst.textContent = `${Math.abs(toNumber(event.amount, 0))}`;
     burst.style.left = `${rect.left + rect.width / 2}px`;
     burst.style.top = `${rect.top + rect.height / 2}px`;
     document.body.appendChild(burst);
@@ -8705,6 +8849,7 @@ function showResult(title, text) {
       </div>
     `;
     els.gameResult.classList.remove("is-hidden");
+    syncFeedbackOverlayState();
     return;
   }
 
@@ -8751,6 +8896,7 @@ function showResult(title, text) {
     </div>
   `;
   els.gameResult.classList.remove("is-hidden");
+  syncFeedbackOverlayState();
 }
 
 function showPhaseAlert(phase, playerId) {
@@ -8778,10 +8924,12 @@ function showPhaseAlert(phase, playerId) {
       <strong>${escapeHtml(label)}</strong>
     </div>
   `;
+  syncFeedbackOverlayState();
   playTone(playerId === "human" ? "phase" : "phase-opponent");
   window.clearTimeout(overlay._hideTimer);
   overlay._hideTimer = window.setTimeout(() => {
     overlay.classList.remove("is-visible");
+    syncFeedbackOverlayState();
   }, 2300);
 }
 
@@ -8798,34 +8946,28 @@ function showCardActionAnimation(card, playerId, label, detail = "") {
   const detailData = typeof detail === "object" && detail !== null ? detail : { text: detail };
   const detailText = detailData.text || `${getCardTypeLabel(card)} - custo ${getCost(card)}`;
   const moral = detailData.moral || null;
-  let overlay = document.getElementById("playedCardAnimation");
-  if (!overlay) {
-    overlay = document.createElement("div");
-    overlay.id = "playedCardAnimation";
-    overlay.className = "played-card-animation";
-    document.body.appendChild(overlay);
-  }
-  overlay.className = `played-card-animation is-visible ${playerId === "human" ? "is-human-play" : "is-bot-play"}`;
-  overlay.innerHTML = `
-    <div class="played-card-panel">
-      <span>${escapeHtml(label)}</span>
-      <img src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" draggable="false" />
-      <strong>${escapeHtml(getCardName(card))}</strong>
-      ${moral ? `
-        <div class="played-card-moral is-${escapeHtml(moral.tone)}">
-          ${moral.icon ? `<img src="${escapeHtml(moral.icon)}" alt="${escapeHtml(moral.virtueName)}" draggable="false" />` : ""}
-          <span>${escapeHtml(moral.virtueName)}</span>
-          <strong>Nv${escapeHtml(moral.after)}</strong>
-          <i aria-hidden="true">${moral.direction === "up" ? "↑" : "↓"}</i>
-        </div>
-      ` : ""}
-      <small>${escapeHtml(detailText)}</small>
-    </div>
-  `;
-  window.clearTimeout(overlay._hideTimer);
-  overlay._hideTimer = window.setTimeout(() => {
-    overlay.classList.remove("is-visible");
-  }, 2600);
+  const normalizedLabel = label.toLowerCase();
+  const kind = normalizedLabel.includes("consag")
+    ? "consecrate"
+    : normalizedLabel.includes("jog")
+      ? "play"
+      : normalizedLabel.includes("profan")
+        ? "profane"
+        : normalizedLabel.includes("descart")
+          ? "discard"
+          : "action";
+  document.getElementById("playedCardAnimation")?.classList.remove("is-visible");
+  pushEdgePanelEvent({
+    kind,
+    playerId,
+    kicker: kind === "play" ? "Jogada" : kind === "consecrate" ? "Consagração" : "Evento",
+    title: label,
+    subtitle: getCardName(card),
+    detail: detailText,
+    cardId: card.code,
+    moral
+  });
+  syncFeedbackOverlayState();
 }
 
 function showPulverizeAnimation(cardIds, playerId) {
@@ -8858,9 +9000,11 @@ function showPulverizeAnimation(cardIds, playerId) {
         </div>
       </div>
     `;
+    syncFeedbackOverlayState();
     window.clearTimeout(overlay._hideTimer);
     overlay._hideTimer = window.setTimeout(() => {
       overlay.classList.remove("is-visible");
+      syncFeedbackOverlayState();
       resolve();
     }, 1900);
   });
@@ -8899,10 +9043,12 @@ function showRevealCardsAnimation(cardIds, playerId, options = {}) {
     `;
     const finish = () => {
       overlay.classList.remove("is-visible");
+      syncFeedbackOverlayState();
       resolve();
     };
     window.clearTimeout(overlay._hideTimer);
     overlay.querySelector("[data-reveal-confirm]")?.addEventListener("click", finish, { once: true });
+    syncFeedbackOverlayState();
   });
 }
 
@@ -8910,49 +9056,27 @@ function showDrawAnimation(cardIds, playerId, onComplete = () => {}) {
   if (!cardIds.length) return;
   const visibleCards = cardIds.map((cardId) => app.cardByCode.get(cardId)).filter(Boolean);
   const isBotDraw = playerId !== "human";
-  const requiresConfirm = !isBotDraw;
-  const drawCount = Math.max(1, isBotDraw ? cardIds.length : visibleCards.length);
-  const spread = drawCount >= 5 ? 44 : drawCount === 4 ? 50 : drawCount === 3 ? 62 : 92;
-  const rotation = drawCount >= 5 ? 7 : drawCount >= 3 ? 9 : 12;
-  const cardWidth = drawCount >= 5
-    ? "clamp(96px, 23vw, 122px)"
-    : drawCount === 4
-      ? "clamp(108px, 24vw, 134px)"
-      : drawCount === 3
-        ? "clamp(118px, 26vw, 146px)"
-        : "clamp(130px, 30vw, 176px)";
-  let overlay = document.getElementById("drawAnimation");
-  if (!overlay) {
-    overlay = document.createElement("div");
-    overlay.id = "drawAnimation";
-    overlay.className = "draw-animation";
-    document.body.appendChild(overlay);
-  }
-  overlay.className = `draw-animation is-visible ${playerId === "human" ? "is-human-draw" : "is-bot-draw"} ${requiresConfirm ? "requires-confirm" : ""}`;
-  overlay.innerHTML = `
-    <div class="draw-animation-inner">
-      <div class="draw-animation-cards" style="--draw-count:${drawCount};--draw-spread:${spread}px;--draw-rotation:${rotation}deg;--draw-card-width:${cardWidth};">
-        ${isBotDraw
-          ? cardIds.map((_, index) => `
-            <img class="is-card-back" style="--draw-index:${index};--draw-shift:${index - ((drawCount - 1) / 2)}" src="${escapeHtml(CARD_BACK_IMAGE)}" alt="Carta comprada pelo bot" draggable="false" />
-          `).join("")
-          : visibleCards.map((card, index) => `
-            <img style="--draw-index:${index};--draw-shift:${index - ((drawCount - 1) / 2)}" src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" draggable="false" />
-          `).join("")}
-      </div>
-      ${requiresConfirm ? `<button type="button" class="draw-confirm-button" data-draw-confirm>Continuar</button>` : ""}
-    </div>
-  `;
+  const overlay = document.getElementById("drawAnimation");
+  overlay?.classList.remove("is-visible", "requires-confirm");
+  const detail = isBotDraw
+    ? "Cartas ocultas"
+    : visibleCards.map((card) => getCardName(card)).join(", ");
+  pushEdgePanelEvent({
+    kind: "draw",
+    playerId,
+    kicker: "Compra",
+    title: playerId === "human" ? "Voce comprou" : "Bot comprou",
+    subtitle: `${cardIds.length} carta${cardIds.length === 1 ? "" : "s"}`,
+    detail,
+    cardIds,
+    hidden: isBotDraw
+  });
   const finish = () => {
-    overlay.classList.remove("is-visible", "requires-confirm");
+    syncFeedbackOverlayState();
     onComplete();
   };
-  window.clearTimeout(overlay._hideTimer);
-  if (requiresConfirm) {
-    overlay.querySelector("[data-draw-confirm]")?.addEventListener("click", finish, { once: true });
-  } else {
-    overlay._hideTimer = window.setTimeout(finish, 2200);
-  }
+  window.setTimeout(finish, isBotDraw ? 760 : 1100);
+  syncFeedbackOverlayState();
 }
 
 function scheduleBotStep(game, delay, action) {
@@ -9235,6 +9359,42 @@ function setHandExpanded(expanded) {
   els.handDock?.setAttribute("aria-expanded", String(app.handExpanded));
 }
 
+function updateHandDockStateClasses(game, phase, human, selectedHandId = "") {
+  const handCount = human?.hand?.length || 0;
+  const handAccess = canAct("human") || isHumanPriorityOpen();
+  const hasPlayableCard = Boolean(handAccess && human?.hand?.some((cardId) => canPlayCard(human, cardId)));
+  const hasConsecratableCard = Boolean(handAccess && human?.hand?.some((cardId) => canConsecrate(human, cardId)));
+  const hasDiscardCard = Boolean(handAccess && human?.hand?.some((cardId) => canDiscardForHandLimit(human, cardId)));
+
+  els.handDock?.style.setProperty("--hand-count", String(handCount));
+  els.handDock?.classList.toggle("is-empty-hand", handCount === 0);
+  els.handDock?.classList.toggle("has-hand-cards", handCount > 0);
+  els.handDock?.classList.toggle("has-selected-hand-card", Boolean(selectedHandId));
+  els.handDock?.classList.toggle("has-playable-card", hasPlayableCard);
+  els.handDock?.classList.toggle("has-consecratable-card", hasConsecratableCard);
+  els.handDock?.classList.toggle("has-discard-card", hasDiscardCard);
+  els.handDock?.classList.toggle("is-human-turn", game.activePlayer === "human");
+  els.handDock?.classList.toggle("is-priority-open", isHumanPriorityOpen());
+  if (els.handDock) els.handDock.dataset.phase = phase || "";
+}
+
+function updateGameFeelStateClasses(game, phase) {
+  const view = els.gameView;
+  if (!view || !game) return;
+  const hasVisibleModal = Boolean(document.querySelector(".zone-modal.is-visible, .block-prompt.is-visible, .game-result:not(.is-hidden)"));
+  const hasVisibleAnimation = Boolean(document.querySelector(".played-card-animation.is-visible, .draw-animation.is-visible, .reveal-animation.is-visible, .pulverize-animation.is-visible, .phase-alert.is-visible"));
+  const stackDepth = game.stack?.length || 0;
+  view.dataset.phase = phase || "";
+  view.dataset.stackDepth = String(stackDepth);
+  view.classList.toggle("is-priority-open", isHumanPriorityOpen());
+  view.classList.toggle("is-stack-active", stackDepth > 0);
+  view.classList.toggle("is-stack-deep", stackDepth > 2);
+  view.classList.toggle("is-combat-phase", phase === "combat");
+  view.classList.toggle("is-resolution-busy", Boolean(game.stackResolving || game.combat?.resolving));
+  view.classList.toggle("is-feedback-overlay-active", hasVisibleModal || hasVisibleAnimation);
+  view.classList.toggle("is-draw-animation-pending", Boolean(app.drawAnimationPending));
+}
+
 function collapseHand() {
   setHandExpanded(false);
 }
@@ -9262,7 +9422,9 @@ function renderGame() {
   const phase = currentPhase(game);
   const selectedAttackers = new Set(game.combat.selectedAttackers || []);
 
+  updateViewportDensityState();
   els.gameView.classList.toggle("is-consecration-focus", phase === "consecration");
+  updateGameFeelStateClasses(game, phase);
   els.phaseIndicator.textContent = getPhaseDisplayLabel(game);
   els.phasePanel.classList.toggle("is-human-turn", game.activePlayer === "human");
   els.phasePanel.classList.toggle("is-bot-turn", game.activePlayer === "bot");
@@ -9271,6 +9433,7 @@ function renderGame() {
   updateConsecrationHighlights(game, phase);
   updateBattlefieldWallpapers(human, bot);
   setHandExpanded(app.handExpanded);
+  updateHandDockStateClasses(game, phase, human, selectedHandId);
 
   els.botArea.innerHTML = renderPlayerArea(bot, true);
   els.humanArea.innerHTML = renderPlayerArea(human, false);
@@ -9279,6 +9442,7 @@ function renderGame() {
   els.botEssence.innerHTML = renderEssence(bot, true);
   els.humanEssence.innerHTML = renderEssence(human);
   updatePhaseFocusHighlights(game, phase);
+  updateBattlefieldStateClasses(game, phase, human, bot);
   els.humanHand.style.setProperty("--hand-count", String(human.hand.length));
   els.humanHand.innerHTML = human.hand.map((cardId) => {
     const card = app.cardByCode.get(cardId);
@@ -9326,6 +9490,35 @@ function updatePhaseFocusHighlights(game, phase) {
   els.botArea?.querySelector("[data-territory-player='bot']")?.classList.toggle("is-phase-focus", botFocus);
 }
 
+function updateBattlefieldStateClasses(game, phase, human, bot) {
+  [
+    [els.humanBattlefield, human],
+    [els.botBattlefield, bot]
+  ].forEach(([zone, player]) => {
+    if (!zone || !player) return;
+    const isHuman = player.id === "human";
+    const isActive = game.activePlayer === player.id;
+    const committedAttackers = Array.isArray(game.combat?.attackers) ? game.combat.attackers : [];
+    const canDeclareAttack = isActive
+      && phase === "combat"
+      && !game.combat?.awaitingBlockers
+      && !game.combat?.resolving
+      && !committedAttackers.length
+      && !player.combatDeclaredThisTurn
+      && player.battlefield.some((instance) => canAttackWith(player, instance.uid));
+    const canUseFieldAction = player.battlefield.some((instance) => canUsePermanentAction(player, instance));
+
+    zone.dataset.battlefieldPlayer = player.id;
+    zone.classList.toggle("is-human-battlefield", isHuman);
+    zone.classList.toggle("is-bot-battlefield", !isHuman);
+    zone.classList.toggle("is-active-battlefield", isActive);
+    zone.classList.toggle("is-empty-battlefield", player.battlefield.length === 0);
+    zone.classList.toggle("has-battlefield-cards", player.battlefield.length > 0);
+    zone.classList.toggle("is-combat-battlefield", phase === "combat");
+    zone.classList.toggle("has-battlefield-action", canUseFieldAction || canDeclareAttack);
+  });
+}
+
 function updateBattlefieldWallpapers(human, bot) {
   [
     [els.humanBattlefield, human],
@@ -9355,18 +9548,123 @@ function getStackObjectVirtueBackground(stackObject) {
   return getVirtueArtwork(getVirtueById(source.sourceId));
 }
 
+function getStackObjectVirtueCardImage(stackObject) {
+  const source = stackObject?.source || {};
+  if (source.sourceType !== "virtue") return "";
+  return getVirtueCardImage(getVirtueById(source.sourceId));
+}
+
+function clearEdgePanelEvents() {
+  app.edgeEventTimers.forEach((timer) => window.clearTimeout(timer));
+  app.edgeEventTimers.clear();
+  app.edgeEvents = [];
+  renderStackEdgePanel(app.game);
+}
+
+function removeEdgePanelEvent(eventId) {
+  const before = app.edgeEvents.length;
+  app.edgeEvents = app.edgeEvents.filter((event) => event.id !== eventId);
+  const timer = app.edgeEventTimers.get(eventId);
+  if (timer) window.clearTimeout(timer);
+  app.edgeEventTimers.delete(eventId);
+  if (app.edgeEvents.length !== before) renderStackEdgePanel(app.game);
+}
+
+function pushEdgePanelEvent(event) {
+  if (!event) return;
+  const id = `edge-event-${Date.now()}-${++app.edgeEventSeq}`;
+  app.edgeEvents.unshift({
+    id,
+    createdAt: Date.now(),
+    gameId: app.game?.id || "",
+    ...event
+  });
+  app.edgeEvents = app.edgeEvents.slice(0, EDGE_EVENT_MAX_ITEMS);
+  const activeIds = new Set(app.edgeEvents.map((item) => item.id));
+  app.edgeEventTimers.forEach((timer, eventId) => {
+    if (activeIds.has(eventId)) return;
+    window.clearTimeout(timer);
+    app.edgeEventTimers.delete(eventId);
+  });
+  app.edgeEventTimers.set(id, window.setTimeout(() => removeEdgePanelEvent(id), EDGE_EVENT_TTL_MS));
+  renderStackEdgePanel(app.game);
+}
+
+function renderEdgeEventArtwork(event) {
+  const cardIds = Array.isArray(event.cardIds) ? event.cardIds : [];
+  if (cardIds.length > 1) {
+    const visibleIds = cardIds.slice(0, 3);
+    return `
+      <div class="stack-edge-event-thumbs" style="--edge-thumb-count:${visibleIds.length};">
+        ${visibleIds.map((cardId, index) => {
+          const card = app.cardByCode.get(cardId);
+          const image = event.hidden ? CARD_BACK_IMAGE : getCardImage(card);
+          const label = event.hidden ? "Carta oculta" : getCardName(card);
+          return image ? `<img style="--edge-thumb-index:${index};" src="${escapeHtml(image)}" alt="${escapeHtml(label)}" draggable="false" />` : "";
+        }).join("")}
+        ${cardIds.length > visibleIds.length ? `<b>+${cardIds.length - visibleIds.length}</b>` : ""}
+      </div>
+    `;
+  }
+  const cardId = event.cardId || cardIds[0] || "";
+  const card = app.cardByCode.get(cardId);
+  const image = event.icon || (event.hidden ? CARD_BACK_IMAGE : getCardImage(card));
+  const label = event.iconLabel || (event.hidden ? "Carta oculta" : getCardName(card));
+  return image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(label)}" draggable="false" />` : "";
+}
+
+function renderEdgeEventCard(event) {
+  const kind = event.kind || "event";
+  const cardId = event.cardId || (Array.isArray(event.cardIds) ? event.cardIds.find((id) => app.cardByCode.has(id)) : "");
+  const moralVirtue = event.moral?.virtueId ? getVirtueById(event.moral.virtueId) : null;
+  const moralZoomImage = event.moral?.cardImage || (moralVirtue ? getVirtueCardImage(moralVirtue) : "");
+  const moralZoomLabel = event.moral?.virtueName || (moralVirtue ? getVirtueName(moralVirtue) : "Virtude");
+  const zoomAttr = cardId && !event.hidden && app.cardByCode.has(cardId)
+    ? `data-zoom-card="${escapeHtml(cardId)}"`
+    : moralZoomImage
+      ? `data-zoom-image="${escapeHtml(moralZoomImage)}" data-zoom-label="${escapeHtml(moralZoomLabel)}"`
+      : "";
+  const detail = event.detail || event.subtitle || "";
+  return `
+    <div class="stack-edge-card stack-edge-event-card is-edge-event-${escapeHtml(kind)} ${event.playerId === "bot" ? "is-bot-event" : "is-human-event"}" ${zoomAttr}>
+      ${renderEdgeEventArtwork(event)}
+      <div>
+        <span class="stack-edge-event-kicker">${escapeHtml(event.kicker || "Evento")}</span>
+        <strong>${escapeHtml(event.title || "Evento")}</strong>
+        ${event.subtitle ? `<small>${escapeHtml(event.subtitle)}</small>` : ""}
+        ${detail && detail !== event.subtitle ? `<small class="stack-edge-event-detail">${escapeHtml(detail)}</small>` : ""}
+        ${event.moral ? `
+          <em class="stack-edge-event-moral is-${escapeHtml(event.moral.tone || "neutral")}">
+            ${event.moral.icon ? `<img src="${escapeHtml(event.moral.icon)}" alt="${escapeHtml(event.moral.virtueName || "Virtude")}" draggable="false" />` : ""}
+            <span>${escapeHtml(event.moral.virtueName || "Virtude")} Nv${escapeHtml(event.moral.after ?? "")}</span>
+          </em>
+        ` : ""}
+      </div>
+    </div>
+  `;
+}
+
 function renderStackEdgePanel(game) {
   if (!els.stackEdgePanel) return;
-  if (!game.stack.length) {
+  const visibleStack = game?.stack?.slice().reverse() || [];
+  const visibleEvents = app.edgeEvents.filter((event) => !event.gameId || !game?.id || event.gameId === game.id);
+  if (!visibleStack.length && !visibleEvents.length) {
     els.stackEdgePanel.classList.remove("is-visible");
     els.stackEdgePanel.classList.remove("has-virtue-bg");
+    els.stackEdgePanel.classList.remove("is-stack-single", "is-stack-deep", "has-stack", "has-events", "is-events-only");
     els.stackEdgePanel.style.removeProperty("--stack-edge-bg");
+    els.stackEdgePanel.removeAttribute("data-stack-count");
     els.stackEdgePanel.innerHTML = "";
     return;
   }
   els.stackEdgePanel.classList.add("is-visible");
-  const visibleStack = game.stack.slice().reverse();
   const topVirtueBg = getStackObjectVirtueBackground(visibleStack[0]);
+  els.stackEdgePanel.dataset.stackCount = String(visibleStack.length);
+  els.stackEdgePanel.classList.toggle("is-stack-single", visibleStack.length === 1);
+  els.stackEdgePanel.classList.toggle("is-stack-deep", visibleStack.length > 2);
+  els.stackEdgePanel.classList.toggle("has-stack", visibleStack.length > 0);
+  els.stackEdgePanel.classList.toggle("has-events", visibleEvents.length > 0);
+  els.stackEdgePanel.classList.toggle("is-events-only", !visibleStack.length && visibleEvents.length > 0);
   els.stackEdgePanel.classList.toggle("has-virtue-bg", Boolean(topVirtueBg));
   if (topVirtueBg) {
     els.stackEdgePanel.style.setProperty("--stack-edge-bg", `url("${cssUrl(topVirtueBg)}")`);
@@ -9374,8 +9672,10 @@ function renderStackEdgePanel(game) {
     els.stackEdgePanel.style.removeProperty("--stack-edge-bg");
   }
   els.stackEdgePanel.innerHTML = `
-    <span>Pilha</span>
-    ${visibleStack.map((item, index) => {
+    ${visibleStack.length ? `
+      <section class="stack-edge-section stack-edge-section--stack" aria-label="Pilha">
+        <span class="stack-edge-section-head"><em>Pilha</em><b>${visibleStack.length}</b></span>
+        ${visibleStack.map((item, index) => {
       const card = app.cardByCode.get(item.cardId);
       const ownerId = item.owner || item.controllerId;
       const owner = ownerId === "human" ? "Voce" : "Bot";
@@ -9383,9 +9683,15 @@ function renderStackEdgePanel(game) {
       const iconLabel = card ? getCardName(card) : item.source?.label || item.label;
       const zoomCardId = card?.code || item.source?.cardId || item.source?.sourceId || "";
       const virtueBg = getStackObjectVirtueBackground(item);
+      const virtueZoomImage = getStackObjectVirtueCardImage(item);
       const cardStyle = virtueBg ? `style="--stack-virtue-bg:url(&quot;${escapeHtml(cssUrl(virtueBg))}&quot;)"` : "";
+      const zoomAttrs = zoomCardId && app.cardByCode.has(zoomCardId)
+        ? `data-zoom-card="${escapeHtml(zoomCardId)}"`
+        : virtueZoomImage
+          ? `data-zoom-image="${escapeHtml(virtueZoomImage)}" data-zoom-label="${escapeHtml(iconLabel || item.label || "Virtude")}"`
+          : "";
       return `
-        <div class="stack-edge-card ${index === 0 ? "is-stack-top" : ""} ${virtueBg ? "has-virtue-bg" : ""}" ${cardStyle} ${zoomCardId && app.cardByCode.has(zoomCardId) ? `data-zoom-card="${escapeHtml(zoomCardId)}"` : ""}>
+        <div class="stack-edge-card ${index === 0 ? "is-stack-top" : ""} ${virtueBg ? "has-virtue-bg" : ""}" ${cardStyle} ${zoomAttrs}>
           ${icon ? `<img src="${escapeHtml(icon)}" alt="${escapeHtml(iconLabel)}" />` : ""}
           <div>
             <strong>${escapeHtml(item.label)}</strong>
@@ -9394,6 +9700,14 @@ function renderStackEdgePanel(game) {
         </div>
       `;
     }).join("")}
+      </section>
+    ` : ""}
+    ${visibleEvents.length ? `
+      <section class="stack-edge-section stack-edge-section--events" aria-label="Eventos recentes">
+        <span class="stack-edge-section-head"><em>Eventos</em><b>${visibleEvents.length}</b></span>
+        ${visibleEvents.map(renderEdgeEventCard).join("")}
+      </section>
+    ` : ""}
   `;
 }
 
@@ -9593,7 +9907,8 @@ function renderDockVirtueMetric(player) {
   }).join("");
   const hasActiveVirtues = getActiveVirtues(player).length > 0;
   return `
-    <button class="dock-metric dock-metric--virtues ${hasActiveVirtues ? "is-active" : ""}" type="button" data-virtues-player="${escapeHtml(player.id)}">
+    <button class="dock-metric dock-metric--virtues ${hasActiveVirtues ? "is-active" : ""}" type="button" data-virtues-player="${escapeHtml(player.id)}" aria-label="Virtudes de ${escapeHtml(player.label)}">
+      <span>Virtudes</span>
       <strong class="dock-virtue-icons">${chips}</strong>
     </button>
   `;
@@ -9703,8 +10018,9 @@ function renderPlayerArea(player, hideHand) {
     </div>
   `;
   const virtuesMarkup = renderDockVirtueMetric(player);
+  const activePlayerClass = app.game?.activePlayer === player.id ? " is-active-player" : "";
   return `
-    <div class="player-dock ${hideHand ? "player-dock--opponent" : "player-dock--human"}${dangerClass}${damagedClass}">
+    <div class="player-dock ${hideHand ? "player-dock--opponent" : "player-dock--human"}${activePlayerClass}${dangerClass}${damagedClass}" data-player-id="${escapeHtml(player.id)}">
       ${hideHand
         ? `${metricsMarkup}${virtuesMarkup}${identityMarkup}`
         : `${identityMarkup}${virtuesMarkup}${metricsMarkup}`}
@@ -9713,7 +10029,6 @@ function renderPlayerArea(player, hideHand) {
 }
 
 function renderBattlefield(player, selectedUid, selectedAttackers = new Set()) {
-  if (!player.battlefield.length) return "";
   const frontLine = [];
   const supportLine = [];
   player.battlefield.forEach((instance) => {
@@ -9725,7 +10040,7 @@ function renderBattlefield(player, selectedUid, selectedAttackers = new Set()) {
     supportLine.push(instance);
   });
   const renderLine = (instances, name) => `
-    <div class="battlefield-line battlefield-line--${name}">
+    <div class="battlefield-line battlefield-line--${name} ${instances.length ? "has-cards" : "is-empty-line"}" data-line="${escapeHtml(name)}">
       ${instances.map((instance) => {
         const combatLabels = getCombatRoleLabels(player.id, instance.uid, selectedAttackers);
         const target = getCharacterAttackTarget(player.id, instance.uid);
@@ -10194,12 +10509,14 @@ function clearTransientOverlays() {
   app.pendingEngineChoice = null;
   app.pendingVirtueDebug = null;
   app.drawAnimationPending = false;
+  clearEdgePanelEvents();
   clearDecisionBattlefieldView();
   clearAllVirtueFeedback();
   clearAllStatFeedback();
   ["phaseAlert", "playedCardAnimation", "pulverizeAnimation", "revealAnimation", "drawAnimation", "interactionHint", "cardZoomPreview", "zoneModal", "fieldViewModal", "blockPrompt", "botBlockReview"].forEach((id) => {
     document.getElementById(id)?.classList.remove("is-visible", "is-closing");
   });
+  syncFeedbackOverlayState();
   document.querySelectorAll(".combat-damage-burst").forEach((node) => node.remove());
   cleanupPointerDrag();
 }
@@ -10254,6 +10571,32 @@ function renderSelectedPanel() {
   `;
 }
 
+function updateActionDockStateClasses({
+  phase = "",
+  mode = "",
+  priorityOpen = false,
+  visibleActionCount = 0,
+  showAttack = false,
+  showEndTurn = false,
+  hasSelection = false
+} = {}) {
+  const dock = els.actionDock;
+  if (!dock) return;
+  const actionMode = mode || (priorityOpen ? "priority" : showAttack ? "combat" : showEndTurn ? "end-turn" : "phase");
+  dock.dataset.phase = phase || "";
+  dock.dataset.actionMode = actionMode;
+  dock.style.setProperty("--visible-actions", String(visibleActionCount));
+  dock.classList.toggle("is-result-viewing", actionMode === "result");
+  dock.classList.toggle("is-decision-view", actionMode === "decision");
+  dock.classList.toggle("is-priority-open", priorityOpen);
+  dock.classList.toggle("is-combat-action", showAttack || actionMode === "combat");
+  dock.classList.toggle("is-end-turn-action", showEndTurn || actionMode === "end-turn");
+  dock.classList.toggle("is-single-action", visibleActionCount === 1);
+  dock.classList.toggle("has-visible-actions", visibleActionCount > 0);
+  dock.classList.toggle("has-selected-card", hasSelection);
+  els.gameView?.classList.toggle("is-action-dock-empty", visibleActionCount === 0);
+}
+
 function renderActionState() {
   if (app.resultViewingBoard) {
     els.selectedCardPanel.hidden = true;
@@ -10268,6 +10611,12 @@ function renderActionState() {
     els.nextPhaseButton.dataset.actionSubtitle = "Retornar para a tela final";
     els.nextPhaseButton.classList.remove("is-priority-button");
     els.actionGrid?.style.setProperty("--action-columns", "1");
+    updateActionDockStateClasses({
+      phase: currentPhase(app.game),
+      mode: "result",
+      visibleActionCount: 1,
+      hasSelection: Boolean(app.selected)
+    });
     return;
   }
   els.selectedCardPanel.hidden = false;
@@ -10277,9 +10626,19 @@ function renderActionState() {
     els.consecrateButton.hidden = true;
     els.playCardButton.hidden = true;
     els.attackButton.hidden = true;
-    els.nextPhaseButton.hidden = true;
+    els.nextPhaseButton.hidden = false;
     els.endTurnButton.hidden = true;
+    els.nextPhaseButton.disabled = false;
+    els.nextPhaseButton.textContent = "VOLTAR À ESCOLHA";
+    els.nextPhaseButton.dataset.actionSubtitle = "Reabrir modal de decisão";
+    els.nextPhaseButton.classList.remove("is-priority-button");
     els.actionGrid?.style.setProperty("--action-columns", "1");
+    updateActionDockStateClasses({
+      phase: currentPhase(app.game),
+      mode: "decision",
+      visibleActionCount: 1,
+      hasSelection: Boolean(app.selected)
+    });
     return;
   }
   const human = app.game.players.human;
@@ -10316,6 +10675,14 @@ function renderActionState() {
   els.attackButton.disabled = combatLocked || !humanTurn || phase !== "combat" || !readyAttackers.length;
   els.nextPhaseButton.disabled = !showNextPhase;
   els.endTurnButton.disabled = !showEndTurn;
+  updateActionDockStateClasses({
+    phase,
+    priorityOpen,
+    visibleActionCount,
+    showAttack,
+    showEndTurn,
+    hasSelection: Boolean(app.selected)
+  });
 }
 
 function getNextActionSubtitle(game, priorityOpen = false) {
@@ -10487,6 +10854,10 @@ function renderBlockPrompt(game) {
   );
   const assignedBlockerUids = new Set(Object.values(game.combat.blockers || {}).flat());
   const unassignedBlockers = blockers.filter((blocker) => !assignedBlockerUids.has(blocker.uid));
+  modal.dataset.attackers = String(attackers.length);
+  modal.dataset.blockers = String(blockers.length);
+  modal.classList.toggle("has-available-blockers", unassignedBlockers.length > 0);
+  modal.classList.toggle("has-multiple-attackers", attackers.length > 1);
 
   modal.innerHTML = `
       <div class="block-prompt-panel" role="dialog" aria-modal="true" aria-label="Declarar bloqueadores">
@@ -10949,8 +11320,10 @@ function bindEvents() {
   });
 
   document.addEventListener("pointerdown", (event) => {
+    if (event.target.closest(".zone-modal, .block-prompt, .game-result, #fieldViewModal, #decisionReturnButton, .phase-alert, .played-card-animation, .pulverize-animation, .draw-animation, .reveal-animation")) return;
     if (event.target.closest("[data-essence-index]")) return;
     if (!els.handDock || els.handDock.contains(event.target)) return;
+    if (els.actionDock?.contains(event.target)) return;
     collapseHand();
     if (app.selected?.zone === "hand") {
       app.selected = null;
@@ -11022,7 +11395,7 @@ function bindEvents() {
       return;
     }
     if (app.decisionBattlefieldView && hasPendingChoiceWork()) {
-      showInteractionHint("Volte à escolha para continuar.");
+      returnToDecisionModal();
       return;
     }
     if (isHumanPriorityOpen()) {
@@ -11133,14 +11506,23 @@ function bindEvents() {
 function bindDragAndDrop() {
   const humanEssencePanel = els.humanEssence?.closest(".essence-panel");
   document.addEventListener("pointerdown", (event) => {
-    const zoomTarget = event.target.closest("[data-zoom-card]");
+    const zoomTarget = event.target.closest("[data-zoom-card], [data-zoom-image]");
     if (!zoomTarget) return;
-    const cardId = zoomTarget.dataset.zoomCard;
+    const cardId = zoomTarget.dataset.zoomCard || "";
+    const zoomImage = zoomTarget.dataset.zoomImage || "";
+    const zoomLabel = zoomTarget.dataset.zoomLabel || "";
+    const zoomKey = cardId || zoomImage;
+    if (!zoomKey) return;
     clearTimeout(app.zoomTimer);
-    app.zoomCardId = cardId;
+    app.zoomCardId = zoomKey;
     app.zoomTimer = setTimeout(() => {
-      if (app.pointerDrag?.cardId === cardId) app.pointerDrag.longPress = true;
-      if (app.zoomCardId === cardId) showCardZoom(cardId);
+      if (cardId && app.pointerDrag?.cardId === cardId) app.pointerDrag.longPress = true;
+      if (app.zoomCardId !== zoomKey) return;
+      if (cardId) {
+        showCardZoom(cardId);
+      } else {
+        showZoomPreviewImage(zoomImage, zoomLabel);
+      }
     }, 360);
   });
 
@@ -11326,7 +11708,7 @@ function bindDragAndDrop() {
     if (!drag) return;
     if (drag.moved) event.preventDefault();
     const dropElement = drag.moved ? document.elementFromPoint(event.clientX, event.clientY) : null;
-    const zone = dropElement?.closest(".essence-panel--human, #humanBattlefield, #botArea, #botBattlefield, #humanHand, .hand-dock, [data-cemetery-player='human'], [data-block-attack]") || null;
+    const zone = drag.moved ? getDropZoneFromPoint(event.clientX, event.clientY, drag.payload) : null;
     if (drag.ghost) drag.ghost.remove();
     document.querySelectorAll(".is-drop-hover").forEach((node) => node.classList.remove("is-drop-hover"));
     if (zone) handleDrop(zone, drag.payload, dropElement);
@@ -11336,9 +11718,8 @@ function bindDragAndDrop() {
   }, true);
 }
 
-function showCardZoom(cardId) {
-  const card = app.cardByCode.get(cardId);
-  if (!card) return;
+function showZoomPreviewImage(image, label = "") {
+  if (!image) return;
   let zoom = document.getElementById("cardZoomPreview");
   if (!zoom) {
     zoom = document.createElement("div");
@@ -11346,8 +11727,14 @@ function showCardZoom(cardId) {
     zoom.className = "card-zoom-preview";
     document.body.appendChild(zoom);
   }
-  zoom.innerHTML = `<img src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" draggable="false" />`;
+  zoom.innerHTML = `<img src="${escapeHtml(image)}" alt="${escapeHtml(label)}" draggable="false" />`;
   zoom.classList.add("is-visible");
+}
+
+function showCardZoom(cardId) {
+  const card = app.cardByCode.get(cardId);
+  if (!card) return;
+  showZoomPreviewImage(getCardImage(card), getCardName(card));
 }
 
 function hideCardZoom() {
@@ -11455,13 +11842,47 @@ function setNativeDragImage(event) {
   event.dataTransfer.setDragImage(app.transparentDragImage, 0, 0);
 }
 
-function getDropZoneFromPoint(x, y) {
+function pointInsideElement(element, x, y, inset = 0) {
+  if (!element?.getBoundingClientRect) return false;
+  const rect = element.getBoundingClientRect();
+  return x >= rect.left + inset &&
+    x <= rect.right - inset &&
+    y >= rect.top + inset &&
+    y <= rect.bottom - inset;
+}
+
+function getDropZoneFromPoint(x, y, payload = app.pointerDrag?.payload || app.dragPayload) {
   const element = document.elementFromPoint(x, y);
-  return element?.closest(".essence-panel--human, #humanBattlefield, #botArea, #botBattlefield, #humanHand, .hand-dock, [data-cemetery-player='human'], [data-block-attack]");
+  const selectors = ".essence-panel--human, #humanBattlefield, #botArea, #botBattlefield, #humanHand, .hand-dock, [data-cemetery-player='human'], [data-block-attack]";
+  const directZone = element?.closest(selectors);
+  if (payload?.zone === "hand") {
+    const essencePanel = els.humanEssence?.closest(".essence-panel--human");
+    if (pointInsideElement(essencePanel, x, y)) return essencePanel;
+    const cemeteryPanel = document.querySelector("[data-cemetery-player='human']");
+    if (pointInsideElement(cemeteryPanel, x, y)) return cemeteryPanel;
+  }
+  if (payload?.zone === "essence") {
+    if (pointInsideElement(els.handDock, x, y)) return els.handDock;
+  }
+  if (directZone) return directZone;
+  const fallbackZones = [
+    els.humanEssence?.closest(".essence-panel--human"),
+    els.humanBattlefield,
+    els.botArea,
+    els.botBattlefield,
+    els.humanHand,
+    els.handDock,
+    document.querySelector("[data-cemetery-player='human']")
+  ];
+  return fallbackZones.find((zone) => pointInsideElement(zone, x, y)) || null;
 }
 
 function isHumanHandDropZone(zone) {
   return zone === els.humanHand || zone === els.handDock || zone?.id === "humanHand" || zone?.classList?.contains("hand-dock");
+}
+
+function isHumanEssenceDropZone(zone) {
+  return Boolean(zone?.matches?.(".essence-panel--human") || zone?.closest?.(".essence-panel--human"));
 }
 
 function isHumanCemeteryDropZone(zone) {
@@ -11485,6 +11906,14 @@ async function handleDrop(zone, payload, targetElement = null) {
   if (payload.zone === "hand" && isHumanCemeteryDropZone(zone)) {
     if (applyDiscardForHandLimit("human", payload.id)) {
       collapseHand();
+      renderGame();
+    }
+    return;
+  }
+  if (!isHumanPriorityOpen() && payload.zone === "hand" && isHumanEssenceDropZone(zone)) {
+    if (applyConsecrate("human", payload.id)) {
+      collapseHand();
+      app.selected = null;
       renderGame();
     }
     return;
@@ -11518,9 +11947,6 @@ async function handleDrop(zone, payload, targetElement = null) {
     if (targetUid && targetUid !== payload.id) {
       changed = await applyAttachEquipmentToTarget("human", payload.id, targetUid);
     }
-  } else
-  if (!isHumanPriorityOpen() && payload.zone === "hand" && zone?.closest(".essence-panel--human")) {
-    changed = applyConsecrate("human", payload.id);
   } else if (payload.zone === "hand" && zone === els.humanBattlefield) {
     changed = applyPlayCard("human", payload.id);
   }
@@ -11533,6 +11959,10 @@ async function handleDrop(zone, payload, targetElement = null) {
 }
 
 async function init() {
+  updateViewportDensityState();
+  observeModalRenders();
+  window.addEventListener("resize", scheduleViewportDensityUpdate, { passive: true });
+  window.addEventListener("orientationchange", scheduleViewportDensityUpdate, { passive: true });
   bindEvents();
   try {
     await loadData();
