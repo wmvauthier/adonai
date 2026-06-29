@@ -370,6 +370,14 @@ function hideModalElement(modal, extraClasses = []) {
   syncFeedbackOverlayState();
 }
 
+function setZoneModalVisibleForRender(modal) {
+  if (!modal) return;
+  const isInternalUpdate = modal.classList.contains("is-visible") &&
+    modal.dataset.modalRendered === "true" &&
+    modal.dataset.modalOpening !== "true";
+  modal.className = `zone-modal is-visible${isInternalUpdate ? " is-modal-updating" : ""}`;
+}
+
 function hideModalById(id, extraClasses = []) {
   hideModalElement(document.getElementById(id), extraClasses);
 }
@@ -2441,7 +2449,7 @@ function showPreGameReductionModal(player) {
     const render = () => {
       const deckCount = player.deck.length - selected.size;
       const valid = deckCount >= minDeckSize && deckCount <= player.deck.length;
-      overlay.className = "zone-modal is-visible";
+      setZoneModalVisibleForRender(overlay);
       overlay.innerHTML = `
         <div class="zone-modal-panel zone-modal-panel--pregame-reduction" role="dialog" aria-modal="true" aria-label="Redução do baralho">
           <div class="zone-modal-head">
@@ -2515,7 +2523,7 @@ function showPreGameMulliganModal(player, attempt) {
     app.pendingEngineChoice = { type: "pregame-mulligan", title: "Mulligan" };
 
     const render = () => {
-      overlay.className = "zone-modal is-visible";
+      setZoneModalVisibleForRender(overlay);
       overlay.innerHTML = `
         <div class="zone-modal-panel zone-modal-panel--pregame-mulligan" role="dialog" aria-modal="true" aria-label="Mulligan">
           <div class="zone-modal-head">
@@ -3419,7 +3427,7 @@ function showChampionAbilityChoiceModal(player, activations) {
     }
     const champion = app.cardByCode.get(player.identity.champion);
     app.pendingEngineChoice = { type: "champion-ability", title: "Habilidade de Campeão" };
-    overlay.className = "zone-modal is-visible";
+    setZoneModalVisibleForRender(overlay);
     overlay.innerHTML = `
       <div class="zone-modal-panel zone-modal-panel--engine-choice" role="dialog" aria-modal="true" aria-label="Habilidade de Campeão">
         <div class="zone-modal-head">
@@ -4302,7 +4310,7 @@ function showEngineChoiceModal({ title, description, confirmText, cancelText, ef
       document.body.appendChild(overlay);
     }
     app.pendingEngineChoice = { type: "confirm", title };
-    overlay.className = "zone-modal is-visible";
+    setZoneModalVisibleForRender(overlay);
     overlay.innerHTML = `
       <div class="zone-modal-panel zone-modal-panel--engine-choice" role="dialog" aria-modal="true" aria-label="${escapeHtml(title)}">
         <div class="zone-modal-head">
@@ -4349,7 +4357,7 @@ function showEngineHandChoiceModal(player, amount, { title, description, confirm
     const handSnapshot = player.hand.map((cardId, index) => ({ cardId, index }));
     const selected = new Set();
     const render = () => {
-      overlay.className = "zone-modal is-visible";
+      setZoneModalVisibleForRender(overlay);
       overlay.innerHTML = `
         <div class="zone-modal-panel zone-modal-panel--engine-card-choice" role="dialog" aria-modal="true" aria-label="${escapeHtml(title)}">
           <div class="zone-modal-head">
@@ -4415,7 +4423,7 @@ function showEngineSingleCardChoiceModal({ title, description, entries, confirmT
     app.pendingEngineChoice = { type: "single-card", title };
     let selectedIndex = -1;
     const render = () => {
-      overlay.className = "zone-modal is-visible";
+      setZoneModalVisibleForRender(overlay);
       overlay.innerHTML = `
         <div class="zone-modal-panel zone-modal-panel--engine-card-choice" role="dialog" aria-modal="true" aria-label="${escapeHtml(title)}">
           <div class="zone-modal-head">
@@ -4553,7 +4561,7 @@ function showEngineDeckReviewModal(player, cardIds, { title, description, maxCem
     };
 
     const render = () => {
-      overlay.className = "zone-modal is-visible";
+      setZoneModalVisibleForRender(overlay);
       overlay.innerHTML = `
         <div class="zone-modal-panel zone-modal-panel--engine-deck-review" role="dialog" aria-modal="true" aria-label="${escapeHtml(title)}">
           <div class="zone-modal-head">
@@ -4685,7 +4693,7 @@ function showEngineAmountChoiceModal({ title, description, min, max, confirmPref
       document.body.appendChild(overlay);
     }
     app.pendingEngineChoice = { type: "amount", title };
-    overlay.className = "zone-modal is-visible";
+    setZoneModalVisibleForRender(overlay);
     overlay.innerHTML = `
       <div class="zone-modal-panel zone-modal-panel--engine-choice" role="dialog" aria-modal="true" aria-label="${escapeHtml(title)}">
         <div class="zone-modal-head">
@@ -5261,7 +5269,7 @@ function showEngineTargetChoiceModal({
       document.body.appendChild(overlay);
     }
     app.pendingEngineChoice = { type: "target", title };
-    overlay.className = "zone-modal is-visible";
+    setZoneModalVisibleForRender(overlay);
     overlay.innerHTML = `
       <div class="zone-modal-panel zone-modal-panel--engine-target-choice ${visualOnly ? "is-visual-only" : ""}" role="dialog" aria-modal="true" aria-label="${escapeHtml(title)}">
         <div class="zone-modal-head">
@@ -5341,7 +5349,7 @@ function showEngineStackChoiceModal({ title, description, refs }) {
       document.body.appendChild(overlay);
     }
     app.pendingEngineChoice = { type: "stack-target", title };
-    overlay.className = "zone-modal is-visible";
+    setZoneModalVisibleForRender(overlay);
     overlay.innerHTML = `
       <div class="zone-modal-panel zone-modal-panel--engine-stack-choice" role="dialog" aria-modal="true" aria-label="${escapeHtml(title)}">
         <div class="zone-modal-head">
@@ -5495,7 +5503,7 @@ function showEngineBundleChoiceModal({ title, description, choices }) {
       document.body.appendChild(overlay);
     }
     app.pendingEngineChoice = { type: "bundle", title };
-    overlay.className = "zone-modal is-visible";
+    setZoneModalVisibleForRender(overlay);
     overlay.innerHTML = `
       <div class="zone-modal-panel zone-modal-panel--engine-choice" role="dialog" aria-modal="true" aria-label="${escapeHtml(title)}">
         <div class="zone-modal-head">
@@ -5594,7 +5602,7 @@ function showEngineDistributionModal({ title, description, candidates, total, ki
 
     const render = () => {
       const spent = [...allocations.values()].reduce((sum, value) => sum + value, 0);
-      overlay.className = "zone-modal is-visible";
+      setZoneModalVisibleForRender(overlay);
       overlay.innerHTML = `
         <div class="zone-modal-panel zone-modal-panel--engine-distribution" role="dialog" aria-modal="true" aria-label="${escapeHtml(title)}">
           <div class="zone-modal-head">

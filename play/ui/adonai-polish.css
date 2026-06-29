@@ -2302,7 +2302,7 @@ body::after {
   position: relative !important;
   isolation: isolate;
   overflow: visible !important;
-  border: 1px solid rgba(var(--tcg-gold-rgb), .13) !important;
+  /* border: 1px solid rgba(var(--tcg-gold-rgb), .13) !important; */
   border-radius: calc(var(--tcg-radius-panel) + 2px) !important;
   background:
     radial-gradient(circle at 50% 49%, rgba(var(--tcg-gold-strong-rgb), .06), transparent 35%),
@@ -6681,5 +6681,695 @@ body::after {
 @media (min-width: 860px) {
   .play-board.play-board--new-ui .player-dock {
     min-height: calc(var(--dock-identity-h) + var(--dock-virtues-h) + var(--dock-metric-h) + 20px) !important;
+  }
+}
+
+/* Desktop-only Arena-style compact player dock. */
+@media (min-width: 1024px) and (pointer: fine) {
+  .play-board.play-board--new-ui {
+    --dock-identity-h: clamp(54px, 7dvh, 66px) !important;
+    --dock-virtues-h: clamp(32px, 4.3dvh, 38px) !important;
+    --dock-metric-h: clamp(30px, 4dvh, 36px) !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock {
+    width: min(100%, 1080px) !important;
+    min-height: clamp(66px, 8.8dvh, 84px) !important;
+    height: clamp(66px, 8.8dvh, 84px) !important;
+    justify-self: center !important;
+    grid-template-columns:
+      minmax(300px, .82fr)
+      minmax(360px, 440px)
+      minmax(236px, .64fr) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: clamp(8px, .85vw, 14px) !important;
+    padding: clamp(6px, .55vw, 8px) clamp(8px, .85vw, 12px) !important;
+    overflow: hidden !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock--opponent {
+    grid-template-areas: "metrics identity virtues" !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock--human {
+    grid-template-areas: "virtues identity metrics" !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-identity {
+    grid-area: identity !important;
+    align-self: center !important;
+    justify-self: center !important;
+    width: 100% !important;
+    min-height: var(--dock-identity-h) !important;
+    height: var(--dock-identity-h) !important;
+    max-height: var(--dock-identity-h) !important;
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 1.22fr) minmax(0, 1.08fr) !important;
+    gap: clamp(4px, .5vw, 7px) !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-identity:not(.is-expanded) .identity-dock-tile {
+    min-height: var(--dock-identity-h) !important;
+    height: var(--dock-identity-h) !important;
+    max-height: var(--dock-identity-h) !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-metrics {
+    grid-area: metrics !important;
+    align-self: center !important;
+    width: 100% !important;
+    min-height: var(--dock-metric-h) !important;
+    height: var(--dock-metric-h) !important;
+    max-height: var(--dock-metric-h) !important;
+    grid-template-columns:
+      minmax(0, .88fr)
+      minmax(0, .88fr)
+      minmax(66px, 1.18fr)
+      minmax(0, .98fr)
+      minmax(0, .88fr) !important;
+    gap: clamp(3px, .38vw, 5px) !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-metrics > .dock-metric:not(.dock-metric--virtues),
+  .play-board.play-board--new-ui .player-dock-metrics > .player-dock-label {
+    height: var(--dock-metric-h) !important;
+    max-height: var(--dock-metric-h) !important;
+    padding: 2px 5px !important;
+    border-radius: 8px !important;
+  }
+
+  .play-board.play-board--new-ui .dock-metric:not(.dock-metric--virtues) span,
+  .play-board.play-board--new-ui .player-dock-metrics > .player-dock-label span {
+    font-size: clamp(.38rem, .48vw, .48rem) !important;
+    letter-spacing: .08em !important;
+  }
+
+  .play-board.play-board--new-ui .dock-metric:not(.dock-metric--virtues) strong {
+    font-size: clamp(.76rem, .95vw, .98rem) !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-metrics > .player-dock-label strong {
+    font-size: clamp(.62rem, .82vw, .82rem) !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues {
+    grid-area: virtues !important;
+    align-self: center !important;
+    width: 100% !important;
+    min-height: var(--dock-virtues-h) !important;
+    height: var(--dock-virtues-h) !important;
+    max-height: var(--dock-virtues-h) !important;
+    padding: 2px 6px !important;
+    border-radius: 999px !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-icons {
+    height: 100% !important;
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    gap: clamp(2px, .35vw, 5px) !important;
+    padding: 0 !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-chip img,
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-chip i {
+    width: min(100%, calc(var(--dock-virtues-h) - 4px)) !important;
+    height: min(100%, calc(var(--dock-virtues-h) - 4px)) !important;
+  }
+}
+
+/* Desktop containment pass: hand hover and essence drop zone. */
+@media (min-width: 1024px) and (pointer: fine) {
+  .play-board.play-board--new-ui .player-dock {
+    grid-template-columns:
+      minmax(280px, .78fr)
+      minmax(360px, 440px)
+      minmax(280px, .78fr) !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock {
+    overflow: visible !important;
+    z-index: 5 !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock .hand-row {
+    overflow: visible !important;
+    padding-top: clamp(24px, 4.2dvh, 38px) !important;
+    padding-bottom: clamp(3px, .5dvh, 6px) !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock .hand-row .play-card {
+    --hand-card-lift: clamp(8px, 1.5dvh, 14px) !important;
+    height: calc(100% - clamp(24px, 4.2dvh, 38px)) !important;
+    max-height: calc(100% - clamp(24px, 4.2dvh, 38px)) !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock .hand-row .play-card:hover,
+  .play-board.play-board--new-ui > .hand-dock .hand-row .play-card:focus-visible,
+  .play-board.play-board--new-ui > .hand-dock .hand-row .play-card.is-selected {
+    transform: rotate(0deg) translateY(calc(-1 * var(--hand-card-lift))) translateZ(0) scale(1.055) !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock.is-hand-expanded .hand-row .play-card:hover,
+  .play-board.play-board--new-ui > .hand-dock.is-hand-expanded .hand-row .play-card:focus-visible,
+  .play-board.play-board--new-ui > .hand-dock.is-hand-expanded .hand-row .play-card.is-selected {
+    transform: rotate(0deg) translateY(-4px) translateZ(0) scale(1.025) !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-shell.is-consecration-active > .essence-panel {
+    left: 50% !important;
+    right: auto !important;
+    top: clamp(6px, .55vw, 8px) !important;
+    bottom: auto !important;
+    width: min(440px, 36vw) !important;
+    min-width: min(360px, 34vw) !important;
+    max-width: 440px !important;
+    min-height: var(--dock-identity-h) !important;
+    height: var(--dock-identity-h) !important;
+    max-height: var(--dock-identity-h) !important;
+    padding: 4px !important;
+    overflow: hidden !important;
+    transform: translateX(-50%) !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-shell.is-consecration-active > .essence-panel .essence-row {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 100% !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-shell.is-consecration-active > .essence-panel .essence-card {
+    --essence-square-size: min(42px, calc(var(--dock-identity-h) - 8px)) !important;
+    flex: 0 0 var(--essence-square-size) !important;
+    width: var(--essence-square-size) !important;
+    height: var(--essence-square-size) !important;
+  }
+}
+
+/* Desktop stability pass: fixed command lane and readable Arena dock. */
+@media (min-width: 1024px) and (pointer: fine) {
+  .play-board.play-board--new-ui,
+  .play-board.play-board--new-ui.is-action-dock-empty {
+    --action-h: clamp(42px, 4.7dvh, 50px) !important;
+    --hand-h: clamp(150px, 16.6dvh, 180px) !important;
+    --dock-identity-h: clamp(58px, 7.2dvh, 70px) !important;
+    --dock-virtues-h: clamp(32px, 4.1dvh, 38px) !important;
+    --dock-metric-h: clamp(30px, 3.75dvh, 36px) !important;
+    grid-template-areas:
+      "bot"
+      "field"
+      "human"
+      "actions"
+      "hand" !important;
+    grid-template-rows: auto minmax(0, 1fr) auto var(--action-h) var(--hand-h) !important;
+    gap: clamp(4px, .42vw, 7px) !important;
+  }
+
+  .play-board.play-board--new-ui > .player-dock-shell {
+    align-self: center !important;
+    min-height: auto !important;
+    height: auto !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock {
+    min-height: clamp(72px, 9.2dvh, 90px) !important;
+    height: clamp(72px, 9.2dvh, 90px) !important;
+    padding: clamp(5px, .5vw, 8px) clamp(8px, .8vw, 12px) !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues {
+    border-color: transparent !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 clamp(4px, .45vw, 7px) !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-icons {
+    gap: clamp(3px, .32vw, 6px) !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-chip {
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-chip.is-vice,
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-chip.is-virtue {
+    box-shadow: none !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-identity:not(.is-expanded) .identity-dock-tile strong {
+    min-width: clamp(40px, 3.4vw, 52px) !important;
+    padding: 3px 8px !important;
+    font-size: clamp(1rem, 1.22vw, 1.28rem) !important;
+    line-height: .95 !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock,
+  .play-board.play-board--new-ui.is-action-dock-empty > .action-dock {
+    align-self: stretch !important;
+    min-height: var(--action-h) !important;
+    height: var(--action-h) !important;
+    max-height: var(--action-h) !important;
+    display: grid !important;
+    padding: 2px clamp(8px, .7vw, 12px) !important;
+    overflow: hidden !important;
+    opacity: 1 !important;
+  }
+
+  .play-board.play-board--new-ui.is-action-dock-empty > .action-dock {
+    pointer-events: none !important;
+  }
+
+  .play-board.play-board--new-ui.is-action-dock-empty > .action-dock::before,
+  .play-board.play-board--new-ui.is-action-dock-empty > .action-dock .action-grid {
+    display: grid !important;
+  }
+
+  .play-board.play-board--new-ui.is-action-dock-empty > .action-dock::before {
+    opacity: .18 !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock .action-grid {
+    align-items: center !important;
+    justify-content: flex-end !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock .action-grid button:not([hidden]) {
+    min-height: clamp(34px, 3.9dvh, 42px) !important;
+    max-height: calc(var(--action-h) - 4px) !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock {
+    min-height: var(--hand-h) !important;
+    height: var(--hand-h) !important;
+    max-height: var(--hand-h) !important;
+    overflow: visible !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock .hand-row,
+  .play-board.play-board--new-ui > .hand-dock:not(.has-selected-hand-card) .hand-row,
+  .play-board.play-board--new-ui > .hand-dock.is-hand-expanded:not(.has-selected-hand-card) .hand-row {
+    align-items: flex-end !important;
+    justify-content: center !important;
+    padding: clamp(12px, 1.35dvh, 18px) clamp(24px, 3vw, 40px) clamp(6px, .8dvh, 10px) !important;
+    overflow: visible !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock .hand-row .play-card:nth-child(n),
+  .play-board.play-board--new-ui > .hand-dock:not(.has-selected-hand-card) .hand-row .play-card:nth-child(n),
+  .play-board.play-board--new-ui > .hand-dock.is-hand-expanded:not(.has-selected-hand-card) .hand-row .play-card:nth-child(n) {
+    --hand-card-w: clamp(92px, 7.35vw, 118px) !important;
+    --hand-card-h: min(clamp(128px, 15dvh, 164px), calc(var(--hand-h) - clamp(18px, 2.2dvh, 28px))) !important;
+    --hand-card-lift: clamp(10px, 1.45dvh, 16px) !important;
+    flex: 0 0 var(--hand-card-w) !important;
+    width: var(--hand-card-w) !important;
+    max-width: var(--hand-card-w) !important;
+    height: var(--hand-card-h) !important;
+    max-height: var(--hand-card-h) !important;
+    aspect-ratio: var(--play-card-ratio, .72) !important;
+    margin-inline: clamp(-34px, -2.65vw, -18px) !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock .hand-row .play-card:nth-child(1),
+  .play-board.play-board--new-ui > .hand-dock:not(.has-selected-hand-card) .hand-row .play-card:nth-child(1),
+  .play-board.play-board--new-ui > .hand-dock.is-hand-expanded:not(.has-selected-hand-card) .hand-row .play-card:nth-child(1) {
+    transform: rotate(-22deg) translateY(22px) translateZ(-12px) !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock .hand-row .play-card:nth-child(2),
+  .play-board.play-board--new-ui > .hand-dock:not(.has-selected-hand-card) .hand-row .play-card:nth-child(2),
+  .play-board.play-board--new-ui > .hand-dock.is-hand-expanded:not(.has-selected-hand-card) .hand-row .play-card:nth-child(2) {
+    transform: rotate(-15deg) translateY(16px) translateZ(-8px) !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock .hand-row .play-card:nth-child(3),
+  .play-board.play-board--new-ui > .hand-dock:not(.has-selected-hand-card) .hand-row .play-card:nth-child(3),
+  .play-board.play-board--new-ui > .hand-dock.is-hand-expanded:not(.has-selected-hand-card) .hand-row .play-card:nth-child(3) {
+    transform: rotate(-8deg) translateY(11px) translateZ(-4px) !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock .hand-row .play-card:nth-child(4),
+  .play-board.play-board--new-ui > .hand-dock:not(.has-selected-hand-card) .hand-row .play-card:nth-child(4),
+  .play-board.play-board--new-ui > .hand-dock.is-hand-expanded:not(.has-selected-hand-card) .hand-row .play-card:nth-child(4) {
+    transform: rotate(-3deg) translateY(8px) !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock .hand-row .play-card:nth-child(5),
+  .play-board.play-board--new-ui > .hand-dock:not(.has-selected-hand-card) .hand-row .play-card:nth-child(5),
+  .play-board.play-board--new-ui > .hand-dock.is-hand-expanded:not(.has-selected-hand-card) .hand-row .play-card:nth-child(5) {
+    transform: rotate(3deg) translateY(8px) !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock .hand-row .play-card:nth-child(6),
+  .play-board.play-board--new-ui > .hand-dock:not(.has-selected-hand-card) .hand-row .play-card:nth-child(6),
+  .play-board.play-board--new-ui > .hand-dock.is-hand-expanded:not(.has-selected-hand-card) .hand-row .play-card:nth-child(6) {
+    transform: rotate(8deg) translateY(11px) translateZ(-4px) !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock .hand-row .play-card:nth-child(7),
+  .play-board.play-board--new-ui > .hand-dock:not(.has-selected-hand-card) .hand-row .play-card:nth-child(7),
+  .play-board.play-board--new-ui > .hand-dock.is-hand-expanded:not(.has-selected-hand-card) .hand-row .play-card:nth-child(7) {
+    transform: rotate(15deg) translateY(16px) translateZ(-8px) !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock .hand-row .play-card:nth-child(n+8),
+  .play-board.play-board--new-ui > .hand-dock:not(.has-selected-hand-card) .hand-row .play-card:nth-child(n+8),
+  .play-board.play-board--new-ui > .hand-dock.is-hand-expanded:not(.has-selected-hand-card) .hand-row .play-card:nth-child(n+8) {
+    transform: rotate(22deg) translateY(22px) translateZ(-12px) !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock .hand-row .play-card:hover,
+  .play-board.play-board--new-ui > .hand-dock .hand-row .play-card:focus-visible,
+  .play-board.play-board--new-ui > .hand-dock .hand-row .play-card.is-selected {
+    transform: rotate(0deg) translateY(calc(-1 * var(--hand-card-lift))) translateZ(0) scale(1.075) !important;
+  }
+}
+
+/* Desktop-only interaction readability: playable cards and identity counters. */
+@media (min-width: 1024px) and (pointer: fine) {
+  .play-board.play-board--new-ui .hand-row .play-card.is-actionable-card:not(.is-selected),
+  .play-board.play-board--new-ui .battlefield-line .play-card.is-field-tile.is-actionable-card:not(.is-selected) {
+    outline-style: solid !important;
+    outline-width: 2px !important;
+    outline-color: rgba(var(--tcg-gold-strong-rgb), .46);
+    outline-offset: 2px !important;
+    animation: adonai-desktop-actionable-card-pulse 1.05s ease-in-out infinite !important;
+  }
+
+  .play-board.play-board--new-ui .battlefield-line .play-card.is-field-tile.is-actionable-card:not(.is-selected) {
+    outline-color: rgba(var(--tcg-focus-rgb), .52);
+    animation-name: adonai-desktop-field-actionable-card-pulse !important;
+  }
+
+  .play-board.play-board--new-ui .hand-row .play-card.is-actionable-card:not(.is-selected) > .card-main-art {
+    filter: brightness(1.08) saturate(1.12) contrast(1.03) !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-identity:not(.is-expanded) .identity-dock-tile--territory .identity-dock-value,
+  .play-board.play-board--new-ui .player-dock-identity:not(.is-expanded) .identity-dock-tile--temple .identity-dock-value {
+    min-width: clamp(58px, 4.8vw, 76px) !important;
+    min-height: clamp(28px, 3.25dvh, 38px) !important;
+    padding: 3px 10px !important;
+    gap: 2px !important;
+    border-radius: 999px !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-identity:not(.is-expanded) .identity-dock-tile--territory .identity-dock-value span,
+  .play-board.play-board--new-ui .player-dock-identity:not(.is-expanded) .identity-dock-tile--temple .identity-dock-value span {
+    font-size: clamp(1.38rem, 1.9vw, 1.72rem) !important;
+    line-height: .88 !important;
+    letter-spacing: -.04em !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-identity:not(.is-expanded) .identity-dock-tile--territory .identity-dock-value small,
+  .play-board.play-board--new-ui .player-dock-identity:not(.is-expanded) .identity-dock-tile--temple .identity-dock-value small {
+    font-size: clamp(.82rem, 1.12vw, 1rem) !important;
+    line-height: .95 !important;
+    transform: translateY(.04em);
+  }
+}
+
+@keyframes adonai-desktop-actionable-card-pulse {
+  0%,
+  100% {
+    outline-color: rgba(var(--tcg-gold-strong-rgb), .38);
+    filter: brightness(1) saturate(1.06);
+  }
+
+  50% {
+    outline-color: rgba(var(--tcg-gold-strong-rgb), .96);
+    filter: brightness(1.18) saturate(1.22);
+  }
+}
+
+@keyframes adonai-desktop-field-actionable-card-pulse {
+  0%,
+  100% {
+    outline-color: rgba(var(--tcg-focus-rgb), .38);
+    filter: brightness(1) saturate(1.06);
+  }
+
+  50% {
+    outline-color: rgba(var(--tcg-focus-rgb), .96);
+    filter: brightness(1.18) saturate(1.22);
+  }
+}
+
+/* Interaction repair: actionable cards must pulse instead of looking like a static outline. */
+.play-board.play-board--new-ui .play-card.is-actionable-card:not(.is-selected),
+.play-board.play-board--new-ui .hand-row .play-card.is-actionable-card:not(.is-selected),
+.play-board.play-board--new-ui .battlefield-line .play-card.is-field-tile.is-actionable-card:not(.is-selected) {
+  --playable-accent-rgb: var(--tcg-focus-rgb);
+  outline: none !important;
+  border-color: rgba(var(--playable-accent-rgb), .8) !important;
+  animation: none !important;
+}
+
+.play-board.play-board--new-ui .play-card.is-actionable-card:not(.is-selected)::after,
+.play-board.play-board--new-ui .hand-row .play-card.is-actionable-card:not(.is-selected)::after,
+.play-board.play-board--new-ui .battlefield-line .play-card.is-field-tile.is-actionable-card:not(.is-selected)::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 3 !important;
+  pointer-events: none !important;
+  border: 2px solid rgba(var(--playable-accent-rgb), .42) !important;
+  border-radius: inherit !important;
+  opacity: .62;
+  box-shadow:
+    0 0 0 1px rgba(var(--playable-accent-rgb), .18),
+    0 0 16px rgba(var(--playable-accent-rgb), .22),
+    inset 0 0 16px rgba(var(--playable-accent-rgb), .08) !important;
+  animation: adonai-playable-frame-pulse 1.08s ease-in-out infinite !important;
+  background: transparent !important;
+  mix-blend-mode: screen;
+}
+
+.play-board.play-board--new-ui .play-card.is-actionable-card:not(.is-selected) > .card-main-art,
+.play-board.play-board--new-ui .hand-row .play-card.is-actionable-card:not(.is-selected) > .card-main-art {
+  filter: brightness(1.06) saturate(1.12) contrast(1.03) !important;
+}
+
+@keyframes adonai-playable-frame-pulse {
+  0%,
+  100% {
+    opacity: .4;
+    border-color: rgba(var(--playable-accent-rgb), .32);
+    box-shadow:
+      0 0 0 1px rgba(var(--playable-accent-rgb), .12),
+      0 0 10px rgba(var(--playable-accent-rgb), .14),
+      inset 0 0 10px rgba(var(--playable-accent-rgb), .04);
+  }
+
+  50% {
+    opacity: 1;
+    border-color: rgba(var(--playable-accent-rgb), .96);
+    box-shadow:
+      0 0 0 1px rgba(var(--playable-accent-rgb), .42),
+      0 0 26px rgba(var(--playable-accent-rgb), .46),
+      inset 0 0 22px rgba(var(--playable-accent-rgb), .18);
+  }
+}
+
+@media (min-width: 1024px) and (pointer: fine) {
+  .play-board.play-board--new-ui .hand-card-pips {
+    top: 4px !important;
+    left: 4px !important;
+    gap: 2px !important;
+    max-width: calc(100% - 34px) !important;
+  }
+
+  .play-board.play-board--new-ui .hand-card-pips img,
+  .play-board.play-board--new-ui .hand-card-pips span,
+  .play-board.play-board--new-ui .hand-card-pips .hand-card-pip-slot {
+    width: clamp(15px, 1.18vw, 19px) !important;
+    height: clamp(15px, 1.18vw, 19px) !important;
+  }
+}
+
+/* Edge panel cleanup: remove timeline-like dividers between stack and event groups. */
+.stack-edge-panel::after,
+.stack-edge-card::after,
+.stack-edge-event-card::after {
+  content: none !important;
+  display: none !important;
+}
+
+.stack-edge-section + .stack-edge-section {
+  border-top: 0 !important;
+  padding-top: 6px !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .play-board.play-board--new-ui .play-card.is-actionable-card:not(.is-selected)::after,
+  .play-board.play-board--new-ui .hand-row .play-card.is-actionable-card:not(.is-selected)::after,
+  .play-board.play-board--new-ui .battlefield-line .play-card.is-field-tile.is-actionable-card:not(.is-selected)::after {
+    animation: none !important;
+    opacity: .86;
+  }
+}
+
+/* Desktop rail lock: keep battlefield, action lane and hand aligned across phases. */
+@media (min-width: 1024px) and (pointer: fine) {
+  .play-board.play-board--new-ui,
+  .play-board.play-board--new-ui.is-action-dock-empty {
+    --arena-dock-row-h: clamp(86px, 10.2dvh, 104px);
+    --arena-action-row-h: clamp(38px, 4.55dvh, 46px);
+    --arena-hand-row-h: clamp(154px, 17.2dvh, 188px);
+    --action-h: var(--arena-action-row-h) !important;
+    --hand-h: var(--arena-hand-row-h) !important;
+    grid-template-areas:
+      "bot"
+      "field"
+      "human"
+      "actions"
+      "hand" !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows:
+      var(--arena-dock-row-h)
+      minmax(0, 1fr)
+      var(--arena-dock-row-h)
+      var(--arena-action-row-h)
+      var(--arena-hand-row-h) !important;
+    align-items: stretch !important;
+    justify-items: stretch !important;
+    gap: clamp(5px, .45vw, 8px) !important;
+  }
+
+  .play-board.play-board--new-ui > .player-dock-shell,
+  .play-board.play-board--new-ui > .battlefield-shell,
+  .play-board.play-board--new-ui > .action-dock,
+  .play-board.play-board--new-ui > .hand-dock {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    justify-self: stretch !important;
+    align-self: stretch !important;
+    box-sizing: border-box !important;
+  }
+
+  .play-board.play-board--new-ui > .player-dock-shell {
+    min-height: var(--arena-dock-row-h) !important;
+    height: var(--arena-dock-row-h) !important;
+    max-height: var(--arena-dock-row-h) !important;
+    display: grid !important;
+    align-items: center !important;
+    justify-items: center !important;
+    overflow: visible !important;
+  }
+
+  .play-board.play-board--new-ui > .battlefield-shell {
+    min-height: 0 !important;
+    height: 100% !important;
+    grid-template-rows: minmax(0, 1fr) var(--phase-strip-h) minmax(0, 1fr) !important;
+    overflow: hidden !important;
+  }
+
+  .play-board.play-board--new-ui .battlefield-column,
+  .play-board.play-board--new-ui .battlefield-row {
+    min-height: 0 !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock,
+  .play-board.play-board--new-ui.is-action-dock-empty > .action-dock {
+    position: relative !important;
+    inset: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    min-height: var(--arena-action-row-h) !important;
+    height: var(--arena-action-row-h) !important;
+    max-height: var(--arena-action-row-h) !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-areas: "actions" !important;
+    padding: 0 clamp(10px, .85vw, 14px) !important;
+    border: 1px solid rgba(var(--tcg-gold-rgb), .18) !important;
+    border-radius: 12px !important;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, .025), rgba(0, 0, 0, .18)),
+      rgba(4, 7, 7, .62) !important;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .025) !important;
+    overflow: hidden !important;
+    opacity: 1 !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock .selected-card-panel {
+    display: none !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock .action-grid {
+    grid-area: actions !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-auto-flow: column !important;
+    align-items: stretch !important;
+    justify-items: stretch !important;
+    align-content: stretch !important;
+    justify-content: stretch !important;
+    gap: clamp(8px, .75vw, 12px) !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock .action-grid button {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    padding: 4px 10px !important;
+    border-radius: 10px !important;
+    line-height: 1 !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock #attackButton:not([hidden]) {
+    grid-column: 1 !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock #nextPhaseButton:not([hidden]),
+  .play-board.play-board--new-ui > .action-dock #endTurnButton:not([hidden]) {
+    grid-column: 2 !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock.is-single-action #attackButton:not([hidden]) {
+    grid-column: 1 / -1 !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock {
+    position: relative !important;
+    z-index: 1 !important;
+    min-height: var(--arena-hand-row-h) !important;
+    height: var(--arena-hand-row-h) !important;
+    max-height: var(--arena-hand-row-h) !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock .hand-row,
+  .play-board.play-board--new-ui > .hand-dock:not(.has-selected-hand-card) .hand-row,
+  .play-board.play-board--new-ui > .hand-dock.is-hand-expanded:not(.has-selected-hand-card) .hand-row {
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+    padding: clamp(14px, 1.45dvh, 20px) clamp(20px, 2.4vw, 34px) 0 !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock.has-selected-hand-card .hand-row {
+    padding: clamp(10px, 1.15dvh, 16px) clamp(20px, 2.4vw, 34px) clamp(6px, .7dvh, 10px) !important;
   }
 }
