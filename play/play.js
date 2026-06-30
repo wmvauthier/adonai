@@ -9394,6 +9394,8 @@ function updateGameFeelStateClasses(game, phase) {
   const stackDepth = game.stack?.length || 0;
   view.dataset.phase = phase || "";
   view.dataset.stackDepth = String(stackDepth);
+  view.classList.toggle("is-human-turn", game.activePlayer === "human");
+  view.classList.toggle("is-bot-turn", game.activePlayer === "bot");
   view.classList.toggle("is-priority-open", isHumanPriorityOpen());
   view.classList.toggle("is-stack-active", stackDepth > 0);
   view.classList.toggle("is-stack-deep", stackDepth > 2);
@@ -10596,6 +10598,7 @@ function updateActionDockStateClasses({
   dock.style.setProperty("--visible-actions", String(visibleActionCount));
   dock.classList.toggle("is-result-viewing", actionMode === "result");
   dock.classList.toggle("is-decision-view", actionMode === "decision");
+  dock.classList.toggle("is-waiting-opponent", actionMode === "waiting-opponent");
   dock.classList.toggle("is-priority-open", priorityOpen);
   dock.classList.toggle("is-combat-action", showAttack || actionMode === "combat");
   dock.classList.toggle("is-end-turn-action", showEndTurn || actionMode === "end-turn");
@@ -10661,6 +10664,27 @@ function renderActionState() {
   const showEndTurn = !priorityOpen && humanTurn && phase === "regroup" && !combatLocked;
   const visibleActionCount = [showAttack, showNextPhase, showEndTurn].filter(Boolean).length;
 
+  if (!visibleActionCount) {
+    els.drawButton.hidden = true;
+    els.consecrateButton.hidden = true;
+    els.playCardButton.hidden = true;
+    els.attackButton.hidden = true;
+    els.endTurnButton.hidden = true;
+    els.nextPhaseButton.hidden = false;
+    els.nextPhaseButton.disabled = true;
+    els.nextPhaseButton.textContent = app.game.activePlayer === "bot" ? "TURNO DO OPONENTE" : "AGUARDANDO";
+    els.nextPhaseButton.dataset.actionSubtitle = app.game.activePlayer === "bot" ? "Aguardando Bot" : "Resolvendo a partida";
+    els.nextPhaseButton.classList.remove("is-priority-button");
+    els.actionGrid?.style.setProperty("--action-columns", "1");
+    updateActionDockStateClasses({
+      phase,
+      mode: "waiting-opponent",
+      visibleActionCount: 1,
+      hasSelection: Boolean(app.selected)
+    });
+    return;
+  }
+
   els.drawButton.textContent = "Comprar 2";
   els.consecrateButton.textContent = "Consagrar";
   els.playCardButton.textContent = "Jogar";
@@ -10723,7 +10747,7 @@ function getNextActionLabel(game, priorityOpen = false) {
     preparation: "Ir para combate",
     combat: game.combat?.step === "attackers-declared"
       ? "Ir para bloqueadores"
-      : hasReadyAttackers ? "Nao quero atacar" : "Ir para reagrupamento",
+      : hasReadyAttackers ? "Sem ataques" : "Ir para reagrupamento",
     regroup: "Encerrar turno"
   };
   return nextLabels[phase] || "Avancar etapa";

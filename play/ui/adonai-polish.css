@@ -7373,3 +7373,1289 @@ body::after {
     padding: clamp(10px, 1.15dvh, 16px) clamp(20px, 2.4vw, 34px) clamp(6px, .7dvh, 10px) !important;
   }
 }
+
+/* Desktop rail cleanup: the action row is structural, not a second panel. */
+@media (min-width: 1024px) and (pointer: fine) {
+  .play-board.play-board--new-ui > .battlefield-shell,
+  .play-board.play-board--new-ui > .action-dock,
+  .play-board.play-board--new-ui > .hand-dock {
+    inline-size: 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-inline: 0 !important;
+    transform: none !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock,
+  .play-board.play-board--new-ui.is-action-dock-empty > .action-dock {
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock::before,
+  .play-board.play-board--new-ui > .action-dock::after,
+  .play-board.play-board--new-ui.is-action-dock-empty > .action-dock::before,
+  .play-board.play-board--new-ui.is-action-dock-empty > .action-dock::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock .action-grid {
+    width: 100% !important;
+    height: 100% !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    align-items: center !important;
+    justify-items: stretch !important;
+    gap: clamp(8px, .75vw, 12px) !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock .action-grid button[hidden] {
+    display: none !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock .action-grid button:not([hidden]) {
+    height: calc(var(--arena-action-row-h) - 4px) !important;
+    min-height: 0 !important;
+    max-height: calc(var(--arena-action-row-h) - 4px) !important;
+    align-self: center !important;
+    justify-self: stretch !important;
+    box-sizing: border-box !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock #attackButton:not([hidden]) {
+    grid-column: 1 !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock #nextPhaseButton:not([hidden]),
+  .play-board.play-board--new-ui > .action-dock #endTurnButton:not([hidden]) {
+    grid-column: 2 !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock,
+  .play-board.play-board--new-ui > .hand-dock.is-hand-expanded,
+  .play-board.play-board--new-ui > .hand-dock.has-selected-hand-card,
+  .play-board.play-board--new-ui > .hand-dock.is-hand-expanded.has-selected-hand-card {
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: 12px !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock::before,
+  .play-board.play-board--new-ui > .hand-dock::after,
+  .play-board.play-board--new-ui > .hand-dock.is-hand-expanded::before,
+  .play-board.play-board--new-ui > .hand-dock.is-hand-expanded::after,
+  .play-board.play-board--new-ui > .hand-dock.has-selected-hand-card::before,
+  .play-board.play-board--new-ui > .hand-dock.has-selected-hand-card::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock .hand-row,
+  .play-board.play-board--new-ui > .hand-dock.is-hand-expanded .hand-row,
+  .play-board.play-board--new-ui > .hand-dock.has-selected-hand-card .hand-row,
+  .play-board.play-board--new-ui > .hand-dock.is-hand-expanded.has-selected-hand-card .hand-row,
+  .play-board.play-board--new-ui > .hand-dock:not(.has-selected-hand-card) .hand-row,
+  .play-board.play-board--new-ui > .hand-dock.is-hand-expanded:not(.has-selected-hand-card) .hand-row {
+    width: 100% !important;
+    height: 100% !important;
+    justify-content: center !important;
+    align-items: flex-end !important;
+    padding: clamp(14px, 1.45dvh, 20px) clamp(20px, 2.4vw, 34px) 0 !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+  }
+}
+
+/* Desktop dock/order lock: state changes may recolor, never resize. */
+@media (min-width: 1024px) and (pointer: fine) {
+  .play-board.play-board--new-ui {
+    --arena-player-dock-w: min(1080px, 86%);
+    --arena-player-dock-h: calc(var(--arena-dock-row-h) - clamp(10px, .9dvh, 16px));
+  }
+
+  .play-board.play-board--new-ui > .player-dock-shell {
+    overflow: visible !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock,
+  .play-board.play-board--new-ui .player-dock--human,
+  .play-board.play-board--new-ui .player-dock--opponent,
+  .play-board.play-board--new-ui .player-dock.is-active-player {
+    width: var(--arena-player-dock-w) !important;
+    min-width: var(--arena-player-dock-w) !important;
+    max-width: var(--arena-player-dock-w) !important;
+    height: var(--arena-player-dock-h) !important;
+    min-height: var(--arena-player-dock-h) !important;
+    max-height: var(--arena-player-dock-h) !important;
+    justify-self: center !important;
+    align-self: center !important;
+    margin: 0 auto !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > *,
+  .play-board.play-board--new-ui .player-dock-metrics,
+  .play-board.play-board--new-ui .player-dock-identity,
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock.is-waiting-opponent .action-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock.is-waiting-opponent #nextPhaseButton:not([hidden]) {
+    grid-column: 2 !important;
+    pointer-events: none !important;
+    opacity: .66 !important;
+    border-color: rgba(255, 255, 255, .16) !important;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, .055), rgba(0, 0, 0, .24)),
+      rgba(8, 10, 10, .72) !important;
+    color: rgba(245, 241, 232, .76) !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, .045),
+      0 8px 20px rgba(0, 0, 0, .24) !important;
+    filter: grayscale(.25) saturate(.75) !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock.is-combat-action #nextPhaseButton:not([hidden]) {
+    grid-column: 1 !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock.is-combat-action #attackButton:not([hidden]) {
+    grid-column: 2 !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock.is-combat-action .action-grid button:not([hidden]) {
+    justify-self: stretch !important;
+  }
+}
+
+/* Desktop final anchor: the player dock keeps one fixed slot through every phase. */
+@media (min-width: 1024px) and (pointer: fine) {
+  .play-board.play-board--new-ui {
+    --arena-player-dock-w: min(1080px, 86%);
+    --arena-dock-row-safe-h: var(--arena-dock-row-h, clamp(86px, 10.2dvh, 104px));
+    --arena-player-dock-h: calc(var(--arena-dock-row-safe-h) - clamp(10px, .9dvh, 16px));
+    --arena-single-action-w: clamp(190px, 17vw, 240px);
+  }
+
+  .play-board.play-board--new-ui > .player-dock-shell,
+  .play-board.play-board--new-ui > .player-dock-shell--human,
+  .play-board.play-board--new-ui > .player-dock-shell--opponent {
+    position: relative !important;
+    display: block !important;
+    min-height: var(--arena-dock-row-safe-h) !important;
+    height: var(--arena-dock-row-safe-h) !important;
+    max-height: var(--arena-dock-row-safe-h) !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  .play-board.play-board--new-ui > .player-dock-shell > .player-area,
+  .play-board.play-board--new-ui > .player-dock-shell > .human-area,
+  .play-board.play-board--new-ui > .player-dock-shell > .opponent-area {
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    width: var(--arena-player-dock-w) !important;
+    min-width: var(--arena-player-dock-w) !important;
+    max-width: var(--arena-player-dock-w) !important;
+    height: var(--arena-player-dock-h) !important;
+    min-height: var(--arena-player-dock-h) !important;
+    max-height: var(--arena-player-dock-h) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+    transform: translate(-50%, -50%) !important;
+    box-sizing: border-box !important;
+  }
+
+  .play-board.play-board--new-ui > .player-dock-shell > .player-area > .player-dock,
+  .play-board.play-board--new-ui > .player-dock-shell > .human-area > .player-dock,
+  .play-board.play-board--new-ui > .player-dock-shell > .opponent-area > .player-dock {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    justify-self: stretch !important;
+    align-self: stretch !important;
+    transform: none !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock,
+  .play-board.play-board--new-ui.is-action-dock-empty > .action-dock {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 clamp(10px, .85vw, 14px) !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock .action-grid {
+    width: 100% !important;
+    height: 100% !important;
+    display: grid !important;
+    align-items: center !important;
+    justify-items: stretch !important;
+    gap: clamp(8px, .75vw, 12px) !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock.is-single-action .action-grid,
+  .play-board.play-board--new-ui > .action-dock.is-waiting-opponent .action-grid {
+    grid-template-columns: minmax(0, 1fr) var(--arena-single-action-w) !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock.is-single-action #nextPhaseButton:not([hidden]),
+  .play-board.play-board--new-ui > .action-dock.is-single-action #endTurnButton:not([hidden]),
+  .play-board.play-board--new-ui > .action-dock.is-single-action #attackButton:not([hidden]),
+  .play-board.play-board--new-ui > .action-dock.is-waiting-opponent #nextPhaseButton:not([hidden]) {
+    grid-column: 2 !important;
+    width: var(--arena-single-action-w) !important;
+    min-width: 0 !important;
+    max-width: var(--arena-single-action-w) !important;
+    justify-self: end !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock.is-combat-action:not(.is-single-action) .action-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock.is-combat-action:not(.is-single-action) #nextPhaseButton:not([hidden]),
+  .play-board.play-board--new-ui > .action-dock.is-combat-action:not(.is-single-action) #attackButton:not([hidden]) {
+    width: 100% !important;
+    max-width: none !important;
+    justify-self: stretch !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock.is-combat-action:not(.is-single-action) #nextPhaseButton:not([hidden]) {
+    grid-column: 1 !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock.is-combat-action:not(.is-single-action) #attackButton:not([hidden]) {
+    grid-column: 2 !important;
+  }
+}
+
+/* Desktop opponent-turn lock: no phase or active-player state may move the dock row. */
+@media (min-width: 1024px) and (pointer: fine) {
+  .play-board.play-board--new-ui.is-feedback-overlay-active {
+    filter: none !important;
+  }
+
+  .play-board.play-board--new-ui,
+  .play-board.play-board--new-ui.is-bot-turn,
+  .play-board.play-board--new-ui.is-human-turn {
+    --arena-dock-row-safe-h: var(--arena-dock-row-h, clamp(86px, 10.2dvh, 104px));
+    --arena-player-dock-w: min(1080px, 86%);
+    --arena-player-dock-h: calc(var(--arena-dock-row-safe-h) - clamp(10px, .9dvh, 16px));
+  }
+
+  .play-board.play-board--new-ui > .player-dock-shell,
+  .play-board.play-board--new-ui.is-bot-turn > .player-dock-shell,
+  .play-board.play-board--new-ui.is-human-turn > .player-dock-shell {
+    position: relative !important;
+    inset: auto !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    place-items: center !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    min-height: var(--arena-dock-row-safe-h) !important;
+    height: var(--arena-dock-row-safe-h) !important;
+    max-height: var(--arena-dock-row-safe-h) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+    translate: none !important;
+    scale: none !important;
+    rotate: none !important;
+    transition: none !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+  }
+
+  .play-board.play-board--new-ui > .player-dock-shell > .player-area,
+  .play-board.play-board--new-ui.is-bot-turn > .player-dock-shell > .player-area,
+  .play-board.play-board--new-ui.is-human-turn > .player-dock-shell > .player-area {
+    position: relative !important;
+    inset: auto !important;
+    left: auto !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    grid-area: 1 / 1 !important;
+    justify-self: center !important;
+    align-self: center !important;
+    width: var(--arena-player-dock-w) !important;
+    min-width: var(--arena-player-dock-w) !important;
+    max-width: var(--arena-player-dock-w) !important;
+    height: var(--arena-player-dock-h) !important;
+    min-height: var(--arena-player-dock-h) !important;
+    max-height: var(--arena-player-dock-h) !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    transform: none !important;
+    translate: none !important;
+    scale: none !important;
+    rotate: none !important;
+    transition: none !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+  }
+
+  .play-board.play-board--new-ui > .player-dock-shell > .player-area > .player-dock,
+  .play-board.play-board--new-ui.is-bot-turn > .player-dock-shell > .player-area > .player-dock,
+  .play-board.play-board--new-ui.is-human-turn > .player-dock-shell > .player-area > .player-dock {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    transform: none !important;
+    translate: none !important;
+    scale: none !important;
+    rotate: none !important;
+    box-sizing: border-box !important;
+  }
+
+  .play-board.play-board--new-ui.is-bot-turn > .player-dock-shell--human,
+  .play-board.play-board--new-ui.is-bot-turn > .player-dock-shell--human > .human-area,
+  .play-board.play-board--new-ui.is-bot-turn > .player-dock-shell--human > .human-area > .player-dock {
+    justify-self: center !important;
+    align-self: center !important;
+    transform: none !important;
+    translate: none !important;
+    scale: none !important;
+    rotate: none !important;
+  }
+}
+
+/* Desktop dock geometry contract: identity and essence share the same center rail. */
+@media (min-width: 1024px) and (pointer: fine) {
+  .play-board.play-board--new-ui {
+    --arena-player-dock-w: min(1080px, 86%);
+    --arena-dock-row-safe-h: var(--arena-dock-row-h, clamp(86px, 10.2dvh, 104px));
+    --arena-player-dock-h: calc(var(--arena-dock-row-safe-h) - clamp(10px, .9dvh, 16px));
+    --arena-dock-center-w: clamp(360px, 34vw, 440px);
+    --arena-dock-side-min-w: clamp(244px, 22vw, 300px);
+    --arena-dock-inner-h: calc(var(--arena-player-dock-h) - clamp(12px, 1.05dvh, 16px));
+  }
+
+  .play-board.play-board--new-ui > .player-dock-shell > .player-area > .player-dock,
+  .play-board.play-board--new-ui.is-bot-turn > .player-dock-shell > .player-area > .player-dock,
+  .play-board.play-board--new-ui.is-human-turn > .player-dock-shell > .player-area > .player-dock,
+  .play-board.play-board--new-ui .player-dock--human,
+  .play-board.play-board--new-ui .player-dock--opponent,
+  .play-board.play-board--new-ui .player-dock.is-active-player {
+    display: grid !important;
+    grid-template-columns:
+      minmax(var(--arena-dock-side-min-w), 1fr)
+      var(--arena-dock-center-w)
+      minmax(var(--arena-dock-side-min-w), 1fr) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    align-items: center !important;
+    justify-items: stretch !important;
+    gap: clamp(10px, .9vw, 16px) !important;
+    width: var(--arena-player-dock-w) !important;
+    min-width: var(--arena-player-dock-w) !important;
+    max-width: var(--arena-player-dock-w) !important;
+    height: var(--arena-player-dock-h) !important;
+    min-height: var(--arena-player-dock-h) !important;
+    max-height: var(--arena-player-dock-h) !important;
+    padding: clamp(6px, .56dvh, 8px) clamp(12px, .9vw, 16px) !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock--human,
+  .play-board.play-board--new-ui .player-dock--human.is-active-player {
+    grid-template-areas: "virtues identity metrics" !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock--opponent,
+  .play-board.play-board--new-ui .player-dock--opponent.is-active-player {
+    grid-template-areas: "metrics identity virtues" !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-identity,
+  .play-board.play-board--new-ui .player-dock-identity:not(.is-expanded),
+  .play-board.play-board--new-ui .player-dock-identity.is-expanded {
+    grid-area: identity !important;
+    align-self: center !important;
+    justify-self: stretch !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: var(--arena-dock-inner-h) !important;
+    min-height: var(--arena-dock-inner-h) !important;
+    max-height: var(--arena-dock-inner-h) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-identity:not(.is-expanded) {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    gap: clamp(5px, .45vw, 8px) !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-identity:not(.is-expanded) .identity-dock-tile {
+    align-self: stretch !important;
+    justify-self: stretch !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues {
+    grid-area: virtues !important;
+    align-self: center !important;
+    justify-self: stretch !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: var(--arena-dock-inner-h) !important;
+    min-height: var(--arena-dock-inner-h) !important;
+    max-height: var(--arena-dock-inner-h) !important;
+    margin: 0 !important;
+    padding: 0 clamp(8px, .65vw, 12px) !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-icons {
+    height: 100% !important;
+    align-items: center !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-metrics {
+    grid-area: metrics !important;
+    align-self: center !important;
+    justify-self: stretch !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: var(--arena-dock-inner-h) !important;
+    min-height: var(--arena-dock-inner-h) !important;
+    max-height: var(--arena-dock-inner-h) !important;
+    margin: 0 !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-shell.is-consecration-active > .essence-panel,
+  .play-board.play-board--new-ui .player-dock-shell--human.is-consecration-active > .essence-panel,
+  .play-board.play-board--new-ui .player-dock-shell--opponent.is-consecration-active > .essence-panel {
+    position: absolute !important;
+    left: 50% !important;
+    right: auto !important;
+    top: 50% !important;
+    bottom: auto !important;
+    width: var(--arena-dock-center-w) !important;
+    min-width: var(--arena-dock-center-w) !important;
+    max-width: var(--arena-dock-center-w) !important;
+    height: var(--arena-dock-inner-h) !important;
+    min-height: var(--arena-dock-inner-h) !important;
+    max-height: var(--arena-dock-inner-h) !important;
+    margin: 0 !important;
+    padding: 4px !important;
+    transform: translate(-50%, -50%) !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+}
+
+/* Desktop overlay-safe dock: use viewport math once, then keep children at 100%. */
+@media (min-width: 1024px) and (pointer: fine) {
+  .play-board.play-board--new-ui,
+  .play-board.play-board--new-ui.is-bot-turn,
+  .play-board.play-board--new-ui.is-human-turn,
+  .play-board.play-board--new-ui.is-feedback-overlay-active,
+  .play-board.play-board--new-ui.is-stack-active {
+    --arena-player-dock-w: min(1160px, calc(100vw - 48px));
+    --arena-dock-row-safe-h: var(--arena-dock-row-h, clamp(88px, 10.4dvh, 108px));
+    --arena-player-dock-h: calc(var(--arena-dock-row-safe-h) - clamp(8px, .75dvh, 12px));
+    --arena-dock-center-w: clamp(360px, 30vw, 430px);
+    --arena-dock-side-min-w: clamp(270px, 23vw, 340px);
+    --arena-dock-inner-h: calc(var(--arena-player-dock-h) - clamp(10px, .85dvh, 14px));
+    filter: none !important;
+    transform: none !important;
+  }
+
+  .play-board.play-board--new-ui > .player-dock-shell,
+  .play-board.play-board--new-ui.is-feedback-overlay-active > .player-dock-shell,
+  .play-board.play-board--new-ui.is-stack-active > .player-dock-shell {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: var(--arena-dock-row-safe-h) !important;
+    min-height: var(--arena-dock-row-safe-h) !important;
+    max-height: var(--arena-dock-row-safe-h) !important;
+    display: grid !important;
+    place-items: center !important;
+    overflow: visible !important;
+    contain: none !important;
+  }
+
+  .play-board.play-board--new-ui > .player-dock-shell > .player-area,
+  .play-board.play-board--new-ui.is-feedback-overlay-active > .player-dock-shell > .player-area,
+  .play-board.play-board--new-ui.is-stack-active > .player-dock-shell > .player-area {
+    width: min(100%, var(--arena-player-dock-w)) !important;
+    min-width: 0 !important;
+    max-width: var(--arena-player-dock-w) !important;
+    height: var(--arena-player-dock-h) !important;
+    min-height: var(--arena-player-dock-h) !important;
+    max-height: var(--arena-player-dock-h) !important;
+    justify-self: center !important;
+    align-self: center !important;
+    overflow: visible !important;
+    contain: none !important;
+  }
+
+  .play-board.play-board--new-ui > .player-dock-shell > .player-area > .player-dock,
+  .play-board.play-board--new-ui .player-dock,
+  .play-board.play-board--new-ui .player-dock--human,
+  .play-board.play-board--new-ui .player-dock--opponent,
+  .play-board.play-board--new-ui .player-dock.is-active-player {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    max-height: 100% !important;
+    grid-template-columns:
+      minmax(var(--arena-dock-side-min-w), 1fr)
+      var(--arena-dock-center-w)
+      minmax(var(--arena-dock-side-min-w), 1fr) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    gap: clamp(8px, .72vw, 12px) !important;
+    padding: clamp(5px, .5dvh, 7px) clamp(10px, .78vw, 14px) !important;
+    overflow: visible !important;
+    contain: none !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-identity,
+  .play-board.play-board--new-ui .player-dock-identity:not(.is-expanded),
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues,
+  .play-board.play-board--new-ui .player-dock-metrics {
+    height: var(--arena-dock-inner-h) !important;
+    min-height: var(--arena-dock-inner-h) !important;
+    max-height: var(--arena-dock-inner-h) !important;
+    overflow: visible !important;
+    contain: none !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-metrics {
+    grid-template-columns:
+      minmax(42px, .78fr)
+      minmax(42px, .78fr)
+      minmax(66px, 1.08fr)
+      minmax(58px, .98fr)
+      minmax(54px, .9fr) !important;
+    gap: clamp(3px, .32vw, 5px) !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-metrics > .dock-metric:not(.dock-metric--virtues),
+  .play-board.play-board--new-ui .player-dock-metrics > .player-dock-label {
+    min-width: 0 !important;
+    max-width: none !important;
+    overflow: hidden !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-identity:not(.is-expanded) {
+    grid-template-columns:
+      minmax(120px, 1.15fr)
+      minmax(120px, 1fr)
+      minmax(120px, 1fr) !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-identity:not(.is-expanded) .identity-dock-tile {
+    overflow: hidden !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-icons {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    justify-items: center !important;
+    gap: 0 !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-chip {
+    width: clamp(26px, 2vw, 34px) !important;
+    height: clamp(26px, 2vw, 34px) !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-shell.is-consecration-active > .essence-panel,
+  .play-board.play-board--new-ui .player-dock-shell--human.is-consecration-active > .essence-panel,
+  .play-board.play-board--new-ui .player-dock-shell--opponent.is-consecration-active > .essence-panel {
+    width: var(--arena-dock-center-w) !important;
+    min-width: var(--arena-dock-center-w) !important;
+    max-width: var(--arena-dock-center-w) !important;
+    height: var(--arena-dock-inner-h) !important;
+    min-height: var(--arena-dock-inner-h) !important;
+    max-height: var(--arena-dock-inner-h) !important;
+    overflow: visible !important;
+  }
+}
+
+/* Desktop overlay isolation: floating UI must never resize or move the arena rails. */
+@media (min-width: 1024px) and (pointer: fine) {
+  .play-board.play-board--new-ui,
+  .play-board.play-board--new-ui.is-bot-turn,
+  .play-board.play-board--new-ui.is-human-turn,
+  .play-board.play-board--new-ui.is-action-dock-empty,
+  .play-board.play-board--new-ui.is-feedback-overlay-active,
+  .play-board.play-board--new-ui.is-stack-active,
+  .play-board.play-board--new-ui.is-stack-deep,
+  .play-board.play-board--new-ui.is-resolution-busy,
+  .play-board.play-board--new-ui.is-draw-animation-pending {
+    --arena-dock-row-h: clamp(88px, 10.4dvh, 108px);
+    --arena-action-row-h: clamp(38px, 4.55dvh, 46px);
+    --arena-hand-row-h: clamp(154px, 17.2dvh, 188px);
+    --arena-player-dock-w: min(1160px, calc(100vw - 48px));
+    --arena-dock-row-safe-h: var(--arena-dock-row-h);
+    --arena-player-dock-h: calc(var(--arena-dock-row-safe-h) - clamp(8px, .75dvh, 12px));
+    --arena-dock-center-w: clamp(360px, 30vw, 430px);
+    --arena-dock-side-min-w: clamp(270px, 23vw, 340px);
+    --arena-dock-inner-h: calc(var(--arena-player-dock-h) - clamp(10px, .85dvh, 14px));
+    --action-h: var(--arena-action-row-h) !important;
+    --hand-h: var(--arena-hand-row-h) !important;
+    grid-template-areas:
+      "bot"
+      "field"
+      "human"
+      "actions"
+      "hand" !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows:
+      var(--arena-dock-row-h)
+      minmax(0, 1fr)
+      var(--arena-dock-row-h)
+      var(--arena-action-row-h)
+      var(--arena-hand-row-h) !important;
+    align-items: stretch !important;
+    justify-items: stretch !important;
+    filter: none !important;
+    transform: none !important;
+    transition-property: background-color, border-color, box-shadow !important;
+  }
+
+  .play-board.play-board--new-ui > .stack-edge-panel,
+  .play-board.play-board--new-ui > .game-result,
+  .phase-alert,
+  .played-card-animation,
+  .draw-animation,
+  .reveal-animation,
+  .pulverize-animation,
+  .zone-modal,
+  .block-prompt,
+  .decision-return-button,
+  #cardZoomPreview {
+    position: fixed !important;
+  }
+
+  .play-board.play-board--new-ui > .stack-edge-panel,
+  .play-board.play-board--new-ui.is-feedback-overlay-active > .stack-edge-panel,
+  .play-board.play-board--new-ui.is-stack-active > .stack-edge-panel {
+    grid-area: auto !important;
+    justify-self: auto !important;
+    align-self: auto !important;
+    inset-inline-start: auto !important;
+    right: env(safe-area-inset-right, 0px) !important;
+    top: 50% !important;
+    bottom: auto !important;
+    width: min(310px, calc(100vw - 22px)) !important;
+    max-height: min(74dvh, 580px) !important;
+    transform: translate(calc(100% + 16px), -50%) !important;
+  }
+
+  .play-board.play-board--new-ui > .stack-edge-panel.is-visible {
+    transform: translate(0, -50%) !important;
+  }
+
+  .play-board.play-board--new-ui > .player-dock-shell,
+  .play-board.play-board--new-ui.is-bot-turn > .player-dock-shell,
+  .play-board.play-board--new-ui.is-human-turn > .player-dock-shell,
+  .play-board.play-board--new-ui.is-feedback-overlay-active > .player-dock-shell,
+  .play-board.play-board--new-ui.is-stack-active > .player-dock-shell,
+  .play-board.play-board--new-ui.is-resolution-busy > .player-dock-shell {
+    position: relative !important;
+    inset: auto !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    place-items: center !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: var(--arena-dock-row-h) !important;
+    min-height: var(--arena-dock-row-h) !important;
+    max-height: var(--arena-dock-row-h) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+    translate: none !important;
+    scale: none !important;
+    rotate: none !important;
+    transition: none !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  .play-board.play-board--new-ui > .player-dock-shell > .player-area,
+  .play-board.play-board--new-ui.is-bot-turn > .player-dock-shell > .player-area,
+  .play-board.play-board--new-ui.is-human-turn > .player-dock-shell > .player-area,
+  .play-board.play-board--new-ui.is-feedback-overlay-active > .player-dock-shell > .player-area,
+  .play-board.play-board--new-ui.is-stack-active > .player-dock-shell > .player-area,
+  .play-board.play-board--new-ui.is-resolution-busy > .player-dock-shell > .player-area {
+    position: relative !important;
+    inset: auto !important;
+    grid-area: 1 / 1 !important;
+    justify-self: center !important;
+    align-self: center !important;
+    width: min(100%, var(--arena-player-dock-w)) !important;
+    min-width: 0 !important;
+    max-width: var(--arena-player-dock-w) !important;
+    height: var(--arena-player-dock-h) !important;
+    min-height: var(--arena-player-dock-h) !important;
+    max-height: var(--arena-player-dock-h) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    transform: none !important;
+    translate: none !important;
+    scale: none !important;
+    rotate: none !important;
+    transition: none !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock,
+  .play-board.play-board--new-ui .player-dock--human,
+  .play-board.play-board--new-ui .player-dock--opponent,
+  .play-board.play-board--new-ui .player-dock.is-active-player,
+  .play-board.play-board--new-ui.is-feedback-overlay-active .player-dock,
+  .play-board.play-board--new-ui.is-stack-active .player-dock,
+  .play-board.play-board--new-ui.is-resolution-busy .player-dock {
+    position: relative !important;
+    inset: auto !important;
+    display: grid !important;
+    grid-template-columns:
+      minmax(var(--arena-dock-side-min-w), 1fr)
+      var(--arena-dock-center-w)
+      minmax(var(--arena-dock-side-min-w), 1fr) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    align-items: center !important;
+    justify-items: stretch !important;
+    gap: clamp(8px, .72vw, 12px) !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    padding: clamp(5px, .5dvh, 7px) clamp(10px, .78vw, 14px) !important;
+    transform: none !important;
+    translate: none !important;
+    scale: none !important;
+    rotate: none !important;
+    transition: none !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock,
+  .play-board.play-board--new-ui.is-action-dock-empty > .action-dock,
+  .play-board.play-board--new-ui.is-feedback-overlay-active > .action-dock,
+  .play-board.play-board--new-ui.is-stack-active > .action-dock,
+  .play-board.play-board--new-ui.is-resolution-busy > .action-dock {
+    grid-area: actions !important;
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: var(--arena-action-row-h) !important;
+    min-height: var(--arena-action-row-h) !important;
+    max-height: var(--arena-action-row-h) !important;
+    margin: 0 !important;
+    padding: 0 clamp(10px, .85vw, 14px) !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: none !important;
+    translate: none !important;
+    scale: none !important;
+    rotate: none !important;
+    transition: none !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  .play-board.play-board--new-ui > .action-dock .action-grid,
+  .play-board.play-board--new-ui.is-action-dock-empty > .action-dock .action-grid,
+  .play-board.play-board--new-ui.is-feedback-overlay-active > .action-dock .action-grid,
+  .play-board.play-board--new-ui.is-stack-active > .action-dock .action-grid,
+  .play-board.play-board--new-ui.is-resolution-busy > .action-dock .action-grid {
+    display: grid !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    grid-template-columns: minmax(0, 1fr) var(--arena-single-action-w, clamp(190px, 17vw, 240px)) !important;
+    align-items: center !important;
+    justify-items: stretch !important;
+    gap: clamp(8px, .75vw, 12px) !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock,
+  .play-board.play-board--new-ui > .hand-dock.is-hand-expanded,
+  .play-board.play-board--new-ui > .hand-dock.has-selected-hand-card,
+  .play-board.play-board--new-ui > .hand-dock.is-hand-expanded.has-selected-hand-card,
+  .play-board.play-board--new-ui.is-action-dock-empty > .hand-dock,
+  .play-board.play-board--new-ui.is-feedback-overlay-active > .hand-dock,
+  .play-board.play-board--new-ui.is-stack-active > .hand-dock,
+  .play-board.play-board--new-ui.is-stack-deep > .hand-dock,
+  .play-board.play-board--new-ui.is-resolution-busy > .hand-dock,
+  .play-board.play-board--new-ui.is-draw-animation-pending > .hand-dock {
+    grid-area: hand !important;
+    position: relative !important;
+    inset: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: var(--arena-hand-row-h) !important;
+    min-height: var(--arena-hand-row-h) !important;
+    max-height: var(--arena-hand-row-h) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+    translate: none !important;
+    scale: none !important;
+    rotate: none !important;
+    transition: none !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock .hand-row,
+  .play-board.play-board--new-ui > .hand-dock.is-hand-expanded .hand-row,
+  .play-board.play-board--new-ui > .hand-dock.has-selected-hand-card .hand-row,
+  .play-board.play-board--new-ui > .hand-dock.is-hand-expanded.has-selected-hand-card .hand-row,
+  .play-board.play-board--new-ui.is-action-dock-empty > .hand-dock .hand-row,
+  .play-board.play-board--new-ui.is-feedback-overlay-active > .hand-dock .hand-row,
+  .play-board.play-board--new-ui.is-stack-active > .hand-dock .hand-row,
+  .play-board.play-board--new-ui.is-resolution-busy > .hand-dock .hand-row,
+  .play-board.play-board--new-ui.is-draw-animation-pending > .hand-dock .hand-row {
+    display: flex !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: clamp(14px, 1.45dvh, 20px) clamp(20px, 2.4vw, 34px) 0 !important;
+    transform: none !important;
+    translate: none !important;
+    scale: none !important;
+    rotate: none !important;
+    transition: none !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  .play-board.play-board--new-ui > .hand-dock.has-selected-hand-card .hand-row,
+  .play-board.play-board--new-ui > .hand-dock.is-hand-expanded.has-selected-hand-card .hand-row {
+    padding: clamp(10px, 1.15dvh, 16px) clamp(20px, 2.4vw, 34px) clamp(6px, .7dvh, 10px) !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues,
+  .play-board.play-board--new-ui.is-feedback-overlay-active .player-dock > .dock-metric--virtues,
+  .play-board.play-board--new-ui.is-stack-active .player-dock > .dock-metric--virtues,
+  .play-board.play-board--new-ui.is-resolution-busy .player-dock > .dock-metric--virtues {
+    grid-area: virtues !important;
+    align-self: center !important;
+    justify-self: stretch !important;
+    display: grid !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    align-items: center !important;
+    justify-items: stretch !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: var(--arena-dock-inner-h) !important;
+    min-height: var(--arena-dock-inner-h) !important;
+    max-height: var(--arena-dock-inner-h) !important;
+    margin: 0 !important;
+    padding: 0 clamp(8px, .65vw, 12px) !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    transform: none !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues > span {
+    display: none !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-icons {
+    display: grid !important;
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    align-items: center !important;
+    justify-items: center !important;
+    place-items: center !important;
+    gap: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+    overflow: visible !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-chip {
+    align-self: center !important;
+    justify-self: center !important;
+    display: grid !important;
+    place-items: center !important;
+    width: clamp(28px, 2.08vw, 35px) !important;
+    min-width: clamp(28px, 2.08vw, 35px) !important;
+    max-width: clamp(28px, 2.08vw, 35px) !important;
+    height: clamp(28px, 2.08vw, 35px) !important;
+    min-height: clamp(28px, 2.08vw, 35px) !important;
+    max-height: clamp(28px, 2.08vw, 35px) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    line-height: 1 !important;
+    transform: none !important;
+    overflow: visible !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-chip img,
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-chip i {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    object-fit: contain !important;
+    transform: none !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-chip b {
+    right: -1px !important;
+    bottom: -1px !important;
+    top: auto !important;
+    min-width: 13px !important;
+    height: 13px !important;
+    padding: 0 3px !important;
+    border-radius: 999px !important;
+    font-size: .54rem !important;
+    line-height: 1 !important;
+  }
+}
+
+/* Desktop metric readability: no dock state may truncate the core counters. */
+@media (min-width: 1024px) and (pointer: fine) {
+  .play-board.play-board--new-ui .player-dock-metrics,
+  .play-board.play-board--new-ui.is-feedback-overlay-active .player-dock-metrics,
+  .play-board.play-board--new-ui.is-stack-active .player-dock-metrics,
+  .play-board.play-board--new-ui.is-resolution-busy .player-dock-metrics {
+    grid-area: metrics !important;
+    display: grid !important;
+    grid-template-columns:
+      minmax(48px, .78fr)
+      minmax(48px, .78fr)
+      minmax(74px, 1.12fr)
+      minmax(68px, 1fr)
+      minmax(60px, .92fr) !important;
+    align-items: stretch !important;
+    justify-items: stretch !important;
+    gap: clamp(3px, .28vw, 5px) !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: var(--arena-dock-inner-h) !important;
+    min-height: var(--arena-dock-inner-h) !important;
+    max-height: var(--arena-dock-inner-h) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-metrics > .dock-metric:not(.dock-metric--virtues),
+  .play-board.play-board--new-ui .player-dock-metrics > .player-dock-label {
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) !important;
+    align-items: center !important;
+    justify-items: center !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    padding: 3px 5px !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  .play-board.play-board--new-ui .dock-metric:not(.dock-metric--virtues) span,
+  .play-board.play-board--new-ui .player-dock-metrics > .player-dock-label span {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    white-space: nowrap !important;
+    font-size: clamp(.44rem, .42vw, .55rem) !important;
+    letter-spacing: .08em !important;
+    line-height: 1 !important;
+    text-align: center !important;
+  }
+
+  .play-board.play-board--new-ui .dock-metric:not(.dock-metric--virtues) strong,
+  .play-board.play-board--new-ui .player-dock-metrics > .player-dock-label strong {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    white-space: nowrap !important;
+    font-size: clamp(.82rem, .72vw, 1rem) !important;
+    line-height: 1 !important;
+    text-align: center !important;
+  }
+}
+
+/* Desktop dock centerline: metrics and virtue strip share one vertical axis. */
+@media (min-width: 1024px) and (pointer: fine) {
+  .play-board.play-board--new-ui,
+  .play-board.play-board--new-ui.is-feedback-overlay-active,
+  .play-board.play-board--new-ui.is-stack-active,
+  .play-board.play-board--new-ui.is-resolution-busy {
+    --arena-dock-control-h: clamp(38px, 4.85dvh, 48px);
+    --arena-dock-side-min-w: clamp(300px, 24vw, 360px);
+  }
+
+  .play-board.play-board--new-ui .player-dock,
+  .play-board.play-board--new-ui .player-dock--human,
+  .play-board.play-board--new-ui .player-dock--opponent {
+    align-items: center !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-metrics,
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues {
+    align-self: center !important;
+    justify-self: stretch !important;
+    height: var(--arena-dock-control-h) !important;
+    min-height: var(--arena-dock-control-h) !important;
+    max-height: var(--arena-dock-control-h) !important;
+    margin-block: auto !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-metrics {
+    grid-template-columns:
+      minmax(0, .78fr)
+      minmax(0, .78fr)
+      minmax(0, 1.12fr)
+      minmax(0, 1fr)
+      minmax(0, .92fr) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    align-items: center !important;
+    justify-items: stretch !important;
+    align-content: center !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-metrics > * {
+    grid-row: 1 !important;
+    align-self: center !important;
+    justify-self: stretch !important;
+    position: relative !important;
+    inset: auto !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    transform: none !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-metrics > :nth-child(1) {
+    grid-column: 1 !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-metrics > :nth-child(2) {
+    grid-column: 2 !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-metrics > .player-dock-label,
+  .play-board.play-board--new-ui .player-dock-metrics > :nth-child(3) {
+    grid-column: 3 !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-metrics > :nth-child(4) {
+    grid-column: 4 !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-metrics > :nth-child(5) {
+    grid-column: 5 !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock-metrics > .dock-metric:not(.dock-metric--virtues),
+  .play-board.play-board--new-ui .player-dock-metrics > .player-dock-label {
+    display: grid !important;
+    grid-template-rows: auto auto !important;
+    place-items: center !important;
+    align-content: center !important;
+    gap: 2px !important;
+    padding: 4px 5px !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues {
+    display: grid !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    place-items: center stretch !important;
+    padding-block: 0 !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-icons {
+    align-self: center !important;
+    justify-self: stretch !important;
+    display: grid !important;
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    align-items: center !important;
+    justify-items: center !important;
+    place-items: center !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-chip {
+    align-self: center !important;
+    justify-self: center !important;
+  }
+}
+
+/* Moral choice cards: icon and copy stay centered on the same row. */
+.zone-modal-panel--moral-choice .moral-choice-card {
+  display: grid !important;
+  grid-template-columns: clamp(58px, 6vw, 66px) minmax(0, 1fr) !important;
+  grid-template-rows: minmax(0, 1fr) !important;
+  align-items: center !important;
+  justify-items: stretch !important;
+  gap: clamp(10px, 1vw, 14px) !important;
+  min-height: clamp(82px, 9dvh, 96px) !important;
+  padding: clamp(9px, .9vw, 12px) clamp(10px, 1vw, 14px) !important;
+}
+
+.zone-modal-panel--moral-choice .moral-choice-card > img {
+  align-self: center !important;
+  justify-self: center !important;
+  width: clamp(50px, 5.4vw, 58px) !important;
+  height: clamp(50px, 5.4vw, 58px) !important;
+  margin: 0 !important;
+}
+
+.zone-modal-panel--moral-choice .moral-choice-card > span {
+  align-self: center !important;
+  justify-self: stretch !important;
+  display: grid !important;
+  grid-template-rows: auto auto !important;
+  align-content: center !important;
+  justify-items: start !important;
+  gap: 4px !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  overflow: visible !important;
+}
+
+.zone-modal-panel--moral-choice .moral-choice-card em,
+.zone-modal-panel--moral-choice .moral-choice-card p {
+  align-self: center !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  overflow: visible !important;
+}
+
+.zone-modal-panel--moral-choice .moral-choice-card em {
+  line-height: 1.05 !important;
+}
+
+.zone-modal-panel--moral-choice .moral-choice-card p {
+  line-height: 1.24 !important;
+}
