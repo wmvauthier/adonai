@@ -8659,3 +8659,830 @@ body::after {
 .zone-modal-panel--moral-choice .moral-choice-card p {
   line-height: 1.24 !important;
 }
+
+/* Modal-state dock lock: opening a modal may dim the board, never reflow dock internals. */
+@media (min-width: 1024px) and (pointer: fine) {
+  .play-board.play-board--new-ui.is-feedback-overlay-active .player-dock,
+  .play-board.play-board--new-ui.is-feedback-overlay-active .player-dock--human,
+  .play-board.play-board--new-ui.is-feedback-overlay-active .player-dock--opponent,
+  .play-board.play-board--new-ui.is-feedback-overlay-active .player-dock.is-active-player {
+    grid-template-columns:
+      minmax(var(--arena-dock-side-min-w), 1fr)
+      var(--arena-dock-center-w)
+      minmax(var(--arena-dock-side-min-w), 1fr) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    align-items: center !important;
+    justify-items: stretch !important;
+    align-content: center !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    max-height: 100% !important;
+    transform: none !important;
+    contain: none !important;
+  }
+
+  .play-board.play-board--new-ui.is-feedback-overlay-active .player-dock--human,
+  .play-board.play-board--new-ui.is-feedback-overlay-active .player-dock--human.is-active-player {
+    grid-template-areas: "virtues identity metrics" !important;
+  }
+
+  .play-board.play-board--new-ui.is-feedback-overlay-active .player-dock--opponent,
+  .play-board.play-board--new-ui.is-feedback-overlay-active .player-dock--opponent.is-active-player {
+    grid-template-areas: "metrics identity virtues" !important;
+  }
+
+  .play-board.play-board--new-ui.is-feedback-overlay-active .player-dock-metrics,
+  .play-board.play-board--new-ui.is-feedback-overlay-active .player-dock > .dock-metric--virtues {
+    align-self: center !important;
+    justify-self: stretch !important;
+    display: grid !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    align-items: center !important;
+    align-content: center !important;
+    justify-items: stretch !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: var(--arena-dock-control-h) !important;
+    min-height: var(--arena-dock-control-h) !important;
+    max-height: var(--arena-dock-control-h) !important;
+    margin: auto 0 !important;
+    padding-block: 0 !important;
+    transform: none !important;
+    translate: none !important;
+    scale: none !important;
+    rotate: none !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  .play-board.play-board--new-ui.is-feedback-overlay-active .player-dock-metrics {
+    grid-area: metrics !important;
+    grid-template-columns:
+      minmax(0, .78fr)
+      minmax(0, .78fr)
+      minmax(0, 1.12fr)
+      minmax(0, 1fr)
+      minmax(0, .92fr) !important;
+    gap: clamp(3px, .28vw, 5px) !important;
+  }
+
+  .play-board.play-board--new-ui.is-feedback-overlay-active .player-dock-metrics > *,
+  .play-board.play-board--new-ui.is-feedback-overlay-active .player-dock-metrics > .dock-metric:not(.dock-metric--virtues),
+  .play-board.play-board--new-ui.is-feedback-overlay-active .player-dock-metrics > .player-dock-label {
+    grid-row: 1 !important;
+    align-self: center !important;
+    justify-self: stretch !important;
+    display: grid !important;
+    grid-template-rows: auto auto !important;
+    place-items: center !important;
+    align-content: center !important;
+    gap: 2px !important;
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    padding: 4px 5px !important;
+    transform: none !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  .play-board.play-board--new-ui.is-feedback-overlay-active .player-dock-metrics > :nth-child(1) {
+    grid-column: 1 !important;
+  }
+
+  .play-board.play-board--new-ui.is-feedback-overlay-active .player-dock-metrics > :nth-child(2) {
+    grid-column: 2 !important;
+  }
+
+  .play-board.play-board--new-ui.is-feedback-overlay-active .player-dock-metrics > .player-dock-label,
+  .play-board.play-board--new-ui.is-feedback-overlay-active .player-dock-metrics > :nth-child(3) {
+    grid-column: 3 !important;
+  }
+
+  .play-board.play-board--new-ui.is-feedback-overlay-active .player-dock-metrics > :nth-child(4) {
+    grid-column: 4 !important;
+  }
+
+  .play-board.play-board--new-ui.is-feedback-overlay-active .player-dock-metrics > :nth-child(5) {
+    grid-column: 5 !important;
+  }
+
+  .play-board.play-board--new-ui.is-feedback-overlay-active .dock-metric:not(.dock-metric--virtues) span,
+  .play-board.play-board--new-ui.is-feedback-overlay-active .dock-metric:not(.dock-metric--virtues) strong,
+  .play-board.play-board--new-ui.is-feedback-overlay-active .player-dock-metrics > .player-dock-label span,
+  .play-board.play-board--new-ui.is-feedback-overlay-active .player-dock-metrics > .player-dock-label strong {
+    align-self: center !important;
+    justify-self: center !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    text-align: center !important;
+    line-height: 1 !important;
+    transform: none !important;
+  }
+
+  .play-board.play-board--new-ui.is-feedback-overlay-active .player-dock > .dock-metric--virtues {
+    grid-area: virtues !important;
+    place-items: center stretch !important;
+    padding-inline: clamp(8px, .65vw, 12px) !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .play-board.play-board--new-ui.is-feedback-overlay-active .player-dock > .dock-metric--virtues > span {
+    display: none !important;
+  }
+
+  .play-board.play-board--new-ui.is-feedback-overlay-active .player-dock > .dock-metric--virtues .dock-virtue-icons {
+    align-self: center !important;
+    justify-self: stretch !important;
+    display: grid !important;
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    align-items: center !important;
+    justify-items: center !important;
+    place-items: center !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+    overflow: visible !important;
+  }
+
+  .play-board.play-board--new-ui.is-feedback-overlay-active .player-dock > .dock-metric--virtues .dock-virtue-chip {
+    align-self: center !important;
+    justify-self: center !important;
+    width: clamp(28px, 2.08vw, 35px) !important;
+    min-width: clamp(28px, 2.08vw, 35px) !important;
+    max-width: clamp(28px, 2.08vw, 35px) !important;
+    height: clamp(28px, 2.08vw, 35px) !important;
+    min-height: clamp(28px, 2.08vw, 35px) !important;
+    max-height: clamp(28px, 2.08vw, 35px) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+  }
+}
+
+/* Desktop dock hard anchor: side rails are centered absolutely in every floating UI state. */
+@media (min-width: 1024px) and (pointer: fine) {
+  .play-board.play-board--new-ui,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) {
+    --arena-dock-pad-x: clamp(10px, .78vw, 14px);
+    --arena-dock-side-w: clamp(260px, 23vw, 340px);
+    --arena-dock-control-h: clamp(38px, 4.85dvh, 48px);
+  }
+
+  .play-board.play-board--new-ui .player-dock,
+  .play-board.play-board--new-ui .player-dock--human,
+  .play-board.play-board--new-ui .player-dock--opponent,
+  .play-board.play-board--new-ui .player-dock.is-active-player,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock.is-active-player {
+    position: relative !important;
+    display: block !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    max-height: 100% !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .player-dock-identity,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .player-dock-identity {
+    position: absolute !important;
+    inset: auto !important;
+    top: 50% !important;
+    left: 50% !important;
+    right: auto !important;
+    bottom: auto !important;
+    z-index: 2 !important;
+    width: var(--arena-dock-center-w) !important;
+    min-width: var(--arena-dock-center-w) !important;
+    max-width: var(--arena-dock-center-w) !important;
+    height: var(--arena-dock-inner-h) !important;
+    min-height: var(--arena-dock-inner-h) !important;
+    max-height: var(--arena-dock-inner-h) !important;
+    margin: 0 !important;
+    transform: translate(-50%, -50%) !important;
+    box-sizing: border-box !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .player-dock-metrics,
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .player-dock-metrics,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .dock-metric--virtues {
+    position: absolute !important;
+    inset: auto !important;
+    top: 50% !important;
+    bottom: auto !important;
+    z-index: 2 !important;
+    width: var(--arena-dock-side-w) !important;
+    min-width: var(--arena-dock-side-w) !important;
+    max-width: var(--arena-dock-side-w) !important;
+    height: var(--arena-dock-control-h) !important;
+    min-height: var(--arena-dock-control-h) !important;
+    max-height: var(--arena-dock-control-h) !important;
+    margin: 0 !important;
+    transform: translateY(-50%) !important;
+    translate: none !important;
+    scale: none !important;
+    rotate: none !important;
+    box-sizing: border-box !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock--human > .dock-metric--virtues,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock--human > .dock-metric--virtues {
+    left: var(--arena-dock-pad-x) !important;
+    right: auto !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock--human > .player-dock-metrics,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock--human > .player-dock-metrics {
+    left: auto !important;
+    right: var(--arena-dock-pad-x) !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock--opponent > .player-dock-metrics,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock--opponent > .player-dock-metrics {
+    left: var(--arena-dock-pad-x) !important;
+    right: auto !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock--opponent > .dock-metric--virtues,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock--opponent > .dock-metric--virtues {
+    left: auto !important;
+    right: var(--arena-dock-pad-x) !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .player-dock-metrics,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .player-dock-metrics {
+    display: grid !important;
+    grid-template-columns:
+      minmax(0, .78fr)
+      minmax(0, .78fr)
+      minmax(0, 1.12fr)
+      minmax(0, 1fr)
+      minmax(0, .92fr) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    align-items: center !important;
+    justify-items: stretch !important;
+    align-content: center !important;
+    gap: clamp(3px, .28vw, 5px) !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .dock-metric--virtues {
+    display: grid !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    place-items: center stretch !important;
+    padding: 0 clamp(8px, .65vw, 12px) !important;
+    overflow: visible !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-icons,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .dock-metric--virtues .dock-virtue-icons {
+    display: grid !important;
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    align-items: center !important;
+    justify-items: center !important;
+    place-items: center !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-chip,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .dock-metric--virtues .dock-virtue-chip {
+    align-self: center !important;
+    justify-self: center !important;
+    width: clamp(28px, 2.08vw, 35px) !important;
+    min-width: clamp(28px, 2.08vw, 35px) !important;
+    max-width: clamp(28px, 2.08vw, 35px) !important;
+    height: clamp(28px, 2.08vw, 35px) !important;
+    min-height: clamp(28px, 2.08vw, 35px) !important;
+    max-height: clamp(28px, 2.08vw, 35px) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+  }
+}
+
+/* Mobile virtue dock: keep the strip invisible, only the virtue icons should read. */
+@media (max-width: 1023px) {
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues,
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues.is-active,
+  .play-board.play-board--new-ui .dock-metric--virtues {
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    outline: 0 !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-icons {
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+}
+
+/* Dock axis polish: virtues use one visual row, aligned with the metrics rail. */
+.play-board.play-board--new-ui .dock-metric--virtues > span {
+  display: none !important;
+}
+
+@media (min-width: 1024px) and (pointer: fine) {
+  .play-board.play-board--new-ui .player-dock > .player-dock-metrics,
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .player-dock-metrics,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .dock-metric--virtues {
+    top: 50% !important;
+    height: var(--arena-dock-control-h) !important;
+    min-height: var(--arena-dock-control-h) !important;
+    max-height: var(--arena-dock-control-h) !important;
+    align-items: center !important;
+    align-content: center !important;
+    transform: translateY(-50%) !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .player-dock-metrics,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .player-dock-metrics {
+    justify-items: stretch !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .player-dock-metrics > .dock-metric:not(.dock-metric--virtues),
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .player-dock-metrics > .dock-metric:not(.dock-metric--virtues) {
+    align-self: center !important;
+    justify-self: stretch !important;
+    height: calc(var(--arena-dock-control-h) - 8px) !important;
+    min-height: calc(var(--arena-dock-control-h) - 8px) !important;
+    max-height: calc(var(--arena-dock-control-h) - 8px) !important;
+    margin: 0 !important;
+    transform: none !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .dock-metric--virtues {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 clamp(8px, .65vw, 12px) !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-icons,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .dock-metric--virtues .dock-virtue-icons {
+    flex: 1 1 auto !important;
+    align-self: center !important;
+    display: grid !important;
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    align-items: center !important;
+    justify-items: center !important;
+    width: 100% !important;
+    height: var(--arena-dock-control-h) !important;
+    min-height: var(--arena-dock-control-h) !important;
+    max-height: var(--arena-dock-control-h) !important;
+    line-height: 1 !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-chip,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .dock-metric--virtues .dock-virtue-chip {
+    align-self: center !important;
+    justify-self: center !important;
+    position: relative !important;
+    line-height: 1 !important;
+  }
+}
+
+/* Desktop dock rail: metrics and virtues share the same visual axis. */
+@media (min-width: 1024px) and (pointer: fine) {
+  .play-board.play-board--new-ui,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) {
+    --arena-dock-rail-h: clamp(38px, 4.45dvh, 44px);
+    --arena-dock-chip-size: clamp(30px, 2.14vw, 36px);
+    --arena-dock-badge-size: clamp(10px, .72vw, 12px);
+  }
+
+  .play-board.play-board--new-ui .player-dock > .player-dock-metrics,
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .player-dock-metrics,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .dock-metric--virtues {
+    top: 50% !important;
+    height: var(--arena-dock-rail-h) !important;
+    min-height: var(--arena-dock-rail-h) !important;
+    max-height: var(--arena-dock-rail-h) !important;
+    align-items: center !important;
+    align-content: center !important;
+    justify-items: stretch !important;
+    margin: 0 !important;
+    transform: translateY(-50%) !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .player-dock-metrics > .dock-metric:not(.dock-metric--virtues),
+  .play-board.play-board--new-ui .player-dock > .player-dock-metrics > .player-dock-label,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .player-dock-metrics > .dock-metric:not(.dock-metric--virtues),
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .player-dock-metrics > .player-dock-label {
+    align-self: center !important;
+    justify-self: stretch !important;
+    height: var(--arena-dock-rail-h) !important;
+    min-height: var(--arena-dock-rail-h) !important;
+    max-height: var(--arena-dock-rail-h) !important;
+    display: grid !important;
+    grid-template-rows: min-content min-content !important;
+    place-items: center !important;
+    align-content: center !important;
+    margin: 0 !important;
+    padding: 4px 5px !important;
+    transform: none !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .dock-metric--virtues {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: var(--arena-dock-rail-h) !important;
+    place-items: center stretch !important;
+    padding-block: 0 !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-icons,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .dock-metric--virtues .dock-virtue-icons {
+    align-self: center !important;
+    justify-self: stretch !important;
+    height: var(--arena-dock-rail-h) !important;
+    min-height: var(--arena-dock-rail-h) !important;
+    max-height: var(--arena-dock-rail-h) !important;
+    display: grid !important;
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    align-items: center !important;
+    justify-items: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-chip,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .dock-metric--virtues .dock-virtue-chip {
+    align-self: center !important;
+    justify-self: center !important;
+    width: var(--arena-dock-chip-size) !important;
+    min-width: var(--arena-dock-chip-size) !important;
+    max-width: var(--arena-dock-chip-size) !important;
+    height: var(--arena-dock-chip-size) !important;
+    min-height: var(--arena-dock-chip-size) !important;
+    max-height: var(--arena-dock-chip-size) !important;
+    display: grid !important;
+    place-items: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    transform: none !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-chip b,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .dock-metric--virtues .dock-virtue-chip b {
+    right: 0 !important;
+    bottom: 0 !important;
+    width: var(--arena-dock-badge-size) !important;
+    min-width: var(--arena-dock-badge-size) !important;
+    height: var(--arena-dock-badge-size) !important;
+    min-height: var(--arena-dock-badge-size) !important;
+    padding: 0 !important;
+    font-size: clamp(.42rem, .5vw, .5rem) !important;
+    transform: none !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-feedback,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .dock-metric--virtues .dock-virtue-feedback {
+    top: 0 !important;
+    left: 0 !important;
+    width: var(--arena-dock-badge-size) !important;
+    height: var(--arena-dock-badge-size) !important;
+    font-size: clamp(.42rem, .5vw, .5rem) !important;
+    transform: none !important;
+  }
+}
+
+/* Desktop dock: three centered sections, independent from overlays/edge panels. */
+@media (min-width: 1024px) and (pointer: fine) {
+  .play-board.play-board--new-ui,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) {
+    --arena-dock-pad-x: clamp(10px, .78vw, 14px);
+    --arena-dock-center-w: clamp(360px, 34vw, 440px);
+    --arena-dock-side-w: clamp(260px, 23vw, 340px);
+  }
+
+  .play-board.play-board--new-ui .player-dock,
+  .play-board.play-board--new-ui .player-dock--human,
+  .play-board.play-board--new-ui .player-dock--opponent,
+  .play-board.play-board--new-ui .player-dock.is-active-player,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock.is-active-player {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) var(--arena-dock-center-w) minmax(0, 1fr) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    grid-template-areas: "dock-left dock-center dock-right" !important;
+    align-items: center !important;
+    justify-items: center !important;
+    align-content: center !important;
+    justify-content: stretch !important;
+    column-gap: clamp(10px, .82vw, 16px) !important;
+    padding-inline: var(--arena-dock-pad-x) !important;
+    overflow: visible !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .player-dock-identity,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .player-dock-identity {
+    grid-area: dock-center !important;
+    position: relative !important;
+    inset: auto !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    align-self: center !important;
+    justify-self: center !important;
+    margin: 0 !important;
+    transform: none !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock--human > .dock-metric--virtues,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock--human > .dock-metric--virtues,
+  .play-board.play-board--new-ui .player-dock--opponent > .player-dock-metrics,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock--opponent > .player-dock-metrics {
+    grid-area: dock-left !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock--human > .player-dock-metrics,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock--human > .player-dock-metrics,
+  .play-board.play-board--new-ui .player-dock--opponent > .dock-metric--virtues,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock--opponent > .dock-metric--virtues {
+    grid-area: dock-right !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .player-dock-metrics,
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .player-dock-metrics,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .dock-metric--virtues {
+    position: relative !important;
+    inset: auto !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    align-self: center !important;
+    justify-self: center !important;
+    width: min(100%, var(--arena-dock-side-w)) !important;
+    min-width: 0 !important;
+    max-width: var(--arena-dock-side-w) !important;
+    height: var(--arena-dock-rail-h) !important;
+    min-height: var(--arena-dock-rail-h) !important;
+    max-height: var(--arena-dock-rail-h) !important;
+    margin: 0 !important;
+    transform: none !important;
+    translate: none !important;
+    scale: none !important;
+    rotate: none !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .player-dock-metrics,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .player-dock-metrics {
+    place-items: center stretch !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues,
+  .play-board.play-board--new-ui:is(.is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .dock-metric--virtues {
+    place-items: center !important;
+  }
+}
+
+.death-card-animation {
+  position: fixed !important;
+  z-index: 135 !important;
+  margin: 0 !important;
+  pointer-events: none !important;
+  overflow: visible !important;
+  transform-origin: 50% 50% !important;
+  animation: adonai-card-death-dissolve .78s cubic-bezier(.16, 1, .3, 1) forwards !important;
+  filter:
+    drop-shadow(0 0 18px rgba(255, 226, 154, .2))
+    drop-shadow(0 12px 24px rgba(0, 0, 0, .52)) !important;
+}
+
+.death-card-animation::after {
+  content: "";
+  position: absolute;
+  inset: -10%;
+  z-index: -1;
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255, 230, 166, .28), transparent 52%),
+    radial-gradient(circle at 50% 54%, rgba(119, 242, 255, .18), transparent 64%);
+  animation: adonai-card-death-aura .78s ease-out forwards;
+  pointer-events: none;
+}
+
+.death-card-animation img,
+.death-card-animation .card-main-art {
+  animation: none !important;
+}
+
+@keyframes adonai-card-death-dissolve {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+    filter: saturate(.9) brightness(1);
+  }
+
+  42% {
+    opacity: .92;
+    transform: translate3d(0, -7px, 0) scale(1.08) rotate(-2deg);
+    filter: saturate(.48) brightness(1.28);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0) scale(.56) rotate(8deg);
+    filter: grayscale(1) brightness(.38) blur(1px);
+  }
+}
+
+@keyframes adonai-card-death-aura {
+  0% {
+    opacity: .72;
+    transform: scale(.88);
+  }
+
+  48% {
+    opacity: .95;
+    transform: scale(1.18);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.62);
+  }
+}
+
+/* Desktop dock final alignment: full battlefield width, three centered lanes. */
+@media (min-width: 1024px) and (pointer: fine) {
+  .play-board.play-board--new-ui,
+  .play-board.play-board--new-ui:is(.is-bot-turn, .is-human-turn, .is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) {
+    --arena-player-dock-w: 100%;
+    --arena-dock-pad-x: clamp(12px, .9vw, 18px);
+    --arena-dock-center-w: clamp(360px, 34vw, 440px);
+    --arena-dock-side-w: minmax(0, 1fr);
+    --arena-dock-rail-h: clamp(40px, 4.45dvh, 46px);
+    --arena-dock-chip-size: clamp(31px, 2.18vw, 36px);
+  }
+
+  .play-board.play-board--new-ui > .player-dock-shell,
+  .play-board.play-board--new-ui:is(.is-bot-turn, .is-human-turn, .is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) > .player-dock-shell,
+  .play-board.play-board--new-ui > .player-dock-shell > .player-area,
+  .play-board.play-board--new-ui:is(.is-bot-turn, .is-human-turn, .is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) > .player-dock-shell > .player-area,
+  .play-board.play-board--new-ui .player-dock,
+  .play-board.play-board--new-ui:is(.is-bot-turn, .is-human-turn, .is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    justify-self: stretch !important;
+    align-self: center !important;
+    margin-inline: 0 !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock,
+  .play-board.play-board--new-ui .player-dock--human,
+  .play-board.play-board--new-ui .player-dock--opponent,
+  .play-board.play-board--new-ui .player-dock.is-active-player,
+  .play-board.play-board--new-ui:is(.is-bot-turn, .is-human-turn, .is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock,
+  .play-board.play-board--new-ui:is(.is-bot-turn, .is-human-turn, .is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock.is-active-player {
+    display: grid !important;
+    grid-template-columns:
+      var(--arena-dock-side-w)
+      var(--arena-dock-center-w)
+      var(--arena-dock-side-w) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    grid-template-areas: "dock-left dock-center dock-right" !important;
+    place-items: center !important;
+    column-gap: clamp(10px, .9vw, 18px) !important;
+    padding: clamp(6px, .56dvh, 8px) var(--arena-dock-pad-x) !important;
+    overflow: visible !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .player-dock-identity,
+  .play-board.play-board--new-ui:is(.is-bot-turn, .is-human-turn, .is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .player-dock-identity {
+    grid-area: dock-center !important;
+    justify-self: center !important;
+    align-self: center !important;
+    position: relative !important;
+    inset: auto !important;
+    margin: 0 !important;
+    transform: none !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock--human > .dock-metric--virtues,
+  .play-board.play-board--new-ui:is(.is-bot-turn, .is-human-turn, .is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock--human > .dock-metric--virtues,
+  .play-board.play-board--new-ui .player-dock--opponent > .player-dock-metrics,
+  .play-board.play-board--new-ui:is(.is-bot-turn, .is-human-turn, .is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock--opponent > .player-dock-metrics {
+    grid-area: dock-left !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock--human > .player-dock-metrics,
+  .play-board.play-board--new-ui:is(.is-bot-turn, .is-human-turn, .is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock--human > .player-dock-metrics,
+  .play-board.play-board--new-ui .player-dock--opponent > .dock-metric--virtues,
+  .play-board.play-board--new-ui:is(.is-bot-turn, .is-human-turn, .is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock--opponent > .dock-metric--virtues {
+    grid-area: dock-right !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .player-dock-metrics,
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues,
+  .play-board.play-board--new-ui:is(.is-bot-turn, .is-human-turn, .is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .player-dock-metrics,
+  .play-board.play-board--new-ui:is(.is-bot-turn, .is-human-turn, .is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .dock-metric--virtues {
+    position: relative !important;
+    inset: auto !important;
+    justify-self: center !important;
+    align-self: center !important;
+    width: min(100%, 360px) !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: var(--arena-dock-rail-h) !important;
+    min-height: var(--arena-dock-rail-h) !important;
+    max-height: var(--arena-dock-rail-h) !important;
+    margin: 0 !important;
+    padding-block: 0 !important;
+    transform: none !important;
+    overflow: visible !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues,
+  .play-board.play-board--new-ui:is(.is-bot-turn, .is-human-turn, .is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .dock-metric--virtues {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    place-items: center !important;
+    align-content: center !important;
+    justify-content: center !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues > span,
+  .play-board.play-board--new-ui:is(.is-bot-turn, .is-human-turn, .is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .dock-metric--virtues > span {
+    display: none !important;
+    grid-row: 1 !important;
+    grid-column: 1 !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-icons,
+  .play-board.play-board--new-ui:is(.is-bot-turn, .is-human-turn, .is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .dock-metric--virtues .dock-virtue-icons {
+    grid-row: 1 !important;
+    grid-column: 1 !important;
+    align-self: center !important;
+    justify-self: center !important;
+    display: grid !important;
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    place-items: center !important;
+    width: 100% !important;
+    height: var(--arena-dock-rail-h) !important;
+    min-height: var(--arena-dock-rail-h) !important;
+    max-height: var(--arena-dock-rail-h) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+  }
+
+  .play-board.play-board--new-ui .player-dock > .dock-metric--virtues .dock-virtue-chip,
+  .play-board.play-board--new-ui:is(.is-bot-turn, .is-human-turn, .is-feedback-overlay-active, .is-stack-active, .is-stack-deep, .is-resolution-busy, .is-draw-animation-pending) .player-dock > .dock-metric--virtues .dock-virtue-chip {
+    grid-row: 1 !important;
+    align-self: center !important;
+    justify-self: center !important;
+    width: var(--arena-dock-chip-size) !important;
+    height: var(--arena-dock-chip-size) !important;
+    min-width: var(--arena-dock-chip-size) !important;
+    min-height: var(--arena-dock-chip-size) !important;
+    max-width: var(--arena-dock-chip-size) !important;
+    max-height: var(--arena-dock-chip-size) !important;
+    margin: 0 !important;
+    transform: none !important;
+  }
+}

@@ -4949,6 +4949,46 @@ function chooseBotCardEntry(entries, player) {
     .sort((left, right) => scoreBotDeckReviewCard(player, right.cardId) - scoreBotDeckReviewCard(player, left.cardId))[0] || null;
 }
 
+function findBattlefieldCardElement(uid) {
+  if (!uid || typeof document === "undefined") return null;
+  return Array.from(document.querySelectorAll("[data-battlefield-card], [data-bot-battlefield-card]"))
+    .find((element) => element.dataset.battlefieldCard === uid || element.dataset.botBattlefieldCard === uid) || null;
+}
+
+function playCharacterDeathAnimation(instance) {
+  const card = app.cardByCode.get(instance?.cardId);
+  if (!instance || getCardTypeCode(card) !== "PER") return;
+  if (instance.dying || typeof document === "undefined" || typeof window === "undefined") return;
+  const source = findBattlefieldCardElement(instance.uid);
+  if (!source) return;
+  const rect = source.getBoundingClientRect();
+  if (!rect.width || !rect.height) return;
+  const clone = source.cloneNode(true);
+  clone.classList.add("death-card-animation");
+  clone.classList.remove(
+    "is-actionable-card",
+    "is-click-attack-target",
+    "is-attack-selected",
+    "is-attack-target",
+    "is-blocking-card",
+    "is-damage-flash",
+    "has-stat-feedback",
+    "is-stat-feedback-buff",
+    "is-stat-feedback-nerf"
+  );
+  clone.removeAttribute("data-battlefield-card");
+  clone.removeAttribute("data-bot-battlefield-card");
+  clone.setAttribute("aria-hidden", "true");
+  Object.assign(clone.style, {
+    left: `${rect.left}px`,
+    top: `${rect.top}px`,
+    width: `${rect.width}px`,
+    height: `${rect.height}px`
+  });
+  document.body.appendChild(clone);
+  window.setTimeout(() => clone.remove(), 860);
+}
+
 function removeBattlefieldCardToZone(game, playerId, instance, destination) {
   const controller = getPlayer(game, playerId);
   if (!controller || !instance) return false;
@@ -4975,6 +5015,7 @@ function removeBattlefieldCardToZone(game, playerId, instance, destination) {
     }
     return true;
   }
+  if (destination === "cemetery") playCharacterDeathAnimation(instance);
   cleanupAttachmentsForLeaving(game, instance.uid);
   controller.battlefield = controller.battlefield.filter((item) => item.uid !== instance.uid);
   if (!isToken && destination === "hand") owner.hand.push(instance.cardId);
@@ -8178,9 +8219,19 @@ async function applyDamageReplacementWindow(game, event) {
     amount: toNumber(event.amount, 0),
     preventedAmount: 0
   };
+  if (target.type === "character") {
+    const targetPlayer = getPlayer(game, target.playerId);
+    const targetInstance = findBattlefieldInstance(targetPlayer, target.uid);
+    if (targetInstance && damageEvent.amount > 0 && instanceHasKeyword(targetInstance, "INDESTRUTIVEL")) {
+      const targetCard = app.cardByCode.get(targetInstance.cardId);
+      damageEvent.preventedAmount = "all";
+      addLog(game, `${getCardName(targetCard)} preveniu ${damageEvent.amount} de dano por INDESTRUTIVEL.`, "Engine");
+    }
+  }
   (game.effects || []).forEach((effect) => {
     if (effect.type !== "preventDamageToInstance") return;
     if (!effectTargetsInstance(effect, { uid: target.uid, owner: target.playerId })) return;
+    if (damageEvent.preventedAmount === "all") return;
     damageEvent.preventedAmount = "all";
     addLog(game, `${effect.label || "Prevenção"} preveniu ${damageEvent.amount} de dano.`, "Engine");
   });
@@ -8559,6 +8610,7 @@ function dealCharacterDamage(player, uid, amount, reason, source = "", options =
 }
 
 function destroyLethalCharacters(game) {
+  let destroyedAny = false;
   Object.values(game.players).forEach((player) => {
     const survivors = [];
     player.battlefield.forEach((instance) => {
@@ -8576,6 +8628,7 @@ function destroyLethalCharacters(game) {
       }
       if (lethalByDamage || zeroResistance) {
         const isToken = Boolean(instance.token || card?.token);
+        playCharacterDeathAnimation(instance);
         cleanupAttachmentsForLeaving(game, instance.uid);
         if (!isToken) player.cemetery.push(instance.cardId);
         emitGameEvent("permanent.leaves_battlefield", {
@@ -8594,20 +8647,23 @@ function destroyLethalCharacters(game) {
         addLog(game, isToken
           ? `${getCardName(card)} foi destruido por dano e deixou de existir.`
           : `${getCardName(card)} foi destruido por dano.`, player.label);
+        destroyedAny = true;
         return;
       }
       survivors.push(instance);
     });
     player.battlefield = survivors;
   });
+  return destroyedAny;
 }
 
 function applyStateBasedActions(game) {
   if (!game || game.status !== "active") return false;
   const lethalRefs = getLethalCharacterRefs(game);
   if (!lethalRefs.length) return false;
-  destroyLethalCharacters(game);
+  const destroyed = destroyLethalCharacters(game);
   checkGameEnd(game);
+  if (destroyed) renderGame();
   return true;
 }
 
