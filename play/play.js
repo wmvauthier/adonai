@@ -257,6 +257,7 @@ const app = {
   autoPassTimer: null,
   blockReviewResume: null,
   priority: null,
+  botPriority: null,
   pendingEngineChoice: null,
   pendingMoralChoice: null,
   pendingVirtueDebug: null,
@@ -1440,6 +1441,133 @@ function sortMoralChoices(choices = []) {
   });
 }
 
+function getMoralStateValue(player, state, virtueId) {
+  if (state instanceof Map) return toNumber(state.get(Number(virtueId)), 0);
+  return getVirtueValue(player, virtueId);
+}
+
+function getBotMoralLevelBaseScore(virtue, level, player) {
+  const normalizedLevel = Math.max(0, Math.min(4, toNumber(level, 0)));
+  if (!virtue || normalizedLevel <= 0) return 0;
+  const id = Number(virtue.id);
+  const handSize = player?.hand?.length || 0;
+  const ownCharacters = (player?.battlefield || []).filter((instance) =>
+    getCardTypeCode(app.cardByCode.get(instance.cardId)) === "PER"
+  );
+  const opponent = app.game ? getPlayer(app.game, getOpponentId(player?.id)) : null;
+  const opposingCharacters = (opponent?.battlefield || []).filter((instance) =>
+    getCardTypeCode(app.cardByCode.get(instance.cardId)) === "PER"
+  );
+  const readyAttackers = ownCharacters.filter((instance) => !instance.exhausted && getCharacterPower(instance) > 0);
+  const damagedOwn = ownCharacters.filter((instance) => toNumber(instance.damage, 0) > 0);
+  const bigOwn = ownCharacters.filter((instance) => getCharacterPower(instance) >= 3);
+  const bigOpposing = opposingCharacters.filter((instance) => getCharacterPower(instance) >= 3);
+  const remainingTerritory = getBotTerritoryRemaining(player);
+  const territoryPressure = Math.max(0, 10 - remainingTerritory) * 0.28 + toNumber(player?.territoryDamage, 0) * 0.18;
+  const cardsPlayed = toNumber(player?.cardsPlayedThisTurn, 0);
+  const deckDepth = player?.deck?.length || 0;
+  const baseScores = {
+    [VIRTUE_IDS.faith]: [0, 1.4, 3.2, 5.8, 8.7],
+    [VIRTUE_IDS.doubt]: [0, -2.4, -5.1, -8.2, -11.4],
+    [VIRTUE_IDS.temperance]: [0, 2.8, 5.4, 8.1, 10.5],
+    [VIRTUE_IDS.lackOfControl]: [0, -1.8, -4.4, -7.3, -10.2],
+    [VIRTUE_IDS.justice]: [0, 2.0, 3.8, 5.9, 8.0],
+    [VIRTUE_IDS.iniquity]: [0, -1.4, -3.3, -5.7, -8.1],
+    [VIRTUE_IDS.fortitude]: [0, 3.0, 5.8, 8.4, 11.0],
+    [VIRTUE_IDS.cowardice]: [0, -2.0, -4.7, -8.4, -11.6],
+    [VIRTUE_IDS.hope]: [0, 2.2, 4.4, 6.8, 9.0],
+    [VIRTUE_IDS.despair]: [0, -2.5, -5.3, -8.3, -11.2],
+    [VIRTUE_IDS.prudence]: [0, 2.4, 4.8, 7.0, 9.0],
+    [VIRTUE_IDS.folly]: [0, -2.3, -5.0, -7.8, -10.6],
+    [VIRTUE_IDS.charity]: [0, 2.3, 4.7, 7.5, 9.5],
+    [VIRTUE_IDS.egoism]: [0, -2.1, -4.8, -8.8, -12.0]
+  };
+  let score = baseScores[id]?.[normalizedLevel] || 0;
+
+  if (id === VIRTUE_IDS.faith) score += Math.max(0, handSize - 1) * normalizedLevel * 0.28;
+  if (id === VIRTUE_IDS.doubt) score -= Math.max(0, handSize - 1) * normalizedLevel * 0.22;
+  if (id === VIRTUE_IDS.temperance) score += (cardsPlayed <= 1 ? 0.75 : -0.55) * normalizedLevel;
+  if (id === VIRTUE_IDS.lackOfControl) score -= (cardsPlayed >= 1 ? 0.55 : 0.15) * normalizedLevel;
+  if (id === VIRTUE_IDS.justice) score += bigOpposing.length * normalizedLevel * 0.7;
+  if (id === VIRTUE_IDS.iniquity) score -= bigOwn.length * normalizedLevel * 0.5;
+  if (id === VIRTUE_IDS.fortitude) score += (ownCharacters.length * 0.22 + territoryPressure) * normalizedLevel;
+  if (id === VIRTUE_IDS.cowardice) score -= (damagedOwn.length * 0.8 + readyAttackers.length * 0.25) * normalizedLevel;
+  if (id === VIRTUE_IDS.hope) score += territoryPressure * normalizedLevel + damagedOwn.length * normalizedLevel * 0.18;
+  if (id === VIRTUE_IDS.despair) score -= (territoryPressure + damagedOwn.length * 0.35) * normalizedLevel;
+  if (id === VIRTUE_IDS.prudence) score += Math.min(3, deckDepth / 10) * normalizedLevel * 0.18;
+  if (id === VIRTUE_IDS.folly) score -= Math.min(4, deckDepth / 8) * normalizedLevel * 0.2;
+  if (id === VIRTUE_IDS.charity) score += Math.max(0, readyAttackers.length - 1) * normalizedLevel * 0.65;
+  if (id === VIRTUE_IDS.egoism) score -= Math.max(0, readyAttackers.length - 1) * normalizedLevel * 0.85;
+
+  return score;
+}
+
+function getBotChampionMoralRequirementScore(player, state) {
+  if (!player || player.id !== "bot" || player.championCovered) return 0;
+  const source = getChampionAbilitySource(player);
+  if (!source) return 0;
+  return findAbilityLinksForSource(source)
+    .map((link) => app.engine.abilityById.get(link.abilityId))
+    .filter(Boolean)
+    .reduce((sum, ability) => {
+      const requirement = ability.condition?.moralRequirement;
+      if (!requirement?.virtueId) return sum;
+      const level = Math.max(1, toNumber(requirement.level, 1));
+      const current = getMoralStateValue(player, state, requirement.virtueId);
+      const stackObject = createActivatedStackObject(app.game, ability, source);
+      const abilityScore = Math.max(2, Math.min(10, scoreBotResolutionAbility(stackObject) * 0.45));
+      if (current >= level) return sum + abilityScore;
+      if (current === level - 1) return sum + abilityScore * 0.35;
+      if (current === level - 2) return sum + abilityScore * 0.12;
+      return sum;
+    }, 0);
+}
+
+function scoreBotMoralState(player, state = null, options = {}) {
+  if (!player) return 0;
+  const moralScore = app.virtues.reduce((sum, virtue) => {
+    const level = getMoralStateValue(player, state, virtue.id);
+    return sum + getBotMoralLevelBaseScore(virtue, level, player);
+  }, 0);
+  const championScore = options.includeChampionSynergy === false
+    ? 0
+    : getBotChampionMoralRequirementScore(player, state);
+  return moralScore + championScore;
+}
+
+function scoreBotMoralChoice(player, choice, options = {}) {
+  if (!player || !choice) return Number.NEGATIVE_INFINITY;
+  const beforeScore = scoreBotMoralState(player, null, options);
+  const afterState = simulateMoralShiftValues(player, choice.targetId, choice.delta);
+  let score = scoreBotMoralState(player, afterState, options) - beforeScore;
+  app.virtues.forEach((virtue) => {
+    const before = getVirtueValue(player, virtue.id);
+    const after = getMoralStateValue(player, afterState, virtue.id);
+    if (before === after) return;
+    const improved = virtue.polarity === "virtue" ? after > before : after < before;
+    score += Math.abs(after - before) * (improved ? 0.35 : -0.35);
+  });
+  return score;
+}
+
+function chooseBotMoralChoice(player, choices = []) {
+  const ranked = sortMoralChoices(choices)
+    .map((choice, index) => ({
+      choice,
+      index,
+      score: scoreBotMoralChoice(player, choice)
+    }))
+    .sort((left, right) => {
+      if (right.score !== left.score) return right.score - left.score;
+      const leftVirtue = getVirtueById(left.choice.sourceId || left.choice.targetId);
+      const rightVirtue = getVirtueById(right.choice.sourceId || right.choice.targetId);
+      const axisDiff = getVirtueAxisSortWeight(leftVirtue?.axis) - getVirtueAxisSortWeight(rightVirtue?.axis);
+      if (axisDiff) return axisDiff;
+      return left.index - right.index;
+    });
+  return ranked[0]?.choice || choices[0] || null;
+}
+
 function getConsecrationMoralChoices(player, amount = 1) {
   const delta = Math.max(1, toNumber(amount, 1));
   const activeVices = getVirtuesByPolarity("vice").filter((virtue) => getVirtueValue(player, virtue.id) > 0);
@@ -1510,7 +1638,9 @@ function queueMoralChoice(player, title, description, choices, context, onComple
     return;
   }
   if (player.id !== "human" || validChoices.length === 1) {
-    const choice = validChoices[0];
+    const choice = player.id === "bot" && validChoices.length > 1
+      ? chooseBotMoralChoice(player, validChoices)
+      : validChoices[0];
     const result = applyMoralShift(player, choice.targetId, choice.delta);
     addMoralShiftLog(app.game, player, result, context);
     onComplete?.(result);
@@ -2200,6 +2330,22 @@ function getReadyEssenceGeneratorInstances(player) {
     .filter((instance) => !instance.exhausted && isEssenceGeneratorInstance(instance));
 }
 
+function getEssenceGeneratorPaymentOpportunityCost(player, instance) {
+  const card = app.cardByCode.get(instance?.cardId);
+  if (!player || !instance || !card) return 99;
+  if (isIncenseTokenCard(card)) return 0.35;
+
+  let cost = 2.4;
+  if (getCardTypeCode(card) === "PER") {
+    const power = Math.max(0, getCharacterPower(instance));
+    const resistance = Math.max(0, getCharacterResistance(instance));
+    cost += power * 0.55 + resistance * 0.18;
+    if (currentPhase(app.game) === "preparation" && power > 0) cost += 1.2;
+    if (toNumber(instance.damage, 0) > 0) cost -= 0.35;
+  }
+  return Math.max(0.5, cost);
+}
+
 function getPotentialGeneratedEssence(player) {
   return getReadyEssenceGeneratorInstances(player)
     .reduce((total, instance) => total + (isIncenseTokenInstance(instance) ? getTokenQuantity(instance) : 1), 0);
@@ -2215,7 +2361,8 @@ function ensureGeneratedEssenceForCost(player, amount) {
   const generators = getReadyEssenceGeneratorInstances(player)
     .flatMap((instance) => Array.from({
       length: isIncenseTokenInstance(instance) ? getTokenQuantity(instance) : 1
-    }, () => instance));
+    }, () => instance))
+    .sort((left, right) => getEssenceGeneratorPaymentOpportunityCost(player, left) - getEssenceGeneratorPaymentOpportunityCost(player, right));
   for (const generator of generators) {
     if (getAvailableEssence(player) >= cost) break;
     activateEssenceGeneratorForPayment(player, generator);
@@ -2398,6 +2545,7 @@ function createGame(humanDeck, botDeck, botMode, options = {}) {
     selectedUid: "",
     combat: createCombatState(),
     priorityPasses: {},
+    botPriorityPasses: {},
     stats: createMatchStats(),
     botMode,
     config: {
@@ -2719,6 +2867,7 @@ async function startGame() {
     app.expandedTemplePlayer = "";
     app.resultViewingBoard = false;
     app.territorySnapshot.clear();
+    app.botPriority = null;
     clearHumanAutoPass();
     collapseHand();
     clearTransientOverlays();
@@ -2743,6 +2892,7 @@ function showSetup() {
   app.expandedTemplePlayer = "";
   app.resultViewingBoard = false;
   app.territorySnapshot.clear();
+  app.botPriority = null;
   clearHumanAutoPass();
   collapseHand();
   clearTransientOverlays();
@@ -2765,6 +2915,15 @@ function getPriorityKey(game, key) {
 
 function isHumanPriorityOpen() {
   return Boolean(app.priority?.waiting && app.priority.game === app.game && app.game?.status === "active");
+}
+
+function isBotPriorityOpenFor(player) {
+  return Boolean(
+    player?.id === "bot" &&
+    app.botPriority?.waiting &&
+    app.botPriority.game === app.game &&
+    app.game?.status === "active"
+  );
 }
 
 function isPureEssenceGeneratorAbility(ability) {
@@ -2837,7 +2996,7 @@ function canPlayCardInPriorityWindow(player, cardId, game = app.game) {
   if (!game || !player?.hand?.includes(cardId)) return false;
   const card = app.cardByCode.get(cardId);
   if (!cardCanUseMiracleTiming(card)) return false;
-  const hasWindow = isHumanPriorityOpen() || game.stack.length > 0 || ["combat", "regroup"].includes(currentPhase(game));
+  const hasWindow = isHumanPriorityOpen() || isBotPriorityOpenFor(player) || game.stack.length > 0 || ["combat", "regroup"].includes(currentPhase(game));
   if (!hasWindow) return false;
   if (getEffectivePlayCost(player, card) > getPotentialAvailableEssence(player)) return false;
   return canResolveCardWhenPlayed(cardId, player.id);
@@ -2932,7 +3091,8 @@ function canDiscardForHandLimit(player, cardId) {
 
 function canPlayCard(player, cardId) {
   const priorityOpen = isHumanPriorityOpen();
-  if (!priorityOpen && hasBlockingEngineWork(app.game)) return false;
+  const botPriorityOpen = isBotPriorityOpenFor(player);
+  if (!priorityOpen && !botPriorityOpen && hasBlockingEngineWork(app.game)) return false;
   if (!player.hand.includes(cardId)) return false;
   const card = app.cardByCode.get(cardId);
   const phase = currentPhase(app.game);
@@ -2945,6 +3105,11 @@ function canPlayCard(player, cardId) {
     return app.priority?.game === app.game &&
       player.id === "human" &&
       cardCanUseMiracleTiming(card) &&
+      canPlayCardInPriorityWindow(player, cardId, app.game);
+  }
+
+  if (botPriorityOpen) {
+    return cardCanUseMiracleTiming(card) &&
       canPlayCardInPriorityWindow(player, cardId, app.game);
   }
 
@@ -3508,10 +3673,21 @@ function isBotChampionActivationAcceptable(player, stackObject) {
   });
 }
 
-function activateBotChampionIfUseful(player) {
+function getBestBotChampionActivation(player) {
   if (!player || player.id !== "bot" || !canUseChampionAction(player)) return false;
-  const activated = getViableActivatedAbilitiesForChampion(player)
-    .find(({ stackObject }) => isBotChampionActivationAcceptable(player, stackObject));
+  return getViableActivatedAbilitiesForChampion(player)
+    .filter(({ stackObject }) => isBotChampionActivationAcceptable(player, stackObject))
+    .map((activation) => ({
+      ...activation,
+      score: scoreBotResolutionAbility(activation.stackObject)
+    }))
+    .filter((activation) => Number.isFinite(activation.score))
+    .sort((left, right) => right.score - left.score)[0] || null;
+}
+
+function activateBotChampionIfUseful(player, minimumScore = 2) {
+  const activated = getBestBotChampionActivation(player);
+  if (!activated || activated.score < minimumScore) return false;
   if (!activated?.stackObject) return false;
   return queueActivatedAbility(activated.stackObject);
 }
@@ -4045,18 +4221,103 @@ function scheduleStackResolution(game) {
   window.setTimeout(() => resolveEngineStackLoop(game), 1040);
 }
 
-function requestStackPriorityBeforeResolve(game, stackObject) {
+function requestHumanStackPriorityBeforeResolve(game, stackObject, priorityKey) {
   return new Promise((resolve) => {
     if (!game || game !== app.game || game.status !== "active" || !stackObject) {
       resolve();
       return;
     }
-    game.stackPrioritySeq = toNumber(game.stackPrioritySeq, 0) + 1;
     const label = `Prioridade antes de resolver ${stackObject.label}.`;
-    if (!requestHumanPriority(game, `stack:${stackObject.id}:${game.stackPrioritySeq}`, label, resolve)) {
+    if (!requestHumanPriority(game, priorityKey, label, resolve)) {
       resolve();
     }
   });
+}
+
+function getBotCounterResponseScore(bot, cardId, stackObject) {
+  const resolutionObjects = getCardResolutionStackObjects(cardId, bot.id);
+  let bestScore = Number.NEGATIVE_INFINITY;
+  resolutionObjects.forEach((object) => {
+    const ability = object.ability || app.engine.abilityById.get(object.abilityId);
+    (ability?.actions || []).forEach((action) => {
+      if (action?.effect !== "counter_stack_object") return;
+      const refs = getEngineStackTargetRefs(action.target || { zone: "stack", controller: "all" }, object, { ignoreCount: true })
+        .filter((ref) => ref.stackObject?.id === stackObject?.id);
+      refs.forEach((ref) => {
+        bestScore = Math.max(bestScore, scoreBotCounterStackTargetRef(ref, bot.id, action));
+      });
+    });
+  });
+  return bestScore;
+}
+
+function scoreBotPriorityResponseCard(bot, cardId, stackObject) {
+  if (!bot || !canPlayCardInPriorityWindow(bot, cardId, app.game)) return Number.NEGATIVE_INFINITY;
+  if (!stackObject || stackObject.controllerId === bot.id) return Number.NEGATIVE_INFINITY;
+  const counterScore = getBotCounterResponseScore(bot, cardId, stackObject);
+  if (!Number.isFinite(counterScore) || counterScore <= 0) return Number.NEGATIVE_INFINITY;
+  const cardScore = scoreBotCardPlay(bot, cardId, "priority");
+  if (!Number.isFinite(cardScore)) return Number.NEGATIVE_INFINITY;
+  const card = app.cardByCode.get(cardId);
+  const urgency = getBotTerritoryRemaining(bot) <= 8 ? 1.2 : 0;
+  return cardScore + counterScore * 0.3 + urgency - getEffectivePlayCost(bot, card) * 0.15;
+}
+
+function chooseBotPriorityResponse(game, stackObject) {
+  const bot = game?.players?.bot;
+  if (!bot || !stackObject || stackObject.controllerId === bot.id) return null;
+  const threshold = getBotTerritoryRemaining(bot) <= 8 ? 4.25 : 5.5;
+  return bot.hand
+    .map((cardId) => ({
+      cardId,
+      card: app.cardByCode.get(cardId),
+      score: scoreBotPriorityResponseCard(bot, cardId, stackObject)
+    }))
+    .filter(({ card, score }) => card && Number.isFinite(score) && score >= threshold)
+    .sort((left, right) => {
+      if (right.score !== left.score) return right.score - left.score;
+      return getEffectivePlayCost(bot, left.card) - getEffectivePlayCost(bot, right.card);
+    })[0] || null;
+}
+
+async function requestBotPriorityBeforeResolve(game, stackObject, priorityKey) {
+  if (!game || game !== app.game || game.status !== "active" || !stackObject) return false;
+  if (stackObject.controllerId === "bot") return false;
+  const passKey = getPriorityKey(game, `${priorityKey}:bot`);
+  game.botPriorityPasses ||= {};
+  if (game.botPriorityPasses[passKey]) return false;
+
+  app.botPriority = {
+    game,
+    key: passKey,
+    stackObject,
+    waiting: true
+  };
+  const response = chooseBotPriorityResponse(game, stackObject);
+  if (!response) {
+    game.botPriorityPasses[passKey] = true;
+    app.botPriority = null;
+    return false;
+  }
+
+  const played = applyPlayCard("bot", response.cardId);
+  game.botPriorityPasses[passKey] = true;
+  app.botPriority = null;
+  if (!played) return false;
+  addLog(game, `respondeu a ${stackObject.label} com ${getCardName(response.card)}.`, "Bot");
+  renderGame();
+  await wait(560);
+  return true;
+}
+
+async function requestStackPriorityBeforeResolve(game, stackObject) {
+  if (!game || game !== app.game || game.status !== "active" || !stackObject) return;
+  game.stackPrioritySeq = toNumber(game.stackPrioritySeq, 0) + 1;
+  const priorityKey = `stack:${stackObject.id}:${game.stackPrioritySeq}`;
+  await requestHumanStackPriorityBeforeResolve(game, stackObject, priorityKey);
+  if (!game || game !== app.game || game.status !== "active") return;
+  if (game.stack[game.stack.length - 1]?.id !== stackObject.id) return;
+  await requestBotPriorityBeforeResolve(game, stackObject, priorityKey);
 }
 
 async function resolveEngineStackLoop(game) {
@@ -4295,9 +4556,9 @@ function describeEngineAction(action) {
 }
 
 function chooseBotOptionalAbility(stackObject) {
-  const abilityId = stackObject?.abilityId || "";
-  if (abilityId.includes("doubt") || abilityId.includes("despair") || abilityId.includes("vice")) return false;
-  return true;
+  const score = scoreBotResolutionAbility(stackObject);
+  if (!Number.isFinite(score)) return false;
+  return score >= 0.75;
 }
 
 function showEngineChoiceModal({ title, description, confirmText, cancelText, effectText = "", sourceLabel = "", sourceIcon = "" }) {
@@ -4813,82 +5074,43 @@ function getEngineDamageCapacity(ref, total) {
 
 function chooseBotEngineTargetRef(refs, kind = "target") {
   if (!refs.length) return null;
-  const sorted = [...refs].sort((left, right) => {
-    if (kind === "heal") {
-      if (left.territory !== right.territory) return left.territory ? -1 : 1;
-      return getEngineHealingCapacity(right) - getEngineHealingCapacity(left);
-    }
-    if (kind === "buff") {
-      if (left.territory !== right.territory) return left.territory ? 1 : -1;
-      const leftScore = getCharacterPower(left.instance) + getCharacterResistance(left.instance);
-      const rightScore = getCharacterPower(right.instance) + getCharacterResistance(right.instance);
-      return rightScore - leftScore;
-    }
-    if (kind === "self-damage") {
-      if (left.territory !== right.territory) return left.territory ? 1 : -1;
-      return getLethalDamageNeeded(left.instance) - getLethalDamageNeeded(right.instance);
-    }
-    return 0;
-  });
+  const sorted = [...refs].sort((left, right) =>
+    scoreBotTargetRef(right, "bot", kind, 1) - scoreBotTargetRef(left, "bot", kind, 1)
+  );
   return sorted[0] || null;
 }
 
-function chooseBotEngineTargetRefForStack(stackObject, refs, kind = "target") {
+function chooseBotEngineTargetRefsForStack(stackObject, refs, kind = "target", action = null, limit = 1) {
   if (!refs.length) return null;
   const controllerId = stackObject?.controllerId || "";
-  const opponentId = controllerId ? getOpponentId(controllerId) : "";
-  const scored = refs.map((ref) => {
-    let score = 0;
-    if (kind === "damage") {
-      if (ref.playerId === opponentId) score += 100;
-      if (!ref.territory) score += 20;
-      score += getCharacterPower(ref.instance) * 2;
-      score -= getLethalDamageNeeded(ref.instance);
-    } else if (kind === "buff") {
-      if (ref.playerId === controllerId) score += 100;
-      if (ref.territory) score -= 50;
-      score += getCharacterPower(ref.instance) + getCharacterResistance(ref.instance);
-    } else if (kind === "heal") {
-      if (ref.playerId === controllerId) score += 100;
-      score += getEngineHealingCapacity(ref) * 4;
-      if (ref.territory) score += 10;
-    } else if (kind === "self-damage") {
-      if (ref.playerId === controllerId) score += 100;
-      score -= getEngineDamageCapacity(ref, 99);
-    } else if (kind === "bounce" || kind === "destroy") {
-      if (ref.playerId === opponentId) score += 100;
-      if (ref.playerId === controllerId) score -= 80;
-      score += getCharacterPower(ref.instance) + getCharacterResistance(ref.instance);
-    } else if (kind === "control") {
-      if (ref.playerId === opponentId) score += 120;
-      if (ref.playerId === controllerId) score -= 100;
-      score += getCharacterPower(ref.instance) * 2 + getCharacterResistance(ref.instance);
-      if (ref.instance?.exhausted) score -= 2;
-    } else if (kind === "renounce") {
-      if (ref.playerId === controllerId) score += 20;
-      score -= getCharacterPower(ref.instance) + getCharacterResistance(ref.instance);
-    }
-    return { ref, score };
-  });
+  const amount = getBotActionTargetAmount(action, kind);
+  const scored = refs.map((ref) => ({
+    ref,
+    score: scoreBotTargetRef(ref, controllerId, kind, amount, action)
+  }));
   scored.sort((left, right) => right.score - left.score);
-  return scored[0]?.ref || chooseBotEngineTargetRef(refs, kind);
+  return scored.slice(0, Math.max(1, limit)).map((entry) => entry.ref);
+}
+
+function chooseBotEngineTargetRefForStack(stackObject, refs, kind = "target", action = null) {
+  return chooseBotEngineTargetRefsForStack(stackObject, refs, kind, action, 1)?.[0] ||
+    chooseBotEngineTargetRef(refs, kind);
 }
 
 function scoreBotDeckReviewCard(player, cardId) {
   const card = app.cardByCode.get(cardId);
   if (!card) return -999;
   const typeCode = getCardTypeCode(card);
-  const availableEssence = getAvailableEssence(player);
+  const availableEssence = getPotentialAvailableEssence(player);
   const cost = getCost(card);
-  let score = 0;
-  if (typeCode === "PER") score += 4;
-  if (typeCode === "MIL") score += 3;
-  if (typeCode === "ART") score += 2;
-  if (typeCode === "PEC") score -= 1;
-  if (cost <= availableEssence + 1) score += 5;
-  score -= cost * 0.35;
-  score += toNumber(card.stats?.attack, 0) * .12;
-  score += toNumber(card.stats?.resistance, 0) * .08;
+  let score = scoreBotSimpleCardValue(player, cardId);
+  if (typeCode === "PER" && (player?.battlefield || []).filter((instance) => {
+    const battlefieldCard = app.cardByCode.get(instance.cardId);
+    return getCardTypeCode(battlefieldCard) === "PER";
+  }).length < 2) score += 1.4;
+  if (typeCode === "MIL" && toNumber(player?.territoryDamage, 0) > 0) score += 1;
+  if (typeCode === "ART" && player?.essence?.length < 3) score += 0.8;
+  if (cost > availableEssence + 2 && typeCode !== "PEC") score -= (cost - availableEssence) * 0.45;
   return score;
 }
 
@@ -5429,11 +5651,10 @@ function showEngineStackChoiceModal({ title, description, refs }) {
   });
 }
 
-function chooseBotStackTargetRef(refs, controllerId) {
+function chooseBotStackTargetRef(refs, controllerId, action = null) {
   return [...refs].sort((left, right) => {
-    const leftOwn = left.stackObject.controllerId === controllerId ? 1 : 0;
-    const rightOwn = right.stackObject.controllerId === controllerId ? 1 : 0;
-    if (leftOwn !== rightOwn) return leftOwn - rightOwn;
+    const scoreDiff = scoreBotCounterStackTargetRef(right, controllerId, action) - scoreBotCounterStackTargetRef(left, controllerId, action);
+    if (scoreDiff) return scoreDiff;
     return right.stackIndex - left.stackIndex;
   })[0] || null;
 }
@@ -5443,7 +5664,7 @@ async function chooseEngineStackTargetRef(action, stackObject) {
     ignoreCount: Boolean(action.target?.choice)
   });
   if (!refs.length) return null;
-  if (stackObject.controllerId !== "human") return chooseBotStackTargetRef(refs, stackObject.controllerId);
+  if (stackObject.controllerId !== "human") return chooseBotStackTargetRef(refs, stackObject.controllerId, action);
   return showEngineStackChoiceModal({
     title: stackObject.label,
     description: localize(action.description) || "Escolha um objeto na pilha para anular.",
@@ -5498,9 +5719,14 @@ async function chooseEngineTargetRefs(action, stackObject, kind = "target") {
   if (!targetSpec.choice) return refs;
   const requestedCount = targetSpec.count === "all" ? refs.length : Math.max(1, toNumber(targetSpec.count, 1));
   if (!refs.length) return [];
-  if (requestedCount !== 1) return refs.slice(0, requestedCount);
+  if (requestedCount !== 1) {
+    if (stackObject.controllerId !== "human") {
+      return chooseBotEngineTargetRefsForStack(stackObject, refs, kind, action, requestedCount) || [];
+    }
+    return refs.slice(0, requestedCount);
+  }
   if (stackObject.controllerId !== "human") {
-    const chosen = chooseBotEngineTargetRefForStack(stackObject, refs, kind);
+    const chosen = chooseBotEngineTargetRefForStack(stackObject, refs, kind, action);
     if (chosen && choiceKey) {
       stackObject.choiceCache ||= {};
       stackObject.choiceCache[choiceKey] = chosen;
@@ -5577,12 +5803,30 @@ function showEngineBundleChoiceModal({ title, description, choices }) {
 async function chooseEngineEffectBundle(action, stackObject) {
   const validChoices = (action.choices || []).filter((choice) => isEngineChoiceValid(choice, stackObject));
   if (!validChoices.length) return null;
-  if (stackObject.controllerId !== "human") return validChoices[0];
+  if (stackObject.controllerId !== "human") return chooseBotEngineEffectBundle(validChoices, stackObject);
   return showEngineBundleChoiceModal({
     title: stackObject.label,
     description: localize(action.description) || "Escolha como deseja resolver esta habilidade.",
     choices: validChoices
   });
+}
+
+function scoreBotEngineEffectBundleChoice(choice, stackObject) {
+  const costScore = (choice?.costs || [])
+    .reduce((sum, cost) => sum + scoreBotEngineAction(cost, stackObject, { isCost: true }), 0);
+  const actionScore = (choice?.actions || [])
+    .reduce((sum, action) => sum + scoreBotEngineAction(action, stackObject), 0);
+  return costScore + actionScore;
+}
+
+function chooseBotEngineEffectBundle(choices, stackObject) {
+  return [...choices]
+    .map((choice, index) => ({
+      choice,
+      index,
+      score: scoreBotEngineEffectBundleChoice(choice, stackObject)
+    }))
+    .sort((left, right) => right.score - left.score || left.index - right.index)[0]?.choice || choices[0] || null;
 }
 
 function getEngineDistributionCandidates(targets, stackObject, kind = "heal") {
@@ -5598,16 +5842,17 @@ function getEngineDistributionCandidates(targets, stackObject, kind = "heal") {
   return [...unique.values()];
 }
 
-function chooseBotDistribution(candidates, total, kind = "heal") {
+function chooseBotDistribution(candidates, total, kind = "heal", stackObject = null) {
   const allocations = [];
   if (!candidates.length || total <= 0) return allocations;
+  const controllerId = stackObject?.controllerId || "bot";
   const ordered = [...candidates].sort((left, right) => {
-    if (kind === "heal") {
-      if (left.territory !== right.territory) return left.territory ? -1 : 1;
-      return getEngineHealingCapacity(right) - getEngineHealingCapacity(left);
-    }
-    if (left.territory !== right.territory) return left.territory ? 1 : -1;
-    return getEngineDamageCapacity(left, total) - getEngineDamageCapacity(right, total);
+    const rightScore = scoreBotTargetRef(right, controllerId, kind, total);
+    const leftScore = scoreBotTargetRef(left, controllerId, kind, total);
+    if (rightScore !== leftScore) return rightScore - leftScore;
+    const rightCapacity = kind === "heal" ? getEngineHealingCapacity(right) : getEngineDamageCapacity(right, total);
+    const leftCapacity = kind === "heal" ? getEngineHealingCapacity(left) : getEngineDamageCapacity(left, total);
+    return rightCapacity - leftCapacity;
   });
   let remaining = total;
   ordered.forEach((ref) => {
@@ -6179,7 +6424,7 @@ async function executeEngineAction(action, stackObject, options = {}) {
           description: `Escolha ${amount} carta${amount === 1 ? "" : "s"} da sua mao para descartar.`,
           confirmText: "Descartar"
         })
-        : Array.from({ length: amount }, () => chooseBotDiscardCard(player)).filter(Boolean);
+        : chooseBotDiscardCards(player, amount);
     const discarded = selected
       .map((cardId) => discardCardFromHand(player, cardId))
       .filter(Boolean);
@@ -6405,7 +6650,7 @@ async function executeEngineAction(action, stackObject, options = {}) {
           refs,
           kind: "destroy"
         })
-        : chooseBotEngineTargetRefForStack(stackObject, refs, "renounce");
+        : chooseBotEngineTargetRefForStack(stackObject, refs, "renounce", action);
       if (!chosen) continue;
       const card = app.cardByCode.get(chosen.instance.cardId);
       if (removeBattlefieldCardToZone(game, chosen.playerId, chosen.instance, "cemetery")) {
@@ -6554,7 +6799,7 @@ async function executeEngineAction(action, stackObject, options = {}) {
         total,
         kind: "heal"
       })
-      : chooseBotDistribution(candidates, total, "heal");
+      : chooseBotDistribution(candidates, total, "heal", stackObject);
     const healedEvents = [];
     allocations.forEach(({ ref, amount }) => {
       if (amount <= 0) return;
@@ -6605,7 +6850,7 @@ async function executeEngineAction(action, stackObject, options = {}) {
         total,
         kind: "damage"
       })
-      : chooseBotDistribution(candidates, total, "damage");
+      : chooseBotDistribution(candidates, total, "damage", stackObject);
     for (const { ref, amount } of allocations) {
       if (amount <= 0) continue;
       if (ref.territory) {
@@ -6784,23 +7029,35 @@ async function executeEngineAction(action, stackObject, options = {}) {
   }
 
   if (effectId === "fight") {
-    const leftRefs = await chooseEngineTargetRefs({ ...action, target: action.sourceTarget || action.left || action.target }, stackObject, "buff");
-    const left = leftRefs[0];
-    if (!left?.instance) return false;
+    const leftSpec = action.sourceTarget || action.left || action.target;
     const rightSpec = action.target || action.right;
-    let rightRefs = getEngineTargetRefs(rightSpec, stackObject, { ignoreCount: true })
-      .filter((ref) => ref.instance && ref.instance.uid !== left.instance.uid);
-    if (!rightRefs.length) return false;
-    const right = stackObject.controllerId === "human"
-      ? await showEngineTargetChoiceModal({
+    let left = null;
+    let right = null;
+
+    if (stackObject.controllerId === "human") {
+      const leftRefs = await chooseEngineTargetRefs({ ...action, target: leftSpec }, stackObject, "buff");
+      left = leftRefs[0];
+      if (!left?.instance) return false;
+      const rightRefs = getEngineTargetRefs(rightSpec, stackObject, { ignoreCount: true })
+        .filter((ref) => ref.instance && ref.instance.uid !== left.instance.uid);
+      if (!rightRefs.length) return false;
+      right = await showEngineTargetChoiceModal({
         title: stackObject.label,
         description: "Escolha o outro Personagem que lutará.",
         refs: rightRefs,
         kind: "damage",
         visualOnly: true,
         showStats: true
-      })
-      : chooseBotEngineTargetRefForStack(stackObject, rightRefs, "damage");
+      });
+    } else {
+      const leftRefs = getEngineTargetRefs(leftSpec, stackObject, { ignoreCount: true });
+      const rightRefs = getEngineTargetRefs(rightSpec, stackObject, { ignoreCount: true });
+      const pair = chooseBotFightPair(stackObject, leftRefs, rightRefs, action);
+      left = pair?.left || null;
+      right = pair?.right || null;
+    }
+
+    if (!left?.instance) return false;
     if (!right?.instance) return false;
     const leftPower = getCharacterPower(left.instance);
     const rightPower = getCharacterPower(right.instance);
@@ -6924,7 +7181,11 @@ async function executeEngineAction(action, stackObject, options = {}) {
 
 function chooseBotCardsForBottom(player, amount) {
   return [...player.hand]
-    .sort((a, b) => getCost(app.cardByCode.get(a)) - getCost(app.cardByCode.get(b)))
+    .sort((a, b) => {
+      const valueDiff = getBotHandCardStrategicValue(player, a) - getBotHandCardStrategicValue(player, b);
+      if (valueDiff) return valueDiff;
+      return getCost(app.cardByCode.get(a)) - getCost(app.cardByCode.get(b));
+    })
     .slice(0, amount);
 }
 
@@ -7434,15 +7695,18 @@ function discardCardFromHand(player, cardId) {
   return discardedCardId || "";
 }
 
-function chooseBotDiscardCard(bot) {
+function chooseBotDiscardCards(bot, amount = 1) {
   return [...bot.hand].sort((a, b) => {
     const cardA = app.cardByCode.get(a);
     const cardB = app.cardByCode.get(b);
-    const typePriority = { MIL: 0, PEC: 1, ART: 2, PER: 3 };
-    const typeDelta = (typePriority[getCardTypeCode(cardA)] ?? 4) - (typePriority[getCardTypeCode(cardB)] ?? 4);
-    if (typeDelta !== 0) return typeDelta;
+    const valueDiff = getBotHandCardStrategicValue(bot, a) - getBotHandCardStrategicValue(bot, b);
+    if (valueDiff) return valueDiff;
     return getCost(cardB) - getCost(cardA);
-  })[0] || bot.hand[0] || "";
+  }).slice(0, Math.max(0, toNumber(amount, 1)));
+}
+
+function chooseBotDiscardCard(bot) {
+  return chooseBotDiscardCards(bot, 1)[0] || bot.hand[0] || "";
 }
 
 function finishDiscardCheck(game, playerId) {
@@ -7694,6 +7958,9 @@ function startBlockDeclaration(attackerId) {
 
 function chooseAutoBlockers(attackerPlayer, defender, attackerInstance, availableBlockers) {
   if (!availableBlockers.length) return [];
+  if (defender?.id === "bot") {
+    return chooseBotBlockers(attackerPlayer, defender, attackerInstance, availableBlockers);
+  }
   const attackerPower = getCharacterPower(attackerInstance);
   if (attackerPower <= 0) return [];
   const attackerLethal = Math.max(1, getLethalDamageNeeded(attackerInstance));
@@ -7713,6 +7980,28 @@ function chooseAutoBlockers(attackerPlayer, defender, attackerInstance, availabl
     if (chosen.length >= 3) break;
   }
   return chosen.length >= minimumBlockers ? chosen : [];
+}
+
+function chooseBotBlockers(attackerPlayer, defender, attackerInstance, availableBlockers) {
+  const target = getAttackTarget(attackerPlayer.id, attackerInstance.uid);
+  const noBlockScore = scoreCombatOutcomeForBot(attackerPlayer, attackerInstance, target, []);
+  const combinations = getBotAvailableBlockerCombinations(attackerPlayer, attackerInstance, target, defender, availableBlockers);
+  if (!combinations.length) return [];
+
+  const best = combinations
+    .map((blockers) => ({
+      blockers,
+      score: scoreCombatOutcomeForBot(attackerPlayer, attackerInstance, target, blockers)
+    }))
+    .sort((left, right) => {
+      if (right.score !== left.score) return right.score - left.score;
+      return left.blockers.length - right.blockers.length;
+    })[0];
+
+  const blockMargin = target?.type === "territory" && getBotTerritoryRemaining(defender) <= getCharacterPower(attackerInstance) + 3
+    ? -0.25
+    : 0.75;
+  return best && best.score > noBlockScore + blockMargin ? getOrderedCombatBlockersForDamage(best.blockers) : [];
 }
 
 function declareAutoBlockers(attackerId) {
@@ -8831,6 +9120,7 @@ function finalizeResolutionQueue(game) {
   game.stack = [];
   game.stackResolving = false;
   if (app.priority?.game === game) app.priority = null;
+  if (app.botPriority?.game === game) app.botPriority = null;
   app.pendingEngineChoice = null;
   app.pendingMoralChoice = null;
   app.pendingVirtueDebug = null;
@@ -9270,43 +9560,115 @@ function advanceBotTo(phase) {
   addLog(game, `entrou em ${PHASE_LABELS[phase]}.`, "Bot");
 }
 
+function getBotHandCardStrategicValue(bot, cardId, mode = app.game?.botMode || "basic") {
+  const card = app.cardByCode.get(cardId);
+  if (!bot || !card) return 0;
+  const baseline = scoreBotCardBaselineForController(cardId, bot.id);
+  const playScore = scoreBotCardPlay(bot, cardId, mode);
+  let value = Number.isFinite(playScore) ? Math.max(baseline, playScore) : baseline;
+  const typeCode = getCardTypeCode(card);
+  if (typeCode === "PER") value += 1 + Math.max(0, toNumber(card.stats?.attack, 0)) * 0.45;
+  if (typeCode === "ART" && isEquipmentCard(card)) value += 1.4;
+  if (typeCode === "PEC" && getBotTerritoryRemaining(bot) <= getCost(card) + 5) value -= 2.5;
+  if (getBotCardResourceCost(bot, card) <= getPotentialAvailableEssence(bot)) value += 0.8;
+  return value;
+}
+
+function scoreBotMoralChoicesForConsecration(bot, choices) {
+  if (!choices.length) return 0;
+  const choice = chooseBotMoralChoice(bot, choices);
+  return Number.isFinite(scoreBotMoralChoice(bot, choice)) ? scoreBotMoralChoice(bot, choice) : 0;
+}
+
+function scoreBotConsecrationMoralResult(bot, card, cardId) {
+  const typeCode = getCardTypeCode(card);
+  if (typeCode === "PEC") {
+    const activeVices = getVirtuesByPolarity("vice").filter((virtue) => getVirtueValue(bot, virtue.id) > 0);
+    if (activeVices.length) {
+      const lowest = Math.min(...activeVices.map((virtue) => getVirtueValue(bot, virtue.id)));
+      const choices = activeVices
+        .filter((virtue) => getVirtueValue(bot, virtue.id) === lowest)
+        .map((virtue) => buildMoralChoice(
+          bot,
+          virtue,
+          virtue.oppositeId,
+          2,
+          `Redimir para ${getVirtueName(getVirtueById(virtue.oppositeId))} +2`
+        ))
+        .filter(Boolean);
+      return scoreBotMoralChoicesForConsecration(bot, choices) + 0.8;
+    }
+  }
+
+  const handAfterConsecration = Math.max(0, bot.hand.length - 1);
+  const moralAmount = playerHasTemple(bot, TEMPLE_IDS.judgment) && typeCode === "PER" && handAfterConsecration >= 3 ? 2 : 1;
+  return scoreBotMoralChoicesForConsecration(bot, getConsecrationMoralChoices(bot, moralAmount));
+}
+
+function scoreBotConsecrationTypeEffect(bot, card, cardId, mode = "basic") {
+  const typeCode = getCardTypeCode(card);
+  if (typeCode === "PER") {
+    const refs = getControlledCharacterRefs(bot);
+    if (!refs.length) return -0.8;
+    const buffAction = { effect: "modify_power_resistance", power: 1, resistance: 1 };
+    return Math.max(...refs.map((ref) => scoreBotTargetRef(ref, bot.id, "buff", 2, buffAction))) * 0.35 + 1.4;
+  }
+
+  if (typeCode === "PEC") {
+    const activeVices = getVirtuesByPolarity("vice").filter((virtue) => getVirtueValue(bot, virtue.id) > 0);
+    return activeVices.length ? 2.3 : -0.25;
+  }
+
+  if (typeCode === "ART") {
+    const handAfterConsecration = bot.hand.filter((id) => id !== cardId);
+    const available = getPotentialAvailableEssence(bot);
+    const futureCards = handAfterConsecration
+      .map((id) => app.cardByCode.get(id))
+      .filter((item) => item && getCardTypeCode(item) !== "PEC");
+    const enablesFutureCard = futureCards.some((futureCard) =>
+      getEffectivePlayCost(bot, futureCard) > available &&
+      getEffectivePlayCost(bot, futureCard) - 1 <= available + 1
+    );
+    return 1.6 + (enablesFutureCard ? 1.8 : 0);
+  }
+
+  if (typeCode === "MIL") {
+    const healed = Math.min(3, toNumber(bot.territoryDamage, 0));
+    return healed > 0 ? healed * 2.1 + (getBotTerritoryRemaining(bot) <= 8 ? 1.5 : 0) : -0.35;
+  }
+
+  return 0;
+}
+
+function scoreBotConsecrationCard(bot, cardId, mode = "basic") {
+  const card = app.cardByCode.get(cardId);
+  if (!card || !canConsecrate(bot, cardId)) return Number.NEGATIVE_INFINITY;
+  const resourceDevelopment = 2.25 + Math.max(0, 5 - bot.essence.length) * 0.25;
+  const typeScore = scoreBotConsecrationTypeEffect(bot, card, cardId, mode);
+  const moralScore = scoreBotConsecrationMoralResult(bot, card, cardId);
+  const opportunityCost = Math.max(0, getBotHandCardStrategicValue(bot, cardId, mode));
+  const lowHandPenalty = bot.hand.length <= 2 ? opportunityCost * 0.18 : 0;
+  return resourceDevelopment + typeScore + moralScore * 1.15 - opportunityCost * 0.32 - lowHandPenalty;
+}
+
 function chooseBotConsecration(bot, mode) {
   if (bot.consecrationActionTaken || !bot.hand.length) return "";
-  const sorted = [...bot.hand].sort((a, b) => {
-    const cardA = app.cardByCode.get(a);
-    const cardB = app.cardByCode.get(b);
-    if (mode === "aggressive") return getCost(cardB) - getCost(cardA);
-    return getCost(cardA) - getCost(cardB);
-  });
-  return sorted[0] || "";
-}
-
-function getBotEssenceGeneratorUids(bot) {
-  return getReadyEssenceGeneratorInstances(bot).map((instance) => instance.uid);
-}
-
-function getCheapestReachableNonSinCost(player) {
-  const generatorCount = getPotentialGeneratedEssence(player);
-  const availableAfterGenerators = getAvailableEssence(player) + generatorCount;
-  return [...player.hand]
-    .map((cardId) => app.cardByCode.get(cardId))
-    .filter((card) => card && getCardTypeCode(card) !== "PEC")
-    .map((card) => getEffectivePlayCost(player, card))
-    .filter((cost) => cost > getAvailableEssence(player) && cost <= availableAfterGenerators)
-    .sort((a, b) => a - b)[0] ?? Infinity;
-}
-
-function activateBotEssenceGeneratorsForHand(bot) {
-  let activated = 0;
-  let targetCost = getCheapestReachableNonSinCost(bot);
-  while (Number.isFinite(targetCost) && getAvailableEssence(bot) < targetCost) {
-    const uid = getBotEssenceGeneratorUids(bot)[0];
-    const instance = uid ? findBattlefieldInstance(bot, uid) : null;
-    if (!instance || !activateEssenceGeneratorForPayment(bot, instance)) break;
-    activated += 1;
-    targetCost = getCheapestReachableNonSinCost(bot);
-  }
-  return activated;
+  const ranked = [...bot.hand]
+    .map((cardId) => ({
+      cardId,
+      card: app.cardByCode.get(cardId),
+      score: scoreBotConsecrationCard(bot, cardId, mode)
+    }))
+    .filter(({ card, score }) => card && Number.isFinite(score))
+    .sort((left, right) => {
+      if (right.score !== left.score) return right.score - left.score;
+      if (mode === "aggressive") return getCost(right.card) - getCost(left.card);
+      return getCost(left.card) - getCost(right.card);
+    });
+  const best = ranked[0];
+  if (!best) return "";
+  if (best.score < 0 && bot.essence.length >= 4) return "";
+  return best.cardId || "";
 }
 
 function scoreEquipmentAttachmentTarget(equipment, target) {
@@ -9336,12 +9698,1123 @@ function autoAttachEquipmentForBot(bot) {
   return attached;
 }
 
+function getBotPermanentValue(instance) {
+  const card = app.cardByCode.get(instance?.cardId);
+  if (!card) return 0;
+  const typeCode = getCardTypeCode(card);
+  let value = Math.max(0, getCost(card)) * 0.85;
+  if (typeCode === "PER") {
+    const power = Math.max(0, getCharacterPower(instance));
+    const resistance = Math.max(0, getCharacterResistance(instance));
+    value += 2 + power * 2.2 + resistance * 1.55;
+    if (isEssenceGeneratorInstance(instance)) value += 5;
+    if (card.token || instance.token) value -= 2;
+    if (instance.exhausted) value -= 0.4;
+    if (toNumber(instance.damage, 0) >= resistance && resistance > 0) value -= 2.5;
+  } else if (typeCode === "ART") {
+    value += 2;
+    if (isEssenceGeneratorInstance(instance)) value += 4 + getTokenQuantity(instance) * 1.25;
+    if (isEquipmentInstance(instance)) value += instance.attachedTo ? 4 : 1.5;
+    if (card.token || instance.token) value -= 1.5;
+  }
+  return Math.max(0.5, value);
+}
+
+function getBotTokenValue(tokenId) {
+  const card = app.cardByCode.get(getTokenCardId(tokenId));
+  if (!card) return 1;
+  if (getCardTypeCode(card) === "PER") {
+    return Math.max(0.5, 2 + toNumber(card.stats?.attack, 0) * 2.2 + toNumber(card.stats?.resistance, 0) * 1.55 - 2);
+  }
+  if (isIncenseTokenCard(card)) return 4.5;
+  return Math.max(0.5, getCost(card) * 0.85 + 1);
+}
+
+function getBotFilteredBattlefieldRefs(player, filter = {}) {
+  return (player?.battlefield || [])
+    .filter((instance) => cardMatchesTypeFilter(app.cardByCode.get(instance.cardId), filter))
+    .map((instance) => ({ playerId: player.id, instance }));
+}
+
+function getBotBestSacrificeValue(player, filter = {}) {
+  const values = getBotFilteredBattlefieldRefs(player, filter)
+    .map(({ instance }) => getBotPermanentValue(instance));
+  return values.length ? Math.min(...values) : 0;
+}
+
+function getBotActionTargetAmount(action, kind = "target") {
+  if (!action) return kind === "damage" || kind === "self-damage" ? 1 : 0;
+  if (action.effect === "destroy_if_power_gte_else_damage") return getActionAmount(action.amount, 1);
+  if (kind === "heal" || kind === "damage" || kind === "self-damage") return getActionAmount(action.amount, 1);
+  return getActionAmount(action.amount, 0);
+}
+
+function getBotTerritoryRemaining(player) {
+  return Math.max(0, toNumber(player?.maxTerritory, 0) - toNumber(player?.territoryDamage, 0));
+}
+
+function scoreBotDamageTargetRef(ref, controllerId, amount = 1, action = null) {
+  const opponentId = getOpponentId(controllerId);
+  const isOwn = ref.playerId === controllerId;
+  const isOpponent = ref.playerId === opponentId;
+  if (ref.territory) {
+    const player = getPlayer(app.game, ref.playerId);
+    const remaining = getBotTerritoryRemaining(player);
+    const resolvedAmount = Math.max(0, amount);
+    const lethalBonus = resolvedAmount >= remaining && remaining > 0 ? 18 : 0;
+    const pressure = resolvedAmount * (remaining <= 6 ? 3.2 : 2.3) + lethalBonus;
+    if (isOpponent) return pressure;
+    if (isOwn) return -pressure * 1.25;
+    return -pressure * 0.4;
+  }
+  if (!ref.instance) return -999;
+  const value = getBotPermanentValue(ref.instance);
+  const powerThreshold = toNumber(action?.powerGte ?? action?.powerAtLeast, Infinity);
+  const destroysByPower = action?.effect === "destroy_if_power_gte_else_damage" &&
+    getCharacterPower(ref.instance) >= powerThreshold;
+  const damagePrevented = !destroysByPower && instanceHasKeyword(ref.instance, "INDESTRUTIVEL");
+  if (damagePrevented) return isOpponent ? -8 : 0;
+  const lethal = destroysByPower || amount >= getLethalDamageNeeded(ref.instance);
+  const capacity = destroysByPower ? getCharacterResistance(ref.instance) : getEngineDamageCapacity(ref, Math.max(1, amount));
+  let impact = lethal ? value + 6 : capacity * 1.45;
+  if (!lethal && toNumber(ref.instance.damage, 0) > 0) impact += 1.25;
+  if (!lethal && getLethalDamageNeeded(ref.instance) <= amount + 1) impact += 1.5;
+  if (isOpponent) return impact;
+  if (isOwn) return -impact * 1.2;
+  return -impact * 0.3;
+}
+
+function scoreBotBuffTargetRef(ref, controllerId, action = null) {
+  if (!ref || ref.territory || !ref.instance) return -999;
+  const value = getBotPermanentValue(ref.instance);
+  const isOwn = ref.playerId === controllerId;
+  const powerGain = toNumber(action?.power, 0);
+  const resistanceGain = toNumber(action?.resistance, 0);
+  const keyword = normalizeKeywordText(action?.keyword || "");
+  let score = value * 0.25 + getCharacterPower(ref.instance) * 0.9 + getCharacterResistance(ref.instance) * 0.35;
+  if (!ref.instance.exhausted) score += 1.5;
+  if (toNumber(ref.instance.damage, 0) > 0 && resistanceGain > 0) score += 2;
+  if (powerGain > 0 && !ref.instance.exhausted) score += 1.5;
+  if (keyword === "INDESTRUTIVEL" || action?.effect === "prevent_damage_to_character") score += value * 0.35;
+  return isOwn ? score : -score;
+}
+
+function scoreBotTargetRef(ref, controllerId, kind = "target", amount = 0, action = null) {
+  if (!ref) return -999;
+  const opponentId = getOpponentId(controllerId);
+  const isOwn = ref.playerId === controllerId;
+  const isOpponent = ref.playerId === opponentId;
+  if (kind === "damage") return scoreBotDamageTargetRef(ref, controllerId, amount, action);
+  if (kind === "self-damage") return isOwn ? -Math.max(1, scoreBotDamageTargetRef(ref, controllerId, amount, action) * -1) : -999;
+
+  if (ref.territory) {
+    const player = getPlayer(app.game, ref.playerId);
+    if (kind === "heal") {
+      const healable = Math.min(amount || 99, toNumber(player?.territoryDamage, 0));
+      return isOwn ? healable * 2.5 + (getBotTerritoryRemaining(player) <= 8 ? 3 : 0) : -healable * 1.5;
+    }
+    return isOwn ? -2 : isOpponent ? 2 : 0;
+  }
+
+  const value = getBotPermanentValue(ref.instance);
+  if (kind === "destroy" || kind === "bounce") {
+    const tone = kind === "destroy" ? 1.2 : 0.9;
+    if (isOpponent) return value * tone + (ref.instance?.exhausted ? 0.5 : 1.5);
+    if (isOwn) return -value * 1.25;
+    return -value * 0.2;
+  }
+  if (kind === "buff" || kind === "attach") return scoreBotBuffTargetRef(ref, controllerId, action);
+  if (kind === "heal") {
+    const healable = getEngineHealingCapacity(ref);
+    const rescueBonus = healable > 0 && getLethalDamageNeeded(ref.instance) <= 2 ? 2.5 : 0;
+    return isOwn ? healable * 2 + rescueBonus + value * 0.1 : -healable * 1.5;
+  }
+  if (kind === "control") {
+    if (isOpponent) return value * 1.45 + (ref.instance?.exhausted ? -0.5 : 1.5);
+    if (isOwn) return -value;
+    return value * 0.2;
+  }
+  if (kind === "renounce") {
+    if (isOwn) return -value;
+    if (isOpponent) return value;
+    return -value * 0.2;
+  }
+  return isOwn ? value * 0.2 : isOpponent ? -value * 0.2 : 0;
+}
+
+function scoreBotFightPair(stackObject, left, right, action = null) {
+  if (!left?.instance || !right?.instance || left.instance.uid === right.instance.uid) return Number.NEGATIVE_INFINITY;
+  const controllerId = stackObject?.controllerId || "bot";
+  const leftPower = getCharacterPower(left.instance);
+  const rightPower = getCharacterPower(right.instance);
+  let score = 0;
+  score += scoreBotDamageTargetRef(right, controllerId, leftPower, action);
+  score += scoreBotDamageTargetRef(left, controllerId, rightPower, action);
+  if (left.playerId === controllerId) {
+    score += Math.max(0, getBotPermanentValue(left.instance) * 0.12);
+    if (instanceHasKeyword(left.instance, "INDESTRUTIVEL")) score += 4;
+  }
+  if (right.playerId === controllerId) score -= getBotPermanentValue(right.instance) * 0.35;
+  if (left.playerId !== controllerId && right.playerId !== controllerId) score -= 6;
+  return score;
+}
+
+function chooseBotFightPair(stackObject, leftRefs, rightRefs, action = null) {
+  const pairs = [];
+  leftRefs.forEach((left) => {
+    rightRefs.forEach((right) => {
+      if (!left?.instance || !right?.instance || left.instance.uid === right.instance.uid) return;
+      pairs.push({
+        left,
+        right,
+        score: scoreBotFightPair(stackObject, left, right, action)
+      });
+    });
+  });
+  pairs.sort((left, right) => right.score - left.score);
+  return pairs[0] || null;
+}
+
+function scoreBotSimpleCardValue(player, cardId) {
+  const card = app.cardByCode.get(cardId);
+  if (!card) return 0;
+  const typeCode = getCardTypeCode(card);
+  const cost = Math.max(0, getCost(card));
+  const available = getPotentialAvailableEssence(player);
+  let score = Math.max(0.5, cost * 0.55);
+
+  if (typeCode === "PER") {
+    const power = Math.max(0, toNumber(card.stats?.attack, 0));
+    const resistance = Math.max(0, toNumber(card.stats?.resistance, 0));
+    score += 4.5 + power * 1.85 + resistance * 1.25;
+    if (isBethlehemPastorCard(card)) score += 2.8;
+  } else if (typeCode === "ART") {
+    score += isEquipmentCard(card) ? 5 : 3.2;
+    if (isIncenseTokenCard(card)) score += 2;
+  } else if (typeCode === "MIL") {
+    score += 2.8;
+  } else if (typeCode === "PEC") {
+    score += 2.2 - cost * 0.35;
+    if (player?.id === "bot" && getBotTerritoryRemaining(player) <= cost + 5) score -= 4;
+  }
+
+  if (cost <= available + 1 || typeCode === "PEC") score += 1.8;
+  if (card.token) score *= 0.65;
+  return Math.max(0.25, score);
+}
+
+function getBotCardsValue(player, cardIds = []) {
+  return (cardIds || []).reduce((sum, cardId) => sum + scoreBotSimpleCardValue(player, cardId), 0);
+}
+
+function getBotSelectedCardValues(player, cardIds = [], amount = 1, preferHighest = false) {
+  const count = Math.max(0, Math.min(cardIds.length, Math.ceil(toNumber(amount, 0))));
+  if (!count) return [];
+  return [...cardIds]
+    .map((cardId) => ({ cardId, value: scoreBotSimpleCardValue(player, cardId) }))
+    .sort((left, right) => preferHighest ? right.value - left.value : left.value - right.value)
+    .slice(0, count);
+}
+
+function sumBotSelectedCardValues(player, cardIds = [], amount = 1, preferHighest = false) {
+  return getBotSelectedCardValues(player, cardIds, amount, preferHighest)
+    .reduce((sum, entry) => sum + entry.value, 0);
+}
+
+function getBotActionPlayer(game, action, stackObject, fallback = "controller") {
+  return getPlayer(game, getStackPlayerId(action.player || fallback, stackObject));
+}
+
+function getBotPlayerEffectSign(player, controllerId, opponentMultiplier = 0.85) {
+  if (!player) return 0;
+  return player.id === controllerId ? 1 : -opponentMultiplier;
+}
+
+function getBotActionHandAmount(action, player) {
+  if (!player) return 0;
+  const requested = getActionAmount(action.amount, 0);
+  if (!Number.isFinite(requested)) return player.hand.length;
+  return Math.max(0, Math.min(requested, player.hand.length));
+}
+
+function scoreBotHandCardMovementAction(action, stackObject) {
+  const game = stackObject?.payload?.game || app.game;
+  const controllerId = stackObject?.controllerId || "bot";
+  const player = getBotActionPlayer(game, action, stackObject);
+  const amount = getBotActionHandAmount(action, player);
+  if (!player || amount <= 0) return 0;
+  if (player.id === controllerId) {
+    const loss = sumBotSelectedCardValues(player, player.hand, amount, false);
+    return -loss * 0.58 - amount * 0.45;
+  }
+  const opponentLoss = sumBotSelectedCardValues(player, player.hand, amount, false);
+  return opponentLoss * 0.5 + amount * 1.2;
+}
+
+function getBotMoralChoicesForAction(action, player) {
+  if (!player) return [];
+  if (action.effect === "adjust_moral_flexible") {
+    return getFlexibleMoralChoices(player, getActionAmount(action.amount, 1));
+  }
+  if (action.effect === "adjust_moral_choice") {
+    const maxBefore = Number.isFinite(action.maxBefore) ? action.maxBefore : Infinity;
+    const minBefore = Number.isFinite(action.minBefore) ? action.minBefore : -Infinity;
+    const delta = toNumber(action.delta, 1);
+    const polarities = action.polarity === "all" ? ["virtue", "vice"] : [action.polarity || "virtue"];
+    return app.virtues
+      .filter((virtue) => polarities.includes(virtue.polarity))
+      .filter((virtue) => getVirtueValue(player, virtue.id) < maxBefore && getVirtueValue(player, virtue.id) >= minBefore)
+      .map((virtue) => buildMoralChoice(player, virtue, virtue.id, delta, `${getVirtueName(virtue)} ${delta >= 0 ? "+" : ""}${delta}`))
+      .filter((choice) => choice && moralChoiceWouldChange(player, choice.targetId, choice.delta));
+  }
+  if (action.effect === "adjust_moral") {
+    const virtue = getVirtueById(action.virtueId);
+    const choice = buildMoralChoice(
+      player,
+      virtue,
+      action.virtueId,
+      toNumber(action.delta, 0),
+      `${getVirtueName(virtue)} ${toNumber(action.delta, 0) >= 0 ? "+" : ""}${toNumber(action.delta, 0)}`
+    );
+    return choice && moralChoiceWouldChange(player, choice.targetId, choice.delta) ? [choice] : [];
+  }
+  return [];
+}
+
+function scoreBotMoralAction(action, stackObject) {
+  const game = stackObject?.payload?.game || app.game;
+  const controllerId = stackObject?.controllerId || "bot";
+  const player = getBotActionPlayer(game, action, stackObject);
+  const choices = getBotMoralChoicesForAction(action, player);
+  if (!player || !choices.length) return 0;
+  const scores = choices
+    .map((choice) => scoreBotMoralChoice(player, choice, { includeChampionSynergy: false }))
+    .filter(Number.isFinite);
+  if (!scores.length) return 0;
+  const chosenScore = player.id === controllerId
+    ? Math.max(...scores)
+    : Math.max(...scores);
+  return player.id === controllerId ? chosenScore : -chosenScore * 0.85;
+}
+
+function getBotActionTopCards(player, action) {
+  if (!player?.deck?.length) return [];
+  const requested = getActionAmount(action.amount, player.deck.length);
+  const amount = Number.isFinite(requested)
+    ? Math.max(0, Math.min(requested, player.deck.length))
+    : player.deck.length;
+  return player.deck.slice(0, amount);
+}
+
+function getBotBestEntryScore(entries, player) {
+  if (!entries.length) return 0;
+  return Math.max(...entries.map((entry) => scoreBotDeckReviewCard(player, entry.cardId)));
+}
+
+function scoreBotLibrarySelectionAction(action, stackObject) {
+  const game = stackObject?.payload?.game || app.game;
+  const controllerId = stackObject?.controllerId || "bot";
+  const player = getBotActionPlayer(game, action, stackObject);
+  if (!player) return 0;
+  let score = 0;
+
+  if (action.effect === "search_library_to_top") {
+    const entries = getFilteredDeckEntries(player, action.filter || {});
+    score = entries.length ? getBotBestEntryScore(entries, player) * 0.72 + 1.2 : 0;
+  } else if (action.effect === "search_library_or_reserve_to_hand") {
+    const entries = [
+      ...getFilteredDeckEntries(player, action.filter || {}),
+      ...getFilteredReserveEntries(player, action.filter || {})
+    ];
+    score = entries.length ? getBotBestEntryScore(entries, player) * 0.88 + 1.6 : 0;
+  } else if (action.effect === "move_cemetery_card_to_hand") {
+    const entries = getFilteredCemeteryEntries(player, action.filter || {});
+    score = entries.length ? getBotBestEntryScore(entries, player) * 0.8 + 1.1 : 0;
+  } else if (action.effect === "top_cards_to_hand_bottom") {
+    const topCards = getBotActionTopCards(player, action);
+    score = topCards.length ? Math.max(...topCards.map((cardId) => scoreBotDeckReviewCard(player, cardId))) * 0.78 + 1.1 : 0;
+  } else if (action.effect === "top_lowest_type_to_hand_bottom") {
+    const topCards = getBotActionTopCards(player, action);
+    const typeFilter = action.filter?.type || action.type || "PER";
+    const matching = topCards
+      .map((cardId, index) => ({ cardId, index, zone: "top" }))
+      .filter((entry) => cardMatchesTypeFilter(app.cardByCode.get(entry.cardId), { type: typeFilter }));
+    const minimumCost = matching.reduce((min, entry) => Math.min(min, getCost(app.cardByCode.get(entry.cardId))), Infinity);
+    const candidates = matching.filter((entry) => getCost(app.cardByCode.get(entry.cardId)) === minimumCost);
+    score = candidates.length ? getBotBestEntryScore(candidates, player) * 0.76 + 0.8 : 0.15;
+  } else if (action.effect === "review_top_cards") {
+    const topCards = getBotActionTopCards(player, action);
+    if (topCards.length) {
+      const plan = chooseBotDeckReviewPlan(player, topCards, Math.max(0, toNumber(action.maxCemetery, 0)));
+      const keptTop = getBotCardsValue(player, plan.top) * 0.24;
+      const buriedLowValue = getBotCardsValue(player, plan.bottom) * 0.05;
+      const cemeteryLowValue = getBotCardsValue(player, plan.cemetery) * 0.08;
+      score = 1 + topCards.length * 0.35 + keptTop - buriedLowValue - cemeteryLowValue;
+    }
+  } else if (action.effect === "reorder_top_cards") {
+    const topCards = getBotActionTopCards(player, action);
+    score = topCards.length ? 0.8 + topCards.length * 0.25 + Math.max(...topCards.map((cardId) => scoreBotDeckReviewCard(player, cardId))) * 0.18 : 0;
+  }
+
+  return score * getBotPlayerEffectSign(player, controllerId, 0.75);
+}
+
+function getBotDamageEventTargetRef(damageEvent, game = app.game) {
+  if (!damageEvent?.target) return null;
+  if (damageEvent.target.type === "territory") {
+    return { playerId: damageEvent.target.playerId, territory: true };
+  }
+  if (damageEvent.target.type === "character") {
+    const player = getPlayer(game, damageEvent.target.playerId);
+    const instance = findBattlefieldInstance(player, damageEvent.target.uid);
+    return instance ? { playerId: damageEvent.target.playerId, instance } : null;
+  }
+  return null;
+}
+
+function scoreBotDamageEventAmount(damageEvent, controllerId, amount, action = null) {
+  const ref = getBotDamageEventTargetRef(damageEvent);
+  if (!ref || amount <= 0) return 0;
+  return scoreBotDamageTargetRef(ref, controllerId, amount, action || { effect: "deal_damage" });
+}
+
+function scoreBotPreventDamageAction(action, stackObject) {
+  const damageEvent = stackObject?.payload?.damageEvent;
+  if (!damageEvent) return 0;
+  const game = stackObject?.payload?.game || app.game;
+  const controllerId = stackObject?.controllerId || "bot";
+  const remainingDamage = Math.max(0, toNumber(damageEvent.amount, 0) - getCurrentPreventedAmount(damageEvent));
+  if (remainingDamage <= 0) return 0;
+  const requestedAmount = action.amount === "all" ? remainingDamage : getActionAmount(action.amount, 0);
+  const budgetRemaining = getEngineTurnBudgetRemaining(game, stackObject, action, requestedAmount);
+  const prevented = Math.min(remainingDamage, requestedAmount, budgetRemaining);
+  if (prevented <= 0) return 0;
+  return -scoreBotDamageEventAmount(damageEvent, controllerId, prevented, action);
+}
+
+function scoreBotModifyDamageAction(action, stackObject) {
+  const damageEvent = stackObject?.payload?.damageEvent;
+  if (!damageEvent) return 0;
+  const controllerId = stackObject?.controllerId || "bot";
+  const currentAmount = toNumber(damageEvent.amount, 0);
+  const nextAmount = action.effect === "replace_damage"
+    ? getActionAmount(action.amount, currentAmount)
+    : Math.max(0, currentAmount + getActionAmount(action.amount, 0));
+  const delta = nextAmount - currentAmount;
+  if (!delta) return 0;
+  const score = scoreBotDamageEventAmount(damageEvent, controllerId, Math.abs(delta), action);
+  return delta > 0 ? score : -score;
+}
+
+function scoreBotDistributionAction(action, stackObject, kind) {
+  const total = getActionAmount(action.amount, 0);
+  const candidates = getEngineDistributionCandidates(action.targets || [], stackObject, kind);
+  if (!candidates.length || total <= 0) return 0;
+  return chooseBotDistribution(candidates, total, kind, stackObject)
+    .reduce((sum, { ref, amount }) => sum + scoreBotTargetRef(ref, stackObject?.controllerId || "bot", kind, amount, action), 0);
+}
+
+function scoreBotPulverizeAction(action, stackObject) {
+  const game = stackObject?.payload?.game || app.game;
+  const controllerId = stackObject?.controllerId || "bot";
+  const player = getBotActionPlayer(game, action, stackObject);
+  if (!player) return 0;
+  const requested = getActionAmount(action.amount, 0);
+  const amount = Number.isFinite(requested) ? Math.max(0, requested) : player.deck.length;
+  const milledCount = Math.min(amount, player.deck.length);
+  const fatigue = Math.max(0, amount - player.deck.length);
+  const milledValue = getBotCardsValue(player, player.deck.slice(0, milledCount));
+  const score = player.id === controllerId
+    ? -milledValue * 0.22 - fatigue * 5
+    : milledCount * 0.9 + fatigue * 7 + milledValue * 0.06;
+  return score;
+}
+
+function scoreBotSetBaseResistanceAction(action, stackObject) {
+  const controllerId = stackObject?.controllerId || "bot";
+  const refs = getEngineTargetRefs(action.target, stackObject, { ignoreCount: true }).filter((ref) => ref.instance);
+  if (!refs.length) return 0;
+  const nextResistance = toNumber(action.value, 0);
+  return Math.max(...refs.map((ref) => {
+    const currentResistance = getCharacterResistance(ref.instance);
+    const delta = nextResistance - currentResistance;
+    const amount = Math.max(1, Math.abs(delta));
+    const base = scoreBotTargetRef(ref, controllerId, delta >= 0 ? "buff" : "damage", amount, action);
+    return delta >= 0 ? base : base * 0.75;
+  }));
+}
+
+function scoreBotRevealLowerCostThenHealAction(action, stackObject) {
+  const game = stackObject?.payload?.game || app.game;
+  const controllerId = stackObject?.controllerId || "bot";
+  const player = getBotActionPlayer(game, action, stackObject);
+  if (!player) return 0;
+  const maxControlledCost = player.battlefield
+    .filter((instance) => getCardTypeCode(app.cardByCode.get(instance.cardId)) === "PER")
+    .reduce((max, instance) => Math.max(max, getCost(app.cardByCode.get(instance.cardId))), -Infinity);
+  if (!Number.isFinite(maxControlledCost)) return 0;
+  const entries = player.hand
+    .map((cardId, index) => ({ cardId, index, zone: "hand" }))
+    .filter((entry) => {
+      const card = app.cardByCode.get(entry.cardId);
+      return getCardTypeCode(card) === "PER" && getCost(card) < maxControlledCost;
+    });
+  if (!entries.length) return 0;
+  const revealScore = getBotBestEntryScore(entries, player) * 0.16;
+  const healAmount = Math.min(getActionAmount(action.healAmount || action.amount, 2), toNumber(player.territoryDamage, 0));
+  const healScore = player.id === controllerId ? healAmount * 2.1 : -healAmount * 1.4;
+  return revealScore + healScore;
+}
+
+function scoreBotTemporaryEffectAction(action, stackObject) {
+  const effect = action.temporaryEffect || {};
+  if (effect.actions || effect.costs) {
+    const costScore = (effect.costs || [])
+      .reduce((sum, cost) => sum + scoreBotEngineAction(cost, stackObject, { isCost: true }), 0);
+    const actionScore = (effect.actions || [])
+      .reduce((sum, nestedAction) => sum + scoreBotEngineAction(nestedAction, stackObject), 0);
+    return (costScore + actionScore) * 0.55;
+  }
+  if (effect.action === "modify_event_amount") {
+    const amount = getActionAmount(effect.amount ?? action.amount, 1);
+    const playerId = getStackPlayerId(action.player || effect.player || "controller", stackObject);
+    return playerId === stackObject?.controllerId ? amount * 2.4 : -amount * 1.7;
+  }
+  return 1.15;
+}
+
+function scoreBotCardBaselineForController(cardId, controllerId) {
+  const card = app.cardByCode.get(cardId);
+  if (!card) return 0;
+  const typeCode = getCardTypeCode(card);
+  let score = Math.max(0, getCost(card)) * 0.9;
+  if (typeCode === "PER") {
+    score += 4 + Math.max(0, toNumber(card.stats?.attack, 0)) * 2 + Math.max(0, toNumber(card.stats?.resistance, 0)) * 1.3;
+  } else if (typeCode === "ART") {
+    score += isEquipmentCard(card) ? 5 : 3;
+  } else if (typeCode === "MIL" || typeCode === "PEC") {
+    score += 2.5;
+  }
+
+  const resolutionObjects = getCardResolutionStackObjects(cardId, controllerId)
+    .filter((object) => {
+      const ability = object.ability || app.engine.abilityById.get(object.abilityId);
+      return !(ability?.actions || []).some((action) => action?.effect === "counter_stack_object");
+    });
+  if (resolutionObjects.length) {
+    score += Math.max(...resolutionObjects.map((object) => {
+      const value = scoreBotResolutionAbility(object);
+      return Number.isFinite(value) ? value : 0;
+    }));
+  }
+  return Math.max(0.5, score);
+}
+
+function scoreBotStackObjectForCounter(stackObject, controllerId = "bot") {
+  if (!stackObject) return 0;
+  const isOwn = stackObject.controllerId === controllerId;
+  let value = 1;
+  if (stackObject.type === "play") {
+    value += scoreBotCardBaselineForController(stackObject.cardId, stackObject.controllerId);
+  } else {
+    const abilityScore = scoreBotResolutionAbility(stackObject);
+    value += Math.max(1, Number.isFinite(abilityScore) ? abilityScore : 0);
+  }
+  return isOwn ? -value : value;
+}
+
+function scoreBotCounterStackTargetRef(ref, controllerId = "bot", action = null) {
+  if (!ref?.stackObject) return Number.NEGATIVE_INFINITY;
+  let score = scoreBotStackObjectForCounter(ref.stackObject, controllerId);
+  const tax = toNumber(action?.unlessControllerPays ?? action?.tax ?? 0, 0);
+  const bypassSubtype = action?.paymentBypassIfControllerControlsSubtype ?? action?.ignorePaymentIfControllerControlsSubtype;
+  const controllerBypassesTax = typeof bypassSubtype !== "undefined" &&
+    playerControlsSubtype(getPlayer(app.game, controllerId), bypassSubtype);
+  const targetController = getPlayer(app.game, ref.stackObject.controllerId);
+  if (!controllerBypassesTax && tax > 0 && canPayEssenceTax(targetController, tax)) {
+    score *= targetController?.id === controllerId ? 0.9 : 0.35;
+  }
+  return score;
+}
+
+function scoreBotEngineAction(action, stackObject, options = {}) {
+  if (!action || !isEngineActionViable(action, stackObject)) return 0;
+  const game = stackObject?.payload?.game || app.game;
+  const controllerId = stackObject?.controllerId || "bot";
+  const controller = getPlayer(game, controllerId);
+  const opponent = getPlayer(game, getOpponentId(controllerId));
+  const effectId = action.effect;
+  const costMultiplier = options.isCost ? 1.15 : 1;
+
+  if (effectId === "cover_champion") {
+    const player = getPlayer(game, getStackPlayerId(action.player || "controller", stackObject));
+    if (!player || player.championCovered) return 0;
+    const value = player.id === controllerId ? -4.5 : 2.5;
+    return value * costMultiplier;
+  }
+
+  if (["adjust_moral", "adjust_moral_choice", "adjust_moral_flexible"].includes(effectId)) {
+    return scoreBotMoralAction(action, stackObject) * costMultiplier;
+  }
+
+  if (effectId === "renounce_permanent") {
+    const filter = action.filter || action.target || {};
+    if (action.player === "all") {
+      const ownLoss = getBotBestSacrificeValue(controller, filter);
+      const opponentLoss = getBotBestSacrificeValue(opponent, filter);
+      let score = opponentLoss * 1.15 - ownLoss * 1.35;
+      if (ownLoss > 0 && opponentLoss <= 0) score -= 10 + ownLoss * 0.8;
+      if (opponentLoss > 0 && ownLoss <= 0) score += 6;
+      return score * costMultiplier;
+    }
+    const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
+    const loss = getBotBestSacrificeValue(player, filter);
+    if (!loss) return 0;
+    const own = player?.id === controllerId;
+    return (own ? -loss * 1.25 : loss * 1.1) * costMultiplier;
+  }
+
+  if (effectId === "create_token") {
+    const playerId = getStackPlayerId(action.controller || action.player || "controller", stackObject);
+    const amount = Math.max(1, getActionAmount(action.amount, 1));
+    const value = getBotTokenValue(action.tokenId) * amount;
+    return playerId === controllerId ? value : -value;
+  }
+
+  if (effectId === "deal_damage") {
+    const amount = getActionAmount(action.amount, 0);
+    const refs = getEngineTargetRefs(action.target, stackObject, { ignoreCount: true });
+    if (!refs.length || !Number.isFinite(amount)) return 0;
+    const choiceScore = action.target?.choice
+      ? Math.max(...refs.map((ref) => scoreBotTargetRef(ref, controllerId, action.damageAsCost ? "self-damage" : "damage", amount, action)))
+      : refs.reduce((sum, ref) => sum + scoreBotTargetRef(ref, controllerId, action.damageAsCost ? "self-damage" : "damage", amount, action), 0);
+    return choiceScore * costMultiplier;
+  }
+
+  if (effectId === "destroy_if_power_gte_else_damage") {
+    const amount = getActionAmount(action.amount, 1);
+    const refs = getEngineTargetRefs(action.target, stackObject, { ignoreCount: true });
+    if (!refs.length) return 0;
+    return (action.target?.choice
+      ? Math.max(...refs.map((ref) => scoreBotDamageTargetRef(ref, controllerId, amount, action)))
+      : refs.reduce((sum, ref) => sum + scoreBotDamageTargetRef(ref, controllerId, amount, action), 0)) * costMultiplier;
+  }
+
+  if (effectId === "destroy_permanent" || effectId === "return_permanent_to_hand") {
+    const kind = effectId === "return_permanent_to_hand" ? "bounce" : "destroy";
+    const refs = getEngineTargetRefs(action.target, stackObject, { ignoreCount: true });
+    if (!refs.length) return 0;
+    return (action.target?.choice
+      ? Math.max(...refs.map((ref) => scoreBotTargetRef(ref, controllerId, kind, 0, action)))
+      : refs.reduce((sum, ref) => sum + scoreBotTargetRef(ref, controllerId, kind, 0, action), 0)) * costMultiplier;
+  }
+
+  if (effectId === "tap" || effectId === "untap") {
+    const refs = getEngineTargetRefs(action.target, stackObject, { ignoreCount: true })
+      .filter((ref) => Boolean(ref.instance) && Boolean(ref.instance.exhausted) !== (effectId === "tap"));
+    if (!refs.length) return 0;
+    return refs.reduce((sum, ref) => {
+      const value = Math.min(5, getBotPermanentValue(ref.instance) * 0.35);
+      if (effectId === "tap") return sum + (ref.playerId === controllerId ? -value : value);
+      return sum + (ref.playerId === controllerId ? value : -value);
+    }, 0) * costMultiplier;
+  }
+
+  if (effectId === "tap_essence") {
+    const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
+    const amount = Math.min(getActionAmount(action.amount, 0), getReadyEssenceCount(player));
+    if (!player || amount <= 0) return 0;
+    return (player.id === controllerId ? -amount * 1.9 : amount * 1.45) * costMultiplier;
+  }
+
+  if (["modify_power_resistance", "grant_keyword", "protect_from_opponents", "prevent_damage_to_character"].includes(effectId)) {
+    const refs = getEngineTargetRefs(action.target, stackObject, { ignoreCount: true });
+    if (!refs.length) return 0;
+    const amount = Math.max(1, Math.abs(toNumber(action.power, 0)) + Math.abs(toNumber(action.resistance, 0)));
+    return Math.max(...refs.map((ref) => scoreBotTargetRef(ref, controllerId, "buff", amount, action) + amount)) * costMultiplier;
+  }
+
+  if (effectId === "heal_territory") {
+    const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
+    const amount = Math.min(getActionAmount(action.amount, 0), toNumber(player?.territoryDamage, 0));
+    return (player?.id === controllerId ? amount * 2 : -amount) * costMultiplier;
+  }
+
+  if (effectId === "heal_character") {
+    const refs = getEngineTargetRefs(action.target, stackObject, { ignoreCount: true });
+    if (!refs.length) return 0;
+    return Math.max(...refs.map((ref) => scoreBotTargetRef(ref, controllerId, "heal", getActionAmount(action.amount, 0), action))) * costMultiplier;
+  }
+
+  if (effectId === "discard_cards") {
+    return scoreBotHandCardMovementAction(action, stackObject) * costMultiplier;
+  }
+
+  if (effectId === "put_cards_from_hand_on_bottom" || effectId === "put_cards_from_hand_on_top") {
+    return scoreBotHandCardMovementAction(action, stackObject) * costMultiplier;
+  }
+
+  if (effectId === "draw_cards") {
+    const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
+    const amount = getActionAmount(action.amount, 0);
+    return (player?.id === controllerId ? amount * 3.2 : -amount * 2.2) * costMultiplier;
+  }
+
+  if (["search_library_to_top", "search_library_or_reserve_to_hand", "move_cemetery_card_to_hand", "top_cards_to_hand_bottom", "top_lowest_type_to_hand_bottom", "review_top_cards", "reorder_top_cards"].includes(effectId)) {
+    return scoreBotLibrarySelectionAction(action, stackObject) * costMultiplier;
+  }
+
+  if (effectId === "generate_essence" || effectId === "reduce_next_cost" || effectId === "untap_essence") {
+    const player = getPlayer(game, getStackPlayerId(action.player, stackObject));
+    const amount = getActionAmount(action.amount, 1);
+    return (player?.id === controllerId ? amount * 2.4 : -amount * 1.6) * costMultiplier;
+  }
+
+  if (effectId === "gain_control") {
+    const refs = getEngineTargetRefs(action.target, stackObject, { ignoreCount: true });
+    if (!refs.length) return 0;
+    return Math.max(...refs.map((ref) => scoreBotTargetRef(ref, controllerId, "control", 0, action))) * costMultiplier;
+  }
+
+  if (effectId === "fight") {
+    const leftRefs = getEngineTargetRefs(action.sourceTarget || action.left || action.target, stackObject, { ignoreCount: true });
+    const rightRefs = getEngineTargetRefs(action.target || action.right, stackObject, { ignoreCount: true });
+    const pair = chooseBotFightPair(stackObject, leftRefs, rightRefs, action);
+    return pair ? pair.score * costMultiplier : -6;
+  }
+
+  if (effectId === "pulverize") {
+    return scoreBotPulverizeAction(action, stackObject) * costMultiplier;
+  }
+
+  if (effectId === "set_base_resistance") {
+    return scoreBotSetBaseResistanceAction(action, stackObject) * costMultiplier;
+  }
+
+  if (effectId === "distribute_healing") {
+    return scoreBotDistributionAction(action, stackObject, "heal") * costMultiplier;
+  }
+
+  if (effectId === "distribute_damage") {
+    return scoreBotDistributionAction(action, stackObject, "damage") * costMultiplier;
+  }
+
+  if (effectId === "prevent_damage") {
+    return scoreBotPreventDamageAction(action, stackObject) * costMultiplier;
+  }
+
+  if (effectId === "modify_damage_amount" || effectId === "replace_damage") {
+    return scoreBotModifyDamageAction(action, stackObject) * costMultiplier;
+  }
+
+  if (effectId === "create_temp_effect") {
+    return scoreBotTemporaryEffectAction(action, stackObject) * costMultiplier;
+  }
+
+  if (effectId === "reveal_lower_cost_character_from_hand_then_heal") {
+    return scoreBotRevealLowerCostThenHealAction(action, stackObject) * costMultiplier;
+  }
+
+  if (effectId === "counter_stack_object") {
+    const refs = getEngineStackTargetRefs(action.target || { zone: "stack", controller: "all" }, stackObject, { ignoreCount: true });
+    if (!refs.length) return 0;
+    return Math.max(...refs.map((ref) => scoreBotCounterStackTargetRef(ref, controllerId, action))) * costMultiplier;
+  }
+
+  if (effectId === "attach_equipment") {
+    const targetRefs = getEngineTargetRefs(action.target, stackObject, { ignoreCount: true });
+    if (!targetRefs.length) return 0;
+    return Math.max(...targetRefs.map((ref) => scoreBotTargetRef(ref, controllerId, "attach", 0, action))) * costMultiplier;
+  }
+
+  if (effectId === "choose_effect_bundle") {
+    const choiceScores = (action.choices || [])
+      .filter((choice) => isEngineChoiceValid(choice, stackObject))
+      .map((choice) => [
+        ...(choice.costs || []).map((cost) => scoreBotEngineAction(cost, stackObject, { isCost: true })),
+        ...(choice.actions || []).map((nestedAction) => scoreBotEngineAction(nestedAction, stackObject))
+      ].reduce((sum, value) => sum + value, 0));
+    return choiceScores.length ? Math.max(...choiceScores) * costMultiplier : 0;
+  }
+
+  return (isEngineActionViable(action, stackObject) ? 1 : 0) * costMultiplier;
+}
+
+function scoreBotResolutionAbility(stackObject) {
+  const ability = stackObject?.ability || app.engine.abilityById.get(stackObject?.abilityId);
+  if (!ability || !isEngineStackObjectViable(stackObject)) return 0;
+  const costScore = (ability.costs || [])
+    .reduce((sum, cost) => sum + scoreBotEngineAction(cost, stackObject, { isCost: true }), 0);
+  const actionScores = (ability.actions || []).map((action) => scoreBotEngineAction(action, stackObject));
+  if (!actionScores.length) return costScore + 1;
+  const resolvedScore = ability.requiresAllActions
+    ? actionScores.reduce((sum, score) => sum + score, 0)
+    : Math.max(...actionScores, actionScores.reduce((sum, score) => sum + score, 0));
+  return costScore + resolvedScore;
+}
+
+function scoreBotCardPlay(bot, cardId, mode = "basic") {
+  const card = app.cardByCode.get(cardId);
+  if (!card || !canPlayCard(bot, cardId) || !canBotSurviveSinCost(bot, cardId)) return Number.NEGATIVE_INFINITY;
+  const typeCode = getCardTypeCode(card);
+  const cost = getEffectivePlayCost(bot, card);
+  let score = 0;
+
+  if (typeCode === "PER") {
+    const power = Math.max(0, toNumber(card.stats?.attack, 0));
+    const resistance = Math.max(0, toNumber(card.stats?.resistance, 0));
+    score += 7 + power * 2 + resistance * 1.4;
+    if (isBethlehemPastorCard(card)) score += 6;
+  } else if (typeCode === "ART") {
+    score += 3;
+    if (isEquipmentCard(card)) {
+      const bestTarget = bot.battlefield
+        .filter((candidate) => canAttachEquipmentTo({ cardId }, candidate, bot.id, bot.id))
+        .sort((left, right) => scoreEquipmentAttachmentTarget({ cardId }, right) - scoreEquipmentAttachmentTarget({ cardId }, left))[0];
+      score += bestTarget ? 4 + scoreEquipmentAttachmentTarget({ cardId }, bestTarget) * 0.35 : -3;
+    }
+  } else if (typeCode === "MIL") {
+    score += 1;
+  } else if (typeCode === "PEC") {
+    const remainingAfterCost = Math.max(0, toNumber(bot.maxTerritory, 0) - toNumber(bot.territoryDamage, 0) - getCost(card));
+    score -= getCost(card) * 1.25;
+    if (remainingAfterCost <= 4) score -= 7;
+    if (mode === "aggressive") score += 1.5;
+  }
+
+  const resolutionObjects = getCardResolutionStackObjects(cardId, bot.id);
+  if (hasCardResolutionAbility(cardId, bot.id) && !resolutionObjects.length) return Number.NEGATIVE_INFINITY;
+  if (resolutionObjects.length) {
+    score += Math.max(...resolutionObjects.map(scoreBotResolutionAbility));
+  }
+
+  score -= Math.max(0, cost) * (typeCode === "PER" ? 0.25 : 0.35);
+  if (mode === "test") score += 0.01;
+  return score;
+}
+
+function getBotCardPlayThreshold(card, mode = "basic") {
+  const typeCode = getCardTypeCode(card);
+  if (mode === "aggressive") return typeCode === "PER" ? 1 : 1.25;
+  if (typeCode === "PER") return 1;
+  if (typeCode === "ART") return 1.5;
+  return 2;
+}
+
+function getBotCardResourceCost(bot, card) {
+  if (!card) return Infinity;
+  if (getCardTypeCode(card) === "PEC") return 0;
+  return Math.max(0, getEffectivePlayCost(bot, card));
+}
+
+function getBotCardPlanEntries(bot, candidates, mode = "basic") {
+  const totalPotential = getPotentialAvailableEssence(bot);
+  return candidates
+    .map((cardId) => ({
+      cardId,
+      card: app.cardByCode.get(cardId),
+      score: scoreBotCardPlay(bot, cardId, mode),
+      resourceCost: getBotCardResourceCost(bot, app.cardByCode.get(cardId))
+    }))
+    .filter(({ card, score, resourceCost }) => (
+      card &&
+      Number.isFinite(score) &&
+      Number.isFinite(resourceCost) &&
+      resourceCost <= totalPotential &&
+      score >= getBotCardPlayThreshold(card, mode)
+    ))
+    .sort((left, right) => {
+      if (right.score !== left.score) return right.score - left.score;
+      if (left.resourceCost !== right.resourceCost) return left.resourceCost - right.resourceCost;
+      return getCost(left.card) - getCost(right.card);
+    });
+}
+
+function getBotGeneratorOpportunityCost(bot, generatedNeeded) {
+  const needed = Math.max(0, Math.ceil(toNumber(generatedNeeded, 0)));
+  if (needed <= 0) return 0;
+  const generatorCosts = getReadyEssenceGeneratorInstances(bot)
+    .flatMap((instance) => Array.from({
+      length: isIncenseTokenInstance(instance) ? getTokenQuantity(instance) : 1
+    }, () => getEssenceGeneratorPaymentOpportunityCost(bot, instance)))
+    .sort((left, right) => left - right);
+  if (generatorCosts.length < needed) return Infinity;
+  return generatorCosts.slice(0, needed).reduce((sum, cost) => sum + cost, 0);
+}
+
+function scoreBotPlayPlan(bot, plan, mode = "basic") {
+  if (!plan.length) return Number.NEGATIVE_INFINITY;
+  const available = getAvailableEssence(bot);
+  const totalPotential = getPotentialAvailableEssence(bot);
+  const resourceSpent = plan.reduce((sum, entry) => sum + entry.resourceCost, 0);
+  if (resourceSpent > totalPotential) return Number.NEGATIVE_INFINITY;
+
+  const generatedNeeded = Math.max(0, resourceSpent - available);
+  const generatorCost = getBotGeneratorOpportunityCost(bot, generatedNeeded);
+  if (!Number.isFinite(generatorCost)) return Number.NEGATIVE_INFINITY;
+
+  const baseScore = plan.reduce((sum, entry) => sum + entry.score, 0);
+  const sequenceBonus = Math.max(0, plan.length - 1) * (mode === "aggressive" ? 0.7 : 0.45);
+  const resourcePressure = generatedNeeded * 0.2 + Math.max(0, resourceSpent - available) * 0.08;
+  return baseScore + sequenceBonus - generatorCost - resourcePressure;
+}
+
+function orderBotPlayPlan(plan) {
+  return [...plan].sort((left, right) => {
+    const leftType = getCardTypeCode(left.card);
+    const rightType = getCardTypeCode(right.card);
+    const typeWeight = (typeCode) => {
+      if (typeCode === "PER") return 0;
+      if (typeCode === "PEC") return 1;
+      if (typeCode === "ART") return 2;
+      return 3;
+    };
+    const typeDiff = typeWeight(leftType) - typeWeight(rightType);
+    if (typeDiff) return typeDiff;
+    if (right.score !== left.score) return right.score - left.score;
+    return left.resourceCost - right.resourceCost;
+  });
+}
+
+function chooseBotPlayPlan(bot, candidates, mode = "basic", horizon = 3) {
+  const entries = getBotCardPlanEntries(bot, candidates, mode).slice(0, 10);
+  if (!entries.length) return { entries: [], score: Number.NEGATIVE_INFINITY };
+
+  const maxCards = Math.max(1, Math.min(3, Math.floor(toNumber(horizon, 3) || 3)));
+  const maxResource = getPotentialAvailableEssence(bot);
+  let best = { entries: [], score: Number.NEGATIVE_INFINITY };
+
+  const visit = (startIndex, plan, resourceSpent) => {
+    if (plan.length) {
+      const score = scoreBotPlayPlan(bot, plan, mode);
+      if (score > best.score) best = { entries: [...plan], score };
+    }
+    if (plan.length >= maxCards) return;
+
+    for (let index = startIndex; index < entries.length; index += 1) {
+      const entry = entries[index];
+      const nextResourceSpent = resourceSpent + entry.resourceCost;
+      if (nextResourceSpent > maxResource) continue;
+      plan.push(entry);
+      visit(index + 1, plan, nextResourceSpent);
+      plan.pop();
+    }
+  };
+
+  visit(0, [], 0);
+  if (!best.entries.length) return best;
+  return { entries: orderBotPlayPlan(best.entries), score: best.score };
+}
+
+function chooseBotCardToPlay(bot, candidates, mode = "basic", horizon = 3) {
+  const plan = chooseBotPlayPlan(bot, candidates, mode, horizon);
+  return plan.entries[0]?.cardId || "";
+}
+
+function withTemporaryAttackTarget(attackerId, attackerUid, target, callback) {
+  const game = app.game;
+  if (!game?.combat || !attackerUid) return callback();
+  const hadPrevious = Object.prototype.hasOwnProperty.call(game.combat.attackTargets, attackerUid);
+  const previous = game.combat.attackTargets[attackerUid];
+  if (target) game.combat.attackTargets[attackerUid] = target;
+  try {
+    return callback();
+  } finally {
+    if (hadPrevious) {
+      game.combat.attackTargets[attackerUid] = previous;
+    } else {
+      delete game.combat.attackTargets[attackerUid];
+    }
+  }
+}
+
+function getBotCombatDamageScore(ref, amount, controllerId = "bot") {
+  return scoreBotDamageTargetRef(ref, controllerId, Math.max(0, amount), { effect: "deal_damage" });
+}
+
+function getBotRetaliationDamageScore(ref, amount, controllerId = "bot") {
+  if (!ref?.instance || amount <= 0) return 0;
+  if (instanceHasKeyword(ref.instance, "INDESTRUTIVEL")) return 0;
+  const lethal = amount >= getLethalDamageNeeded(ref.instance);
+  return getBotCombatDamageScore(ref, amount, controllerId) + (lethal ? (ref.playerId === controllerId ? -2.5 : 2.5) : 0);
+}
+
+function getOrderedCombatBlockersForDamage(blockers) {
+  return [...blockers].sort((left, right) => {
+    const valueDiff = getBotPermanentValue(left) - getBotPermanentValue(right);
+    if (valueDiff) return valueDiff;
+    return getLethalDamageNeeded(left) - getLethalDamageNeeded(right);
+  });
+}
+
+function scoreCombatOutcomeForBot(attackerPlayer, attacker, target, blockers = []) {
+  const controllerId = "bot";
+  const attackerPower = Math.max(0, getCharacterPower(attacker));
+  const attackerRef = { playerId: attackerPlayer.id, instance: attacker };
+  const targetPlayer = getPlayer(app.game, target?.playerId);
+  const hasOverrun = instanceHasKeyword(attacker, "SOBREPUJAR");
+  const batchBlockers = blockers.filter(Boolean);
+
+  if (batchBlockers.length >= getMinimumBlockersRequired(attacker)) {
+    let score = 0;
+    let remainingPower = attackerPower;
+    const orderedBlockers = getOrderedCombatBlockersForDamage(batchBlockers);
+    const defenderId = getOpponentId(attackerPlayer.id);
+
+    orderedBlockers.forEach((blocker) => {
+      const blockerRef = { playerId: defenderId, instance: blocker };
+      score += getBotRetaliationDamageScore(attackerRef, getCharacterPower(blocker), controllerId);
+      if (remainingPower <= 0) return;
+      const isLast = blocker === orderedBlockers[orderedBlockers.length - 1];
+      const lethal = Math.max(0, getLethalDamageNeeded(blocker));
+      const assigned = hasOverrun
+        ? Math.min(remainingPower, lethal)
+        : isLast
+          ? remainingPower
+          : Math.min(remainingPower, lethal);
+      score += getBotRetaliationDamageScore(blockerRef, assigned, controllerId);
+      remainingPower -= assigned;
+    });
+
+    if (hasOverrun && remainingPower > 0) {
+      if (target?.type === "territory") {
+        score += getBotCombatDamageScore({ playerId: target.playerId, territory: true }, remainingPower, controllerId);
+      } else {
+        const targetInstance = findBattlefieldInstance(targetPlayer, target?.uid);
+        if (targetInstance) {
+          score += getBotRetaliationDamageScore({ playerId: target.playerId, instance: targetInstance }, remainingPower, controllerId);
+        }
+      }
+    }
+    return score;
+  }
+
+  if (target?.type === "territory") {
+    return getBotCombatDamageScore({ playerId: target.playerId, territory: true }, attackerPower, controllerId);
+  }
+
+  const targetInstance = findBattlefieldInstance(targetPlayer, target?.uid);
+  if (!targetInstance) return Number.NEGATIVE_INFINITY;
+  const targetRef = { playerId: target.playerId, instance: targetInstance };
+  return getBotRetaliationDamageScore(targetRef, attackerPower, controllerId) +
+    getBotRetaliationDamageScore(attackerRef, getCharacterPower(targetInstance), controllerId);
+}
+
+function getBotBlockerCombinations(blockers, minimum = 1, maximum = 3) {
+  const limited = [...blockers]
+    .sort((left, right) => {
+      const powerDiff = getCharacterPower(right) - getCharacterPower(left);
+      if (powerDiff) return powerDiff;
+      return getBotPermanentValue(left) - getBotPermanentValue(right);
+    })
+    .slice(0, 7);
+  const maxSize = Math.min(maximum, limited.length);
+  const combinations = [];
+
+  const visit = (startIndex, chosen, size) => {
+    if (chosen.length === size) {
+      combinations.push([...chosen]);
+      return;
+    }
+    for (let index = startIndex; index < limited.length; index += 1) {
+      chosen.push(limited[index]);
+      visit(index + 1, chosen, size);
+      chosen.pop();
+    }
+  };
+
+  for (let size = Math.max(1, minimum); size <= maxSize; size += 1) {
+    visit(0, [], size);
+  }
+  return combinations;
+}
+
+function getBotAvailableBlockerCombinations(attackerPlayer, attacker, target, defender, availableBlockers) {
+  return withTemporaryAttackTarget(attackerPlayer.id, attacker.uid, target, () => {
+    const legalBlockers = availableBlockers.filter((blocker) =>
+      canBlockAttack(defender, blocker.uid, attackerPlayer, attacker.uid)
+    );
+    return getBotBlockerCombinations(legalBlockers, getMinimumBlockersRequired(attacker), 3);
+  });
+}
+
+function getBotCounterattackRiskPenalty(bot, attacker) {
+  const human = app.game?.players?.human;
+  if (!human) return 0;
+  const botRemaining = getBotTerritoryRemaining(bot);
+  const humanReadyPower = human.battlefield
+    .filter((instance) => {
+      const card = app.cardByCode.get(instance.cardId);
+      return !instance.exhausted && getCardTypeCode(card) === "PER";
+    })
+    .reduce((sum, instance) => sum + Math.max(0, getCharacterPower(instance)), 0);
+  if (humanReadyPower <= 0) return 0;
+  const danger = humanReadyPower >= botRemaining ? 2.2 : humanReadyPower >= botRemaining - 4 ? 1.15 : 0.35;
+  return danger * (Math.max(1, getCharacterPower(attacker)) * 0.35 + getBotPermanentValue(attacker) * 0.08);
+}
+
+function scoreBotAttackOption(attacker, target) {
+  const game = app.game;
+  const bot = game?.players?.bot;
+  const human = game?.players?.human;
+  if (!bot || !human || !isValidAttackTarget("bot", target)) return Number.NEGATIVE_INFINITY;
+
+  const noBlockScore = scoreCombatOutcomeForBot(bot, attacker, target, []);
+  const blockScores = getBotAvailableBlockerCombinations(bot, attacker, target, human, human.battlefield)
+    .map((blockers) => scoreCombatOutcomeForBot(bot, attacker, target, blockers));
+  const expectedScore = blockScores.length
+    ? Math.min(noBlockScore, ...blockScores)
+    : noBlockScore;
+  return expectedScore - getBotCounterattackRiskPenalty(bot, attacker);
+}
+
+function getBotAttackOptions(attacker) {
+  const human = app.game?.players?.human;
+  if (!human) return [];
+  const targets = [
+    getTerritoryAttackTarget("human"),
+    ...human.battlefield
+      .filter((instance) => {
+        const card = app.cardByCode.get(instance.cardId);
+        return instance.exhausted && getCardTypeCode(card) === "PER";
+      })
+      .map((instance) => getCharacterAttackTarget("human", instance.uid))
+  ];
+  return targets
+    .map((target) => ({
+      target,
+      score: scoreBotAttackOption(attacker, target)
+    }))
+    .filter((option) => Number.isFinite(option.score))
+    .sort((left, right) => right.score - left.score);
+}
+
+function chooseBotAttackPlan(bot, mode = "basic") {
+  const threshold = mode === "aggressive" ? 0.35 : 1.25;
+  const options = bot.battlefield
+    .filter((instance) => canAttackWith(bot, instance.uid) && getCharacterPower(instance) > 0)
+    .map((instance) => ({
+      instance,
+      ...(getBotAttackOptions(instance)[0] || { target: null, score: Number.NEGATIVE_INFINITY })
+    }))
+    .filter((option) => option.target && option.score >= threshold)
+    .sort((left, right) => right.score - left.score);
+
+  if (hasVirtueLevel(bot, VIRTUE_IDS.egoism, 3)) return options.slice(0, 1);
+
+  const cowardiceLevel = getVirtueValue(bot, VIRTUE_IDS.cowardice);
+  if ((cowardiceLevel === 1 || cowardiceLevel === 2) && options.length === 1 && isDamagedCharacterInstance(options[0].instance)) {
+    return [];
+  }
+
+  return options;
+}
+
 function playBotCards(bot, mode, maxCards = Infinity) {
   let played = true;
   let playedCount = 0;
   while (played && playedCount < maxCards) {
     played = false;
-    activateBotEssenceGeneratorsForHand(bot);
     const candidates = [...bot.hand].sort((a, b) => {
       const cardA = app.cardByCode.get(a);
       const cardB = app.cardByCode.get(b);
@@ -9350,47 +10823,29 @@ function playBotCards(bot, mode, maxCards = Infinity) {
       return (getCost(cardA) + typeBoostA) - (getCost(cardB) + typeBoostB);
     });
 
-    const next = candidates.find((cardId) => canPlayCard(bot, cardId) && canBotSurviveSinCost(bot, cardId));
+    const next = chooseBotCardToPlay(bot, candidates, mode, 3);
     if (next) {
       applyPlayCard("bot", next);
       autoAttachEquipmentForBot(bot);
       playedCount += 1;
-      played = mode === "test" ? false : getAvailableEssence(bot) > 0;
+      played = mode === "test" ? false : bot.hand.some((cardId) => canPlayCard(bot, cardId));
     }
   }
   return playedCount;
 }
 
 function attackWithBot(bot) {
-  const attackers = bot.battlefield.filter((instance) => (
-    canAttackWith(bot, instance.uid) && getCharacterPower(instance) > 0
-  ));
-  attackers.forEach((instance) => {
-    selectAttackTarget("bot", instance.uid, chooseBotAttackTarget(instance));
+  const attackPlan = chooseBotAttackPlan(bot, app.game?.botMode || "basic");
+  attackPlan.forEach(({ instance, target }) => {
+    selectAttackTarget("bot", instance.uid, target);
   });
-  if (attackers.length && app.game?.status === "active") {
+  if (attackPlan.length && app.game?.status === "active") {
     applyAttack("bot");
   }
 }
 
 function chooseBotAttackTarget(attacker) {
-  const human = app.game.players.human;
-  const attackerPower = getCharacterPower(attacker);
-  const vulnerableCharacters = human.battlefield
-    .filter((instance) => {
-      const card = app.cardByCode.get(instance.cardId);
-      return instance.exhausted && getCardTypeCode(card) === "PER";
-    })
-    .sort((a, b) => {
-      const killableA = getLethalDamageNeeded(a) <= attackerPower ? -1 : 0;
-      const killableB = getLethalDamageNeeded(b) <= attackerPower ? -1 : 0;
-      if (killableA !== killableB) return killableA - killableB;
-      return getLethalDamageNeeded(a) - getLethalDamageNeeded(b);
-    });
-  if (vulnerableCharacters.length && Math.random() < 0.55) {
-    return getCharacterAttackTarget("human", vulnerableCharacters[0].uid);
-  }
-  return getTerritoryAttackTarget("human");
+  return getBotAttackOptions(attacker)[0]?.target || getTerritoryAttackTarget("human");
 }
 
 function selectHandCard(cardId) {
