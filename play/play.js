@@ -149,6 +149,109 @@ const EQUIPMENT_IDS = {
   crown: "FND-ART-040"
 };
 
+const BOT_PERSONAS = {
+  test: {
+    label: "Teste",
+    playThresholdOffset: -1.5,
+    sinRiskTolerance: 1.2,
+    attackThreshold: -0.1,
+    championThreshold: 1.2,
+    maxPreparationActions: 1,
+    preserveHandWeight: 0.25,
+    responseThreshold: 4,
+    consecrationFloor: -2
+  },
+  basic: {
+    label: "Basico",
+    playThresholdOffset: 0,
+    sinRiskTolerance: 0,
+    attackThreshold: 1.25,
+    championThreshold: 2,
+    maxPreparationActions: 3,
+    preserveHandWeight: 0.65,
+    responseThreshold: 5.5,
+    consecrationFloor: 0
+  },
+  aggressive: {
+    label: "Agressivo",
+    playThresholdOffset: -0.75,
+    sinRiskTolerance: 1.8,
+    attackThreshold: 0.35,
+    championThreshold: 1.35,
+    maxPreparationActions: 4,
+    preserveHandWeight: 0.35,
+    responseThreshold: 4.75,
+    consecrationFloor: -0.75
+  },
+  control: {
+    label: "Controle",
+    playThresholdOffset: 0.65,
+    sinRiskTolerance: -0.8,
+    attackThreshold: 2.2,
+    championThreshold: 2.4,
+    maxPreparationActions: 2,
+    preserveHandWeight: 0.95,
+    responseThreshold: 4.35,
+    consecrationFloor: 0.55
+  },
+  value: {
+    label: "Valor",
+    playThresholdOffset: 0.25,
+    sinRiskTolerance: -0.25,
+    attackThreshold: 1.55,
+    championThreshold: 1.8,
+    maxPreparationActions: 3,
+    preserveHandWeight: 0.45,
+    responseThreshold: 5.1,
+    consecrationFloor: 0.15
+  },
+  defensive: {
+    label: "Defensivo",
+    playThresholdOffset: 0.45,
+    sinRiskTolerance: -1.2,
+    attackThreshold: 2.65,
+    championThreshold: 2.1,
+    maxPreparationActions: 2,
+    preserveHandWeight: 1.1,
+    responseThreshold: 4.6,
+    consecrationFloor: 0.4
+  }
+};
+
+const BOT_STRATEGY_TAGS = {
+  cards: {
+    "FND-PER-013": ["mana_dork", "early_engine", "preserve_if_only_creature"],
+    "FND-PER-018": ["card_selection", "value_engine"],
+    "FND-PER-020": ["cheap_body", "sacrifice_fodder"],
+    "FND-PEC-021": ["sacrifice_cost", "needs_own_character", "avoid_without_payoff"],
+    "FND-PEC-022": ["removal", "needs_enemy_character"],
+    "FND-PEC-023": ["buff", "finisher", "combat_push"],
+    "FND-PEC-024": ["punisher", "late_game"],
+    "FND-PEC-025": ["sacrifice_cost", "needs_enemy_character", "avoid_without_target"],
+    "FND-PEC-026": ["sweeper", "comeback", "late_game"],
+    "FND-PEC-027": ["control_magic", "needs_enemy_character"],
+    "FND-MIL-029": ["removal", "cheap_interaction"],
+    "FND-MIL-030": ["protection", "defensive_trick"],
+    "FND-MIL-031": ["tempo", "protect_key_piece"],
+    "FND-MIL-032": ["card_selection", "value_engine"],
+    "FND-MIL-035": ["healing", "defensive_trick"],
+    "FND-MIL-036": ["card_selection", "setup_combo"],
+    "FND-ART-037": ["equipment", "removal_engine"],
+    "FND-ART-038": ["equipment", "tempo_engine", "moral_cost_opponent"],
+    "FND-ART-039": ["equipment", "finisher"],
+    "FND-ART-040": ["equipment", "protect_key_piece"]
+  },
+  abilities: {
+    "card.fnd_art_038.activated": ["moral_cost_opponent"],
+    "card.fnd_cmp_048.despair": ["sacrifice_cost", "finisher"],
+    "card.fnd_tem_049.prepare_begin": ["moral_setup", "hand_cost"],
+    "virtue.faith.1": ["hand_cost", "future_draw"],
+    "virtue.faith.2": ["hand_cost", "future_draw"],
+    "virtue.faith.3": ["hand_cost", "future_draw"],
+    "virtue.faith.4": ["hand_cost", "future_draw"]
+  }
+};
+
 function getVirtueAxisSortWeight(axis) {
   const normalized = Number(axis);
   const index = VIRTUE_AXIS_DISPLAY_ORDER.indexOf(normalized);
@@ -158,6 +261,30 @@ function getVirtueAxisSortWeight(axis) {
 function getSortedVirtueAxes() {
   return [...new Set(app.virtues.map((virtue) => Number(virtue.axis)).filter(Boolean))]
     .sort((a, b) => getVirtueAxisSortWeight(a) - getVirtueAxisSortWeight(b));
+}
+
+function getBotPersona(mode = app.game?.botMode || "basic") {
+  return BOT_PERSONAS[mode] || BOT_PERSONAS.basic;
+}
+
+function getBotModeLabel(mode = app.game?.botMode || "basic") {
+  return getBotPersona(mode).label || mode;
+}
+
+function getBotStrategyTagsForCard(cardId) {
+  return BOT_STRATEGY_TAGS.cards[cardId] || [];
+}
+
+function getBotStrategyTagsForAbility(abilityId) {
+  return BOT_STRATEGY_TAGS.abilities[abilityId] || [];
+}
+
+function hasBotStrategyTag(cardId, tag) {
+  return getBotStrategyTagsForCard(cardId).includes(tag);
+}
+
+function abilityHasBotStrategyTag(abilityId, tag) {
+  return getBotStrategyTagsForAbility(abilityId).includes(tag);
 }
 
 function sortVirtuesByDisplayOrder(items, getVirtue = (value) => value) {
@@ -250,19 +377,136 @@ const app = {
   resultViewingBoard: false,
   isLocalDebugHost: window.location.hostname === "127.0.0.1",
   virtueDebugEnabled: false,
+  aiDebugEnabled: false,
+  aiDecisions: [],
+  aiScenarioResults: [],
   drawAnimationPending: false,
   edgeEvents: [],
   edgeEventTimers: new Map(),
   edgeEventSeq: 0,
   autoPassTimer: null,
+  autoPassKey: "",
   blockReviewResume: null,
   priority: null,
   botPriority: null,
   pendingEngineChoice: null,
   pendingMoralChoice: null,
   pendingVirtueDebug: null,
-  decisionBattlefieldView: false
+  decisionBattlefieldView: false,
+  renderFrame: 0,
+  renderCache: new WeakMap(),
+  renderPendingReasons: new Set(),
+  lastRenderAt: 0,
+  performanceSaver: false,
+  perfDebugEnabled: window.location.hostname === "127.0.0.1" && new URLSearchParams(window.location.search).has("perf"),
+  perf: {
+    renderCount: 0,
+    renderMs: 0,
+    maxRenderMs: 0,
+    rendersPerSecond: 0,
+    renderWindowStartedAt: 0,
+    renderWindowCount: 0,
+    skippedHtmlWrites: 0,
+    htmlWrites: 0,
+    lastReason: "",
+    lastLongTaskMs: 0,
+    longTaskCount: 0
+  },
+  currentDropHover: null,
+  pointerDragFrame: 0,
+  pointerDragPoint: null
 };
+
+if (app.isLocalDebugHost) {
+  window.adonaiPerf = app.perf;
+}
+
+function isAiDebugAvailable() {
+  return Boolean(app.isLocalDebugHost);
+}
+
+function isAiDebugEnabled() {
+  return Boolean(isAiDebugAvailable() && app.aiDebugEnabled);
+}
+
+function formatAiScore(score) {
+  if (!Number.isFinite(score)) return "-";
+  return score.toFixed(Math.abs(score) >= 10 ? 1 : 2);
+}
+
+function pushAiDecision(entry = {}) {
+  if (!isAiDebugEnabled()) return;
+  const normalized = {
+    time: new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", second: "2-digit" }),
+    turn: app.game?.turnNumber || 0,
+    phase: app.game ? currentPhase(app.game) : "",
+    mode: app.game?.botMode || els.botModeSelect?.value || "basic",
+    title: entry.title || "Decisão da IA",
+    detail: entry.detail || "",
+    score: Number.isFinite(entry.score) ? entry.score : null,
+    candidates: Array.isArray(entry.candidates) ? entry.candidates.slice(0, 6) : []
+  };
+  app.aiDecisions.unshift(normalized);
+  app.aiDecisions = app.aiDecisions.slice(0, 24);
+  renderAiDebugPanel();
+}
+
+function getAiDebugPanelElement() {
+  if (!isAiDebugAvailable() || !els.gameView) return null;
+  let panel = document.getElementById("aiDebugPanel");
+  if (!panel) {
+    panel = document.createElement("aside");
+    panel.id = "aiDebugPanel";
+    panel.className = "ai-debug-panel";
+    els.gameView.appendChild(panel);
+  }
+  return panel;
+}
+
+function renderAiDebugPanel() {
+  const panel = getAiDebugPanelElement();
+  if (!panel) return;
+  panel.classList.toggle("is-visible", isAiDebugEnabled());
+  if (!isAiDebugEnabled()) {
+    clearStableHtml(panel);
+    return;
+  }
+  const latest = app.aiDecisions.slice(0, 7);
+  const scenarioSummary = app.aiScenarioResults.length
+    ? `${app.aiScenarioResults.filter((item) => item.pass).length}/${app.aiScenarioResults.length} cenários OK`
+    : "cenários não executados";
+  setStableHtml(panel, `
+    <div class="ai-debug-head">
+      <div>
+        <span>IA do Bot</span>
+        <strong>${escapeHtml(getBotModeLabel(app.game?.botMode || els.botModeSelect?.value || "basic"))}</strong>
+      </div>
+      <small>${escapeHtml(scenarioSummary)}</small>
+    </div>
+    <div class="ai-debug-list">
+      ${latest.length ? latest.map((item) => `
+        <article class="ai-debug-item">
+          <div>
+            <span>${escapeHtml(item.time)} · T${escapeHtml(item.turn)} ${escapeHtml(PHASE_LABELS[item.phase] || item.phase)}</span>
+            <strong>${escapeHtml(item.title)}</strong>
+          </div>
+          ${Number.isFinite(item.score) ? `<b>${escapeHtml(formatAiScore(item.score))}</b>` : ""}
+          ${item.detail ? `<p>${escapeHtml(item.detail)}</p>` : ""}
+          ${item.candidates.length ? `
+            <ul>
+              ${item.candidates.map((candidate) => `
+                <li>
+                  <span>${escapeHtml(candidate.label || candidate.cardId || candidate.kind || "opção")}</span>
+                  <b>${escapeHtml(formatAiScore(candidate.score))}</b>
+                </li>
+              `).join("")}
+            </ul>
+          ` : ""}
+        </article>
+      `).join("") : `<p class="ai-debug-empty">Aguardando decisões do bot.</p>`}
+    </div>
+  `);
+}
 
 function localize(value) {
   if (!value) return "";
@@ -279,8 +523,83 @@ function escapeHtml(value) {
     .replace(/'/g, "&#039;");
 }
 
+function nowMs() {
+  return typeof performance !== "undefined" && typeof performance.now === "function"
+    ? performance.now()
+    : Date.now();
+}
+
+function setStableHtml(element, html) {
+  if (!element) return false;
+  const nextHtml = String(html ?? "");
+  const previous = app.renderCache.get(element);
+  if (previous === nextHtml) {
+    app.perf.skippedHtmlWrites += 1;
+    return false;
+  }
+  element.innerHTML = nextHtml;
+  app.renderCache.set(element, nextHtml);
+  app.perf.htmlWrites += 1;
+  return true;
+}
+
+function clearStableHtml(element) {
+  if (!element) return;
+  if (element.innerHTML) element.innerHTML = "";
+  app.renderCache.delete(element);
+}
+
+function scheduleRender(reason = "scheduled") {
+  if (!app.game) return;
+  app.renderPendingReasons.add(reason);
+  if (app.renderFrame) return;
+  app.renderFrame = window.requestAnimationFrame(() => {
+    const reasons = [...app.renderPendingReasons].join(", ");
+    app.renderPendingReasons.clear();
+    app.renderFrame = 0;
+    renderGameNow(reasons || "scheduled");
+  });
+}
+
+function renderPerformanceDebugPanel() {
+  if (!app.perfDebugEnabled || !els.gameView) return;
+  let panel = document.getElementById("performanceDebugPanel");
+  if (!panel) {
+    panel = document.createElement("aside");
+    panel.id = "performanceDebugPanel";
+    panel.className = "performance-debug-panel";
+    els.gameView.appendChild(panel);
+  }
+  setStableHtml(panel, `
+    <strong>Perf</strong>
+    <span>render ${app.perf.renderMs.toFixed(1)}ms</span>
+    <span>${app.perf.rendersPerSecond}/s</span>
+    <span>max ${app.perf.maxRenderMs.toFixed(1)}ms</span>
+    <span>writes ${app.perf.htmlWrites}/${app.perf.skippedHtmlWrites}</span>
+    <span>long ${app.perf.longTaskCount} (${app.perf.lastLongTaskMs.toFixed(0)}ms)</span>
+    <span>${app.performanceSaver ? "economia" : "normal"}</span>
+  `);
+}
+
+function initPerformanceMonitor() {
+  if (!app.perfDebugEnabled || typeof PerformanceObserver === "undefined") return;
+  try {
+    const observer = new PerformanceObserver((list) => {
+      list.getEntries().forEach((entry) => {
+        app.perf.longTaskCount += 1;
+        app.perf.lastLongTaskMs = entry.duration || 0;
+      });
+      renderPerformanceDebugPanel();
+    });
+    observer.observe({ entryTypes: ["longtask"] });
+  } catch (error) {
+    // Long Task API is not available in every browser.
+  }
+}
+
 const MODAL_EXIT_ANIMATION_MS = 180;
 let viewportDensityFrame = 0;
+let viewportDensitySignature = "";
 let modalRenderObserver = null;
 
 function getViewportDensity() {
@@ -308,6 +627,25 @@ function updateViewportDensityState() {
   const view = els.gameView;
   if (!view) return;
   const viewport = getViewportDensity();
+  const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches || false;
+  const saveData = Boolean(navigator.connection?.saveData);
+  const performanceSaver = Boolean(prefersReducedMotion || saveData || (viewport.coarsePointer && (viewport.compact || viewport.short)));
+  const signature = [
+    Math.round(viewport.width),
+    Math.round(viewport.height),
+    viewport.compact,
+    viewport.short,
+    viewport.veryShort,
+    viewport.wide,
+    viewport.landscape,
+    viewport.portrait,
+    viewport.coarsePointer,
+    viewport.finePointer,
+    performanceSaver
+  ].join(":");
+  if (signature === viewportDensitySignature) return;
+  viewportDensitySignature = signature;
+  app.performanceSaver = performanceSaver;
   view.dataset.viewportWidth = String(Math.round(viewport.width));
   view.dataset.viewportHeight = String(Math.round(viewport.height));
   view.classList.toggle("is-viewport-compact", viewport.compact);
@@ -318,6 +656,9 @@ function updateViewportDensityState() {
   view.classList.toggle("is-viewport-portrait", viewport.portrait);
   view.classList.toggle("is-coarse-pointer", viewport.coarsePointer);
   view.classList.toggle("is-fine-pointer", viewport.finePointer);
+  view.classList.toggle("is-performance-saver", performanceSaver);
+  document.body.classList.toggle("is-performance-saver", performanceSaver);
+  document.documentElement.classList.toggle("is-performance-saver", performanceSaver);
 }
 
 function scheduleViewportDensityUpdate() {
@@ -337,16 +678,22 @@ function syncFeedbackOverlayState() {
 
 function showModalElement(modal) {
   if (!modal) return;
+  const wasVisible = modal.classList.contains("is-visible");
   window.clearTimeout(modal._modalExitTimer);
   updateOverlayStateClasses(modal);
   modal.classList.remove("is-closing");
   modal.classList.remove("is-modal-updating");
   modal.classList.add("is-visible");
-  modal.dataset.modalOpening = "true";
-  window.setTimeout(() => {
-    if (modal.classList.contains("is-visible")) modal.dataset.modalRendered = "true";
+  if (wasVisible) {
+    modal.dataset.modalRendered = "true";
     delete modal.dataset.modalOpening;
-  }, 0);
+  } else {
+    modal.dataset.modalOpening = "true";
+    window.setTimeout(() => {
+      if (modal.classList.contains("is-visible")) modal.dataset.modalRendered = "true";
+      delete modal.dataset.modalOpening;
+    }, 0);
+  }
   syncFeedbackOverlayState();
 }
 
@@ -377,6 +724,17 @@ function setZoneModalVisibleForRender(modal) {
     modal.dataset.modalRendered === "true" &&
     modal.dataset.modalOpening !== "true";
   modal.className = `zone-modal is-visible${isInternalUpdate ? " is-modal-updating" : ""}`;
+  const updateAfterMarkup = () => {
+    if (!modal.classList.contains("is-visible")) return;
+    modal.dataset.modalRendered = "true";
+    updateOverlayStateClasses(modal);
+    syncFeedbackOverlayState();
+  };
+  if (typeof window.queueMicrotask === "function") {
+    window.queueMicrotask(updateAfterMarkup);
+  } else {
+    window.setTimeout(updateAfterMarkup, 0);
+  }
 }
 
 function hideModalById(id, extraClasses = []) {
@@ -422,7 +780,6 @@ function observeModalRenders() {
     const changedModal = mutations.some((mutation) => {
       const target = mutation.target;
       if (target === modal) return true;
-      if (target instanceof Element && target.closest("#zoneModal")) return true;
       return [...mutation.addedNodes].some((node) => node === modal || (node instanceof Element && (node.id === "zoneModal" || node.closest("#zoneModal"))));
     });
     if (!changedModal) return;
@@ -433,8 +790,7 @@ function observeModalRenders() {
     syncFeedbackOverlayState();
   });
   modalRenderObserver.observe(document.body, {
-    childList: true,
-    subtree: true
+    childList: true
   });
 }
 
@@ -1929,18 +2285,39 @@ function renderSetupDeckPreview(deck, label, kind) {
   `;
 }
 
+function renderAiScenarioSetupSummary() {
+  if (!app.aiScenarioResults.length) return "Cenários de IA ainda não executados.";
+  const passed = app.aiScenarioResults.filter((item) => item.pass).length;
+  return `${passed}/${app.aiScenarioResults.length} cenários passaram.`;
+}
+
+function renderLocalDebugSetupTools() {
+  if (!app.isLocalDebugHost) return "";
+  return `
+    <div class="setup-debug-tools">
+      <label class="setup-debug-toggle">
+        <input type="checkbox" data-toggle-virtue-debug ${app.virtueDebugEnabled ? "checked" : ""} />
+        <span>Teste manual de virtudes na Preparação</span>
+      </label>
+      <label class="setup-debug-toggle">
+        <input type="checkbox" data-toggle-ai-debug ${app.aiDebugEnabled ? "checked" : ""} />
+        <span>Debug da IA do bot</span>
+      </label>
+      <button class="setup-debug-button" type="button" data-run-ai-scenarios>
+        Rodar cenários da IA
+      </button>
+      <small class="setup-ai-scenario-summary">${escapeHtml(renderAiScenarioSetupSummary())}</small>
+    </div>
+  `;
+}
+
 function updateSetupPreview(humanDeck, botDeck) {
   if (!els.setupMatchPreview) return;
   els.setupMatchPreview.innerHTML = `
     ${renderSetupDeckPreview(humanDeck, "Voce", "human")}
     <div class="setup-versus" aria-hidden="true">VS</div>
     ${renderSetupDeckPreview(botDeck, "Bot", "bot")}
-    ${app.isLocalDebugHost ? `
-      <label class="setup-debug-toggle">
-        <input type="checkbox" data-toggle-virtue-debug ${app.virtueDebugEnabled ? "checked" : ""} />
-        <span>Teste manual de virtudes na Preparação</span>
-      </label>
-    ` : ""}
+    ${renderLocalDebugSetupTools()}
   `;
 }
 
@@ -2776,6 +3153,7 @@ function beginTurn(game) {
     turnPlayer.territoryDamageTakenThisTurn = 0;
     turnPlayer.characterDamageTakenThisTurn = 0;
     turnPlayer.cardsPlayedThisTurn = 0;
+    turnPlayer.aiPreparationActions = 0;
     clearEssencePool(turnPlayer);
   });
   player.spentEssence = 0;
@@ -2857,7 +3235,8 @@ async function startGame() {
       humanDeckId: humanDeck.id,
       botDeckId: botDeck.id,
       botMode: els.botModeSelect.value,
-      virtueDebugEnabled: app.isLocalDebugHost && app.virtueDebugEnabled
+      virtueDebugEnabled: app.isLocalDebugHost && app.virtueDebugEnabled,
+      aiDebugEnabled: app.isLocalDebugHost && app.aiDebugEnabled
     };
     writePlayStorage(app.lastConfig);
     app.game = createGame(humanDeck, botDeck, els.botModeSelect.value, {
@@ -2866,6 +3245,7 @@ async function startGame() {
     app.selected = null;
     app.expandedTemplePlayer = "";
     app.resultViewingBoard = false;
+    app.aiDecisions = [];
     app.territorySnapshot.clear();
     app.botPriority = null;
     clearHumanAutoPass();
@@ -2891,6 +3271,7 @@ function showSetup() {
   app.selected = null;
   app.expandedTemplePlayer = "";
   app.resultViewingBoard = false;
+  app.aiDecisions = [];
   app.territorySnapshot.clear();
   app.botPriority = null;
   clearHumanAutoPass();
@@ -2899,6 +3280,7 @@ function showSetup() {
   els.gameResult.classList.add("is-hidden");
   els.gameView.classList.add("is-hidden");
   els.setupView.classList.remove("is-hidden");
+  renderAiDebugPanel();
   populateDeckSelects();
 }
 
@@ -4266,8 +4648,9 @@ function scoreBotPriorityResponseCard(bot, cardId, stackObject) {
 function chooseBotPriorityResponse(game, stackObject) {
   const bot = game?.players?.bot;
   if (!bot || !stackObject || stackObject.controllerId === bot.id) return null;
-  const threshold = getBotTerritoryRemaining(bot) <= 8 ? 4.25 : 5.5;
-  return bot.hand
+  const persona = getBotPersona(game.botMode || "basic");
+  const threshold = Math.max(2.5, toNumber(persona.responseThreshold, 5.5) - (getBotTerritoryRemaining(bot) <= 8 ? 1.2 : 0));
+  const ranked = bot.hand
     .map((cardId) => ({
       cardId,
       card: app.cardByCode.get(cardId),
@@ -4277,7 +4660,18 @@ function chooseBotPriorityResponse(game, stackObject) {
     .sort((left, right) => {
       if (right.score !== left.score) return right.score - left.score;
       return getEffectivePlayCost(bot, left.card) - getEffectivePlayCost(bot, right.card);
-    })[0] || null;
+    });
+  const chosen = ranked[0] || null;
+  pushAiDecision({
+    title: "Resposta de prioridade",
+    detail: chosen ? `Responde a ${stackObject.label}.` : `Passa prioridade em ${stackObject.label}.`,
+    score: chosen?.score,
+    candidates: ranked.map((entry) => ({
+      label: getCardName(entry.card),
+      score: entry.score
+    }))
+  });
+  return chosen;
 }
 
 async function requestBotPriorityBeforeResolve(game, stackObject, priorityKey) {
@@ -5820,13 +6214,24 @@ function scoreBotEngineEffectBundleChoice(choice, stackObject) {
 }
 
 function chooseBotEngineEffectBundle(choices, stackObject) {
-  return [...choices]
+  const ranked = [...choices]
     .map((choice, index) => ({
       choice,
       index,
       score: scoreBotEngineEffectBundleChoice(choice, stackObject)
     }))
-    .sort((left, right) => right.score - left.score || left.index - right.index)[0]?.choice || choices[0] || null;
+    .sort((left, right) => right.score - left.score || left.index - right.index);
+  const chosen = ranked[0]?.choice || choices[0] || null;
+  pushAiDecision({
+    title: "Escolha de efeito",
+    detail: stackObject?.label || "Efeito da pilha",
+    score: ranked[0]?.score,
+    candidates: ranked.map((entry) => ({
+      label: localize(entry.choice?.label) || entry.choice?.id || `Opcao ${entry.index + 1}`,
+      score: entry.score
+    }))
+  });
+  return chosen;
 }
 
 function getEngineDistributionCandidates(targets, stackObject, kind = "heal") {
@@ -7245,13 +7650,22 @@ function getModifiedEventAmount(game, triggerId, baseAmount, payload = {}) {
 function clearHumanAutoPass() {
   if (app.autoPassTimer) window.clearTimeout(app.autoPassTimer);
   app.autoPassTimer = null;
+  app.autoPassKey = "";
 }
 
 function schedulePriorityAutoPass(game) {
-  if (!isHumanPriorityOpen() || app.priority.game !== game || hasPendingEngineChoiceWork() || hasHumanPriorityPlay(game)) return;
-  clearHumanAutoPass();
+  if (!isHumanPriorityOpen() || app.priority.game !== game || hasPendingEngineChoiceWork() || hasHumanPriorityPlay(game)) {
+    clearHumanAutoPass();
+    return;
+  }
   const key = app.priority.key;
+  const timerKey = `priority:${game.id}:${key}`;
+  if (app.autoPassTimer && app.autoPassKey === timerKey) return;
+  clearHumanAutoPass();
+  app.autoPassKey = timerKey;
   app.autoPassTimer = window.setTimeout(() => {
+    app.autoPassTimer = null;
+    app.autoPassKey = "";
     if (!isHumanPriorityOpen() || app.priority.key !== key || app.priority.game !== game) return;
     addLog(game, "autoPass: sem jogadas disponiveis na prioridade.", "Sistema");
     passHumanPriority();
@@ -7260,17 +7674,28 @@ function schedulePriorityAutoPass(game) {
 }
 
 function scheduleHumanAutoPass(game) {
-  clearHumanAutoPass();
-  if (hasBlockingEngineWork(game)) return;
+  if (hasBlockingEngineWork(game)) {
+    clearHumanAutoPass();
+    return;
+  }
   if (isHumanPriorityOpen()) {
     schedulePriorityAutoPass(game);
     return;
   }
   const reason = getHumanAutoPassReason(game);
-  if (!reason) return;
+  if (!reason) {
+    clearHumanAutoPass();
+    return;
+  }
 
   const phase = currentPhase(game);
+  const timerKey = `phase:${game.id}:${game.turnNumber}:${game.activePlayer}:${phase}:${reason}`;
+  if (app.autoPassTimer && app.autoPassKey === timerKey) return;
+  clearHumanAutoPass();
+  app.autoPassKey = timerKey;
   app.autoPassTimer = window.setTimeout(() => {
+    app.autoPassTimer = null;
+    app.autoPassKey = "";
     if (!app.game || app.game !== game || game.status !== "active") return;
     if (game.activePlayer !== "human" || currentPhase(game) !== phase) return;
 
@@ -9434,14 +9859,19 @@ function showDrawAnimation(cardIds, playerId, onComplete = () => {}) {
 }
 
 function scheduleBotStep(game, delay, action) {
-  window.setTimeout(() => runBotStepWhenReady(game, action), delay);
+  window.setTimeout(() => runBotStepWhenReady(game, action), getPerformanceAwareDelay(delay));
+}
+
+function getPerformanceAwareDelay(delay) {
+  const normalized = Math.max(0, Number(delay) || 0);
+  return app.performanceSaver ? Math.round(normalized * 1.18) : normalized;
 }
 
 function runBotStepWhenReady(game, action) {
   if (!app.game || app.game !== game || game.status !== "active" || game.activePlayer !== "bot") return;
   if (hasBlockingBotWork(game)) {
     if (isHumanPriorityOpen()) schedulePriorityAutoPass(game);
-    window.setTimeout(() => runBotStepWhenReady(game, action), 240);
+    window.setTimeout(() => runBotStepWhenReady(game, action), getPerformanceAwareDelay(240));
     return;
   }
   action();
@@ -9478,29 +9908,17 @@ function runBotTurn() {
   });
 
   scheduleBotPhaseStep(game, "preparation", 2600, () => {
-    if (activateBotChampionIfUseful(bot)) {
-      renderGame();
-      return;
-    }
-    playBotCards(bot, mode, 1);
+    executeBotPreparationAction(bot, mode);
     renderGame();
   });
 
   scheduleBotPhaseStep(game, "preparation", 3900, () => {
-    if (activateBotChampionIfUseful(bot)) {
-      renderGame();
-      return;
-    }
-    playBotCards(bot, mode, 1);
+    executeBotPreparationAction(bot, mode);
     renderGame();
   });
 
   scheduleBotPhaseStep(game, "preparation", 5200, () => {
-    if (activateBotChampionIfUseful(bot)) {
-      renderGame();
-      return;
-    }
-    playBotCards(bot, mode, 1);
+    executeBotPreparationAction(bot, mode);
     renderGame();
   });
 
@@ -9526,18 +9944,18 @@ function runBotTurn() {
 function endBotTurnWhenCombatIsReady(game) {
   if (!app.game || app.game !== game || game.status !== "active" || game.activePlayer !== "bot") return;
   if (hasBlockingBotWork(game) || game.combat.attackers.length) {
-    window.setTimeout(() => endBotTurnWhenCombatIsReady(game), 520);
+    window.setTimeout(() => endBotTurnWhenCombatIsReady(game), getPerformanceAwareDelay(520));
     return;
   }
   if (PHASES.indexOf(currentPhase(game)) < PHASES.indexOf("combat")) {
-    window.setTimeout(() => endBotTurnWhenCombatIsReady(game), 520);
+    window.setTimeout(() => endBotTurnWhenCombatIsReady(game), getPerformanceAwareDelay(520));
     return;
   }
   if (!["regroup", "discard"].includes(currentPhase(game))) {
     advanceBotTo("regroup");
     renderGame();
     waitForEngineStack(game, () => {
-      window.setTimeout(() => endBotTurnWhenCombatIsReady(game), 520);
+      window.setTimeout(() => endBotTurnWhenCombatIsReady(game), getPerformanceAwareDelay(520));
     });
     return;
   }
@@ -9667,7 +10085,18 @@ function chooseBotConsecration(bot, mode) {
     });
   const best = ranked[0];
   if (!best) return "";
-  if (best.score < 0 && bot.essence.length >= 4) return "";
+  const floor = toNumber(getBotPersona(mode).consecrationFloor, 0);
+  const shouldSkip = best.score < floor && bot.essence.length >= 4;
+  pushAiDecision({
+    title: "Consagração do bot",
+    detail: shouldSkip ? "Valor abaixo do piso da persona." : `Consagrar ${getCardName(best.card)}.`,
+    score: best.score,
+    candidates: ranked.map((entry) => ({
+      label: getCardName(entry.card),
+      score: entry.score
+    }))
+  });
+  if (shouldSkip) return "";
   return best.cardId || "";
 }
 
@@ -9901,6 +10330,86 @@ function scoreBotSimpleCardValue(player, cardId) {
   if (cost <= available + 1 || typeCode === "PEC") score += 1.8;
   if (card.token) score *= 0.65;
   return Math.max(0.25, score);
+}
+
+function getBotOpponentCharacters(bot) {
+  const opponent = app.game ? getPlayer(app.game, getOpponentId(bot?.id || "bot")) : null;
+  return (opponent?.battlefield || []).filter((instance) =>
+    getCardTypeCode(app.cardByCode.get(instance.cardId)) === "PER"
+  );
+}
+
+function getBotOwnCharacters(bot) {
+  return (bot?.battlefield || []).filter((instance) =>
+    getCardTypeCode(app.cardByCode.get(instance.cardId)) === "PER"
+  );
+}
+
+function getBotSacrificeFodderCount(bot) {
+  return getBotOwnCharacters(bot).filter((instance) => {
+    const value = getBotPermanentValue(instance);
+    return value <= 7 || hasBotStrategyTag(instance.cardId, "sacrifice_fodder");
+  }).length;
+}
+
+function scoreBotStrategicCardTags(bot, cardId, mode = "basic") {
+  const card = app.cardByCode.get(cardId);
+  if (!bot || !card) return 0;
+  const persona = getBotPersona(mode);
+  const tags = getBotStrategyTagsForCard(cardId);
+  const opponentCharacters = getBotOpponentCharacters(bot);
+  const ownCharacters = getBotOwnCharacters(bot);
+  const remaining = getBotTerritoryRemaining(bot);
+  const opponent = app.game ? getPlayer(app.game, getOpponentId(bot.id)) : null;
+  const opponentRemaining = getBotTerritoryRemaining(opponent);
+  let score = 0;
+
+  if (tags.includes("needs_enemy_character") && !opponentCharacters.length) score -= 9;
+  if (tags.includes("avoid_without_target") && !opponentCharacters.length) score -= 7;
+  if (tags.includes("needs_own_character") && !ownCharacters.length) score -= 8;
+  if (tags.includes("sacrifice_cost")) {
+    const fodder = getBotSacrificeFodderCount(bot);
+    score += fodder > 1 ? 1.2 : fodder === 1 ? -1.6 : -7;
+    if (ownCharacters.length <= 1) score -= 4.5;
+  }
+  if (tags.includes("mana_dork")) score += Math.max(0, 4 - bot.essence.length) * 1.4 + (bot.hand.length >= 3 ? 1.1 : 0);
+  if (tags.includes("early_engine")) score += app.game?.turnNumber <= 3 ? 2.2 : 0.4;
+  if (tags.includes("value_engine")) score += persona.preserveHandWeight <= 0.5 ? 0.8 : 1.8;
+  if (tags.includes("card_selection")) score += bot.hand.length <= 3 ? 2.2 : 1.1;
+  if (tags.includes("setup_combo")) score += 1.2 + Math.max(0, 4 - bot.essence.length) * 0.25;
+  if (tags.includes("defensive_trick")) score += remaining <= 10 ? 3.2 : mode === "control" || mode === "defensive" ? 1.2 : -0.35;
+  if (tags.includes("healing")) score += toNumber(bot.territoryDamage, 0) > 0 ? 2.4 : -0.8;
+  if (tags.includes("finisher")) score += opponentRemaining <= 8 ? 3.8 : mode === "aggressive" ? 1.2 : -0.25;
+  if (tags.includes("late_game")) score += app.game?.turnNumber >= 5 ? 2 : -1.1;
+  if (tags.includes("comeback")) score += ownCharacters.length < opponentCharacters.length ? 2.2 : -0.8;
+  if (tags.includes("moral_cost_opponent")) score -= 2.8;
+  if (tags.includes("equipment") && !ownCharacters.length) score -= 4.5;
+  if (tags.includes("protect_key_piece") && !ownCharacters.some((instance) => getBotPermanentValue(instance) >= 10)) score -= 0.8;
+
+  return score + toNumber(persona.sinRiskTolerance, 0) * (getCardTypeCode(card) === "PEC" ? 0.8 : 0);
+}
+
+function scoreBotStrategicAbilityTags(bot, abilityId, stackObject, mode = app.game?.botMode || "basic") {
+  if (!bot || !abilityId) return 0;
+  const tags = getBotStrategyTagsForAbility(abilityId);
+  if (!tags.length) return 0;
+  const persona = getBotPersona(mode);
+  let score = 0;
+  if (tags.includes("moral_cost_opponent")) score -= 3.4;
+  if (tags.includes("sacrifice_cost")) {
+    const fodder = getBotSacrificeFodderCount(bot);
+    score += fodder > 1 ? 1 : fodder === 1 ? -1.8 : -6;
+    if (getBotOwnCharacters(bot).length <= 1) score -= 4.2;
+  }
+  if (tags.includes("finisher")) {
+    const opponent = app.game ? getPlayer(app.game, getOpponentId(bot.id)) : null;
+    score += getBotTerritoryRemaining(opponent) <= 8 ? 3 : 0.6;
+  }
+  if (tags.includes("future_draw")) score += bot.hand.length <= 3 ? 2.1 : 0.6;
+  if (tags.includes("hand_cost")) score -= bot.hand.length <= 2 ? 4.2 : toNumber(persona.preserveHandWeight, 0.65) * 1.4;
+  if (tags.includes("moral_setup")) score += 1.1;
+  if (stackObject?.controllerId === bot.id && stackObject?.source?.sourceType === "champion") score += 0.4;
+  return score;
 }
 
 function getBotCardsValue(player, cardIds = []) {
@@ -10443,14 +10952,16 @@ function scoreBotEngineAction(action, stackObject, options = {}) {
 function scoreBotResolutionAbility(stackObject) {
   const ability = stackObject?.ability || app.engine.abilityById.get(stackObject?.abilityId);
   if (!ability || !isEngineStackObjectViable(stackObject)) return 0;
+  const bot = app.game?.players?.bot || null;
   const costScore = (ability.costs || [])
     .reduce((sum, cost) => sum + scoreBotEngineAction(cost, stackObject, { isCost: true }), 0);
   const actionScores = (ability.actions || []).map((action) => scoreBotEngineAction(action, stackObject));
-  if (!actionScores.length) return costScore + 1;
+  const tagScore = scoreBotStrategicAbilityTags(bot, ability.id || stackObject?.abilityId, stackObject, app.game?.botMode || "basic");
+  if (!actionScores.length) return costScore + tagScore + 1;
   const resolvedScore = ability.requiresAllActions
     ? actionScores.reduce((sum, score) => sum + score, 0)
     : Math.max(...actionScores, actionScores.reduce((sum, score) => sum + score, 0));
-  return costScore + resolvedScore;
+  return costScore + resolvedScore + tagScore;
 }
 
 function scoreBotCardPlay(bot, cardId, mode = "basic") {
@@ -10482,6 +10993,8 @@ function scoreBotCardPlay(bot, cardId, mode = "basic") {
     if (mode === "aggressive") score += 1.5;
   }
 
+  score += scoreBotStrategicCardTags(bot, cardId, mode);
+
   const resolutionObjects = getCardResolutionStackObjects(cardId, bot.id);
   if (hasCardResolutionAbility(cardId, bot.id) && !resolutionObjects.length) return Number.NEGATIVE_INFINITY;
   if (resolutionObjects.length) {
@@ -10495,10 +11008,11 @@ function scoreBotCardPlay(bot, cardId, mode = "basic") {
 
 function getBotCardPlayThreshold(card, mode = "basic") {
   const typeCode = getCardTypeCode(card);
-  if (mode === "aggressive") return typeCode === "PER" ? 1 : 1.25;
-  if (typeCode === "PER") return 1;
-  if (typeCode === "ART") return 1.5;
-  return 2;
+  let base = 2;
+  if (typeCode === "PER") base = 1;
+  else if (typeCode === "ART") base = 1.5;
+  if (mode === "aggressive") base = typeCode === "PER" ? 1 : 1.25;
+  return Math.max(-1.5, base + toNumber(getBotPersona(mode).playThresholdOffset, 0));
 }
 
 function getBotCardResourceCost(bot, card) {
@@ -10608,7 +11122,309 @@ function chooseBotPlayPlan(bot, candidates, mode = "basic", horizon = 3) {
 
 function chooseBotCardToPlay(bot, candidates, mode = "basic", horizon = 3) {
   const plan = chooseBotPlayPlan(bot, candidates, mode, horizon);
+  const previewEntries = getBotCardPlanEntries(bot, candidates, mode).slice(0, 6);
+  pushAiDecision({
+    title: "Plano de jogada",
+    detail: plan.entries.length
+      ? `Primeira jogada: ${getCardName(app.cardByCode.get(plan.entries[0].cardId))}.`
+      : "Nenhuma carta superou o limiar da IA.",
+    score: plan.score,
+    candidates: previewEntries.map((entry) => ({
+      label: getCardName(entry.card),
+      score: entry.score
+    }))
+  });
   return plan.entries[0]?.cardId || "";
+}
+
+function getBotPreparationCandidates(bot, mode = "basic") {
+  const candidates = [];
+  const persona = getBotPersona(mode);
+  const champion = getBestBotChampionActivation(bot);
+  if (champion?.stackObject) {
+    candidates.push({
+      type: "champion",
+      label: champion.stackObject.label || "Campeao",
+      score: champion.score,
+      threshold: toNumber(persona.championThreshold, 2),
+      activation: champion
+    });
+  }
+
+  const horizon = Math.max(1, Math.min(3, toNumber(persona.maxPreparationActions, 3)));
+  const playPlan = chooseBotPlayPlan(bot, [...bot.hand], mode, horizon);
+  if (playPlan.entries.length) {
+    const first = playPlan.entries[0];
+    candidates.push({
+      type: "play",
+      label: getCardName(first.card),
+      score: playPlan.score,
+      threshold: Math.max(0.25, toNumber(getBotPersona(mode).playThresholdOffset, 0) * 0.25),
+      plan: playPlan
+    });
+  }
+
+  return candidates.sort((left, right) => {
+    const leftMargin = left.score - left.threshold;
+    const rightMargin = right.score - right.threshold;
+    if (rightMargin !== leftMargin) return rightMargin - leftMargin;
+    return right.score - left.score;
+  });
+}
+
+function chooseBotPreparationAction(bot, mode = "basic") {
+  if (!bot) return null;
+  const persona = getBotPersona(mode);
+  const actionCount = toNumber(bot.aiPreparationActions, 0);
+  const actionLimit = Math.max(1, toNumber(persona.maxPreparationActions, 3));
+  if (actionCount >= actionLimit) {
+    pushAiDecision({
+      title: "Preparação do bot",
+      detail: `Limite da persona atingido (${actionCount}/${actionLimit}).`
+    });
+    return null;
+  }
+
+  const candidates = getBotPreparationCandidates(bot, mode);
+  const viable = candidates.filter((candidate) => candidate.score >= candidate.threshold);
+  const chosen = viable[0] || null;
+  pushAiDecision({
+    title: "Preparação do bot",
+    detail: chosen ? `Escolheu ${chosen.label}.` : "Sem ação de preparação acima do limiar.",
+    score: chosen?.score,
+    candidates: candidates.map((candidate) => ({
+      label: `${candidate.type === "champion" ? "Campeao" : "Carta"}: ${candidate.label}`,
+      score: candidate.score
+    }))
+  });
+  return chosen;
+}
+
+function executeBotPreparationAction(bot, mode = "basic") {
+  const action = chooseBotPreparationAction(bot, mode);
+  if (!action) return false;
+  let executed = false;
+  if (action.type === "champion") {
+    executed = queueActivatedAbility(action.activation.stackObject);
+  } else if (action.type === "play") {
+    const cardId = action.plan?.entries?.[0]?.cardId || "";
+    executed = Boolean(cardId && applyPlayCard("bot", cardId));
+    if (executed) autoAttachEquipmentForBot(bot);
+  }
+  if (executed) {
+    bot.aiPreparationActions = toNumber(bot.aiPreparationActions, 0) + 1;
+  }
+  return executed;
+}
+
+function getAiScenarioDecks() {
+  const humanDeck = getDeckOption(els.humanDeckSelect?.value) || app.deckOptions[0] || app.decks[0];
+  const botDeck = app.decks.find((deck) => deck.id === els.botDeckSelect?.value) || app.decks[1] || app.decks[0] || humanDeck;
+  return { humanDeck, botDeck };
+}
+
+function createAiScenarioGame(name, mode = "basic") {
+  const { humanDeck, botDeck } = getAiScenarioDecks();
+  if (!humanDeck || !botDeck) throw new Error("Decks indisponiveis para cenario de IA.");
+  const game = createGame(humanDeck, botDeck, mode, {});
+  game.id = `AI-SCENARIO-${name}`;
+  game.activePlayer = "bot";
+  game.startingPlayer = "bot";
+  game.phaseIndex = PHASES.indexOf("preparation");
+  game.turnNumber = 3;
+  game.turnsElapsed = 3;
+  game.stack = [];
+  game.log = [];
+  Object.values(game.players).forEach((player) => {
+    player.hand = [];
+    player.battlefield = [];
+    player.essence = [];
+    player.cemetery = [];
+    player.spentEssence = 0;
+    player.essencePool = 0;
+    player.territoryDamage = 0;
+    player.cardsPlayedThisTurn = 0;
+    player.aiPreparationActions = 0;
+  });
+  return game;
+}
+
+function addAiScenarioPermanent(player, cardId, state = {}) {
+  const instance = createCardInstance(cardId, player.id);
+  Object.assign(instance, state);
+  player.battlefield.push(instance);
+  return instance;
+}
+
+function setAiScenarioEssence(player, amount) {
+  player.essence = Array.from({ length: Math.max(0, toNumber(amount, 0)) }, (_, index) => `AI-ESS-${player.id}-${index}`);
+  player.spentEssence = 0;
+  player.essencePool = 0;
+}
+
+function setAiScenarioPhase(game, phase, playerId = "bot") {
+  game.activePlayer = playerId;
+  game.phaseIndex = PHASES.indexOf(phase);
+  if (phase === "combat") game.combat.step = "attackers";
+}
+
+function runAiScenario(name, configure, evaluate, mode = "basic") {
+  const previousGame = app.game;
+  const previousSelected = app.selected;
+  const previousPriority = app.priority;
+  const previousBotPriority = app.botPriority;
+  try {
+    const game = createAiScenarioGame(name, mode);
+    app.game = game;
+    configure(game);
+    const result = evaluate(game) || {};
+    return {
+      name,
+      pass: Boolean(result.pass),
+      detail: result.detail || "",
+      score: Number.isFinite(result.score) ? result.score : null
+    };
+  } catch (error) {
+    return {
+      name,
+      pass: false,
+      detail: error?.message || "Erro no cenario.",
+      score: null
+    };
+  } finally {
+    app.game = previousGame;
+    app.selected = previousSelected;
+    app.priority = previousPriority;
+    app.botPriority = previousBotPriority;
+  }
+}
+
+const AI_SCENARIOS = [
+  {
+    name: "Nao jogar Rebelião sem alvo inimigo",
+    mode: "basic",
+    configure(game) {
+      const bot = game.players.bot;
+      const human = game.players.human;
+      setAiScenarioPhase(game, "preparation", "bot");
+      setAiScenarioEssence(bot, 0);
+      bot.hand = ["FND-PEC-025"];
+      addAiScenarioPermanent(bot, "FND-PER-013");
+      human.battlefield = [];
+    },
+    evaluate(game) {
+      const bot = game.players.bot;
+      const chosen = chooseBotCardToPlay(bot, bot.hand, "basic", 1);
+      const score = scoreBotCardPlay(bot, "FND-PEC-025", "basic");
+      return {
+        pass: chosen !== "FND-PEC-025",
+        detail: chosen ? `Escolheu ${chosen}.` : "Passou sem nonbo.",
+        score
+      };
+    }
+  },
+  {
+    name: "Remocao prefere personagem inimigo",
+    mode: "basic",
+    configure(game) {
+      const bot = game.players.bot;
+      const human = game.players.human;
+      addAiScenarioPermanent(bot, "FND-PER-013");
+      addAiScenarioPermanent(human, "FND-PER-015");
+    },
+    evaluate(game) {
+      const bot = game.players.bot;
+      const human = game.players.human;
+      const ownScore = scoreBotTargetRef({ playerId: "bot", instance: bot.battlefield[0] }, "bot", "destroy", 0, { effect: "destroy_permanent" });
+      const enemyScore = scoreBotTargetRef({ playerId: "human", instance: human.battlefield[0] }, "bot", "destroy", 0, { effect: "destroy_permanent" });
+      return {
+        pass: enemyScore > ownScore + 6,
+        detail: `Inimigo ${formatAiScore(enemyScore)} vs proprio ${formatAiScore(ownScore)}.`,
+        score: enemyScore - ownScore
+      };
+    }
+  },
+  {
+    name: "Cura quando territorio esta ferido",
+    mode: "defensive",
+    configure(game) {
+      const bot = game.players.bot;
+      setAiScenarioPhase(game, "preparation", "bot");
+      bot.hand = ["FND-MIL-035"];
+      bot.territoryDamage = 8;
+      setAiScenarioEssence(bot, 2);
+    },
+    evaluate(game) {
+      const bot = game.players.bot;
+      const chosen = chooseBotCardToPlay(bot, bot.hand, "defensive", 1);
+      const score = scoreBotCardPlay(bot, "FND-MIL-035", "defensive");
+      return {
+        pass: chosen === "FND-MIL-035",
+        detail: chosen ? "Escolheu cura." : "Nao escolheu cura.",
+        score
+      };
+    }
+  },
+  {
+    name: "Nao atacar em troca ruim",
+    mode: "basic",
+    configure(game) {
+      const bot = game.players.bot;
+      const human = game.players.human;
+      setAiScenarioPhase(game, "combat", "bot");
+      addAiScenarioPermanent(bot, "FND-PER-013");
+      addAiScenarioPermanent(human, "FND-PER-015");
+    },
+    evaluate(game) {
+      const bot = game.players.bot;
+      const plan = chooseBotAttackPlan(bot, "basic");
+      return {
+        pass: plan.length === 0,
+        detail: `${plan.length} ataque(s).`,
+        score: plan.reduce((sum, item) => sum + item.score, 0)
+      };
+    }
+  },
+  {
+    name: "Atacar quando e letal",
+    mode: "aggressive",
+    configure(game) {
+      const bot = game.players.bot;
+      const human = game.players.human;
+      setAiScenarioPhase(game, "combat", "bot");
+      human.territoryDamage = Math.max(0, human.maxTerritory - 1);
+      addAiScenarioPermanent(bot, "FND-PER-015");
+    },
+    evaluate(game) {
+      const bot = game.players.bot;
+      const plan = chooseBotAttackPlan(bot, "aggressive");
+      return {
+        pass: plan.length > 0,
+        detail: `${plan.length} ataque(s).`,
+        score: plan.reduce((sum, item) => sum + item.score, 0)
+      };
+    }
+  }
+];
+
+function runAiScenarioSuite() {
+  if (!app.isLocalDebugHost) return [];
+  const results = AI_SCENARIOS.map((scenario) =>
+    runAiScenario(scenario.name, scenario.configure, scenario.evaluate, scenario.mode || "basic")
+  );
+  app.aiScenarioResults = results;
+  const passed = results.filter((item) => item.pass).length;
+  pushAiDecision({
+    title: "Cenarios de IA",
+    detail: `${passed}/${results.length} cenarios passaram.`,
+    score: passed,
+    candidates: results.map((item) => ({
+      label: `${item.pass ? "OK" : "Falhou"}: ${item.name}`,
+      score: item.pass ? 1 : -1
+    }))
+  });
+  renderAiDebugPanel();
+  return results;
 }
 
 function withTemporaryAttackTarget(attackerId, attackerUid, target, callback) {
@@ -10790,7 +11606,7 @@ function getBotAttackOptions(attacker) {
 }
 
 function chooseBotAttackPlan(bot, mode = "basic") {
-  const threshold = mode === "aggressive" ? 0.35 : 1.25;
+  const threshold = toNumber(getBotPersona(mode).attackThreshold, mode === "aggressive" ? 0.35 : 1.25);
   const options = bot.battlefield
     .filter((instance) => canAttackWith(bot, instance.uid) && getCharacterPower(instance) > 0)
     .map((instance) => ({
@@ -10800,14 +11616,25 @@ function chooseBotAttackPlan(bot, mode = "basic") {
     .filter((option) => option.target && option.score >= threshold)
     .sort((left, right) => right.score - left.score);
 
-  if (hasVirtueLevel(bot, VIRTUE_IDS.egoism, 3)) return options.slice(0, 1);
+  let plan = options;
+  if (hasVirtueLevel(bot, VIRTUE_IDS.egoism, 3)) plan = options.slice(0, 1);
 
   const cowardiceLevel = getVirtueValue(bot, VIRTUE_IDS.cowardice);
   if ((cowardiceLevel === 1 || cowardiceLevel === 2) && options.length === 1 && isDamagedCharacterInstance(options[0].instance)) {
-    return [];
+    plan = [];
   }
 
-  return options;
+  pushAiDecision({
+    title: "Ataque do bot",
+    detail: plan.length ? `${plan.length} atacante${plan.length === 1 ? "" : "s"} escolhido${plan.length === 1 ? "" : "s"}.` : "Sem ataque lucrativo.",
+    score: plan.reduce((sum, option) => sum + option.score, 0),
+    candidates: options.map((option) => ({
+      label: getCardName(app.cardByCode.get(option.instance.cardId)),
+      score: option.score
+    }))
+  });
+
+  return plan;
 }
 
 function playBotCards(bot, mode, maxCards = Infinity) {
@@ -10931,9 +11758,22 @@ function reorderHandCard(cardId, targetCardId = "") {
   return true;
 }
 
-function renderGame() {
+function renderGame(reason = "direct") {
+  if (!app.game) return;
+  const elapsedSinceLastRender = nowMs() - app.lastRenderAt;
+  if (app.renderFrame || (app.lastRenderAt && elapsedSinceLastRender < 8)) {
+    scheduleRender(reason);
+    return;
+  }
+  renderGameNow(reason);
+}
+
+function renderGameNow(reason = "direct") {
   const game = app.game;
   if (!game) return;
+  const startedAt = nowMs();
+  app.perf.htmlWrites = 0;
+  app.perf.skippedHtmlWrites = 0;
   enforceEquipmentState(game);
   normalizeAllIncenseTokenStacks(game);
   const human = game.players.human;
@@ -10950,22 +11790,22 @@ function renderGame() {
   els.phasePanel.classList.toggle("is-human-turn", game.activePlayer === "human");
   els.phasePanel.classList.toggle("is-bot-turn", game.activePlayer === "bot");
   els.phasePanel.classList.toggle("is-discard-phase", phase === "discard");
-  els.phaseTracker.innerHTML = renderPhaseTracker(game);
+  setStableHtml(els.phaseTracker, renderPhaseTracker(game));
   updateConsecrationHighlights(game, phase);
   updateBattlefieldWallpapers(human, bot);
   setHandExpanded(app.handExpanded);
   updateHandDockStateClasses(game, phase, human, selectedHandId);
 
-  els.botArea.innerHTML = renderPlayerArea(bot, true);
-  els.humanArea.innerHTML = renderPlayerArea(human, false);
-  els.botBattlefield.innerHTML = renderBattlefield(bot, selectedBattlefieldUid);
-  els.humanBattlefield.innerHTML = renderBattlefield(human, selectedBattlefieldUid, selectedAttackers);
-  els.botEssence.innerHTML = renderEssence(bot, true);
-  els.humanEssence.innerHTML = renderEssence(human);
+  setStableHtml(els.botArea, renderPlayerArea(bot, true));
+  setStableHtml(els.humanArea, renderPlayerArea(human, false));
+  setStableHtml(els.botBattlefield, renderBattlefield(bot, selectedBattlefieldUid));
+  setStableHtml(els.humanBattlefield, renderBattlefield(human, selectedBattlefieldUid, selectedAttackers));
+  setStableHtml(els.botEssence, renderEssence(bot, true));
+  setStableHtml(els.humanEssence, renderEssence(human));
   updatePhaseFocusHighlights(game, phase);
   updateBattlefieldStateClasses(game, phase, human, bot);
   els.humanHand.style.setProperty("--hand-count", String(human.hand.length));
-  els.humanHand.innerHTML = human.hand.map((cardId) => {
+  setStableHtml(els.humanHand, human.hand.map((cardId) => {
     const card = app.cardByCode.get(cardId);
     const baseCost = getCost(card);
     const effectiveCost = getEffectivePlayCost(human, card);
@@ -10977,16 +11817,36 @@ function renderGame() {
       effectiveCost,
       zone: "hand"
     });
-  }).join("");
-  els.gameLog.innerHTML = `${renderCombatSummary(game)}${game.log.map((entry) => `
-    <div class="log-entry">${entry.actor ? `<strong>${escapeHtml(entry.actor)}:</strong> ` : ""}${escapeHtml(entry.message)}</div>
-  `).join("")}`;
+  }).join(""));
+  if (els.gameLog && !els.gameLog.hidden) {
+    const visibleLog = game.log;
+    setStableHtml(els.gameLog, `${renderCombatSummary(game)}${visibleLog.map((entry) => `
+      <div class="log-entry">${entry.actor ? `<strong>${escapeHtml(entry.actor)}:</strong> ` : ""}${escapeHtml(entry.message)}</div>
+    `).join("")}`);
+  } else {
+    clearStableHtml(els.gameLog);
+  }
 
   renderStackEdgePanel(game);
   renderSelectedPanel();
   renderActionState();
   renderBlockPrompt(game);
+  renderAiDebugPanel();
   scheduleHumanAutoPass(game);
+  const elapsed = nowMs() - startedAt;
+  const finishedAt = nowMs();
+  app.lastRenderAt = finishedAt;
+  app.perf.renderCount += 1;
+  if (!app.perf.renderWindowStartedAt || finishedAt - app.perf.renderWindowStartedAt >= 1000) {
+    app.perf.rendersPerSecond = app.perf.renderWindowCount;
+    app.perf.renderWindowStartedAt = finishedAt;
+    app.perf.renderWindowCount = 0;
+  }
+  app.perf.renderWindowCount += 1;
+  app.perf.renderMs = elapsed;
+  app.perf.maxRenderMs = Math.max(app.perf.maxRenderMs, elapsed);
+  app.perf.lastReason = reason;
+  renderPerformanceDebugPanel();
 }
 
 function updateConsecrationHighlights(game, phase) {
@@ -11175,7 +12035,7 @@ function renderStackEdgePanel(game) {
     els.stackEdgePanel.classList.remove("is-stack-single", "is-stack-deep", "has-stack", "has-events", "is-events-only");
     els.stackEdgePanel.style.removeProperty("--stack-edge-bg");
     els.stackEdgePanel.removeAttribute("data-stack-count");
-    els.stackEdgePanel.innerHTML = "";
+    clearStableHtml(els.stackEdgePanel);
     return;
   }
   els.stackEdgePanel.classList.add("is-visible");
@@ -11192,7 +12052,7 @@ function renderStackEdgePanel(game) {
   } else {
     els.stackEdgePanel.style.removeProperty("--stack-edge-bg");
   }
-  els.stackEdgePanel.innerHTML = `
+  setStableHtml(els.stackEdgePanel, `
     ${visibleStack.length ? `
       <section class="stack-edge-section stack-edge-section--stack" aria-label="Pilha">
         <span class="stack-edge-section-head"><em>Pilha</em><b>${visibleStack.length}</b></span>
@@ -11229,7 +12089,7 @@ function renderStackEdgePanel(game) {
         ${visibleEvents.map(renderEdgeEventCard).join("")}
       </section>
     ` : ""}
-  `;
+  `);
 }
 
 function renderPhaseTracker(game) {
@@ -11457,7 +12317,7 @@ function renderIdentityTile(player, card, kind, attrs = "") {
       : "";
   return `
     <button class="identity-dock-tile identity-dock-tile--${escapeHtml(kind)}${damagedClass}${attackTargetClass}${championCoveredClass}${championActionClass}" type="button" ${attrs}>
-      <img class="${isLandscapeCard(card) ? "is-landscape" : ""}" src="${escapeHtml(image)}" alt="${escapeHtml(getCardName(card))}" loading="lazy" draggable="false" />
+      <img class="${isLandscapeCard(card) ? "is-landscape" : ""}" src="${escapeHtml(image)}" alt="${escapeHtml(getCardName(card))}" loading="lazy" decoding="async" draggable="false" />
       <span>${escapeHtml(label)}</span>
       ${marker}
       ${labels.length ? `<em>${escapeHtml(labels.join(" "))}</em>` : ""}
@@ -11657,7 +12517,7 @@ function renderCardButton(cardId, options = {}) {
 
   return `
     <button class="${classes}" type="button" ${data} ${draggable} ${style} data-zoom-card="${escapeHtml(cardId)}" title="${escapeHtml(getCardName(card))}">
-      <img class="card-main-art" src="${escapeHtml(image)}" alt="${escapeHtml(getCardName(card))}" loading="lazy" draggable="false" />
+      <img class="card-main-art" src="${escapeHtml(image)}" alt="${escapeHtml(getCardName(card))}" loading="lazy" decoding="async" draggable="false" />
       ${isHandTile ? `<span class="hand-card-cost"><b>${escapeHtml(costDisplay)}</b></span>` : ""}
       ${isHandTile && virtuePips ? `<span class="hand-card-pips">${virtuePips}</span>` : ""}
       ${isHandTile ? `<span class="card-type-gem card-type-gem--${String(typeCode || "CRD").toLowerCase()}"></span>` : ""}
@@ -12067,7 +12927,7 @@ function renderSelectedPanel() {
   const discardOverflow = currentPhase(app.game) === "discard" ? getHandOverflow(human) : 0;
 
   if (discardOverflow > 0 && canAct("human")) {
-    els.selectedCardPanel.innerHTML = "";
+    clearStableHtml(els.selectedCardPanel);
     return;
   }
 
@@ -12081,15 +12941,15 @@ function renderSelectedPanel() {
   }
 
   if (!card) {
-    els.selectedCardPanel.innerHTML = "<span>Carta selecionada</span><strong>Nenhuma</strong>";
+    setStableHtml(els.selectedCardPanel, "<span>Carta selecionada</span><strong>Nenhuma</strong>");
     return;
   }
 
-  els.selectedCardPanel.innerHTML = `
+  setStableHtml(els.selectedCardPanel, `
     <span>Carta selecionada</span>
     <strong>${escapeHtml(getCardName(card))}</strong>
     <small>${escapeHtml(detail)}</small>
-  `;
+  `);
 }
 
 function updateActionDockStateClasses({
@@ -12143,7 +13003,7 @@ function renderActionState() {
   }
   els.selectedCardPanel.hidden = false;
   if (app.decisionBattlefieldView && hasPendingChoiceWork()) {
-    els.selectedCardPanel.innerHTML = "<span>Escolha pendente</span><strong>Ver campo</strong><small>Volte à escolha para continuar</small>";
+    setStableHtml(els.selectedCardPanel, "<span>Escolha pendente</span><strong>Ver campo</strong><small>Volte à escolha para continuar</small>");
     els.drawButton.hidden = true;
     els.consecrateButton.hidden = true;
     els.playCardButton.hidden = true;
@@ -12402,7 +13262,7 @@ function renderBlockPrompt(game) {
   modal.classList.toggle("has-available-blockers", unassignedBlockers.length > 0);
   modal.classList.toggle("has-multiple-attackers", attackers.length > 1);
 
-  modal.innerHTML = `
+  const promptHtml = `
       <div class="block-prompt-panel" role="dialog" aria-modal="true" aria-label="Declarar bloqueadores">
         <div class="block-prompt-head">
           <strong>Declarar bloqueadores</strong>
@@ -12453,7 +13313,9 @@ function renderBlockPrompt(game) {
     </div>
   `;
 
+  const changed = setStableHtml(modal, promptHtml);
   showModalElement(modal);
+  if (!changed) return;
   modal.querySelectorAll("[data-blocker]").forEach((button) => {
     button.addEventListener("dragstart", (event) => {
       if (button.getAttribute("aria-disabled") === "true") {
@@ -12804,6 +13666,9 @@ async function loadData() {
   if (app.isLocalDebugHost && typeof saved.virtueDebugEnabled === "boolean") {
     app.virtueDebugEnabled = saved.virtueDebugEnabled;
   }
+  if (app.isLocalDebugHost && typeof saved.aiDebugEnabled === "boolean") {
+    app.aiDebugEnabled = saved.aiDebugEnabled;
+  }
   populateDeckSelects();
 }
 
@@ -12831,14 +13696,30 @@ function bindEvents() {
       els.botModeSelect.value = modeButton.dataset.botMode;
       writePlayStorage({ botMode: els.botModeSelect.value });
       updateSetupPreview(getDeckOption(els.humanDeckSelect.value), app.decks.find((deck) => deck.id === els.botDeckSelect.value));
+      renderAiDebugPanel();
+      return;
+    }
+    const scenarioButton = event.target.closest("[data-run-ai-scenarios]");
+    if (scenarioButton && app.isLocalDebugHost) {
+      runAiScenarioSuite();
+      updateSetupPreview(getDeckOption(els.humanDeckSelect.value), app.decks.find((deck) => deck.id === els.botDeckSelect.value));
     }
   });
   els.setupMatchPreview?.addEventListener("change", (event) => {
     const toggle = event.target.closest("[data-toggle-virtue-debug]");
-    if (!toggle || !app.isLocalDebugHost) return;
-    app.virtueDebugEnabled = Boolean(toggle.checked);
-    writePlayStorage({ virtueDebugEnabled: app.virtueDebugEnabled });
-    updateSetupPreview(getDeckOption(els.humanDeckSelect.value), app.decks.find((deck) => deck.id === els.botDeckSelect.value));
+    if (toggle && app.isLocalDebugHost) {
+      app.virtueDebugEnabled = Boolean(toggle.checked);
+      writePlayStorage({ virtueDebugEnabled: app.virtueDebugEnabled });
+      updateSetupPreview(getDeckOption(els.humanDeckSelect.value), app.decks.find((deck) => deck.id === els.botDeckSelect.value));
+      return;
+    }
+    const aiToggle = event.target.closest("[data-toggle-ai-debug]");
+    if (aiToggle && app.isLocalDebugHost) {
+      app.aiDebugEnabled = Boolean(aiToggle.checked);
+      writePlayStorage({ aiDebugEnabled: app.aiDebugEnabled });
+      updateSetupPreview(getDeckOption(els.humanDeckSelect.value), app.decks.find((deck) => deck.id === els.botDeckSelect.value));
+      renderAiDebugPanel();
+    }
   });
   els.startGameButton.addEventListener("click", startGame);
   els.resultNewGameButton?.addEventListener("click", showSetup);
@@ -13123,7 +14004,7 @@ function bindDragAndDrop() {
   document.addEventListener("dragend", () => {
     app.dragPayload = null;
     cleanupNativeDragGhost();
-    document.querySelectorAll(".is-drop-hover").forEach((node) => node.classList.remove("is-drop-hover"));
+    clearDropHoverZone();
   });
 
   document.addEventListener("dragover", (event) => {
@@ -13234,16 +14115,20 @@ function bindDragAndDrop() {
     if (!isEssenceDrag) event.preventDefault();
     drag.moved = true;
     hideCardZoom();
-    if (!drag.ghost) {
-      drag.ghost = createDragGhost(drag.cardId, drag.sourceElement);
-      document.body.appendChild(drag.ghost);
-    }
-    drag.ghost.style.transform = `translate(${event.clientX - 38}px, ${event.clientY - 52}px)`;
-    const zone = getDropZoneFromPoint(event.clientX, event.clientY);
-    document.querySelectorAll(".is-drop-hover").forEach((node) => {
-      if (node !== zone) node.classList.remove("is-drop-hover");
+    app.pointerDragPoint = { x: event.clientX, y: event.clientY };
+    if (app.pointerDragFrame) return;
+    app.pointerDragFrame = window.requestAnimationFrame(() => {
+      app.pointerDragFrame = 0;
+      const activeDrag = app.pointerDrag;
+      const point = app.pointerDragPoint;
+      if (!activeDrag || !point) return;
+      if (!activeDrag.ghost) {
+        activeDrag.ghost = createDragGhost(activeDrag.cardId, activeDrag.sourceElement);
+        document.body.appendChild(activeDrag.ghost);
+      }
+      activeDrag.ghost.style.transform = `translate(${point.x - 38}px, ${point.y - 52}px)`;
+      setDropHoverZone(getDropZoneFromPoint(point.x, point.y));
     });
-    zone?.classList.add("is-drop-hover");
   }, { passive: false, capture: true });
 
   document.addEventListener("pointerup", (event) => {
@@ -13253,7 +14138,10 @@ function bindDragAndDrop() {
     const dropElement = drag.moved ? document.elementFromPoint(event.clientX, event.clientY) : null;
     const zone = drag.moved ? getDropZoneFromPoint(event.clientX, event.clientY, drag.payload) : null;
     if (drag.ghost) drag.ghost.remove();
-    document.querySelectorAll(".is-drop-hover").forEach((node) => node.classList.remove("is-drop-hover"));
+    clearDropHoverZone();
+    if (app.pointerDragFrame) window.cancelAnimationFrame(app.pointerDragFrame);
+    app.pointerDragFrame = 0;
+    app.pointerDragPoint = null;
     if (zone) handleDrop(zone, drag.payload, dropElement);
     if (drag.moved) app.suppressPlayClickUntil = Date.now() + 350;
     releasePointerDragCapture(drag);
@@ -13292,6 +14180,22 @@ function cleanupPointerDrag() {
   if (app.pointerDrag?.ghost) app.pointerDrag.ghost.remove();
   app.pointerDrag = null;
   app.dragPayload = null;
+  clearDropHoverZone();
+  if (app.pointerDragFrame) window.cancelAnimationFrame(app.pointerDragFrame);
+  app.pointerDragFrame = 0;
+  app.pointerDragPoint = null;
+}
+
+function setDropHoverZone(zone) {
+  if (app.currentDropHover === zone) return;
+  app.currentDropHover?.classList?.remove("is-drop-hover");
+  app.currentDropHover = zone || null;
+  app.currentDropHover?.classList?.add("is-drop-hover");
+}
+
+function clearDropHoverZone() {
+  app.currentDropHover?.classList?.remove("is-drop-hover");
+  app.currentDropHover = null;
   document.querySelectorAll(".is-drop-hover").forEach((node) => node.classList.remove("is-drop-hover"));
 }
 
@@ -13503,9 +14407,11 @@ async function handleDrop(zone, payload, targetElement = null) {
 
 async function init() {
   updateViewportDensityState();
+  initPerformanceMonitor();
   observeModalRenders();
   window.addEventListener("resize", scheduleViewportDensityUpdate, { passive: true });
   window.addEventListener("orientationchange", scheduleViewportDensityUpdate, { passive: true });
+  window.matchMedia?.("(prefers-reduced-motion: reduce)")?.addEventListener?.("change", scheduleViewportDensityUpdate);
   bindEvents();
   try {
     await loadData();
