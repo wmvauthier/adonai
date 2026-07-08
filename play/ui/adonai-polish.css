@@ -1214,8 +1214,8 @@ body::before {
 
   .play-board.play-board--new-ui {
     width: min(1280px, calc(100vw - 20px)) !important;
-    height: calc(100dvh - 20px) !important;
-    max-height: calc(100dvh - 20px) !important;
+    height: calc(var(--app-vh, 100dvh) - 20px) !important;
+    max-height: calc(var(--app-vh, 100dvh) - 20px) !important;
   }
 }
 
@@ -4702,8 +4702,8 @@ body::after {
   .play-board.play-board--new-ui.is-viewport-compact {
     width: min(100vw, 420px) !important;
     max-width: 100vw !important;
-    height: 100dvh !important;
-    max-height: 100dvh !important;
+    height: var(--app-vh, 100dvh) !important;
+    max-height: var(--app-vh, 100dvh) !important;
     padding:
       max(5px, env(safe-area-inset-top, 0px))
       max(5px, env(safe-area-inset-right, 0px))

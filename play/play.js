@@ -530,6 +530,17 @@ function nowMs() {
 }
 
 function setStableHtml(element, html) {
+  if (window.AdonaiDom?.setStableHtml) {
+    return window.AdonaiDom.setStableHtml(element, html, {
+      cache: app.renderCache,
+      onSkip: () => {
+        app.perf.skippedHtmlWrites += 1;
+      },
+      onWrite: () => {
+        app.perf.htmlWrites += 1;
+      }
+    });
+  }
   if (!element) return false;
   const nextHtml = String(html ?? "");
   const previous = app.renderCache.get(element);
@@ -544,6 +555,10 @@ function setStableHtml(element, html) {
 }
 
 function clearStableHtml(element) {
+  if (window.AdonaiDom?.clearStableHtml) {
+    window.AdonaiDom.clearStableHtml(element, app.renderCache);
+    return;
+  }
   if (!element) return;
   if (element.innerHTML) element.innerHTML = "";
   app.renderCache.delete(element);
@@ -583,18 +598,13 @@ function renderPerformanceDebugPanel() {
 
 function initPerformanceMonitor() {
   if (!app.perfDebugEnabled || typeof PerformanceObserver === "undefined") return;
-  try {
-    const observer = new PerformanceObserver((list) => {
-      list.getEntries().forEach((entry) => {
-        app.perf.longTaskCount += 1;
-        app.perf.lastLongTaskMs = entry.duration || 0;
-      });
-      renderPerformanceDebugPanel();
+  window.AdonaiPerformance?.observeLongTasks?.((entries) => {
+    entries.forEach((entry) => {
+      app.perf.longTaskCount += 1;
+      app.perf.lastLongTaskMs = entry.duration || 0;
     });
-    observer.observe({ entryTypes: ["longtask"] });
-  } catch (error) {
-    // Long Task API is not available in every browser.
-  }
+    renderPerformanceDebugPanel();
+  });
 }
 
 const MODAL_EXIT_ANIMATION_MS = 180;
@@ -603,8 +613,9 @@ let viewportDensitySignature = "";
 let modalRenderObserver = null;
 
 function getViewportDensity() {
-  const width = window.innerWidth || document.documentElement.clientWidth || 0;
-  const height = window.innerHeight || document.documentElement.clientHeight || 0;
+  const fittedViewport = window.AdonaiViewportFit?.sync?.() || window.AdonaiViewportFit?.getViewport?.();
+  const width = fittedViewport?.width || window.innerWidth || document.documentElement.clientWidth || 0;
+  const height = fittedViewport?.height || window.innerHeight || document.documentElement.clientHeight || 0;
   const aspect = height > 0 ? width / height : 1;
   const coarsePointer = window.matchMedia?.("(pointer: coarse)")?.matches || false;
   const finePointer = window.matchMedia?.("(pointer: fine)")?.matches || false;
@@ -624,12 +635,14 @@ function getViewportDensity() {
 }
 
 function updateViewportDensityState() {
+  window.AdonaiViewportFit?.sync?.();
   const view = els.gameView;
   if (!view) return;
   const viewport = getViewportDensity();
-  const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches || false;
-  const saveData = Boolean(navigator.connection?.saveData);
-  const performanceSaver = Boolean(prefersReducedMotion || saveData || (viewport.coarsePointer && (viewport.compact || viewport.short)));
+  const performanceSaver = window.AdonaiPerformance?.shouldUsePerformanceSaver?.(viewport) ??
+    Boolean((window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches || false) ||
+      navigator.connection?.saveData ||
+      (viewport.coarsePointer && (viewport.compact || viewport.short)));
   const signature = [
     Math.round(viewport.width),
     Math.round(viewport.height),
@@ -662,6 +675,7 @@ function updateViewportDensityState() {
 }
 
 function scheduleViewportDensityUpdate() {
+  window.AdonaiViewportFit?.schedule?.();
   if (viewportDensityFrame) window.cancelAnimationFrame(viewportDensityFrame);
   viewportDensityFrame = window.requestAnimationFrame(() => {
     viewportDensityFrame = 0;
@@ -672,7 +686,8 @@ function scheduleViewportDensityUpdate() {
 function syncFeedbackOverlayState() {
   const view = els.gameView;
   if (!view) return;
-  const hasVisibleOverlay = Boolean(document.querySelector(".zone-modal.is-visible, .block-prompt.is-visible, .game-result:not(.is-hidden), .played-card-animation.is-visible, .draw-animation.is-visible, .reveal-animation.is-visible, .pulverize-animation.is-visible, .phase-alert.is-visible"));
+  const hasVisibleOverlay = window.AdonaiOverlay?.hasFeedbackOverlay?.() ??
+    Boolean(document.querySelector(".zone-modal.is-visible, .block-prompt.is-visible, .game-result:not(.is-hidden), .played-card-animation.is-visible, .draw-animation.is-visible, .reveal-animation.is-visible, .pulverize-animation.is-visible, .phase-alert.is-visible"));
   view.classList.toggle("is-feedback-overlay-active", hasVisibleOverlay);
 }
 
@@ -13744,7 +13759,8 @@ function bindEvents() {
   });
 
   document.addEventListener("pointerdown", (event) => {
-    if (event.target.closest(".zone-modal, .block-prompt, .game-result, #fieldViewModal, #decisionReturnButton, .phase-alert, .played-card-animation, .pulverize-animation, .draw-animation, .reveal-animation")) return;
+    if (window.AdonaiOverlay?.isInsideBlockingOverlay?.(event.target) ||
+      event.target.closest(".zone-modal, .block-prompt, .game-result, #fieldViewModal, #decisionReturnButton, .phase-alert, .played-card-animation, .pulverize-animation, .draw-animation, .reveal-animation")) return;
     if (event.target.closest("[data-essence-index]")) return;
     if (!els.handDock || els.handDock.contains(event.target)) return;
     if (els.actionDock?.contains(event.target)) return;
@@ -14406,6 +14422,7 @@ async function handleDrop(zone, payload, targetElement = null) {
 }
 
 async function init() {
+  window.AdonaiViewportFit?.sync?.();
   updateViewportDensityState();
   initPerformanceMonitor();
   observeModalRenders();

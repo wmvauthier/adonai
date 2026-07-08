@@ -574,11 +574,11 @@ body {
 }
 
 body {
-  min-height: 100dvh;
+  min-height: var(--app-vh, 100dvh);
 }
 
 .play-shell {
-  height: 100dvh;
+  height: var(--app-vh, 100dvh);
   min-height: 0;
   padding: 8px;
   overflow: hidden;
@@ -590,14 +590,14 @@ body {
 }
 
 .play-setup-panel {
-  max-height: calc(100dvh - 16px);
-  overflow: auto;
+  max-height: calc(var(--app-vh, 100dvh) - 16px);
+  overflow: hidden;
 }
 
 .play-board {
   --hand-h: 116px;
   width: min(1440px, 100%);
-  height: calc(100dvh - 16px);
+  height: calc(var(--app-vh, 100dvh) - 16px);
   min-height: 0;
   display: grid;
   grid-template-areas:
@@ -4730,7 +4730,7 @@ button.hud-mini-metric {
   position: relative;
   isolation: isolate;
   width: min(760px, 100%);
-  max-height: calc(100dvh - 28px);
+  max-height: calc(var(--app-vh, 100dvh) - 28px);
   display: grid;
   gap: 14px;
   padding: 18px;
@@ -4741,7 +4741,7 @@ button.hud-mini-metric {
     var(--result-wallpaper, linear-gradient(135deg, rgba(32, 45, 42, .8), rgba(5, 7, 7, .9)));
   background-position: center;
   background-size: cover;
-  overflow: auto;
+  overflow: hidden;
 }
 
 .game-result > .result-panel::before {
@@ -5101,7 +5101,7 @@ button.hud-mini-metric {
 
 /* Definitive play UI layer */
 .play-shell {
-  min-height: 100dvh;
+  min-height: var(--app-vh, 100dvh);
   padding: 0;
   background:
     radial-gradient(circle at 50% 6%, rgba(215, 193, 139, .1), transparent 30%),
@@ -5120,8 +5120,8 @@ button.hud-mini-metric {
   --field-gap: clamp(4px, 1.1vw, 7px);
   --hand-h: clamp(110px, 24dvh, 148px);
   width: min(460px, 100%);
-  height: 100dvh;
-  max-height: 100dvh;
+  height: var(--app-vh, 100dvh);
+  max-height: var(--app-vh, 100dvh);
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto auto var(--hand-h);
   gap: var(--field-gap);
@@ -10629,65 +10629,6 @@ textarea {
   .engine-target-choice-grid,
   .engine-distribution-grid {
     grid-template-columns: 1fr;
-  }
-}
-
-/* Setup viewport stability */
-.play-setup {
-  display: grid;
-  place-items: stretch center;
-  min-height: 0;
-}
-
-.play-setup-panel {
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
-  align-items: stretch;
-  gap: 12px;
-  max-height: calc(100dvh - 16px);
-  min-height: 0;
-  overflow: hidden;
-}
-
-.setup-match-preview {
-  min-height: 0;
-  margin: 0;
-  padding-right: 2px;
-  align-content: start;
-  overflow: auto;
-  overscroll-behavior: contain;
-}
-
-.setup-actions {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  align-items: stretch;
-  gap: 10px;
-  margin-top: 0;
-}
-
-.setup-actions a,
-.setup-actions button {
-  width: 100%;
-  min-width: 0;
-}
-
-.setup-deck-card {
-  min-height: clamp(148px, 24dvh, 218px);
-}
-
-@media (max-width: 760px) {
-  .play-setup-panel {
-    padding: 14px;
-    gap: 10px;
-  }
-
-  .setup-actions {
-    grid-template-columns: 1fr;
-  }
-
-  .setup-deck-card {
-    min-height: clamp(142px, 23dvh, 176px);
   }
 }
 
