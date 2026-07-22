@@ -244,7 +244,7 @@ const BOT_STRATEGY_TAGS = {
   abilities: {
     "card.fnd_art_038.activated": ["moral_cost_opponent"],
     "card.fnd_cmp_048.despair": ["sacrifice_cost", "finisher"],
-    "card.fnd_tem_049.prepare_begin": ["moral_setup", "hand_cost"],
+    "card.fnd_tem_049.consecration_begin": ["moral_setup", "hand_cost"],
     "virtue.faith.1": ["hand_cost", "future_draw"],
     "virtue.faith.2": ["hand_cost", "future_draw"],
     "virtue.faith.3": ["hand_cost", "future_draw"],
@@ -3004,7 +3004,7 @@ function showPreGameReductionModal(player) {
               const card = app.cardByCode.get(cardId);
               const active = selected.has(index);
               return `
-                <button class="zone-modal-card pregame-card-choice ${active ? "is-selected" : ""}" type="button" data-pregame-reduction-card="${index}" title="${escapeHtml(getCardName(card))}">
+                <button class="zone-modal-card pregame-card-choice ${active ? "is-selected" : ""}" type="button" data-pregame-reduction-card="${index}" data-zoom-card="${escapeHtml(cardId)}" title="${escapeHtml(getCardName(card))}">
                   <img src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" draggable="false" />
                   <span>${active ? "Reserva" : "Deck"}</span>
                 </button>
@@ -3078,7 +3078,7 @@ function showPreGameMulliganModal(player, attempt) {
               const card = app.cardByCode.get(cardId);
               const active = selected.has(index);
               return `
-                <button class="zone-modal-card pregame-card-choice ${active ? "is-selected" : ""}" type="button" data-pregame-mulligan-card="${index}" title="${escapeHtml(getCardName(card))}">
+                <button class="zone-modal-card pregame-card-choice ${active ? "is-selected" : ""}" type="button" data-pregame-mulligan-card="${index}" data-zoom-card="${escapeHtml(cardId)}" title="${escapeHtml(getCardName(card))}">
                   <img src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" draggable="false" />
                   <span>${active ? "Trocar" : "Manter"}</span>
                 </button>
@@ -4849,6 +4849,8 @@ function chooseOptionalAbilityResolution(stackObject) {
     effectText: getStackObjectEffectDescription(stackObject),
     sourceLabel,
     sourceIcon: getStackObjectSourceIcon(stackObject),
+    sourceCardId: getStackObjectSourceCardId(stackObject),
+    sourceZoomImage: getStackObjectSourceZoomImage(stackObject),
     confirmText: "Resolver",
     cancelText: "Nao resolver"
   });
@@ -4873,6 +4875,33 @@ function getStackObjectSourceIcon(stackObject) {
   if (source.icon) return source.icon;
   if (source.sourceType === "virtue") return getVirtueIcon(getVirtueById(source.sourceId));
   if (source.cardId || source.sourceId) return getCardArt(app.cardByCode.get(source.cardId || source.sourceId));
+  return "";
+}
+
+function getStackObjectSourceZoomImage(stackObject) {
+  const source = stackObject?.source || {};
+  if (source.sourceType === "virtue") {
+    const virtue = getVirtueById(source.sourceId);
+    return getVirtueCardImage(virtue) || getVirtueIcon(virtue);
+  }
+  if (source.zoomImage) return source.zoomImage;
+  return source.icon || getStackObjectSourceIcon(stackObject);
+}
+
+function getStackObjectSourceCardId(stackObject) {
+  const source = stackObject?.source || {};
+  const cardId = stackObject?.cardId || source.cardId || (source.sourceType === "card" ? source.sourceId : "");
+  return cardId && app.cardByCode.has(cardId) ? cardId : "";
+}
+
+function buildZoomDataAttrs({ cardId = "", image = "", label = "" } = {}) {
+  const normalizedCardId = String(cardId || "");
+  if (normalizedCardId && app.cardByCode.has(normalizedCardId)) {
+    return `data-zoom-card="${escapeHtml(normalizedCardId)}"`;
+  }
+  if (image) {
+    return `data-zoom-image="${escapeHtml(image)}" data-zoom-label="${escapeHtml(label || "Imagem")}"`;
+  }
   return "";
 }
 
@@ -4970,7 +4999,7 @@ function chooseBotOptionalAbility(stackObject) {
   return score >= 0.75;
 }
 
-function showEngineChoiceModal({ title, description, confirmText, cancelText, effectText = "", sourceLabel = "", sourceIcon = "" }) {
+function showEngineChoiceModal({ title, description, confirmText, cancelText, effectText = "", sourceLabel = "", sourceIcon = "", sourceCardId = "", sourceZoomImage = "" }) {
   return new Promise((resolve) => {
     let overlay = document.getElementById("zoneModal");
     if (!overlay) {
@@ -4981,6 +5010,11 @@ function showEngineChoiceModal({ title, description, confirmText, cancelText, ef
     }
     app.pendingEngineChoice = { type: "confirm", title };
     setZoneModalVisibleForRender(overlay);
+    const sourceZoomAttrs = buildZoomDataAttrs({
+      cardId: sourceCardId,
+      image: sourceZoomImage || sourceIcon,
+      label: sourceLabel || title
+    });
     overlay.innerHTML = `
       <div class="zone-modal-panel zone-modal-panel--engine-choice" role="dialog" aria-modal="true" aria-label="${escapeHtml(title)}">
         <div class="zone-modal-head">
@@ -4989,7 +5023,7 @@ function showEngineChoiceModal({ title, description, confirmText, cancelText, ef
           </div>
         </div>
         ${(effectText || sourceLabel) ? `
-          <div class="engine-choice-source">
+          <div class="engine-choice-source" ${sourceZoomAttrs}>
             ${sourceIcon ? `<img src="${escapeHtml(sourceIcon)}" alt="${escapeHtml(sourceLabel || title)}" draggable="false" />` : ""}
             <span>
               ${sourceLabel ? `<small>Origem</small><strong>${escapeHtml(sourceLabel)}</strong>` : ""}
@@ -5042,7 +5076,7 @@ function showEngineHandChoiceModal(player, amount, { title, description, confirm
               const card = app.cardByCode.get(cardId);
               const active = selected.has(index);
               return `
-                <button class="zone-modal-card engine-card-choice ${active ? "is-selected" : ""}" type="button" data-engine-card-choice="${index}">
+                <button class="zone-modal-card engine-card-choice ${active ? "is-selected" : ""}" type="button" data-engine-card-choice="${index}" data-zoom-card="${escapeHtml(cardId)}">
                   <img src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" draggable="false" />
                 </button>
               `;
@@ -5107,7 +5141,7 @@ function showEngineSingleCardChoiceModal({ title, description, entries, confirmT
             ${availableEntries.map((entry, index) => {
               const card = app.cardByCode.get(entry.cardId);
               return `
-                <button class="zone-modal-card engine-card-choice ${selectedIndex === index ? "is-selected" : ""}" type="button" data-engine-single-card-choice="${index}">
+                <button class="zone-modal-card engine-card-choice ${selectedIndex === index ? "is-selected" : ""}" type="button" data-engine-single-card-choice="${index}" data-zoom-card="${escapeHtml(entry.cardId)}">
                   <img src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" draggable="false" />
                   ${entry.meta ? `<small>${escapeHtml(entry.meta)}</small>` : ""}
                 </button>
@@ -5953,8 +5987,10 @@ function showEngineTargetChoiceModal({
         <p class="zone-modal-description">${escapeHtml(description)}</p>
         <div class="zone-modal-grid engine-target-choice-grid">
           ${refs.map((ref, index) => {
+            const targetCard = getEngineRefCard(ref);
+            const zoomAttrs = buildZoomDataAttrs({ cardId: targetCard?.code });
             return `
-              <button class="zone-modal-card engine-target-choice-card" type="button" data-engine-target-choice="${index}">
+              <button class="zone-modal-card engine-target-choice-card" type="button" data-engine-target-choice="${index}" ${zoomAttrs}>
                 ${renderEngineTargetChoiceVisual(ref, kind, { visualOnly, showStats: targetShowStats })}
               </button>
             `;
@@ -6036,8 +6072,13 @@ function showEngineStackChoiceModal({ title, description, refs }) {
             const item = ref.stackObject;
             const controller = getPlayer(app.game, item.controllerId);
             const icon = getStackObjectSourceIcon(item);
+            const zoomAttrs = buildZoomDataAttrs({
+              cardId: getStackObjectSourceCardId(item),
+              image: getStackObjectSourceZoomImage(item),
+              label: item.label || getStackObjectSourceLabel(item)
+            });
             return `
-              <button type="button" class="engine-stack-choice-card" data-engine-stack-target="${index}">
+              <button type="button" class="engine-stack-choice-card" data-engine-stack-target="${index}" ${zoomAttrs}>
                 ${icon ? `<img src="${escapeHtml(icon)}" alt="" draggable="false" />` : ""}
                 <span>
                   <strong>${escapeHtml(item.label || "Objeto na pilha")}</strong>
@@ -7321,7 +7362,9 @@ async function executeEngineAction(action, stackObject, options = {}) {
           cancelText: "Deixar anular",
           effectText: localize(action.description) || getStackObjectEffectDescription(stackObject),
           sourceLabel: targetObject.label,
-          sourceIcon: getStackObjectSourceIcon(targetObject)
+          sourceIcon: getStackObjectSourceIcon(targetObject),
+          sourceCardId: getStackObjectSourceCardId(targetObject),
+          sourceZoomImage: getStackObjectSourceZoomImage(targetObject)
         })
         : Boolean(targetController) && targetObject.controllerId === targetController.id;
       if (shouldPay && payEssenceTax(targetController, tax)) {
@@ -7976,19 +8019,34 @@ async function applyConsecrationTypeEffect(player, card) {
   return null;
 }
 
+function shouldBotUsePresenceTempleReplacement(player, card) {
+  if (player?.id !== "bot" || !card) return false;
+  if (!player.deck.length && !player.hand.length) return false;
+  const mode = app.game?.botMode || "basic";
+  const typeScore = scoreBotConsecrationTypeEffect(player, card, card.code, mode);
+  const discardCandidateValue = player.hand.length
+    ? Math.min(...player.hand.map((cardId) => getBotHandCardStrategicValue(player, cardId, mode)))
+    : 0;
+  const hasGoodDiscard = !player.hand.length || discardCandidateValue <= 2.2;
+  if (typeScore < 0.35) return true;
+  return player.deck.length > 0 && hasGoodDiscard && typeScore < 1.15;
+}
+
 async function applyPresenceTempleReplacement(player, card) {
   if (!playerHasTemple(player, TEMPLE_IDS.presence)) return null;
-  if (player.id !== "human") return null;
   const temple = app.cardByCode.get(TEMPLE_IDS.presence);
-  const shouldReplace = await showEngineChoiceModal({
-    title: "Tenda da Presença",
-    description: "",
-    confirmText: "Comprar e descartar",
-    cancelText: "Aplicar efeito normal",
-    sourceLabel: "Tenda da Presença",
-    sourceIcon: getCardArt(temple),
-    effectText: `Substituir o efeito de tipo de ${getCardName(card)} por comprar 1 carta e descartar 1 carta. O ajuste moral ainda acontece.`
-  });
+  const shouldReplace = player.id === "human"
+    ? await showEngineChoiceModal({
+      title: "Tenda da Presença",
+      description: "",
+      confirmText: "Comprar e descartar",
+      cancelText: "Aplicar efeito normal",
+      sourceLabel: "Tenda da Presença",
+      sourceIcon: getCardArt(temple),
+      sourceCardId: TEMPLE_IDS.presence,
+      effectText: `Substituir o efeito de tipo de ${getCardName(card)} por comprar 1 carta e descartar 1 carta. O ajuste moral ainda acontece.`
+    })
+    : shouldBotUsePresenceTempleReplacement(player, card);
   if (!shouldReplace) return null;
 
   const { drawn, missing, fatigueDamage } = drawCardsWithFatigue(player, 1);
@@ -8005,13 +8063,14 @@ async function applyPresenceTempleReplacement(player, card) {
     await animateResolutionEvents([{ type: "territory", playerId: player.id, amount: fatigueDamage }], "damage");
   }
   if (player.hand.length) {
-    const chosen = await showEngineSingleCardChoiceModal({
-      title: "Tenda da Presença",
-      description: "Escolha uma carta da sua mão para descartar.",
-      entries: player.hand.map((cardId, index) => ({ cardId, index })),
-      confirmText: "Descartar"
-    });
-    const discardId = chosen?.cardId || player.hand[chosen?.index];
+    const discardId = player.id === "human"
+      ? (await showEngineSingleCardChoiceModal({
+        title: "Tenda da Presença",
+        description: "Escolha uma carta da sua mão para descartar.",
+        entries: player.hand.map((cardId, index) => ({ cardId, index })),
+        confirmText: "Descartar"
+      }))?.cardId
+      : chooseBotDiscardCard(player);
     if (discardId && discardCardFromHand(player, discardId)) {
       addLog(app.game, `descartou ${getCardName(app.cardByCode.get(discardId))}.`, player.label);
     }
@@ -8034,6 +8093,7 @@ async function getConsecrationMoralAmount(player, card) {
       cancelText: "Manter ajuste +1",
       sourceLabel: "Santuário do Julgamento",
       sourceIcon: getCardArt(temple),
+      sourceCardId: TEMPLE_IDS.judgment,
       effectText: "Coloque 1 carta da sua mão no fundo do baralho. Se fizer isso, o ajuste moral da Consagração deste Personagem será 2 em vez de 1."
     })
     : player.hand.length >= 3;
@@ -9713,7 +9773,7 @@ function showPhaseAlert(phase, playerId) {
   overlay.className = `phase-alert is-visible ${playerId === "human" ? "is-human-phase" : "is-bot-phase"}`;
   overlay.innerHTML = `
     <div class="phase-alert-card">
-      ${avatar ? `<img class="phase-alert-avatar" src="${escapeHtml(avatar)}" alt="${escapeHtml(getCardName(champion))}" />` : ""}
+      ${avatar ? `<img class="phase-alert-avatar" src="${escapeHtml(avatar)}" alt="${escapeHtml(getCardName(champion))}" ${buildZoomDataAttrs({ cardId: champion.code })} />` : ""}
       <span>${escapeHtml(detail)}</span>
       <strong>${escapeHtml(label)}</strong>
     </div>
@@ -9788,6 +9848,7 @@ function showPulverizeAnimation(cardIds, playerId) {
               style="--pulverize-index:${index};--pulverize-shift:${index - ((cards.length - 1) / 2)}"
               src="${escapeHtml(getCardImage(card))}"
               alt="${escapeHtml(getCardName(card))}"
+              ${buildZoomDataAttrs({ cardId: card.code })}
               draggable="false"
             />
           `).join("")}
@@ -9826,7 +9887,7 @@ function showRevealCardsAnimation(cardIds, playerId, options = {}) {
         <strong>${escapeHtml(title)}</strong>
         <div class="reveal-animation-cards" style="--reveal-count:${cards.length};">
           ${cards.map((card, index) => `
-            <figure style="--reveal-index:${index};">
+            <figure style="--reveal-index:${index};" ${buildZoomDataAttrs({ cardId: card.code })}>
               <img src="${escapeHtml(getCardImage(card))}" alt="${escapeHtml(getCardName(card))}" draggable="false" />
               <figcaption>${escapeHtml(getCardName(card))}</figcaption>
             </figure>
@@ -11996,7 +12057,8 @@ function renderEdgeEventArtwork(event) {
           const card = app.cardByCode.get(cardId);
           const image = event.hidden ? CARD_BACK_IMAGE : getCardImage(card);
           const label = event.hidden ? "Carta oculta" : getCardName(card);
-          return image ? `<img style="--edge-thumb-index:${index};" src="${escapeHtml(image)}" alt="${escapeHtml(label)}" draggable="false" />` : "";
+          const zoomAttrs = event.hidden ? "" : buildZoomDataAttrs({ cardId });
+          return image ? `<img style="--edge-thumb-index:${index};" src="${escapeHtml(image)}" alt="${escapeHtml(label)}" ${zoomAttrs} draggable="false" />` : "";
         }).join("")}
         ${cardIds.length > visibleIds.length ? `<b>+${cardIds.length - visibleIds.length}</b>` : ""}
       </div>
@@ -12006,7 +12068,14 @@ function renderEdgeEventArtwork(event) {
   const card = app.cardByCode.get(cardId);
   const image = event.icon || (event.hidden ? CARD_BACK_IMAGE : getCardImage(card));
   const label = event.iconLabel || (event.hidden ? "Carta oculta" : getCardName(card));
-  return image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(label)}" draggable="false" />` : "";
+  const zoomAttrs = event.hidden
+    ? ""
+    : cardId && app.cardByCode.has(cardId)
+      ? buildZoomDataAttrs({ cardId })
+      : event.icon
+        ? buildZoomDataAttrs({ image: event.icon, label })
+        : "";
+  return image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(label)}" ${zoomAttrs} draggable="false" />` : "";
 }
 
 function renderEdgeEventCard(event) {
@@ -12326,7 +12395,7 @@ function renderIdentityTile(player, card, kind, attrs = "") {
   const image = getCardArt(card);
   const label = kind === "champion" ? "Campeao" : kind === "territory" ? "Territorio" : "Templo";
   const marker = isTerritory || isTemple
-    ? `<strong class="identity-dock-value"><span>${escapeHtml(currentValue)}</span><small>/${escapeHtml(totalValue)}</small></strong>`
+    ? `<strong class="identity-dock-value"><span class="identity-dock-current">${escapeHtml(currentValue)}</span><span class="identity-dock-separator">/</span><small class="identity-dock-total">${escapeHtml(totalValue)}</small></strong>`
     : isChampion && player.championCovered
       ? `<strong class="identity-dock-state">Encoberto</strong>`
       : "";
@@ -13158,7 +13227,7 @@ function renderBlockMiniCard(player, instance, label, options = {}) {
   const draggable = "";
   const data = options.blocker ? `data-blocker="${escapeHtml(instance.uid)}"` : "";
   return `
-    <div class="${classes}" role="button" tabindex="0" ${data} ${draggable} ${options.disabled ? "aria-disabled=\"true\"" : ""} title="${escapeHtml(getCardName(card))}">
+    <div class="${classes}" role="button" tabindex="0" ${data} ${draggable} data-zoom-card="${escapeHtml(instance.cardId)}" ${options.disabled ? "aria-disabled=\"true\"" : ""} title="${escapeHtml(getCardName(card))}">
       <img src="${escapeHtml(getCardArt(card))}" alt="${escapeHtml(getCardName(card))}" draggable="false" />
       <span class="block-mini-label">${escapeHtml(label)}</span>
       ${isCharacter ? `<strong class="block-mini-stats ${statModifier ? `is-${statModifier.tone}` : ""}">${getCharacterPower(instance)}/${getCharacterResistance(instance)}</strong>` : ""}
@@ -13182,7 +13251,7 @@ function renderBlockTargetCard(target, label = "T") {
     const territory = app.cardByCode.get(player.identity.territory);
     const remaining = Math.max(0, player.maxTerritory - player.territoryDamage);
     return `
-      <div class="block-mini-card is-target is-territory-target" title="Territorio de ${escapeHtml(player.label)}">
+      <div class="block-mini-card is-target is-territory-target" data-zoom-card="${escapeHtml(player.identity.territory)}" title="Territorio de ${escapeHtml(player.label)}">
         <img src="${escapeHtml(getCardArt(territory))}" alt="Territorio de ${escapeHtml(player.label)}" draggable="false" />
         <span class="block-mini-label">${escapeHtml(label)}</span>
         <strong class="block-mini-stats">${remaining}/${player.maxTerritory}</strong>
