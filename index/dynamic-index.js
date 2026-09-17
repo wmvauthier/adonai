@@ -76,6 +76,8 @@
     if (!container) return;
 
     container.innerHTML = links
+      // Oculta as opções reservadas para uma próxima fase de produção.
+      .filter((link) => link.enabled !== false)
       .map(
         (link) => `
       <a href="${link.href}">${text(link.label, lang)}</a>

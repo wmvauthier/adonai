@@ -1,8 +1,8 @@
 # Comprehensive Rules — ADONAI CARD GAME
 
-**Versão corrigida:** 1.0  
-**Data:** 31/05/2026  
-**Status:** versão consolidada após validações de terminologia, timing, combate, equipamentos, Identidade, buscas e multijogador.
+**Versão corrigida:** 1.2  
+**Data:** 28/08/2026  
+**Status:** versão consolidada após inclusão do subtipo Sagrado e da habilidade DESGUARNECIDO X.
 
 ---
 
@@ -27,6 +27,14 @@
 0.6. O símbolo **{E}** representa 1 recurso de Essência.
 
 0.7. Sempre que uma regra se referir a “carta”, “objeto”, “habilidade”, “efeito”, “jogada”, “alvo” ou “permanente”, use a definição formal deste documento, não o sentido coloquial da palavra.
+
+0.8. Textos que movimentem um eixo moral devem usar a construção “progrida em X sua [Virtude ou Desvirtude]”, indicando sempre o polo em cuja direção o eixo será movimentado.
+
+0.9. A expressão “característica associada” deve ser usada quando a referência puder abranger uma Virtude ou uma Desvirtude associada à carta.
+
+0.10. Quando a referência abranger apenas Virtudes, use “Virtude associada”. Quando abranger apenas Desvirtudes, use “Desvirtude associada”.
+
+0.11. Não use construções como “com Fé associada”, “com Esperança associada” ou equivalentes. Quando uma característica específica for mencionada, use seu nome diretamente ou a construção “a Virtude Fé”, “a Desvirtude Desespero” ou equivalente, conforme necessário.
 
 ---
 
@@ -328,7 +336,7 @@
 
 6.4.2. O campo de batalha é uma zona pública.
 
-6.4.3. Personagens, Artefatos, Milagres Duradouros, Pecados Duradouros, Equipamentos e fichas podem existir no campo de batalha conforme suas regras.
+6.4.3. Personagens, Artefatos, Milagres e Pecados permanentes, Equipamentos, Vínculos e fichas podem existir no campo de batalha conforme suas regras.
 
 ## 6.5. Zona de Essência
 
@@ -367,6 +375,12 @@
 6.8.4. O conteúdo da Reserva permanece oculto dos oponentes, salvo na medida em que cartas sejam reveladas por efeito ou por regra de busca.
 
 6.8.5. Como a Reserva não é ordenada, ela não é embaralhada por regras gerais do jogo.
+
+6.8.6. Por padrão, o texto de uma carta não funciona enquanto ela estiver na Reserva.
+
+6.8.7. Uma habilidade precedida pelo marcador RESERVA funciona enquanto a carta que a possui estiver na Reserva de seu dono.
+
+6.8.8. RESERVA torna funcional apenas o texto indicado por esse marcador. Os demais textos da carta continuam sem funcionar na Reserva, salvo se disserem explicitamente o contrário.
 
 ## 6.9. Zona de Identidade
 
@@ -520,7 +534,13 @@
 
 7.7.3. Artefatos permanecem no campo de batalha até serem removidos, destruídos, exilados ou movidos por regra ou efeito.
 
-7.7.4. O subtipo de Artefato consolidado neste documento é Equipamento.
+7.7.4. Os subtipos de Artefato definidos neste documento incluem Equipamento, Construção, Sagrado, Incenso e Ouro.
+
+7.7.5. Sagrado é um subtipo de Artefato e não possui regra inerente.
+
+7.7.6. Um Artefato é Sagrado se possuir o subtipo Sagrado impresso ou se uma regra ou efeito lhe conceder esse subtipo.
+
+7.7.7. Ser Sagrado não altera custo, estado de entrada, funcionamento, controle, alvo ou permanência do Artefato, salvo se outra regra ou efeito disser o contrário.
 
 ## 7.8. Equipamento
 
@@ -536,11 +556,15 @@
 
 7.9.1. Milagre é um tipo de carta jogável em qualquer momento em que seu controlador tenha prioridade, salvo restrição adicional específica.
 
-7.9.2. Milagres podem ter o subtipo funcional Momentâneo ou Duradouro.
+7.9.2. Milagres podem ter o subtipo funcional Momentâneo, Duradouro ou Vínculo.
 
 7.9.3. Milagre Momentâneo resolve, aplica seus efeitos e vai ao cemitério, salvo se uma regra ou efeito disser o contrário.
 
 7.9.4. Milagre Duradouro resolve e entra ou permanece no campo de batalha como permanente, salvo se uma regra ou efeito disser o contrário.
+
+7.9.5. Milagre com Vínculo resolve e entra no campo de batalha anexado ao alvo definido por sua habilidade VINCULAR A.
+
+7.9.6. Milagres com Vínculo seguem as regras da seção 7.12.
 
 ## 7.10. Pecado
 
@@ -548,23 +572,67 @@
 
 7.10.2. Pecados são pagos exclusivamente causando dano ao próprio Território, salvo custo alternativo ou modificação específica.
 
-7.10.3. Pecados podem ter o subtipo funcional Momentâneo ou Duradouro.
+7.10.3. Pecados podem ter o subtipo funcional Momentâneo, Duradouro ou Vínculo.
 
 7.10.4. Pecado Momentâneo resolve, aplica seus efeitos e vai ao cemitério, salvo se uma regra ou efeito disser o contrário.
 
 7.10.5. Pecado Duradouro resolve e entra ou permanece no campo de batalha como permanente, salvo se uma regra ou efeito disser o contrário.
 
-7.10.6. Um Pecado com INESPERADO pode ser jogado em qualquer momento em que seu controlador tenha prioridade, mesmo fora da etapa de Alistamento.
+7.10.6. Pecado com Vínculo resolve e entra no campo de batalha anexado ao alvo definido por sua habilidade VINCULAR A.
 
-7.10.7. INESPERADO não altera o custo de um Pecado. O custo ainda é pago causando dano ao próprio Território, salvo se texto específico disser o contrário.
+7.10.7. Pecados com Vínculo seguem as regras da seção 7.12.
 
-## 7.11. Momentâneo e Duradouro
+7.10.8. Um Pecado com INESPERADO pode ser jogado em qualquer momento em que seu controlador tenha prioridade, mesmo fora da etapa de Alistamento.
+
+7.10.9. INESPERADO não altera o custo de um Pecado. O custo ainda é pago causando dano ao próprio Território, salvo se texto específico disser o contrário.
+
+## 7.11. Momentâneo, Duradouro e Vínculo
 
 7.11.1. Uma carta Momentânea é uma carta que, após resolver, não permanece no campo de batalha e vai ao cemitério, salvo se uma regra ou efeito disser o contrário.
 
 7.11.2. Uma carta Duradoura é uma carta que, após resolver, entra ou permanece no campo de batalha como permanente, salvo se uma regra ou efeito disser o contrário.
 
-7.11.3. Personagens, Artefatos, Milagres Duradouros e Pecados Duradouros são permanentes quando estão no campo de batalha.
+7.11.3. Uma carta com Vínculo é uma carta que, após resolver, entra no campo de batalha anexada a um objeto ou jogador permitido por sua habilidade VINCULAR A.
+
+7.11.4. Personagens, Artefatos, Milagres Duradouros, Pecados Duradouros e cartas com Vínculo são permanentes enquanto estiverem no campo de batalha.
+
+## 7.12. Vínculo
+
+7.12.1. Vínculo é um subtipo funcional de Milagre e Pecado.
+
+7.12.2. Toda carta com Vínculo possui a habilidade VINCULAR A, que determina a que ela pode ser anexada.
+
+7.12.3. Como parte de jogar uma carta com Vínculo, seu controlador escolhe um alvo permitido por sua habilidade VINCULAR A.
+
+7.12.4. Uma carta com Vínculo não pode ser jogada se não houver um alvo válido.
+
+7.12.5. Ser um Vínculo não altera o momento em que a carta pode ser jogada nem seu modo de pagamento. A carta continua seguindo as regras de seu tipo principal.
+
+7.12.6. Se o alvo permanecer válido quando a carta resolver, o Vínculo entra no campo de batalha anexado a ele.
+
+7.12.7. Se o alvo se tornar inválido antes da resolução, a jogada é anulada pelas regras do jogo e a carta vai ao cemitério.
+
+7.12.8. O objeto ou jogador ao qual um Vínculo está anexado é chamado de vinculado.
+
+7.12.9. Um Vínculo só pode estar anexado a um objeto ou jogador por vez.
+
+7.12.10. Um objeto ou jogador pode ter qualquer quantidade de Vínculos anexados, salvo se uma regra ou efeito disser o contrário.
+
+7.12.11. Um Vínculo não pode ser anexado a si mesmo.
+
+7.12.12. O controlador de um Vínculo não precisa ser o controlador do objeto vinculado.
+
+7.12.13. Alterar o controle do objeto vinculado não altera o controle do Vínculo, e alterar o controle do Vínculo não altera o controle do objeto vinculado.
+
+7.12.14. As habilidades estáticas de um Vínculo funcionam enquanto ele estiver no campo de batalha e legalmente anexado.
+
+7.12.15. Se o objeto vinculado deixar o campo de batalha ou mudar de zona, o Vínculo torna-se desanexado.
+
+7.12.16. Se um Vínculo estiver desanexado ou anexado a algo que não satisfaça sua habilidade VINCULAR A, ele é colocado no cemitério de seu dono como ação baseada no estado. Isso não é destruir nem renunciar.
+
+7.12.17. Se um Vínculo entrar no campo de batalha sem ter sido jogado, seu controlador escolhe algo ao qual ele possa ser legalmente anexado. Essa escolha não tem alvo. Se não houver escolha legal, o Vínculo permanece na zona anterior.
+
+7.12.18. PROTEÇÃO impede que uma carta com Vínculo escolha aquele objeto como alvo ao ser jogada. Ganhar PROTEÇÃO depois que o Vínculo estiver anexado não remove o Vínculo, pois uma permanente anexada não continua escolhendo o objeto como alvo.
 
 ---
 
@@ -726,11 +794,11 @@
 
 10.1.7. Salvo efeito específico em contrário, Essências não podem ser destruídas, atacadas, escolhidas como alvo por interação comum de campo de batalha nem removidas por regras gerais do jogo.
 
-## 10.2. Consagrar
+## 10.2. Consagrar, Profanar ou declarar Omissão
 
-10.2.1. Consagrar é uma ação estrutural de etapa.
+10.2.1. Consagrar e Profanar são ações estruturais da etapa de Consagração.
 
-10.2.2. Consagrar só pode ser realizado durante a etapa de Consagração do jogador ativo, salvo se regra ou efeito disser explicitamente o contrário.
+10.2.2. Consagrar e Profanar só podem ser realizados durante a etapa de Consagração do jogador ativo, salvo se regra ou efeito disser explicitamente o contrário.
 
 10.2.3. Em cada uma de suas etapas de Consagração, o jogador ativo escolhe exatamente uma destas opções:
 
@@ -738,15 +806,19 @@
 
 (b) Profanar;
 
-(c) não realizar nenhuma dessas ações.
+(c) declarar Omissão.
 
-10.2.4. Um jogador não pode Consagrar e Profanar na mesma etapa de Consagração, salvo se uma regra ou efeito disser explicitamente o contrário.
+10.2.4. Omissão é a escolha de não Consagrar nem Profanar durante uma etapa de Consagração.
 
-10.2.5. Para Consagrar, o jogador escolhe uma carta de sua mão e a move para sua zona de Essência.
+10.2.5. Declarar Omissão não move cartas, não aplica efeitos de Consagração ou Profanação e não gera ajustes morais por regra geral.
 
-10.2.6. Cartas de Campeão, Território e Templo normalmente não podem ser Consagradas, pois não fazem parte da mão ou do baralho principal por regras gerais.
+10.2.6. Um jogador não pode Consagrar e Profanar na mesma etapa de Consagração, salvo se uma regra ou efeito disser explicitamente o contrário.
 
-10.2.7. Se algum efeito futuro permitir Consagrar uma carta de tipo Campeão, Território ou Templo, esse efeito deve dizer qual resultado de Consagração se aplica, ou o jogador escolhe um tipo aplicável se a carta possuir múltiplos tipos relevantes.
+10.2.7. Para Consagrar, o jogador escolhe uma carta de sua mão e a move para sua zona de Essência.
+
+10.2.8. Cartas de Campeão, Território e Templo normalmente não podem ser Consagradas, pois não fazem parte da mão ou do baralho principal por regras gerais.
+
+10.2.9. Se algum efeito permitir Consagrar uma carta de tipo Campeão, Território ou Templo, esse efeito deve dizer qual resultado de Consagração se aplica, ou o jogador escolhe um tipo aplicável se a carta possuir múltiplos tipos relevantes.
 
 ## 10.3. Ordem da Consagração
 
@@ -766,7 +838,7 @@
 
 10.4.1. Se a carta consagrada era um Personagem, o controlador escolhe um Personagem que controla. Até o Reagrupamento, esse Personagem recebe +1/+1.
 
-10.4.2. Se a carta consagrada era um Pecado, o jogador escolhe uma Desvirtude ativa de menor valor e aplica +2 à Virtude correspondente. Se o jogador não possuir Desvirtudes ativas, esse efeito específico é ignorado.
+10.4.2. Se a carta consagrada era um Pecado, o jogador escolhe uma Desvirtude ativa de menor valor e progride em 2 a Virtude correspondente. Se o jogador não possuir Desvirtudes ativas, esse efeito específico é ignorado.
 
 10.4.3. Em caso de empate entre Desvirtudes ativas de menor valor, o jogador escolhe uma entre elas.
 
@@ -784,11 +856,11 @@
 
 10.5.1. Após aplicar o efeito correspondente ao tipo da carta consagrada, o jogador ajusta seus eixos morais executando apenas o primeiro caso aplicável da lista abaixo:
 
-(a) se possuir ao menos uma Desvirtude ativa, escolha uma Desvirtude ativa de menor valor e aplique +1 à Virtude correspondente;
+(a) se possuir ao menos uma Desvirtude ativa, escolha uma Desvirtude ativa de menor valor e progrida em 1 a Virtude correspondente;
 
-(b) se a alínea (a) não for aplicável e o jogador possuir ao menos uma Virtude ativa com valor inferior a 4, escolha uma Virtude ativa de maior valor entre as Virtudes elegíveis e aplique +1 a ela;
+(b) se a alínea (a) não for aplicável e o jogador possuir ao menos uma Virtude ativa com valor inferior a 4, escolha uma Virtude ativa de maior valor entre as Virtudes elegíveis e progrida em 1 essa Virtude;
 
-(c) se as alíneas (a) e (b) não forem aplicáveis, escolha uma Virtude com valor inferior a 4 e aplique +1 a ela.
+(c) se as alíneas (a) e (b) não forem aplicáveis, escolha uma Virtude com valor inferior a 4 e progrida em 1 essa Virtude.
 
 10.5.2. Em caso de empate entre atributos elegíveis no mesmo caso aplicável, o jogador escolhe entre eles.
 
@@ -816,11 +888,11 @@
 
 10.7.1. Depois da Profanação, o jogador ajusta seus eixos morais executando apenas o primeiro caso aplicável da lista abaixo:
 
-(a) se possuir ao menos uma Virtude ativa, escolha uma Virtude ativa de menor valor e aplique -2 a ela;
+(a) se possuir ao menos uma Virtude ativa, escolha uma Virtude ativa de menor valor e progrida em 2 a Desvirtude correspondente;
 
-(b) se a alínea (a) não for aplicável e o jogador possuir ao menos uma Desvirtude ativa com valor inferior a 4, escolha uma Desvirtude ativa de maior valor entre as Desvirtudes elegíveis e aplique +2 a ela;
+(b) se a alínea (a) não for aplicável e o jogador possuir ao menos uma Desvirtude ativa com valor inferior a 4, escolha uma Desvirtude ativa de maior valor entre as Desvirtudes elegíveis e progrida em 2 essa Desvirtude;
 
-(c) se as alíneas (a) e (b) não forem aplicáveis, escolha uma Desvirtude com valor inferior a 4 e aplique +2 a ela.
+(c) se as alíneas (a) e (b) não forem aplicáveis, escolha uma Desvirtude com valor inferior a 4 e progrida em 2 essa Desvirtude.
 
 10.7.2. Em caso de empate entre atributos elegíveis no mesmo caso aplicável, o jogador escolhe entre eles.
 
@@ -882,29 +954,27 @@
 
 11.2.11. Um requisito de Nv4 é satisfeito por valor igual a 4.
 
-## 11.3. Movimento entre polos
+## 11.3. Progressão e movimento entre polos
 
-11.3.1. Sempre que uma regra, carta ou efeito aplicar uma alteração positiva a uma Virtude, essa alteração move o eixo moral na direção daquela Virtude.
+11.3.1. “Progrida em X sua [Virtude ou Desvirtude]” significa mover o eixo moral em X pontos na direção do polo indicado.
 
-11.3.2. Sempre que uma regra, carta ou efeito aplicar uma alteração negativa a uma Virtude, essa alteração move o eixo moral na direção da Desvirtude correspondente.
+11.3.2. X deve ser um número igual ou superior a 1.
 
-11.3.3. Sempre que uma regra, carta ou efeito aplicar uma alteração positiva a uma Desvirtude, essa alteração move o eixo moral na direção daquela Desvirtude.
+11.3.3. Quando um jogador progride em uma Virtude ou Desvirtude, reduza primeiro o valor do polo oposto.
 
-11.3.4. Sempre que uma regra, carta ou efeito aplicar uma alteração negativa a uma Desvirtude, essa alteração move o eixo moral na direção da Virtude correspondente.
+11.3.4. Se a progressão exceder o valor do polo oposto, o excedente aumenta o valor do polo indicado.
 
-11.3.5. Quando um eixo moral é movido em direção a um polo, reduza primeiro o valor do polo oposto.
+11.3.5. Se a progressão levar o polo indicado além de Nv4, seu valor torna-se 4 e o excedente é ignorado.
 
-11.3.6. Se a alteração exceder o valor do polo oposto, o excedente aumenta o valor do polo escolhido.
+11.3.6. Se a progressão reduzir o polo oposto até 0 sem possuir excedente, o eixo torna-se neutro.
 
-11.3.7. Se uma alteração mover um eixo moral além de Nv4 no polo escolhido, o valor daquele polo torna-se 4 e o excedente é ignorado.
+11.3.7. Uma progressão que não altere efetivamente o valor de um eixo moral não conta como ganho ou perda de Virtude ou Desvirtude.
 
-11.3.8. Se uma alteração mover um eixo moral até 0 sem excedente, o eixo torna-se neutro.
+11.3.8. Progredir em uma Virtude movimenta o eixo em direção àquela Virtude. Progredir em uma Desvirtude movimenta o eixo em direção àquela Desvirtude.
 
-11.3.9. Uma alteração que não muda efetivamente o valor de um eixo moral não conta como ganho ou perda de Virtude ou Desvirtude.
+**Exemplo:** se um jogador possui Fé 1 e progride em 2 sua Dúvida, Fé é reduzida para 0 e o ponto restante aumenta Dúvida para 1.
 
-**Exemplo:** se um jogador possui Fé 1 e recebe Fé -2, Fé é reduzida para 0 e o ponto restante aumenta Dúvida para 1.
-
-**Exemplo:** se um jogador possui Dúvida 1 e recebe Fé +2, Dúvida é reduzida para 0 e o ponto restante aumenta Fé para 1.
+**Exemplo:** se um jogador possui Dúvida 1 e progride em 2 sua Fé, Dúvida é reduzida para 0 e o ponto restante aumenta Fé para 1.
 
 ## 11.4. Atributos ativos e comparação
 
@@ -957,6 +1027,12 @@
 11.5.14. Habilidades ativadas futuras da permanente não atrasam o ajuste moral associado à carta.
 
 11.5.15. Alterações morais associadas a cartas são aplicadas uma a uma, na ordem em que aparecem na carta, respeitando as regras de eixos morais.
+
+11.5.16. “Característica associada” significa qualquer Virtude ou Desvirtude associada à carta indicada.
+
+11.5.17. “Virtude associada” considera apenas as Virtudes associadas à carta indicada.
+
+11.5.18. “Desvirtude associada” considera apenas as Desvirtudes associadas à carta indicada.
 
 ---
 
@@ -1160,13 +1236,21 @@
 
 ## 14.4. Efeitos contínuos
 
-14.4.1. Um efeito contínuo modifica o estado do jogo por uma duração definida ou enquanto sua fonte existir na zona apropriada.
+14.4.1. Um efeito contínuo modifica o estado do jogo por uma duração definida, indefinidamente ou enquanto sua fonte existir na zona apropriada.
 
-14.4.2. Efeitos contínuos de habilidades estáticas funcionam enquanto a habilidade estática funcionar.
+14.4.2. Efeitos contínuos de habilidades estáticas funcionam somente enquanto a habilidade estática funcionar.
 
 14.4.3. Efeitos contínuos criados pela resolução de cartas ou habilidades duram pelo período especificado.
 
-14.4.4. Se um efeito contínuo não especificar duração e não estiver ligado a uma fonte estática, sua duração é determinada pelo texto que o criou. Se a duração não puder ser determinada, aplica-se apenas durante a resolução que o criou.
+14.4.4. Se um efeito contínuo criado pela resolução de uma carta ou habilidade não especificar duração, esse efeito dura indefinidamente.
+
+14.4.5. Um efeito de duração indefinida continua funcionando mesmo que a fonte que o criou deixe o campo de batalha.
+
+14.4.6. Se um efeito de duração indefinida afetar um objeto, ele deixa de afetar esse objeto quando ele mudar de zona, salvo se o efeito disser que acompanha o objeto nessa mudança.
+
+14.4.7. Alterações como receber +X/+Y, adquirir um subtipo ou tornar-se Nobre são indefinidas quando nenhuma duração for indicada.
+
+14.4.8. Habilidades estáticas não se tornam indefinidas por esta regra. Seus efeitos continuam dependendo da presença de sua fonte na zona apropriada.
 
 ## 14.5. Efeitos preventivos
 
@@ -1276,11 +1360,13 @@
 
 ## 15.5. Etapa de Consagração
 
-15.5.1. Durante a etapa de Consagração, o jogador ativo escolhe Consagrar, Profanar ou não realizar nenhuma dessas ações.
+15.5.1. Durante a etapa de Consagração, o jogador ativo escolhe Consagrar, Profanar ou declarar Omissão.
 
 15.5.2. Essa escolha e sua execução ocorrem antes que jogadores recebam prioridade.
 
-15.5.3. Depois que a ação estrutural da etapa for concluída, habilidades desencadeadas apropriadas são colocadas na pilha e o jogador ativo recebe prioridade.
+15.5.3. Declarar Omissão não usa a pilha.
+
+15.5.4. Depois que a ação estrutural escolhida ou a Omissão for concluída, habilidades desencadeadas apropriadas são colocadas na pilha e o jogador ativo recebe prioridade.
 
 ## 15.6. Etapa de Alistamento
 
@@ -1328,6 +1414,12 @@
 
 15.8.8. Quando todos os jogadores passarem prioridade em sequência com a pilha vazia, a etapa de Reagrupamento avança para a etapa de Descarte.
 
+15.8.9. As habilidades DESGUARNECIDO X verificam a quantidade de Personagens despreparados controlados pelo jogador ativo durante o evento de início do Reagrupamento.
+
+15.8.10. Essa verificação acontece antes que efeitos com duração “até o Reagrupamento” expirem e antes que jogadores recebam prioridade.
+
+15.8.11. As regras completas de DESGUARNECIDO X estão na seção 21.20.
+
 ## 15.9. Etapa de Descarte
 
 15.9.1. O limite de mão padrão de cada jogador é 7 cartas.
@@ -1346,7 +1438,7 @@
 
 ---
 
-# 16. Equipamentos e fichas
+# 16. Equipamentos, Construções e fichas
 
 ## 16.1. Regras gerais de Equipamentos
 
@@ -1414,31 +1506,61 @@
 
 16.4.6. Se uma habilidade concedida por EQUIPÁVEL possuir {T} em seu custo, esse custo é pago despreparando o Personagem equipado.
 
-## 16.5. Fichas
+## 16.5. Construções
 
-16.5.1. Uma ficha é um objeto criado por uma regra ou efeito.
+16.5.1. Construção é um subtipo de Artefato.
 
-16.5.2. O dono de uma ficha é o jogador que a criou.
+16.5.2. Um Artefato com subtipo Construção entra no campo de batalha despreparado.
 
-16.5.3. Salvo se regra ou efeito disser o contrário, uma ficha entra no campo de batalha sob controle do jogador que a criou.
+16.5.3. CONSTRUÇÃO X indica a quantidade de marcadores de construção necessária para que o texto localizado após os dois-pontos se torne funcional.
 
-16.5.4. Uma ficha existe apenas no campo de batalha.
+16.5.4. Um Artefato com CONSTRUÇÃO X possui a seguinte habilidade ativada: “Desprepare um Personagem preparado que você controla: coloque 1 marcador de construção neste Artefato.”
 
-16.5.5. Se uma ficha sair do campo de batalha, ela dispara eventos apropriados de saída, morte ou mudança de zona, conforme aplicável.
+16.5.5. Essa habilidade só pode ser ativada durante a etapa de Alistamento do controlador da Construção e usa a pilha.
 
-16.5.6. Depois disso, a ficha deixa de existir na próxima vez em que ações baseadas no estado forem verificadas.
+16.5.6. A habilidade pode ser ativada múltiplas vezes no mesmo Alistamento, desde que cada custo seja pago integralmente.
 
-16.5.7. Fichas podem atacar, bloquear, sofrer dano, morrer, ser destruídas, ser renunciadas, ser exiladas ou ser afetadas por efeitos normalmente, de acordo com seus tipos e características.
+16.5.7. Um mesmo Personagem não pode ser despreparado novamente para pagar outro custo enquanto permanecer despreparado.
 
-16.5.8. Uma ficha de Soldado Israelita é uma ficha de Personagem 0/2 com subtipo Soldado, salvo se o efeito que a criou disser o contrário.
+16.5.8. Se o Personagem despreparado para pagar esse custo possuir CONSTRUIR Y, coloque Y marcadores de construção em vez de 1 quando a habilidade resolver.
 
-16.5.9. Uma ficha de Soldado Filisteu é uma ficha de Personagem 1/1 com subtipo Soldado, salvo se o efeito que a criou disser o contrário.
+16.5.9. O valor de CONSTRUIR Y é verificado e registrado no momento em que o Personagem é despreparado para pagar o custo.
 
-16.5.10. Uma ficha de Rebelde é uma ficha de Personagem 1/1 com subtipo Rebelde, salvo se o efeito que a criou disser o contrário.
+16.5.10. Enquanto a Construção possuir X ou mais marcadores de construção, o texto localizado após “CONSTRUÇÃO X:” funciona normalmente.
 
-16.5.11. Uma ficha de Incenso é uma ficha de Artefato com subtipo Incenso e com a habilidade “{T}, renuncie esta ficha: Gere {E}.”
+16.5.11. Se a Construção ficar com menos de X marcadores, o texto localizado após “CONSTRUÇÃO X:” deixa de funcionar imediatamente.
 
-16.5.12. Subtipos como Soldado, Rebelde e Incenso não possuem regras próprias por padrão. Eles funcionam como referências para cartas e efeitos.
+16.5.12. Marcadores de construção permanecem no Artefato até que uma regra ou efeito os remova ou até que o Artefato deixe o campo de batalha.
+
+16.5.13. Os dois-pontos impressos após CONSTRUÇÃO X separam o requisito de construção do texto condicionado. Eles não transformam, por si só, o texto posterior em uma habilidade ativada.
+
+## 16.6. Fichas
+
+16.6.1. Uma ficha é um objeto criado por uma regra ou efeito.
+
+16.6.2. O dono de uma ficha é o jogador que a criou.
+
+16.6.3. Salvo se regra ou efeito disser o contrário, uma ficha entra no campo de batalha sob controle do jogador que a criou.
+
+16.6.4. Uma ficha existe apenas no campo de batalha.
+
+16.6.5. Se uma ficha sair do campo de batalha, ela dispara eventos apropriados de saída, morte ou mudança de zona, conforme aplicável.
+
+16.6.6. Depois disso, a ficha deixa de existir na próxima vez em que ações baseadas no estado forem verificadas.
+
+16.6.7. Fichas podem atacar, bloquear, sofrer dano, morrer, ser destruídas, ser renunciadas, ser exiladas ou ser afetadas por efeitos normalmente, de acordo com seus tipos e características.
+
+16.6.8. Uma ficha de Soldado Israelita é uma ficha de Personagem 0/2 com subtipo Soldado, salvo se o efeito que a criou disser o contrário.
+
+16.6.9. Uma ficha de Soldado Filisteu é uma ficha de Personagem 1/1 com subtipo Soldado, salvo se o efeito que a criou disser o contrário.
+
+16.6.10. Uma ficha de Rebelde é uma ficha de Personagem 1/1 com subtipo Rebelde, salvo se o efeito que a criou disser o contrário.
+
+16.6.11. Uma ficha de Incenso é uma ficha de Artefato com subtipo Incenso e com a habilidade “{T}, renuncie esta ficha: Gere {E}.”
+
+16.6.12. Uma ficha de Ouro é uma ficha de Artefato com subtipo Ouro e com a habilidade “{T}, renuncie esta ficha: compre 1 carta.”
+
+16.6.13. Subtipos como Soldado, Rebelde, Incenso e Ouro não possuem regras próprias por padrão. Eles funcionam como referências para cartas e efeitos.
 
 ---
 
@@ -1456,13 +1578,21 @@
 
 (a) o Território de um oponente;
 
-(b) um Personagem despreparado controlado por um oponente.
+(b) um Personagem despreparado controlado por um oponente que possa ser legalmente escolhido como alvo de ataque.
 
-17.1.5. Personagens preparados não podem ser escolhidos como alvo de ataque, salvo se regra ou efeito disser o contrário.
+17.1.5. Personagens preparados e Personagens com PROTEÇÃO não podem ser escolhidos como alvos de ataque, salvo se regra ou efeito disser o contrário.
 
-17.1.6. O combate utiliza dano simultâneo.
+17.1.6. O dano de combate é simultâneo dentro de cada momento de dano aplicável.
 
-17.1.7. O núcleo atual do jogo não possui subetapas especiais de dano antecipado ou dano duplicado, salvo se cartas futuras criarem regras específicas.
+17.1.7. Efeitos que façam um Personagem causar dano primeiro criam um momento de dano anterior ao dano de combate normal, conforme a seção 17.6.
+
+17.1.8. Um Personagem participa de um combate se for um atacante, um bloqueador ou o Personagem atacado diretamente.
+
+17.1.9. As expressões “batalhar”, “combater” e “participar de um combate” referem-se à participação definida em 17.1.8.
+
+17.1.10. Um Personagem batalhou outro Personagem se ambos estiveram ligados ao mesmo ataque como atacante e bloqueador ou como atacante e Personagem atacado diretamente.
+
+17.1.11. Batalhar ou combater não significa lutar. Lutar é uma ação distinta definida na seção 18.
 
 ## 17.2. Início do combate
 
@@ -1474,7 +1604,7 @@
 
 ## 17.3. Declaração de atacantes
 
-17.3.1. Para declarar um ataque, o controlador do Personagem atacante o desprepara e anuncia o alvo de ataque.
+17.3.1. Para declarar um ataque, o controlador do Personagem atacante anuncia o alvo de ataque. Como parte dessa declaração, o atacante é despreparado, salvo se possuir PRONTIDÃO ou se regra ou efeito disser o contrário.
 
 17.3.2. Um Personagem só pode ser declarado atacante se estiver preparado, sob controle de seu controlador e não impedido de atacar por regra ou efeito.
 
@@ -1526,27 +1656,41 @@
 
 17.6.1. Após todos os jogadores passarem prioridade com a pilha vazia depois da declaração de bloqueadores, ocorre a atribuição e aplicação de dano de combate.
 
-17.6.2. O dano de combate é causado simultaneamente, salvo se regra ou efeito estabelecer exceção.
+17.6.2. Por padrão, existe um único momento de dano de combate, no qual todos os Personagens aptos causam dano simultaneamente.
 
-17.6.3. Se um ataque a um Território não for bloqueado, o atacante causa dano de combate igual ao seu Poder àquele Território.
+17.6.3. Se ao menos um Personagem participante do combate possuir um efeito que diga que ele causa dano primeiro, o dano de combate será dividido em dois momentos.
 
-17.6.4. Se um ataque a um Personagem não for bloqueado, o atacante e o Personagem atacado causam dano simultâneo um ao outro.
+17.6.4. No primeiro momento de dano, apenas Personagens que causam dano primeiro atribuem e causam dano de combate.
 
-17.6.5. Um Personagem atacado diretamente causa dano de volta ao atacante mesmo estando despreparado, desde que ainda esteja presente e apto a participar do combate no momento do dano.
+17.6.5. Depois do primeiro momento de dano, ações baseadas no estado são verificadas, habilidades desencadeadas apropriadas são colocadas na pilha e jogadores recebem prioridade.
 
-17.6.6. Se um atacante for bloqueado por um único bloqueador, o atacante e o bloqueador causam dano simultâneo um ao outro.
+17.6.6. Quando todos os jogadores passarem prioridade com a pilha vazia, ocorre o momento de dano de combate normal.
 
-17.6.7. Se um atacante for bloqueado por múltiplos bloqueadores, cada bloqueador causa dano igual ao seu Poder ao atacante bloqueado.
+17.6.7. No momento de dano normal, apenas Personagens aptos que não causaram dano no primeiro momento atribuem e causam dano.
 
-17.6.8. O atacante atribui seu dano aos bloqueadores na ordem de dano definida.
+17.6.8. Um Personagem causa dano de combate apenas uma vez por combate, salvo se regra ou efeito disser explicitamente o contrário.
 
-17.6.9. O atacante deve atribuir dano letal a um bloqueador antes de atribuir dano ao bloqueador seguinte, salvo se regra ou efeito disser o contrário.
+17.6.9. Se um ataque a um Território não for bloqueado, o atacante causa dano de combate igual ao seu Poder àquele Território.
 
-17.6.10. Dano letal para atribuição de dano é a Resistência atual do Personagem menos o dano já marcado nele, com mínimo de 0.
+17.6.10. Se um ataque a um Personagem não for bloqueado, o atacante e o Personagem atacado causam dano um ao outro no momento de dano em que cada um estiver apto a causar dano.
 
-17.6.11. Efeitos de prevenção de dano e INDESTRUTÍVEL não reduzem a quantidade de dano que precisa ser atribuída como dano letal.
+17.6.11. Um Personagem atacado diretamente causa dano de volta ao atacante mesmo estando despreparado, desde que ainda esteja presente e apto a participar do combate no momento aplicável.
 
-17.6.12. Esses efeitos podem prevenir o dano depois, mas a atribuição ainda exige dano letal conforme a Resistência atual e o dano já marcado.
+17.6.12. Se um atacante for bloqueado por um único bloqueador, o atacante e o bloqueador causam dano um ao outro no momento de dano em que cada um estiver apto.
+
+17.6.13. Se um atacante for bloqueado por múltiplos bloqueadores, cada bloqueador causa dano igual ao seu Poder ao atacante bloqueado no momento de dano em que estiver apto.
+
+17.6.14. O atacante atribui seu dano aos bloqueadores na ordem de dano definida.
+
+17.6.15. O atacante deve atribuir dano letal a um bloqueador antes de atribuir dano ao bloqueador seguinte, salvo se regra ou efeito disser o contrário.
+
+17.6.16. Dano letal para atribuição de dano é a Resistência atual do Personagem menos o dano já marcado nele, com mínimo de 0.
+
+17.6.17. Se a fonte do dano possuir LETAL, 1 ponto de dano é considerado dano letal para fins de atribuição, independentemente da Resistência do Personagem.
+
+17.6.18. Efeitos de prevenção de dano e INDESTRUTÍVEL não reduzem a quantidade de dano que precisa ser atribuída como dano letal.
+
+17.6.19. Esses efeitos podem prevenir o dano depois, mas a atribuição ainda exige dano letal conforme as regras aplicáveis.
 
 ## 17.7. Manutenção do combate
 
@@ -1706,7 +1850,7 @@
 
 (a) um jogador cujo Território tenha dano marcado igual ou superior à Resistência desse Território perde a partida;
 
-(b) um Personagem com dano marcado igual ou superior à sua Resistência é destruído por dano;
+(b) um Personagem com dano marcado igual ou superior à sua Resistência, ou que tenha recebido dano maior que 0 de uma fonte com LETAL desde a última verificação de ações baseadas no estado, é destruído por dano;
 
 (c) um Personagem com Resistência 0 ou menos é colocado no cemitério;
 
@@ -1714,11 +1858,13 @@
 
 (e) Equipamentos anexados ilegalmente tornam-se desanexados;
 
-(f) fichas que estejam em uma zona diferente do campo de batalha deixam de existir.
+(f) um Vínculo desanexado ou anexado ilegalmente é colocado no cemitério de seu dono;
+
+(g) fichas que estejam em uma zona diferente do campo de batalha deixam de existir.
 
 20.2.2. Se múltiplas ações baseadas no estado precisarem ser aplicadas simultaneamente, elas são executadas antes que qualquer jogador receba prioridade.
 
-20.2.3. INDESTRUTÍVEL impede que um Personagem seja destruído por dano ou por efeitos que digam “destrua”, conforme sua definição.
+20.2.3. INDESTRUTÍVEL impede que uma permanente seja destruída por efeitos que digam “destrua”. Se a permanente for um Personagem, INDESTRUTÍVEL também impede sua destruição por dano e previne o dano que lhe seria causado.
 
 20.2.4. INDESTRUTÍVEL não impede que um Personagem com Resistência 0 ou menos seja colocado no cemitério.
 
@@ -1758,63 +1904,171 @@
 
 21.4.3. Um Personagem que entra no campo de batalha já atacando não foi declarado atacante e, portanto, não desencadeia habilidades de ATAQUE.
 
-## 21.5. INESPERADO
+## 21.5. DEFESA
 
-21.5.1. INESPERADO significa “Esta carta pode ser jogada a qualquer momento em que seu controlador tenha prioridade”.
+21.5.1. DEFESA significa “Quando este Personagem for declarado bloqueador”.
 
-21.5.2. INESPERADO altera a restrição temporal da carta.
+21.5.2. DEFESA é uma habilidade desencadeada.
 
-21.5.3. INESPERADO não altera custos, alvos, tipos ou demais restrições, salvo se a carta disser o contrário.
+21.5.3. Um Personagem que entra no campo de batalha já bloqueando não foi declarado bloqueador e, portanto, não desencadeia habilidades de DEFESA.
 
-21.5.4. Um Pecado com INESPERADO pode ser jogado fora da etapa de Alistamento, mas ainda é pago causando dano ao próprio Território, salvo se texto específico disser o contrário.
+## 21.6. COMBATE
 
-## 21.6. IMBLOQUEÁVEL
+21.6.1. COMBATE significa “Quando este Personagem for declarado atacante ou bloqueador”.
 
-21.6.1. IMBLOQUEÁVEL significa “Este Personagem não pode ser bloqueado”.
+21.6.2. COMBATE é uma habilidade desencadeada que reúne os eventos de ATAQUE e DEFESA.
 
-21.6.2. Um Personagem IMBLOQUEÁVEL ainda precisa ser declarado atacante legalmente para atacar.
+21.6.3. Ser escolhido como alvo de ataque não desencadeia COMBATE, pois o Personagem atacado diretamente não foi declarado atacante nem bloqueador.
 
-21.6.3. IMBLOQUEÁVEL não impede efeitos que removam o Personagem do combate, previnam dano ou alterem o alvo de ataque, se esses efeitos forem válidos.
+## 21.7. LETAL
 
-## 21.7. INDESTRUTÍVEL
+21.7.1. Qualquer quantidade de dano maior que 0 causada por uma fonte com LETAL a um Personagem é considerada letal para aquele Personagem.
 
-21.7.1. INDESTRUTÍVEL impede que um Personagem seja destruído.
+21.7.2. Um Personagem que tenha recebido dano maior que 0 de uma fonte com LETAL é destruído por dano na próxima verificação de ações baseadas no estado, salvo se regra ou efeito impedir.
 
-21.7.2. Um Personagem INDESTRUTÍVEL não pode ser destruído por efeitos que digam “destrua”.
+21.7.3. Para fins de atribuição de dano entre múltiplos bloqueadores ou por SOBREPUJAR, 1 ponto de dano de uma fonte com LETAL é considerado dano letal.
 
-21.7.3. Um Personagem INDESTRUTÍVEL não é destruído por ter dano marcado igual ou superior à sua Resistência.
+21.7.4. LETAL não modifica dano causado a Territórios e não impede efeitos de prevenção de dano.
 
-21.7.4. Se dano seria causado a um Personagem INDESTRUTÍVEL, previna esse dano.
+## 21.8. PROTEÇÃO
 
-21.7.5. INDESTRUTÍVEL não impede que um Personagem seja exilado, devolvido à mão, renunciado ou colocado no cemitério por ter Resistência 0 ou menos.
+21.8.1. Uma permanente com PROTEÇÃO não pode ser escolhida como alvo de carta, alvo de habilidade ou efeito nem alvo de ataque.
 
-21.7.6. Para fins de atribuição de dano letal, INDESTRUTÍVEL não reduz a quantidade de dano que precisa ser atribuída.
+21.8.2. Essa restrição também se aplica a cartas, habilidades e efeitos controlados pelo próprio controlador da permanente.
 
-## 21.8. SOBREPUJAR
+21.8.3. PROTEÇÃO não impede efeitos que não escolham a permanente como alvo, incluindo efeitos globais e instruções de escolha que não usem tecnicamente uma categoria de alvo.
 
-21.8.1. SOBREPUJAR modifica a atribuição de dano de combate de um Personagem atacante.
+21.8.4. Se uma permanente ganhar PROTEÇÃO depois de um ataque ter sido legalmente declarado contra ela, isso não a remove retroativamente do combate.
 
-21.8.2. Se um Personagem atacante com SOBREPUJAR for bloqueado, seu controlador deve atribuir dano letal aos bloqueadores na ordem definida e pode atribuir o dano excedente ao alvo de ataque original.
+## 21.9. PRONTIDÃO
 
-21.8.3. Se o alvo de ataque original era um Território, o dano excedente pode ser atribuído àquele Território.
+21.9.1. PRONTIDÃO significa “Declarar este Personagem como atacante não faz com que ele seja despreparado”.
 
-21.8.4. Se o alvo de ataque original era um Personagem, o dano excedente pode ser atribuído àquele Personagem.
+21.9.2. PRONTIDÃO não impede que o Personagem seja despreparado por custos, habilidades, efeitos ou por ser declarado bloqueador.
 
-21.8.5. Se o alvo de ataque original não estiver mais presente ou não puder receber dano no momento da atribuição de dano, o dano excedente não é atribuído a outro alvo por SOBREPUJAR.
+21.9.3. Um Personagem com PRONTIDÃO ainda precisa estar preparado e legalmente apto para ser declarado atacante.
 
-21.8.6. Efeitos de prevenção de dano e INDESTRUTÍVEL não reduzem a quantidade de dano que precisa ser atribuída como dano letal antes de atribuir excedente.
+## 21.10. RESERVA
+
+21.10.1. RESERVA indica que o texto localizado após esse marcador funciona enquanto a carta estiver na Reserva de seu dono.
+
+21.10.2. RESERVA pode tornar funcional uma habilidade estática, ativada ou desencadeada, conforme a estrutura do texto posterior.
+
+21.10.3. RESERVA não torna funcionais os demais textos da carta.
+
+## 21.11. CAUSA DANO PRIMEIRO
+
+21.11.1. Um Personagem que causa dano primeiro atribui e causa seu dano de combate antes dos Personagens que não causam dano primeiro.
+
+21.11.2. Causar dano primeiro modifica apenas o momento em que o Personagem causa dano de combate.
+
+21.11.3. Causar dano primeiro não permite que o Personagem cause dano de combate duas vezes.
+
+21.11.4. As regras completas para causar dano primeiro estão na seção 17.6.
+
+## 21.12. CONSTRUÇÃO X
+
+21.12.1. CONSTRUÇÃO X é um marcador de habilidade de Artefatos com subtipo Construção.
+
+21.12.2. X representa a quantidade de marcadores de construção necessária para que o texto posterior se torne funcional.
+
+21.12.3. As regras completas de CONSTRUÇÃO X estão na seção 16.5.
+
+## 21.13. CONSTRUIR X
+
+21.13.1. CONSTRUIR X é uma habilidade estática de Personagens.
+
+21.13.2. Se um Personagem com CONSTRUIR X for despreparado para pagar o custo de uma habilidade de CONSTRUÇÃO, coloque X marcadores de construção em vez de 1 quando essa habilidade resolver.
+
+21.13.3. CONSTRUIR X não permite que o Personagem pague um custo de construção enquanto estiver despreparado.
+
+## 21.14. INESPERADO
+
+21.14.1. INESPERADO significa “Esta carta pode ser jogada a qualquer momento em que seu controlador tenha prioridade”.
+
+21.14.2. INESPERADO altera a restrição temporal da carta.
+
+21.14.3. INESPERADO não altera custos, alvos, tipos ou demais restrições, salvo se a carta disser o contrário.
+
+21.14.4. Um Pecado com INESPERADO pode ser jogado fora da etapa de Alistamento, mas ainda é pago causando dano ao próprio Território, salvo se texto específico disser o contrário.
+
+## 21.15. IMBLOQUEÁVEL
+
+21.15.1. IMBLOQUEÁVEL significa “Este Personagem não pode ser bloqueado”.
+
+21.15.2. Um Personagem IMBLOQUEÁVEL ainda precisa ser declarado atacante legalmente para atacar.
+
+21.15.3. IMBLOQUEÁVEL não impede efeitos que removam o Personagem do combate, previnam dano ou alterem o alvo de ataque, se esses efeitos forem válidos.
+
+## 21.16. INDESTRUTÍVEL
+
+21.16.1. INDESTRUTÍVEL impede que uma permanente seja destruída.
+
+21.16.2. Uma permanente INDESTRUTÍVEL não pode ser destruída por efeitos que digam “destrua”.
+
+21.16.3. Um Personagem INDESTRUTÍVEL não é destruído por ter dano marcado igual ou superior à sua Resistência nem por ter recebido dano de uma fonte com LETAL.
+
+21.16.4. Se dano seria causado a um Personagem INDESTRUTÍVEL, previna esse dano.
+
+21.16.5. INDESTRUTÍVEL não impede que uma permanente seja exilada, devolvida à mão, renunciada ou colocada no cemitério sem ser destruída. Também não impede que um Personagem com Resistência 0 ou menos seja colocado no cemitério.
+
+21.16.6. Para fins de atribuição de dano letal, INDESTRUTÍVEL não reduz a quantidade de dano que precisa ser atribuída.
+
+## 21.17. SOBREPUJAR
+
+21.17.1. SOBREPUJAR modifica a atribuição de dano de combate de um Personagem atacante.
+
+21.17.2. Se um Personagem atacante com SOBREPUJAR for bloqueado, seu controlador deve atribuir dano letal aos bloqueadores na ordem definida e pode atribuir o dano excedente ao alvo de ataque original.
+
+21.17.3. Se o alvo de ataque original era um Território, o dano excedente pode ser atribuído àquele Território.
+
+21.17.4. Se o alvo de ataque original era um Personagem, o dano excedente pode ser atribuído àquele Personagem.
+
+21.17.5. Se o alvo de ataque original não estiver mais presente ou não puder receber dano no momento da atribuição de dano, o dano excedente não é atribuído a outro alvo por SOBREPUJAR.
+
+21.17.6. Efeitos de prevenção de dano e INDESTRUTÍVEL não reduzem a quantidade de dano que precisa ser atribuída como dano letal antes de atribuir excedente.
 
 **Exemplo:** um Personagem 5/5 com SOBREPUJAR é bloqueado por um Personagem 2/2 INDESTRUTÍVEL. O atacante precisa atribuir 2 de dano ao bloqueador antes de atribuir excedente. Esse dano será prevenido por INDESTRUTÍVEL, mas ainda conta para liberar a atribuição do excedente.
 
-## 21.9. EQUIPÁVEL
+## 21.18. EQUIPÁVEL
 
-21.9.1. EQUIPÁVEL é um marcador de texto de Equipamentos.
+21.18.1. EQUIPÁVEL é um marcador de texto de Equipamentos.
 
-21.9.2. Enquanto um Equipamento estiver anexado a um Personagem, o texto após EQUIPÁVEL é aplicado ao Personagem equipado.
+21.18.2. Enquanto um Equipamento estiver anexado a um Personagem, o texto após EQUIPÁVEL é aplicado ao Personagem equipado.
 
-21.9.3. Se o texto após EQUIPÁVEL for um modificador estático, o Personagem equipado recebe esse modificador.
+21.18.3. Se o texto após EQUIPÁVEL for um modificador estático, o Personagem equipado recebe esse modificador.
 
-21.9.4. Se o texto após EQUIPÁVEL for uma habilidade ativada, o Personagem equipado possui aquela habilidade.
+21.18.4. Se o texto após EQUIPÁVEL for uma habilidade ativada, o Personagem equipado possui aquela habilidade.
+
+## 21.19. VINCULAR A
+
+21.19.1. VINCULAR A é uma habilidade presente em cartas com Vínculo.
+
+21.19.2. O texto após VINCULAR A define os alvos que a carta pode escolher e os objetos ou jogadores aos quais ela pode permanecer anexada.
+
+21.19.3. VINCULAR A não usa a pilha separadamente. Ela funciona durante o processo de jogar a carta, durante sua resolução e enquanto a permanente permanecer no campo de batalha.
+
+## 21.20. DESGUARNECIDO X
+
+21.20.1. DESGUARNECIDO X é um marcador de habilidade desencadeada.
+
+21.20.2. “DESGUARNECIDO X: [efeito]” significa “No início do seu Reagrupamento, se você controlar X ou mais Personagens despreparados, [efeito].”
+
+21.20.3. X deve ser um número inteiro igual ou superior a 1.
+
+21.20.4. Apenas Personagens controlados pelo controlador da habilidade e presentes no campo de batalha são considerados nessa contagem.
+
+21.20.5. A condição é verificada no momento em que a etapa de Reagrupamento começa. Se o jogador não controlar X ou mais Personagens despreparados, a habilidade não desencadeia.
+
+21.20.6. A condição é verificada novamente quando a habilidade resolve. Se o jogador não controlar mais X ou mais Personagens despreparados, a habilidade resolve sem aplicar seu efeito.
+
+21.20.7. Cada ocorrência de DESGUARNECIDO X impressa em uma carta representa uma habilidade independente.
+
+21.20.8. Se um jogador satisfizer os requisitos de mais de uma habilidade DESGUARNECIDO X, todas elas desencadeiam. Controlar dois Personagens despreparados, por exemplo, satisfaz DESGUARNECIDO 1 e DESGUARNECIDO 2.
+
+21.20.9. Habilidades DESGUARNECIDO X usam a pilha. Se múltiplas habilidades controladas pelo mesmo jogador desencadearem simultaneamente, aquele jogador escolhe a ordem em que serão colocadas na pilha.
+
+21.20.10. O texto posterior aos dois-pontos apresenta apenas o efeito e eventuais condições adicionais. A expressão “No início do seu Reagrupamento” não deve ser repetida depois de DESGUARNECIDO X.
 
 ---
 
@@ -1924,6 +2178,16 @@
 
 23.10.1. Em uma mesa com quatro jogadores, depois dos mulligans e antes do primeiro turno, o primeiro jogador olha 1 carta do topo de seu baralho, o segundo olha 2, o terceiro olha 3 e o quarto olha 4. Cada um pode colocar qualquer número dessas cartas no fundo de seu baralho em qualquer ordem e o restante no topo em qualquer ordem.
 
+## 23.11. Vínculo com alvo inválido
+
+23.11.1. Um jogador joga uma carta com “VINCULAR A PERSONAGEM”, escolhendo um Personagem alvo. Antes da resolução, o Personagem deixa o campo de batalha. A jogada é anulada e a carta com Vínculo vai ao cemitério.
+
+## 23.12. DESGUARNECIDO X
+
+23.12.1. Um jogador controla três Personagens despreparados e uma permanente com DESGUARNECIDO 1 e DESGUARNECIDO 2. No início do Reagrupamento daquele jogador, ambas as habilidades desencadeiam.
+
+23.12.2. Antes de DESGUARNECIDO 2 resolver, um dos Personagens é preparado, deixando o jogador com apenas um Personagem despreparado. DESGUARNECIDO 2 resolve sem aplicar seu efeito. DESGUARNECIDO 1 ainda pode aplicar seu efeito, pois seu requisito continua satisfeito.
+
 ---
 
 # 24. Glossário
@@ -1942,21 +2206,39 @@
 
 **Artefato:** tipo de permanente que entra no campo de batalha e permanece nele até ser removido.
 
+**ATAQUE:** habilidade desencadeada que significa “Quando este Personagem for declarado atacante”.
+
 **Baralho:** zona privada e ordenada de onde jogadores compram cartas.
 
-**Buscar:** procurar uma carta em uma zona indicada, revelar a carta encontrada, movê-la conforme o efeito e embaralhar o baralho depois se a busca ocorreu no baralho.
+**Batalhar:** participar de um combate como atacante, bloqueador ou Personagem atacado diretamente. Batalhar não significa lutar.
 
 **Busca secreta:** busca que não revela a carta encontrada. Só ocorre quando o texto usa explicitamente “busque secretamente”.
+
+**Buscar:** procurar uma carta em uma zona indicada, revelar a carta encontrada, movê-la conforme o efeito e embaralhar o baralho depois se a busca ocorreu no baralho.
 
 **Campeão:** carta de Identidade com habilidades próprias e possível requisito de Virtude ou Desvirtude.
 
 **Campo de batalha:** zona pública onde permanentes existem.
 
+**Característica associada:** Virtude ou Desvirtude associada a uma carta.
+
 **Carta:** objeto de jogo com nome, custo, tipo, texto e, quando aplicável, Poder e Resistência.
+
+**Causar dano primeiro:** causar dano de combate em um momento anterior ao dano de combate normal.
 
 **Cemitério:** zona pública para cartas destruídas, mortas, anuladas ou Momentâneas resolvidas, salvo exceção.
 
+**COMBATE:** habilidade desencadeada que significa “Quando este Personagem for declarado atacante ou bloqueador”.
+
+**Combater:** participar de um combate como atacante, bloqueador ou Personagem atacado diretamente.
+
 **Consagrar:** mover uma carta da mão para a zona de Essência durante a etapa de Consagração e aplicar o efeito correspondente.
+
+**Construção:** subtipo de Artefato que entra no campo de batalha despreparado e pode receber marcadores de construção.
+
+**CONSTRUÇÃO X:** marcador que indica quantos marcadores de construção um Artefato precisa possuir para tornar funcional o texto posterior.
+
+**CONSTRUIR X:** habilidade que faz um Personagem colocar X marcadores, em vez de 1, quando for usado para pagar o custo de uma habilidade de CONSTRUÇÃO.
 
 **Controlador:** jogador que controla uma carta, permanente, habilidade ou efeito.
 
@@ -1964,13 +2246,21 @@
 
 **Dano:** valor numérico marcado em Personagens ou Territórios.
 
+**DEFESA:** habilidade desencadeada que significa “Quando este Personagem for declarado bloqueador”.
+
+**Desanexado:** estado de um Equipamento ou Vínculo que não está anexado a nenhum objeto ou jogador.
+
 **Descarte:** movimento de carta da mão para o cemitério.
+
+**DESGUARNECIDO X:** habilidade que desencadeia no início do Reagrupamento de seu controlador se ele controlar X ou mais Personagens despreparados.
 
 **Despreparado:** estado horizontal de uma carta já usada ou impedida de ser usada por estar nessa posição.
 
 **Despreparar:** colocar uma carta no estado despreparado.
 
 **Destruir:** mover uma permanente do campo de batalha para o cemitério por regra ou efeito de destruição. Dano letal destrói Personagens.
+
+**Desvirtude ativa:** Desvirtude com valor maior que 0.
 
 **Dono:** jogador em cuja coleção ou baralho uma carta começou a partida; para fichas, o jogador que as criou.
 
@@ -1992,6 +2282,8 @@
 
 **Ficha:** objeto criado por regra ou efeito que existe apenas no campo de batalha.
 
+**Ficha de Ouro:** ficha de Artefato com subtipo Ouro e com a habilidade “{T}, renuncie esta ficha: compre 1 carta”.
+
 **Habilidade:** objeto na pilha que não é uma carta, incluindo habilidades ativadas e desencadeadas.
 
 **Habilidade ativada:** habilidade usada por um jogador, normalmente mediante pagamento de custo.
@@ -2002,11 +2294,13 @@
 
 **IMBLOQUEÁVEL:** palavra-chave que significa que o Personagem não pode ser bloqueado.
 
-**INDESTRUTÍVEL:** palavra-chave que impede destruição e previne dano ao Personagem.
+**INDESTRUTÍVEL:** palavra-chave que impede uma permanente de ser destruída e, quando aplicada a um Personagem, também previne o dano que lhe seria causado.
 
 **INESPERADO:** palavra-chave que permite jogar a carta a qualquer momento em que seu controlador tenha prioridade.
 
 **Jogada:** carta que foi colocada na pilha e aguarda resolução.
+
+**LETAL:** palavra-chave que faz qualquer quantidade de dano maior que 0 causada a um Personagem ser considerada letal.
 
 **Lutar:** dois Personagens causam dano igual ao próprio Poder um ao outro.
 
@@ -2017,6 +2311,8 @@
 **Morrer:** ser movido do campo de batalha para o cemitério.
 
 **Nv1/Nv2/Nv3/Nv4:** Níveis correspondentes aos valores 1, 2, 3 e 4 de Virtude ou Desvirtude.
+
+**Omissão:** escolha de não Consagrar nem Profanar durante uma etapa de Consagração.
 
 **Pecado:** tipo de carta normalmente jogável na etapa de Alistamento e pago causando dano ao próprio Território.
 
@@ -2036,13 +2332,23 @@
 
 **Profanar:** devolver uma carta da zona de Essência para a mão de seu dono durante a etapa de Consagração.
 
+**Progredir:** mover um eixo moral em determinada quantidade de pontos na direção da Virtude ou Desvirtude indicada.
+
+**PRONTIDÃO:** palavra-chave que impede que um Personagem seja despreparado por ser declarado atacante.
+
+**PROTEÇÃO:** palavra-chave que impede uma permanente de ser escolhida como alvo de carta, habilidade, efeito ou ataque.
+
 **Pulverizar:** mover cartas do topo do baralho para o cemitério.
 
 **Renunciar:** mover uma permanente que você controla do campo de batalha para o cemitério. Renunciar não é destruir.
 
 **Reserva:** zona privada e não ordenada que contém cartas fora do baralho principal reduzido.
 
+**RESERVA, marcador de habilidade:** marcador que torna funcional o texto posterior enquanto a carta estiver na Reserva de seu dono.
+
 **Resistência:** valor defensivo de Personagem ou limite de dano do Território antes da derrota de seu controlador.
+
+**Sagrado:** subtipo de Artefato sem regra inerente.
 
 **SAÍDA:** habilidade desencadeada que significa “Quando esta permanente deixa o campo de batalha”.
 
@@ -2052,13 +2358,19 @@
 
 **Território:** carta de Identidade que recebe dano e marca a derrota de seu controlador ao acumular dano igual ou superior à sua Resistência.
 
-**Virtude ativa:** Virtude com valor maior que 0.
+**Vinculado:** objeto ou jogador ao qual um Vínculo está anexado.
 
-**Desvirtude ativa:** Desvirtude com valor maior que 0.
+**VINCULAR A:** habilidade que determina os alvos válidos de uma carta com Vínculo e aquilo a que ela pode permanecer anexada.
+
+**Vínculo:** subtipo funcional de Milagre e Pecado que entra no campo de batalha anexado ao alvo definido por sua habilidade VINCULAR A.
+
+**Virtude ativa:** Virtude com valor maior que 0.
 
 **Zona de Essência:** zona pública de cartas consagradas transformadas em recurso.
 
 **Zona de Identidade:** zona pública especial que contém Campeão, Território e Templo.
+
+---
 
 ---
 
@@ -2101,3 +2413,39 @@
 25.18. O multijogador foi consolidado como oficial, incluindo compra inicial, ajuste pré-jogo por ordem de turno, declaração de bloqueadores e eliminação de jogador.
 
 25.19. Todos os ajustes editoriais aprovados foram aplicados: capitalização de termos técnicos, separação de glossário e regra normativa, remoção de redundâncias, padronização de Nv1 a Nv4, substituição de expressões antigas de estado, uniformização de campo de batalha e separação entre dano ao Território e dano a jogador.
+
+---
+
+# 26. Relatório de atualização da versão 1.1
+
+26.1. Foram incluídas as definições de DEFESA, COMBATE, LETAL, PROTEÇÃO, PRONTIDÃO e RESERVA.
+
+26.2. Foram formalizadas as mecânicas CONSTRUÇÃO X e CONSTRUIR X.
+
+26.3. Foi incluída a ficha de Ouro.
+
+26.4. Foi formalizada a expressão “causa dano primeiro” e sua aplicação no dano de combate.
+
+26.5. Foi formalizada a Omissão como escolha de não Consagrar nem Profanar.
+
+26.6. Foram definidas as expressões batalhar, combater e participar de um combate.
+
+26.7. INDESTRUTÍVEL foi ampliado para todas as permanentes, incluindo Artefatos, mantendo a prevenção de dano quando aplicado a Personagens.
+
+26.8. Efeitos que não indiquem duração passaram a durar indefinidamente.
+
+26.9. A movimentação dos eixos morais foi padronizada pela construção “progrida em X sua [Virtude ou Desvirtude]”.
+
+26.10. Foram formalizadas as expressões característica associada, Virtude associada e Desvirtude associada.
+
+# 27. Relatório de atualização da versão 1.2
+
+27.1. Sagrado foi formalizado como subtipo de Artefato sem regra inerente.
+
+27.2. Foi incluída a habilidade desencadeada DESGUARNECIDO X.
+
+27.3. Foi definido que DESGUARNECIDO X verifica a quantidade de Personagens despreparados no início do Reagrupamento e novamente durante sua resolução.
+
+27.4. Foi definido que múltiplas habilidades DESGUARNECIDO X podem desencadear simultaneamente quando seus respectivos valores forem satisfeitos.
+
+27.5. Foram incluídos exemplos oficiais e entradas de glossário para Sagrado e DESGUARNECIDO X.

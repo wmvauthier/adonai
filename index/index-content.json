@@ -196,21 +196,24 @@
           "pt": "Galeria",
           "en": "Gallery"
         },
-        "href": "./gallery/"
+        "href": "./gallery/",
+        "enabled": false
       },
       {
         "label": {
           "pt": "Lore",
           "en": "Lore"
         },
-        "href": "./lore/"
+        "href": "./lore/",
+        "enabled": false
       },
       {
         "label": {
           "pt": "Loja",
           "en": "Shop"
         },
-        "href": "./index.html#shop"
+        "href": "./index.html#shop",
+        "enabled": false
       }
     ]
   }
