@@ -7381,7 +7381,7 @@ button.dock-metric {
   filter: grayscale(.25) brightness(.62);
 }
 
-/* Polimento visual alinhado ao newPlay */
+/* Polimento visual da arena */
 .play-shell {
   position: relative;
   background:

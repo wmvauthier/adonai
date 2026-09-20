@@ -161,6 +161,12 @@ const els = {
   drawerClose: document.getElementById("drawerClose"),
   drawerContent: document.getElementById("drawerContent"),
   hoverPreview: document.getElementById("hoverPreview"),
+  decksHeroVisual: document.getElementById("decksHeroVisual"),
+  deckCount: document.getElementById("deckCount"),
+  deckCardCount: document.getElementById("deckCardCount"),
+  identityCount: document.getElementById("identityCount"),
+  filtersPanel: document.querySelector(".filters-panel"),
+  filterPanelToggle: document.getElementById("filterPanelToggle"),
   langButtons: document.querySelectorAll(".lang-btn")
 };
 
@@ -184,6 +190,41 @@ let avgBounds = {
 
 function t(key) {
   return copy[state.lang][key] || copy.pt[key] || key;
+}
+
+function hydrateDecksHero() {
+  if (!decksData.length || !cardsData.length) return;
+  const featuredDeck = decksData[0];
+  const identity = getDeckIdentityCards(featuredDeck);
+
+  if (els.deckCount) els.deckCount.textContent = String(decksData.length);
+  if (els.deckCardCount) els.deckCardCount.textContent = String(normalizeList(featuredDeck.cards).length);
+  if (els.identityCount) els.identityCount.textContent = String(identity.length);
+  if (!els.decksHeroVisual) return;
+
+  els.decksHeroVisual.innerHTML = `
+    <span class="decks-hero-grid"></span>
+    <div class="decks-hero-cards">
+      ${identity.map((card) => `
+        <figure class="decks-hero-card ${isHorizontalCard(card) ? "is-horizontal" : ""}">
+          <img src="${escapeHtml(card.images?.card || "")}" alt="" decoding="async" />
+        </figure>
+      `).join("")}
+    </div>
+    <div class="decks-hero-note">
+      <span>${escapeHtml(state.lang === "en" ? "Featured strategy" : "Estratégia em destaque")}</span>
+      <strong>${escapeHtml(getDeckName(featuredDeck))}</strong>
+    </div>
+  `;
+}
+
+function updateFilterToggleLabel() {
+  if (!els.filterPanelToggle) return;
+  const expanded = els.filterPanelToggle.getAttribute("aria-expanded") === "true";
+  const label = state.lang === "en"
+    ? expanded ? "Close filters" : "Open filters"
+    : expanded ? "Fechar filtros" : "Abrir filtros";
+  els.filterPanelToggle.textContent = label;
 }
 
 function escapeHtml(value) {
@@ -1338,13 +1379,21 @@ function restoreUiState() {
 function setLanguage(lang) {
   state.lang = lang;
   document.documentElement.lang = lang === "pt" ? "pt-BR" : "en";
-  els.langButtons.forEach((button) => button.classList.toggle("is-active", button.dataset.lang === lang));
-  document.querySelectorAll("[data-pt][data-en]").forEach((element) => {
-    element.textContent = element.dataset[lang] || element.textContent;
+  els.langButtons.forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.lang === lang);
+    button.setAttribute("aria-pressed", String(button.dataset.lang === lang));
   });
+  document.querySelectorAll("[data-pt][data-en]").forEach((element) => {
+    if (element.tagName === "INPUT") element.placeholder = element.dataset[lang] || element.placeholder;
+    else element.textContent = element.dataset[lang] || element.textContent;
+  });
+  els.mobileToggle?.setAttribute("aria-label", lang === "pt" ? "Alternar menu" : "Toggle menu");
+  updateFilterToggleLabel();
   populateFilters();
   syncControlsFromState();
   renderDecks();
+  hydrateDecksHero();
+  document.dispatchEvent(new CustomEvent("home:language", { detail: lang }));
 }
 
 function handleHeader() {
@@ -1366,6 +1415,12 @@ function bindEvents() {
   els.mobileToggle?.addEventListener("click", () => {
     const isOpen = els.primaryNav.classList.toggle("is-open");
     els.mobileToggle.setAttribute("aria-expanded", String(isOpen));
+  });
+  els.filterPanelToggle?.addEventListener("click", () => {
+    const expanded = els.filterPanelToggle.getAttribute("aria-expanded") === "true";
+    els.filterPanelToggle.setAttribute("aria-expanded", String(!expanded));
+    els.filtersPanel?.classList.toggle("is-open", !expanded);
+    updateFilterToggleLabel();
   });
   els.langButtons.forEach((button) => button.addEventListener("click", () => setLanguage(button.dataset.lang || "pt")));
   [
@@ -1476,6 +1531,7 @@ async function init() {
 
     cardsData = normalizeList(cardsPayload.cards).map((card, index) => normalizeCard(card, cardsPayload.defaults || {}, index));
     decksData = normalizeList(decksPayload.decks);
+    hydrateDecksHero();
     calculateFilterBounds();
     state.minAvgCost = avgBounds.cost.min;
     state.maxAvgCost = avgBounds.cost.max;

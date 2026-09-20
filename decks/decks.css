@@ -1044,3 +1044,331 @@
   .drawer-inner{padding:22px 16px}
   .deck-list-grid{grid-template-columns:repeat(3, minmax(0, 1fr))}
 }
+
+/* Deck catalog art direction — tactical, data-led, and shared with the Adonai system. */
+.decks-page{
+  --gold-strong:var(--gold);
+  --shadow:0 24px 64px rgba(0,0,0,.34);
+  --header-h:94px;
+  overflow-x:hidden;
+}
+.decks-page .container{
+  width:min(1480px, calc(100% - 112px));
+  margin-inline:auto;
+}
+.decks-page .section-kicker{
+  display:block;
+  color:var(--gold);
+  font-size:.68rem;
+  font-weight:800;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+}
+.decks-page .btn{
+  min-height:48px;
+  border:1px solid var(--gold);
+  padding:0 18px;
+  font-weight:800;
+}
+.decks-page .btn-primary{background:var(--gold); color:var(--on-gold)}
+.decks-page :is(input,select,button){font-family:var(--sans)}
+.decks-page .reveal{opacity:1; transform:none}
+
+.decks-hero{
+  min-height:min(780px, calc(100svh - var(--header-h)));
+  display:grid;
+  grid-template-columns:minmax(0, 51%) minmax(0, 49%);
+  background:
+    linear-gradient(112deg, rgba(214,181,113,.08), transparent 42%),
+    #090909;
+  border-bottom:1px solid var(--line);
+}
+.decks-hero-copy{
+  align-self:center;
+  width:min(760px, 100%);
+  padding:72px 8% 72px max(56px, calc((100vw - 1480px) / 2));
+  position:relative;
+  z-index:2;
+}
+.decks-page .decks-hero h1{
+  max-width:730px;
+  margin:0 0 28px;
+  font-family:var(--serif);
+  font-size:clamp(3.75rem, 5.5vw, 6.4rem);
+  font-weight:400;
+  line-height:.94;
+  letter-spacing:-.05em;
+}
+.decks-hero-text{
+  max-width:590px;
+  color:var(--muted);
+  font-size:.96rem;
+  line-height:1.8;
+}
+.decks-hero-actions{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:28px;
+  margin-top:30px;
+}
+.decks-highlights{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  max-width:590px;
+  margin:48px 0 0;
+  padding:0;
+  border-block:1px solid var(--line);
+}
+.decks-highlights div{
+  padding:18px 20px 17px 0;
+  border-right:1px solid var(--line);
+}
+.decks-highlights div:not(:first-child){padding-left:20px}
+.decks-highlights div:last-child{border-right:0}
+.decks-highlights dt{
+  color:var(--gold);
+  font-family:var(--serif);
+  font-size:2.15rem;
+  line-height:1;
+}
+.decks-highlights dd{
+  margin:7px 0 0;
+  color:var(--muted);
+  font-size:.64rem;
+  font-weight:700;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+}
+.decks-hero-visual{
+  position:relative;
+  min-height:650px;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(214,181,113,.15), transparent 35%),
+    linear-gradient(145deg, #211d14, #0e0e0c 70%);
+  border-left:1px solid var(--line);
+  isolation:isolate;
+}
+.decks-hero-visual::before{
+  content:"";
+  position:absolute;
+  inset:5%;
+  border:1px solid rgba(214,181,113,.28);
+  pointer-events:none;
+}
+.decks-hero-grid{
+  position:absolute;
+  inset:5%;
+  opacity:.38;
+  background-image:
+    linear-gradient(rgba(214,181,113,.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(214,181,113,.08) 1px, transparent 1px);
+  background-size:56px 56px;
+  mask-image:linear-gradient(135deg, #000, transparent 82%);
+}
+.decks-hero-cards{position:absolute; inset:0}
+.decks-hero-card{
+  position:absolute;
+  z-index:2;
+  width:min(32%, 245px);
+  margin:0;
+  filter:drop-shadow(0 28px 34px rgba(0,0,0,.58));
+}
+.decks-hero-card img{width:100%; border-radius:4.4%}
+.decks-hero-card:nth-child(1){left:12%; top:15%; transform:rotate(-7deg)}
+.decks-hero-card:nth-child(2){right:8%; top:18%; width:min(46%, 355px); transform:rotate(4deg)}
+.decks-hero-card:nth-child(3){left:31%; bottom:9%; transform:rotate(5deg)}
+.decks-hero-card.is-horizontal img{border-radius:4.4%}
+.decks-hero-note{
+  position:absolute;
+  z-index:4;
+  left:8%;
+  bottom:7%;
+  display:grid;
+  gap:5px;
+  min-width:245px;
+  padding:16px 18px;
+  border-left:3px solid var(--gold);
+  background:rgba(9,9,9,.88);
+  backdrop-filter:blur(8px);
+  box-shadow:0 14px 35px rgba(0,0,0,.4);
+}
+.decks-hero-note span{
+  color:var(--gold);
+  font-size:.62rem;
+  font-weight:800;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.decks-hero-note strong{color:#f1e9d8; font-family:var(--serif); font-size:1.22rem; font-weight:400}
+
+.decks-page .decks-shell{
+  padding:50px 0 120px;
+  background:
+    linear-gradient(180deg, rgba(214,181,113,.035), transparent 260px),
+    var(--bg);
+}
+.decks-page .decks-heading{
+  display:grid;
+  grid-template-columns:minmax(0, .9fr) minmax(300px, .55fr);
+  column-gap:8%;
+  align-items:end;
+  margin-bottom:48px;
+}
+.decks-heading .eyebrow{grid-column:1 / -1}
+.decks-page .decks-heading h2{margin:0}
+.decks-page .decks-heading > p:last-child{margin:0 0 6px; color:var(--muted); font-size:.92rem}
+.decks-page .decks-layout{grid-template-columns:300px minmax(0, 1fr); gap:30px}
+.decks-page .filters-panel{
+  top:118px;
+  max-height:calc(100svh - 140px);
+  overflow:auto;
+  scrollbar-width:thin;
+  scrollbar-color:var(--gold) transparent;
+  padding:26px;
+  border-radius:0;
+  border-color:var(--line);
+  background:var(--surface);
+  box-shadow:0 20px 45px rgba(0,0,0,.22);
+}
+.decks-page .filters-panel-head{
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  align-items:start;
+  padding-bottom:22px;
+  border-bottom:1px solid var(--line);
+}
+.decks-page .filters-panel-head h2{
+  margin:9px 0 0;
+  font-family:var(--serif);
+  font-size:2rem;
+  font-weight:400;
+}
+.filter-panel-toggle{
+  display:none;
+  min-height:42px;
+  border:1px solid var(--line);
+  background:transparent;
+  padding:0 12px;
+  font-size:.72rem;
+  font-weight:700;
+}
+.decks-page .filter-actions{margin:20px 0}
+.decks-page :is(.search-box input,.filter-group select){
+  min-height:48px;
+  border-radius:0;
+  border-color:var(--line);
+  background:var(--bg);
+  color:var(--text);
+}
+.decks-page :is(.search-box label,.filter-group label){color:var(--muted); font-weight:700}
+.decks-page .range-pair::before{background:var(--line)}
+.decks-page .virtue-pip-filter{padding:12px 0; border-top:1px solid var(--line)}
+.decks-page .virtue-pip-filter select{min-width:0; padding-inline:10px}
+
+.decks-page :is(.decks-tools,.pagination-shell){
+  border-radius:0;
+  background:var(--surface);
+  border-color:var(--line);
+}
+.decks-page .decks-tools{padding:18px 20px}
+.decks-page .decks-tools-control select{border-radius:0; border-color:var(--line); background:var(--bg)}
+.decks-page .results-count{color:var(--text)}
+.decks-page .results-count strong{color:var(--text); font-family:var(--sans)}
+.decks-page .results-count span{color:var(--muted)}
+.decks-page .active-filter-chip{color:var(--text)}
+.decks-page .decks-grid{gap:24px}
+.decks-page .deck-entry{
+  border-radius:0;
+  border-color:var(--line);
+  background:var(--surface);
+  box-shadow:0 18px 36px rgba(0,0,0,.24);
+}
+.decks-page .deck-entry:hover,
+.decks-page .deck-entry:focus-within{
+  border-color:var(--gold);
+  box-shadow:0 26px 48px rgba(0,0,0,.4), 0 0 0 1px var(--gold);
+}
+.decks-page .deck-entry-media{background:#090909; border-bottom:1px solid var(--line)}
+.decks-page .identity-thumb{border-radius:3px}
+.decks-page .deck-entry-kicker{color:var(--text); font-family:var(--serif); font-size:1.12rem; letter-spacing:0; text-transform:none}
+.decks-page :is(.metric-mark,.virtue-mark-compact){border-radius:0; border-color:var(--line); background:var(--bg)}
+.decks-page .page-btn{border-radius:0; background:var(--bg)}
+.decks-page .empty-state{border-radius:0; border-color:var(--line); background:var(--surface)}
+.decks-page .empty-state h3{font-family:var(--serif); color:var(--text)}
+.decks-page .empty-state p{color:var(--muted)}
+
+.decks-page .drawer-panel{border-radius:0; border-color:var(--line)}
+.decks-page :is(.deck-detail-heading,.analysis-card,.analysis-section,.drawer-deck-lane,.drawer-identity-slot,.analysis-metric,.metric-row){border-radius:0}
+.decks-page :is(.deck-detail-heading,.analysis-card,.analysis-section,.drawer-deck-lane,.analysis-metric,.metric-row){border-color:var(--line)}
+.decks-page .analysis-section h3{font-family:var(--serif)}
+
+:root[data-theme="light"] .decks-page{--shadow:0 18px 45px rgba(20,44,49,.14)}
+[data-theme="light"] .decks-hero{background:#f3f0e7}
+[data-theme="light"] .decks-hero-visual{
+  background:radial-gradient(circle at 50% 45%, #c7a57633, transparent 35%), linear-gradient(145deg, #17353b, #0f2428);
+  border-left:0;
+}
+[data-theme="light"] .decks-page .decks-shell{background:#f3f0e7}
+[data-theme="light"] .decks-page :is(.filters-panel,.decks-tools,.pagination-shell,.deck-entry,.empty-state){background:#e4e2d8; box-shadow:none}
+[data-theme="light"] .decks-page :is(.search-box input,.filter-group select,.decks-tools-control select,.metric-mark,.virtue-mark-compact,.page-btn){background:#f3f0e7; color:#142c31}
+[data-theme="light"] .decks-page select option{background:#f3f0e7; color:#142c31}
+[data-theme="light"] .decks-page :is(.results-count,.results-count strong,.deck-entry-kicker,.empty-state h3){color:#142c31}
+[data-theme="light"] .decks-page :is(.results-count span,.empty-state p){color:#556263}
+[data-theme="light"] .decks-page .deck-entry:hover,
+[data-theme="light"] .decks-page .deck-entry:focus-within{box-shadow:0 22px 38px rgba(20,44,49,.24), 0 0 0 1px #ac3e28}
+[data-theme="light"] .decks-page .drawer-panel{background:#f3f0e7}
+[data-theme="light"] .decks-page .drawer-panel::after{background:linear-gradient(180deg, rgba(243,240,231,.78), rgba(243,240,231,.97))}
+[data-theme="light"] .decks-page :is(.deck-detail-heading,.analysis-card,.analysis-section,.analysis-metric,.metric-row){background:#e4e2d8}
+[data-theme="light"] .decks-page :is(.deck-detail-heading p,.analysis-metric,.analysis-metric strong,.metric-row strong){color:#142c31}
+[data-theme="light"] .decks-page .drawer-deck-lane{background:#e4e2d8}
+[data-theme="light"] .decks-page .drawer-deck-lane--identity{background:#142c31}
+[data-theme="light"] .decks-page .drawer-close{background:#142c31; color:#f3f0e7; border-color:#ac3e28}
+
+@media (max-width:1180px){
+  .decks-page .decks-layout{grid-template-columns:1fr}
+  .decks-page .filters-panel{position:relative; top:auto; max-height:none; overflow:visible}
+}
+@media (max-width:900px){
+  .decks-page{--header-h:78px}
+  .decks-page .container{width:calc(100% - 64px)}
+  .decks-hero{grid-template-columns:minmax(0, 1fr); min-height:0}
+  .decks-hero-copy{width:100%; padding:72px 32px 64px}
+  .decks-page .decks-hero h1{max-width:760px}
+  .decks-hero-visual{min-height:620px; border-left:0; border-top:1px solid var(--line)}
+  .decks-page .decks-heading{grid-template-columns:1fr; gap:20px}
+  .decks-heading .eyebrow{grid-column:auto}
+}
+@media (max-width:760px){
+  .decks-page .container{width:calc(100% - 40px)}
+  .decks-page .decks-shell{padding:72px 0 90px}
+  .decks-page .decks-heading{margin-bottom:34px}
+  .decks-page .filters-panel{padding:20px}
+  .filter-panel-toggle{display:block; flex:0 0 auto}
+  .filters-panel:not(.is-open) > :not(.filters-panel-head){display:none}
+  .decks-page .decks-grid{grid-template-columns:1fr}
+  .decks-page .decks-tools-controls,
+  .decks-page .decks-tools-control{width:100%}
+  .decks-page .decks-hero h1{font-size:clamp(3.3rem, 14vw, 5rem)}
+  .decks-highlights{margin-top:36px}
+  .decks-hero-visual{min-height:510px}
+  .decks-hero-card{width:min(34%, 190px)}
+  .decks-hero-card:nth-child(1){left:7%; top:14%}
+  .decks-hero-card:nth-child(2){right:5%; width:min(49%, 280px)}
+  .decks-hero-card:nth-child(3){left:32%; bottom:8%}
+  .decks-hero-note{left:6%; bottom:5%; min-width:210px}
+}
+@media (max-width:460px){
+  .decks-hero-copy{padding:58px 20px 50px}
+  .decks-hero-actions{align-items:flex-start; flex-direction:column; gap:14px}
+  .decks-highlights div{padding:15px 6px 15px 0}
+  .decks-highlights div:not(:first-child){padding-left:9px}
+  .decks-highlights dt{font-size:1.65rem}
+  .decks-highlights dd{font-size:.56rem}
+  .decks-hero-visual{min-height:400px}
+  .decks-hero-note{min-width:180px; padding:12px 14px}
+  .decks-page .deck-entry-media{aspect-ratio:1.45 / 1}
+  .decks-page .deck-pips--seven{grid-template-columns:repeat(7, minmax(0, 1fr)); gap:4px}
+}

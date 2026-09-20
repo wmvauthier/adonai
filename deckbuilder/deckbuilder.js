@@ -76,7 +76,9 @@ const els = {
   curveChart: document.getElementById("curveChart"),
   curveSummary: document.getElementById("curveSummary"),
   virtueAffinity: document.getElementById("virtueAffinity"),
-  suggestionList: document.getElementById("suggestionList")
+  suggestionList: document.getElementById("suggestionList"),
+  builderIntroVisual: document.getElementById("builderIntroVisual"),
+  builderCardCount: document.getElementById("builderCardCount")
 };
 
 const state = {
@@ -132,6 +134,44 @@ let fieldAverages = {
 };
 let deckFrequency = new Map();
 let activeDragPayload = null;
+
+function hydrateBuilderIntro() {
+  if (!cards.length) return;
+  if (els.builderCardCount) els.builderCardCount.textContent = String(cards.length);
+  if (!els.builderIntroVisual) return;
+
+  const preferredTypes = [TYPE_CODES.champion, "PER", "MIL"];
+  const featured = preferredTypes
+    .map((code) => cards.find((card) => getTypeCode(card) === code))
+    .filter(Boolean);
+  const heroCards = featured.length === 3 ? featured : cards.slice(0, 3);
+
+  els.builderIntroVisual.innerHTML = `
+    <span class="builder-intro-grid"></span>
+    ${heroCards.map((card) => `
+      <figure class="builder-intro-card">
+        <img src="${escapeHtml(getCardImage(card))}" alt="" decoding="async" />
+      </figure>
+    `).join("")}
+  `;
+}
+
+function applyStaticLanguage() {
+  document.documentElement.lang = state.lang === "pt" ? "pt-BR" : "en";
+  document.querySelectorAll("[data-pt][data-en]").forEach((element) => {
+    const value = element.dataset[state.lang];
+    if (!value) return;
+    if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") element.placeholder = value;
+    else element.textContent = value;
+  });
+  els.langButtons.forEach((button) => {
+    const active = button.dataset.lang === state.lang;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
+  els.mobileToggle?.setAttribute("aria-label", state.lang === "pt" ? "Alternar menu" : "Toggle menu");
+  document.dispatchEvent(new CustomEvent("home:language", { detail: state.lang }));
+}
 
 function escapeHtml(value) {
   return String(value === null || typeof value === "undefined" ? "" : value)
@@ -837,9 +877,13 @@ function renderAssistantState() {
 }
 
 function renderToggleButton(button, isHidden, label) {
-  const action = isHidden ? "Mostrar" : "Ocultar";
+  const english = state.lang === "en";
+  const labels = english
+    ? { filtros: "filters", "gráficos": "charts", assistente: "assistant", cartas: "cards" }
+    : {};
+  const action = english ? isHidden ? "Show" : "Hide" : isHidden ? "Mostrar" : "Ocultar";
   const icon = isHidden ? "+" : "−";
-  button.innerHTML = `<span class="toggle-icon" aria-hidden="true">${icon}</span><span>${action} ${escapeHtml(label)}</span>`;
+  button.innerHTML = `<span class="toggle-icon" aria-hidden="true">${icon}</span><span>${action} ${escapeHtml(labels[label] || label)}</span>`;
 }
 
 function renderFilters() {
@@ -1869,8 +1913,8 @@ function bindEvents() {
   els.langButtons.forEach((button) => {
     button.addEventListener("click", () => {
       state.lang = button.dataset.lang;
-      document.documentElement.lang = state.lang === "pt" ? "pt-BR" : "en";
-      els.langButtons.forEach((item) => item.classList.toggle("is-active", item.dataset.lang === state.lang));
+      applyStaticLanguage();
+      renderFilters();
       renderAll();
     });
   });
@@ -1909,6 +1953,7 @@ async function loadData() {
   cards = (cardsPayload.cards || []).map((card) => Object.assign({}, cardsPayload.defaults || {}, card));
   cardById = new Map(cards.map((card) => [getCardId(card), card]));
   decks = decksPayload.decks || [];
+  hydrateBuilderIntro();
   calculateFieldAverages();
   renderFilters();
   restoreState();

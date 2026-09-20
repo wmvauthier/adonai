@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="./ui/adonai-polish.css" />
   <link rel="stylesheet" href="./css/viewport-fit.css" />
   <link rel="stylesheet" href="./css/setup-result.css" />
+  <link rel="stylesheet" href="./css/arena-presentation.css" />
 </head>
 
 <body>
@@ -25,7 +26,11 @@
     <section class="play-setup" id="setupView">
       <div class="play-setup-panel">
         <div class="setup-copy">
-          <span class="section-kicker">Adonai Play</span>
+          <a class="arena-home" href="../" aria-label="Adonai — voltar ao início">ADONAI <span>CARD GAME</span></a>
+          <span class="section-kicker">Arena de treinamento · Solo contra bot</span>
+          <h1>Seu deck. <br>Seu destino.</h1>
+          <p>Escolha seu campeão, prepare sua estratégia e entre na batalha.</p>
+          <div class="arena-steps" aria-label="Preparação"><span>01 Escolha seu deck</span><span>02 Defina o oponente</span><span>03 Entre na arena</span></div>
         </div>
 
         <div hidden>
@@ -57,7 +62,7 @@
         <div class="setup-actions">
           <a class="ghost-link" href="../deckbuilder/">Abrir Deckbuilder</a>
           <a class="ghost-link" href="../decks/">Ver Decks</a>
-          <button class="primary-action" type="button" id="startGameButton" disabled>Iniciar partida</button>
+          <button class="primary-action" type="button" id="startGameButton" disabled>Entrar na arena <span aria-hidden="true">↗</span></button>
         </div>
       </div>
     </section>
@@ -132,6 +137,7 @@
   <script src="./js/performance-flags.js"></script>
   <script src="./js/overlay-state.js"></script>
   <script src="./play.js"></script>
+  <script src="./js/arena-presentation.js"></script>
 </body>
 
 </html>

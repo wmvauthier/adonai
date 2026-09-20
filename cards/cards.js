@@ -179,6 +179,12 @@ const els = {
   drawerClose: document.getElementById("drawerClose"),
   drawerContent: document.getElementById("drawerContent"),
   hoverPreview: document.getElementById("hoverPreview"),
+  catalogHeroCards: document.getElementById("catalogHeroCards"),
+  collectionCount: document.getElementById("collectionCount"),
+  typeCount: document.getElementById("typeCount"),
+  virtueCount: document.getElementById("virtueCount"),
+  filtersPanel: document.querySelector(".filters-panel"),
+  filterPanelToggle: document.getElementById("filterPanelToggle"),
   langButtons: document.querySelectorAll(".lang-btn")
 };
 
@@ -201,6 +207,42 @@ let querySuggestionState = null;
 
 function t(key) {
   return copy[state.lang][key] || copy.pt[key] || key;
+}
+
+function hydrateCatalogHero() {
+  if (!cardsData.length) return;
+
+  const types = new Set(
+    cardsData.flatMap((card) => normalizeList(card.type).map(structuralValue)).filter(Boolean)
+  );
+  const virtues = new Set(
+    cardsData.flatMap((card) => formatVirtueItems(card).map((virtue) => virtue.label)).filter(Boolean)
+  );
+
+  if (els.collectionCount) els.collectionCount.textContent = String(cardsData.length);
+  if (els.typeCount) els.typeCount.textContent = String(types.size);
+  if (els.virtueCount) els.virtueCount.textContent = String(virtues.size);
+
+  if (!els.catalogHeroCards) return;
+  const heroIndexes = [0, Math.floor(cardsData.length / 2), cardsData.length - 1];
+  const heroCards = heroIndexes.map((index) => cardsData[index]).filter(Boolean);
+  els.catalogHeroCards.innerHTML = `
+    <span class="catalog-hero-orbit"></span>
+    ${heroCards.map((card) => `
+      <figure class="catalog-hero-card">
+        <img src="${escapeHtml(card.images.card)}" alt="" decoding="async" />
+      </figure>
+    `).join("")}
+  `;
+}
+
+function updateFilterToggleLabel() {
+  if (!els.filterPanelToggle) return;
+  const expanded = els.filterPanelToggle.getAttribute("aria-expanded") === "true";
+  const label = state.lang === "en"
+    ? expanded ? "Close filters" : "Open filters"
+    : expanded ? "Fechar filtros" : "Abrir filtros";
+  els.filterPanelToggle.textContent = label;
 }
 
 function escapeHtml(value) {
@@ -1937,7 +1979,11 @@ function applyLanguage(lang) {
 
   els.langButtons.forEach((button) => {
     button.classList.toggle("is-active", button.dataset.lang === lang);
+    button.setAttribute("aria-pressed", String(button.dataset.lang === lang));
   });
+
+  els.mobileToggle?.setAttribute("aria-label", lang === "pt" ? "Alternar menu" : "Toggle menu");
+  updateFilterToggleLabel();
 
   populateFilters();
   state.set = els.setFilter.value;
@@ -1960,6 +2006,7 @@ function applyLanguage(lang) {
   applyViewMode();
   saveUiState();
   updateQuerySuggestions();
+  document.dispatchEvent(new CustomEvent("home:language", { detail: lang }));
 }
 
 async function loadCards() {
@@ -1985,6 +2032,7 @@ async function loadCards() {
     cardsMeta = payload.meta || {};
     rulingBase = rulingsPayload.rulings || { type: [], subtype: [], effect: [], keyword: [] };
     cardsData = (payload.cards || []).map((card, index) => normalizeCard(card, payload.defaults || {}, index));
+    hydrateCatalogHero();
 
     populateFilters();
     if (hasUrlState()) {
@@ -2003,6 +2051,13 @@ async function loadCards() {
 els.mobileToggle?.addEventListener("click", () => {
   const isOpen = els.primaryNav.classList.toggle("is-open");
   els.mobileToggle.setAttribute("aria-expanded", String(isOpen));
+});
+
+els.filterPanelToggle?.addEventListener("click", () => {
+  const expanded = els.filterPanelToggle.getAttribute("aria-expanded") === "true";
+  els.filterPanelToggle.setAttribute("aria-expanded", String(!expanded));
+  els.filtersPanel?.classList.toggle("is-open", !expanded);
+  updateFilterToggleLabel();
 });
 
 els.primaryNav?.querySelectorAll("a").forEach((link) => {

@@ -2460,7 +2460,7 @@ async function updateSetupStatus() {
     await preloadDeckImages(humanDeck, botDeck);
     if (token !== app.setupPreloadToken) return;
     app.setupAssetsReady = true;
-    els.startGameButton.textContent = "Iniciar partida";
+    els.startGameButton.textContent = "Entrar na arena";
     els.startGameButton.disabled = false;
     updateSetupPreview(humanDeck, botDeck);
   } catch (error) {

@@ -1,387 +1,784 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Adonai Card Game</title>
-  <meta name="description"
-    content="Adonai Card Game — homepage premium inspirada em TCGs editoriais, com foco em universo, cartas, regras e comunidade." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="shared/generic.css" />
-  <link rel="stylesheet" href="index/index.css" />
-</head>
-
-<body>
-  <div class="page-noise" aria-hidden="true"></div>
-
-  <header class="site-header" id="siteHeader">
-
-    <a href="./index.html" class="brand" aria-label="Adonai Card Game">
-      <img src="assets/logo/adonai_logo_base-4.webp" alt="Adonai Logo" class="brand-logo" />
-
-    </a>
-
-    <button class="mobile-toggle" id="mobileToggle" aria-expanded="false" aria-controls="primaryNav">
-      <span></span><span></span><span></span>
-    </button>
-
-    <nav class="site-nav" id="primaryNav">
-      <a href="./index.html" data-pt="Início" data-en="Home">Início</a>
-      <a href="./how-to-play/" data-pt="Como Jogar" data-en="How to Play">Como Jogar</a>
-      <a href="./cards/" data-pt="Cartas" data-en="Cards">Cartas</a>
-      <a href="./decks/" data-pt="Decks" data-en="Decks">Decks</a>
-      <a href="./deckbuilder/" data-pt="Deckbuilder" data-en="Deckbuilder">Deckbuilder</a>
-      <a href="./manual/" data-pt="Manual" data-en="Rulebook">Manual</a>
-      <!-- <a href="./gallery/" data-pt="Galeria" data-en="Gallery">Galeria</a> -->
-      <!-- <a href="./lore/" data-pt="Lore" data-en="Lore">Lore</a> -->
-      <!-- <a href="./index.html#shop" data-pt="Loja" data-en="Shop">Loja</a> -->
-    </nav>
-
-    <div class="header-actions">
-      <div class="lang-switch" aria-label="Alternar idioma">
-        <button class="lang-btn is-active" data-lang="pt">PT</button>
-        <button class="lang-btn" data-lang="en">EN</button>
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="shared/theme.js"></script>
+    <title>Adonai — O Card Game Bíblico</title>
+    <meta
+      name="description"
+      content="Entre no universo de Adonai. Descubra o card game bíblico, conheça as cartas de Foundations e construa sua estratégia."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;650;700;800&family=DM+Serif+Display:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="shared/site.css" />
+    <link rel="stylesheet" href="shared/site-light.css" />
+  </head>
+  <body>
+    <a
+      class="skip"
+      href="#mainContent"
+      data-pt="Pular para o conteúdo"
+      data-en="Skip to content"
+      >Pular para o conteúdo</a
+    >
+    <header class="masthead" id="siteHeader">
+      <a class="wordmark" href="./index.html" aria-label="Adonai — Início"
+        ><img
+          width="3508"
+          height="3509"
+          src="assets/logo/adonai_logo_base-4.webp"
+          alt=""
+          class=""
+          fetchpriority="high"
+          decoding="async"
+        /><span>ADONAI<small>CARD GAME</small></span></a
+      >
+      <nav id="primaryNav" class="navigation" aria-label="Principal">
+        <a
+          href="./index.html"
+          aria-current="page"
+          data-pt="Início"
+          data-en="Home"
+          >Início</a
+        ><a href="./how-to-play/" data-pt="Como Jogar" data-en="How to Play"
+          >Como Jogar</a
+        ><a href="./cards/" data-pt="Cartas" data-en="Cards">Cartas</a
+        ><a href="./decks/" data-pt="Decks" data-en="Decks">Decks</a
+        ><a href="./deckbuilder/" data-pt="Deckbuilder" data-en="Deckbuilder"
+          >Deckbuilder</a
+        ><a href="./manual/" data-pt="Manual" data-en="Rulebook">Manual</a
+        ><!-- <a href="./lore/">Lore</a> -->
+        <!-- <a href="./index.html#shop">Loja</a> -->
+        <!-- <a href="./gallery/">Galeria</a> -->
+      </nav>
+      <div class="header-tools">
+        <div class="theme-control" role="group" aria-label="Tema da página">
+          <button
+            class="theme-button"
+            type="button"
+            data-theme-option="light"
+            aria-label="Ativar modo claro"
+            aria-pressed="false"
+            title="Ativar modo claro"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"
+              stroke-linecap="round"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <circle cx="12" cy="12" r="4" />
+              <path
+                d="M12 2v2m0 16v2M2 12h2m16 0h2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"
+              />
+            </svg>
+          </button>
+          <button
+            class="theme-button"
+            type="button"
+            data-theme-option="dark"
+            aria-label="Ativar modo escuro"
+            aria-pressed="true"
+            title="Ativar modo escuro"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M20.5 13.3A8.6 8.6 0 0 1 10.7 3.5 8.7 8.7 0 1 0 20.5 13.3Z"
+              />
+            </svg>
+          </button>
+        </div>
+        <div class="languages" aria-label="Idioma">
+          <button class="lang-btn is-active" data-lang="pt" aria-pressed="true">
+            PT</button
+          ><span aria-hidden="true">/</span
+          ><button class="lang-btn" data-lang="en" aria-pressed="false">
+            EN
+          </button>
+        </div>
+        <button
+          id="mobileToggle"
+          class="menu-toggle"
+          type="button"
+          aria-controls="primaryNav"
+          aria-expanded="false"
+          aria-label="Alternar menu"
+        >
+          <span></span><span></span>
+        </button>
       </div>
-    </div>
-  </header>
-
-  <main>
-
-    <section class="hero hero-carousel" id="home" aria-label="Destaques">
-
-      <article class="hero-slide active">
-        <div class="hero-media">
-          <img src="assets/imgs/Artefato - Foundations-4 - img.webp" alt="Arte de fundo 1" />
-          <div class="hero-overlay"></div>
-        </div>
-
-        <div class="hero-content container">
-          <div class="hero-copy reveal">
-
-            <span class="eyebrow" data-pt="Adonai Card Game" data-en="Adonai Card Game">
-              Adonai Card Game
-            </span>
-
-            <h1 data-pt="O Card Game Bíblico." data-en="The Biblical Card Game.">
-              O Card Game Bíblico.
-            </h1>
-
-            <p class="hero-text"
-              data-pt="Reviva histórias, personagens e batalhas das Escrituras em um card game épico, estratégico e competitivo."
-              data-en="Relive the stories, characters, and battles of Scripture in an epic, strategic, and competitive card game.">
-              Reviva histórias, personagens e batalhas das Escrituras em um card game épico, estratégico e competitivo.
-            </p>
-
-            <div class="hero-actions">
-              <a href="#lore" class="btn btn-primary" data-pt="Conheça o universo" data-en="Discover the universe">
-                Conheça o universo
-              </a>
-
-              <a href="#cards" class="btn btn-secondary" data-pt="Ver cartas" data-en="View cards">
-                Ver cartas
-              </a>
-            </div>
+    </header>
+    <main id="mainContent">
+      <section class="hero" aria-labelledby="heroTitle">
+        <div class="hero-copy">
+          <p
+            class="eyebrow"
+            data-pt="Histórias eternas. Novas estratégias."
+            data-en="Timeless stories. New strategies."
+          >
+            Histórias eternas. Novas estratégias.
+          </p>
+          <h1
+            id="heroTitle"
+            data-pt="O Card Game Bíblico."
+            data-en="The Biblical Card Game."
+          >
+            O Card Game Bíblico.
+          </h1>
+          <p
+            class="hero-description"
+            data-pt="Reviva histórias, personagens e batalhas das Escrituras. Escolha sua identidade, construa seu deck e encontre seu caminho em cada partida."
+            data-en="Relive the stories, characters, and battles of Scripture. Choose your identity, build your deck, and find your path in every match."
+          >
+            Reviva histórias, personagens e batalhas das Escrituras. Escolha sua
+            identidade, construa seu deck e encontre seu caminho em cada
+            partida.
+          </p>
+          <div class="actions">
+            <a href="./how-to-play/" class="button"
+              ><span data-pt="Aprender a jogar" data-en="Learn to play"
+                >Aprender a jogar</span
+              ><span aria-hidden="true">↗</span></a
+            ><a href="./cards/" class="text-link"
+              ><span data-pt="Explorar cartas" data-en="Explore cards"
+                >Explorar cartas</span
+              ><span aria-hidden="true">↗</span></a
+            >
           </div>
-
-          <div class="hero-card-frame hero-card-stack hero-card-stack--six reveal stagger-1" aria-hidden="true">
-            <img class="hero-feature-card hero-feature-card--back-left" src="assets/cards/Milagre - Foundations-4.webp"
-              alt="Carta Templo" />
-            <img class="hero-feature-card hero-feature-card--mid-left"
-              src="assets/cards/Personagem - Foundations-2.webp" alt="Carta Milagre" />
-            <img class="hero-feature-card hero-feature-card--front" src="assets/cards/Campeão - Foundations-1.webp"
-              alt="Carta Campeão" />
-            <img class="hero-feature-card hero-feature-card--mid-right" src="assets/cards/Artefato - Foundations-3.webp"
-              alt="Carta Artefato" />
-            <img class="hero-feature-card hero-feature-card--back-right" src="assets/cards/Pecado - Foundations-3.webp"
-              alt="Carta Virtude" />
-          </div>
-
+          <a class="hero-scroll" href="#about"
+            ><span aria-hidden="true">↓</span
+            ><span
+              data-pt="Sua jornada começa aqui"
+              data-en="Your journey starts here"
+              >Sua jornada começa aqui</span
+            ></a
+          >
         </div>
-      </article>
-
-      <article class="hero-slide">
-        <div class="hero-media">
-          <img src="assets/imgs/Artefato - Foundations-3 - img.webp" alt="Arte de fundo 2" />
-          <div class="hero-overlay"></div>
-        </div>
-
-        <div class="hero-content container">
-          <div class="hero-copy reveal">
-
-            <span class="eyebrow" data-pt="Virtudes e Desvirtudes" data-en="Virtues and Vices">
-              Virtudes e Desvirtudes
-            </span>
-
-            <h1 data-pt="Toda escolha deixa marcas." data-en="Every choice leaves a mark.">
-              Toda escolha deixa marcas.
-            </h1>
-
-            <p class="hero-text"
-              data-pt="Você começa como uma folha em branco. Suas escolhas, alianças e ações moldam quem você se tornará."
-              data-en="You begin as a blank slate. Your choices, alliances, and actions shape who you will become.">
-              Você começa como uma folha em branco. Suas escolhas, alianças e ações moldam quem você se tornará.
-            </p>
-
-            <div class="hero-actions">
-              <a href="#lore" class="btn btn-primary" data-pt="Conheça o universo" data-en="Discover the universe">
-                Conheça o universo
-              </a>
-
-              <a href="#cards" class="btn btn-secondary" data-pt="Ver cartas" data-en="View cards">
-                Ver cartas
-              </a>
-            </div>
+        <div class="hero-art">
+          <img
+            data-card-slot="hero"
+            data-card-image="art"
+            hidden
+            width="821"
+            height="1121"
+            alt=""
+            class="hero-illustration"
+            fetchpriority="high"
+            decoding="async"
+          />
+          <div class="art-caption">
+            <span>ADONAI / FOUNDATIONS</span
+            ><span aria-hidden="true">ART / FND</span>
           </div>
-
-          <div class="hero-card-frame hero-card-stack hero-card-stack--two reveal stagger-1" aria-hidden="true">
-            <div class="virtue-orbit reveal stagger-1" aria-hidden="true">
-              <img class="virtue-orb" src="assets/itens/13 - Caridade - Logo.webp" alt="">
-              <img class="virtue-orb" src="assets/itens/09 - Esperança - Logo.webp" alt="">
-              <img class="virtue-orb" src="assets/itens/07 - Fortaleza - Logo.webp" alt="">
-              <img class="virtue-orb" src="assets/itens/11 - Prudência - Logo.webp" alt="">
-              <img class="virtue-orb" src="assets/itens/04 - Descontrole - Logo.webp" alt="">
-              <img class="virtue-orb" src="assets/itens/06 - Iniquidade - Logo.webp" alt="">
-              <img class="virtue-orb" src="assets/itens/02 - Dúvida - Logo.webp" alt="">
-              <img class="virtue-orb" src="assets/itens/14 - Egoísmo - Logo.webp" alt="">
-              <img class="virtue-orb" src="assets/itens/10 - Desespero - Logo.webp" alt="">
-              <img class="virtue-orb" src="assets/itens/08 - Covardia - Logo.webp" alt="">
-              <img class="virtue-orb" src="assets/itens/12 - Insensatez - Logo.webp" alt="">
-              <img class="virtue-orb" src="assets/itens/03 - Temperança - Logo.webp" alt="">
-              <img class="virtue-orb" src="assets/itens/05 - Justiça - Logo.webp" alt="">
-              <img class="virtue-orb" src="assets/itens/01 - Fé - Logo.webp" alt="">
-            </div>
-
+          <div class="hero-seal" aria-hidden="true">
+            <span>ADONAI</span><b>✦</b><span>FOUNDATIONS</span>
           </div>
-
         </div>
-      </article>
-
-      <article class="hero-slide">
-        <div class="hero-media">
-          <img src="assets/imgs/Personagem - Foundations-19 - img.webp" alt="Arte de fundo 3" />
-          <div class="hero-overlay"></div>
-        </div>
-
-        <div class="hero-content container">
-          <div class="hero-copy reveal">
-
-            <span class="eyebrow" data-pt="Estratégia e Construção" data-en="Strategy and Deckbuilding">
-              Estratégia e Construção
-            </span>
-
-            <h1 data-pt="Jogue do seu jeito." data-en="Play your way.">
-              Jogue do seu jeito.
-            </h1>
-
-            <p class="hero-text"
-              data-pt="Campeões, Territórios, Templos, Personagens, Milagres, Artefatos e Pecados abrem diferentes caminhos para cada estratégia."
-              data-en="Champions, Territories, Temples, Characters, Miracles, Artifacts, and Sins open different paths for every strategy.">
-              Campeões, Territórios, Templos, Personagens, Milagres, Artefatos e Pecados abrem diferentes caminhos para
-              cada estratégia.
-            </p>
-
-            <div class="hero-actions">
-              <a href="#lore" class="btn btn-primary" data-pt="Conheça o universo" data-en="Discover the universe">
-                Conheça o universo
-              </a>
-
-              <a href="#cards" class="btn btn-secondary" data-pt="Ver cartas" data-en="View cards">
-                Ver cartas
-              </a>
-            </div>
-          </div>
-
-          <div class="hero-card-frame hero-card-stack hero-card-stack--mixed reveal stagger-1" aria-hidden="true">
-            <img class="hero-feature-card hero-feature-card--back" src="assets/cards/Território - Foundations-1.webp"
-              alt="Carta Território" />
-            <img class="hero-feature-card hero-feature-card--front" src="assets/cards/Campeão - Foundations-4.webp"
-              alt="Carta Campeão" />
-            <img class="hero-feature-card hero-feature-card--mid" src="assets/cards/Templo - Foundations-1.webp"
-              alt="Carta Templo" />
-          </div>
-
-        </div>
-      </article>
-
-      <div class="hero-carousel-dots" aria-label="Controle do carrossel">
-        <button class="hero-dot active" type="button" data-slide="0" aria-label="Ir para destaque 1"></button>
-        <button class="hero-dot" type="button" data-slide="1" aria-label="Ir para destaque 2"></button>
-        <button class="hero-dot" type="button" data-slide="2" aria-label="Ir para destaque 3"></button>
+      </section>
+      <div class="theme-strip" aria-hidden="true">
+        <span>ESTRATÉGIA</span><b>✦</b><span>IDENTIDADE</span><b>✦</b
+        ><span>ESCOLHAS</span><b>✦</b><span>ADONAI</span><b>✦</b
+        ><span>ESTRATÉGIA</span>
       </div>
-
-    </section>
-
-    <section class="feature-intro section container" id="lore">
-      <div class="section-grid">
-
-        <div class="section-copy reveal">
-
-          <span class="section-kicker" data-pt="Sobre o jogo" data-en="About the game">
-            Sobre o jogo
-          </span>
-
-          <h2 data-pt="Imersão, narrativa e consequências em cada partida."
-            data-en="Immersion, narrative, and consequences in every match.">
-            Imersão, narrativa e consequências em cada partida.
-          </h2>
-
-          <p data-pt="Adonai é um Card Game competitivo inspirado nas histórias, personagens e conflitos das Escrituras Sagradas. Cada partida coloca os jogadores diante de escolhas que moldam sua jornada: alianças, milagres, pecados e decisões estratégicas influenciam permanentemente o rumo do jogo."
-            data-en="Adonai is a competitive Card Game inspired by the stories, characters, and conflicts of Holy Scripture. Every match places players before choices that shape their journey: alliances, miracles, sins, and strategic decisions permanently influence the course of the game.">
-            Adonai é um Card Game competitivo inspirado nas histórias, personagens e conflitos das Escrituras Sagradas.
-            Cada partida coloca os jogadores diante de escolhas que moldam sua jornada: alianças, milagres, pecados e
-            decisões estratégicas influenciam permanentemente o rumo do jogo.
-          </p>
-
-          <p data-pt="Com múltiplos tipos de cartas, caminhos estratégicos e estilos de jogo, Adonai foi criado para jogadores que buscam profundidade, ambientação e intensidade em cada partida."
-            data-en="With multiple card types, strategic paths, and playstyles, Adonai was created for players seeking depth, atmosphere, and intensity in every match.">
-            Com múltiplos tipos de cartas, caminhos estratégicos e estilos de jogo, Adonai foi criado para jogadores que
-            buscam profundidade, ambientação e intensidade em cada partida.
-          </p>
-
-        </div>
-
-        <div class="floating-cards reveal stagger-1" aria-label="Jogadores de Adonai">
-
-          <article class="floating-card tilt-card">
-            <img src="https://www.toykingdom.com.ph/cdn/shop/articles/Trading_Card_Games-6_1000x.jpg?v=1745307372"
-              alt="Jogadores disputando uma partida de Adonai">
-          </article>
-
-          <article class="floating-card tilt-card offset">
+      <div class="chapter-surface chapter-surface--story">
+        <section class="introduction wrap section" id="about">
+          <div>
+            <p
+              class="eyebrow"
+              data-pt="01 / Entre no universo"
+              data-en="01 / Enter the world"
+            >
+              01 / Entre no universo
+            </p>
+            <h2
+              data-pt="Toda escolha abre um caminho."
+              data-en="Every choice opens a path."
+            >
+              Toda escolha abre um caminho.
+            </h2>
+          </div>
+          <div class="intro-copy">
+            <p
+              data-pt="Adonai é um card game competitivo inspirado nas histórias, personagens e conflitos das Escrituras. Milagres, alianças e decisões estratégicas dão forma à sua jornada."
+              data-en="Adonai is a competitive card game inspired by the stories, characters, and conflicts of Scripture. Miracles, alliances, and strategic decisions shape your journey."
+            >
+              Adonai é um card game competitivo inspirado nas histórias,
+              personagens e conflitos das Escrituras. Milagres, alianças e
+              decisões estratégicas dão forma à sua jornada.
+            </p>
+            <p
+              data-pt="Comece pela sua identidade, descubra as cartas que combinam com sua estratégia e aprenda o fluxo de uma partida."
+              data-en="Start with your identity, discover cards that fit your strategy, and learn how a match unfolds."
+            >
+              Comece pela sua identidade, descubra as cartas que combinam com
+              sua estratégia e aprenda o fluxo de uma partida.
+            </p>
+            <a href="./how-to-play/" class="text-link"
+              ><span data-pt="Conhecer o jogo" data-en="Discover the game"
+                >Conhecer o jogo</span
+              ><span aria-hidden="true">↗</span></a
+            >
+          </div>
+          <figure class="intro-image">
             <img
-              src="https://lojapokemonsuper.com/wp-content/uploads/2026/03/como-jogar-pokemon-tcg-guia-completo-basico-e-avancado.webp"
-              alt="Mesa montada de Adonai Card Game">
-          </article>
-
-          <article class="floating-card tilt-card offset-2">
-            <img src="https://cdn.shopify.com/s/files/1/0098/1352/4580/files/teaching-to-play-invasion.jpg?v=1571214009"
-              alt="Comunidade jogando Adonai">
-          </article>
-
-        </div>
+              data-card-slot="about"
+              data-card-image="art"
+              alt=""
+              width="1200"
+              height="700"
+              loading="lazy"
+              decoding="async"
+              hidden
+            />
+            <figcaption>
+              <span data-pt="DENTRO DE FOUNDATIONS" data-en="INSIDE FOUNDATIONS"
+                >DENTRO DE FOUNDATIONS</span
+              >
+              / <strong data-card-slot="about" data-card-name></strong>
+            </figcaption>
+          </figure>
+        </section>
       </div>
-    </section>
-
-    <section class="section split-showcase" id="ambience">
-
-      <div class="split-media reveal">
-        <img src="assets/imgs/Personagem - Foundations-7 - img.webp" alt="Mesa de Adonai Card Game">
-      </div>
-
-      <div class="split-copy">
-
-        <div class="sticky-copy reveal">
-
-          <span class="section-kicker" data-pt="Ambientação" data-en="Ambience">
-            Ambientação
-          </span>
-
-          <h2 data-pt="Cada partida conta uma nova jornada." data-en="Every match tells a new journey.">
-            Cada partida conta uma nova jornada.
-          </h2>
-
-          <p data-pt="Em Adonai, suas escolhas moldam o rumo da partida. Forme alianças, realize milagres, enfrente tentações e adapte sua estratégia durante o jogo."
-            data-en="In Adonai, your choices shape the course of the match. Form alliances, perform miracles, face temptations, and adapt your strategy throughout the game.">
-            Em Adonai, suas escolhas moldam o rumo da partida. Forme alianças, realize milagres, enfrente tentações e
-            adapte sua estratégia durante o jogo.
-          </p>
-
-          <div class="bullet-panels">
-
-            <article class="info-panel reveal">
-
-              <span class="info-number">01</span>
-
-              <h3 data-pt="Defina sua Identidade" data-en="Define your Identity">
-                Defina sua Identidade
-              </h3>
-
-              <p data-pt="Seu Campeão, Templo e Território revelam quem você será durante a partida — e quais caminhos estarão abertos diante de você."
-                data-en="Your Champion, Temple, and Territory reveal who you will become throughout the match — and which paths will stand before you.">
-                Seu Campeão, Templo e Território revelam quem você será durante a partida — e quais caminhos estarão
-                abertos diante de você.
+      <section class="identity section" id="identity">
+        <div class="wrap">
+          <div class="section-top">
+            <div>
+              <p
+                class="eyebrow"
+                data-pt="02 / Sua identidade"
+                data-en="02 / Your identity"
+              >
+                02 / Sua identidade
               </p>
-
-            </article>
-
-            <article class="info-panel reveal stagger-1">
-
-              <span class="info-number">02</span>
-
-              <h3 data-pt="Prepare-se para o Confronto" data-en="Prepare for the Confrontation">
-                Prepare-se para o Confronto
-              </h3>
-
-              <p data-pt="Observe os sinais do seu oponente e escolha cuidadosamente quais ferramentas carregar para a batalha que está por vir."
-                data-en="Study the signs carried by your opponent and carefully choose which tools you will bring into the battle ahead.">
-                Observe os sinais do seu oponente e escolha cuidadosamente quais ferramentas carregar para a batalha que
-                está por vir.
-              </p>
-
-            </article>
-
-            <article class="info-panel reveal stagger-2">
-
-              <span class="info-number">03</span>
-
-              <h3 data-pt="Siga seu Caminho" data-en="Follow your Path">
-                Siga seu Caminho
-              </h3>
-
-              <p data-pt="Milagres, alianças, pecados e decisões inesperadas transformarão o rumo da partida. Cada escolha pode fortalecer sua jornada — ou marcar sua ruína."
-                data-en="Miracles, alliances, sins, and unexpected decisions will transform the course of the match. Every choice can strengthen your journey — or mark your downfall.">
-                Milagres, alianças, pecados e decisões inesperadas transformarão o rumo da partida. Cada escolha pode
-                fortalecer sua jornada — ou marcar sua ruína.
-              </p>
-
-            </article>
-
+              <h2
+                data-pt="Três escolhas.
+Sua estratégia."
+                data-en="Three choices.
+Your strategy."
+              >
+                Três escolhas. Sua estratégia.
+              </h2>
+            </div>
+            <a href="./how-to-play/#identity" class="text-link light"
+              ><span
+                data-pt="Entender minha identidade"
+                data-en="Understand my identity"
+                >Entender minha identidade</span
+              ><span aria-hidden="true">↗</span></a
+            >
           </div>
-
+          <div class="identity-explorer">
+            <div class="identity-controls">
+              <div
+                class="identity-tabs"
+                role="tablist"
+                aria-label="Identidade"
+                aria-orientation="vertical"
+              >
+                <button
+                  class="identity-tab"
+                  role="tab"
+                  id="tab-champion"
+                  aria-controls="panel-champion"
+                  aria-selected="true"
+                  tabindex="0"
+                >
+                  <span class="tab-number">01</span
+                  ><span data-pt="Campeão" data-en="Champion">Campeão</span
+                  ><span class="tab-arrow" aria-hidden="true">↗</span></button
+                ><button
+                  class="identity-tab"
+                  role="tab"
+                  id="tab-temple"
+                  aria-controls="panel-temple"
+                  aria-selected="false"
+                  tabindex="-1"
+                >
+                  <span class="tab-number">02</span
+                  ><span data-pt="Templo" data-en="Temple">Templo</span
+                  ><span class="tab-arrow" aria-hidden="true">↗</span></button
+                ><button
+                  class="identity-tab"
+                  role="tab"
+                  id="tab-territory"
+                  aria-controls="panel-territory"
+                  aria-selected="false"
+                  tabindex="-1"
+                >
+                  <span class="tab-number">03</span
+                  ><span data-pt="Território" data-en="Territory"
+                    >Território</span
+                  ><span class="tab-arrow" aria-hidden="true">↗</span>
+                </button>
+              </div>
+              <p
+                class="identity-note"
+                data-pt="O início de cada jornada é uma escolha sua."
+                data-en="Every journey begins with your choice."
+              >
+                O início de cada jornada é uma escolha sua.
+              </p>
+            </div>
+            <div class="identity-panels">
+              <article
+                class="identity-panel"
+                id="panel-champion"
+                role="tabpanel"
+                aria-labelledby="tab-champion"
+                tabindex="0"
+              >
+                <div class="identity-art">
+                  <img
+                    data-card-slot="champion"
+                    data-card-image="art"
+                    hidden
+                    width="815"
+                    height="1111"
+                    alt=""
+                    class="identity-background"
+                    loading="lazy"
+                    decoding="async"
+                  /><img
+                    data-card-slot="champion"
+                    data-card-image="card"
+                    hidden
+                    width="815"
+                    height="1111"
+                    alt=""
+                    class="identity-card"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <div class="identity-detail">
+                  <h3 data-card-slot="champion" data-card-name></h3>
+                  <p
+                    data-pt="Conheça quem lidera sua jornada e as possibilidades que ele traz para o seu deck."
+                    data-en="Meet the leader of your journey and explore the possibilities they bring to your deck."
+                  >
+                    Conheça quem lidera sua jornada e as possibilidades que ele
+                    traz para o seu deck.
+                  </p>
+                </div>
+              </article>
+              <article
+                class="identity-panel"
+                id="panel-temple"
+                role="tabpanel"
+                aria-labelledby="tab-temple"
+                tabindex="0"
+                hidden
+              >
+                <div class="identity-art">
+                  <img
+                    data-card-slot="temple"
+                    data-card-image="art"
+                    hidden
+                    width="1121"
+                    height="821"
+                    alt=""
+                    class="identity-background"
+                    loading="lazy"
+                    decoding="async"
+                  /><img
+                    data-card-slot="temple"
+                    data-card-image="card"
+                    hidden
+                    width="1122"
+                    height="822"
+                    alt=""
+                    class="identity-card"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <div class="identity-detail">
+                  <h3 data-card-slot="temple" data-card-name></h3>
+                  <p
+                    data-pt="Descubra o papel do seu Templo e como ele se conecta às suas escolhas."
+                    data-en="Discover the role of your Temple and how it connects to your choices."
+                  >
+                    Descubra o papel do seu Templo e como ele se conecta às suas
+                    escolhas.
+                  </p>
+                </div>
+              </article>
+              <article
+                class="identity-panel"
+                id="panel-territory"
+                role="tabpanel"
+                aria-labelledby="tab-territory"
+                tabindex="0"
+                hidden
+              >
+                <div class="identity-art">
+                  <img
+                    data-card-slot="territory"
+                    data-card-image="art"
+                    hidden
+                    width="1122"
+                    height="822"
+                    alt=""
+                    class="identity-background"
+                    loading="lazy"
+                    decoding="async"
+                  /><img
+                    data-card-slot="territory"
+                    data-card-image="card"
+                    hidden
+                    width="1122"
+                    height="822"
+                    alt=""
+                    class="identity-card"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <div class="identity-detail">
+                  <h3 data-card-slot="territory" data-card-name></h3>
+                  <p
+                    data-pt="Complete sua identidade e explore combinações com seu Campeão e seu Templo."
+                    data-en="Complete your identity and explore combinations with your Champion and Temple."
+                  >
+                    Complete sua identidade e explore combinações com seu
+                    Campeão e seu Templo.
+                  </p>
+                </div>
+              </article>
+            </div>
+          </div>
         </div>
-
+      </section>
+      <div class="chapter-surface chapter-surface--collection">
+        <section class="collection wrap section" id="cards">
+          <div class="section-top">
+            <div>
+              <p
+                class="eyebrow"
+                data-pt="03 / Coleção Foundations"
+                data-en="03 / Foundations collection"
+              >
+                03 / Coleção Foundations
+              </p>
+              <h2
+                data-pt="Sua próxima jogada
+começa aqui."
+                data-en="Your next move
+starts here."
+              >
+                Sua próxima jogada começa aqui.
+              </h2>
+            </div>
+            <a href="./cards/" class="text-link"
+              ><span
+                data-pt="Explorar todas as cartas"
+                data-en="Explore all cards"
+                >Explorar todas as cartas</span
+              ><span aria-hidden="true">↗</span></a
+            >
+          </div>
+          <div class="collection-grid">
+            <a
+              class="collection-card"
+              href="./cards/"
+              data-card-slot="featured-1"
+              data-card-link
+              ><div class="card-meta">
+                <span data-card-slot="featured-1" data-card-type></span
+                ><span data-card-slot="featured-1" data-card-number></span>
+              </div>
+              <div class="card-stage">
+                <img
+                  data-card-slot="featured-1"
+                  data-card-image="card"
+                  hidden
+                  width="821"
+                  height="1121"
+                  alt=""
+                  class=""
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <div class="card-title">
+                <h3 data-card-slot="featured-1" data-card-name></h3>
+                <span aria-hidden="true">↗</span>
+              </div></a
+            ><a
+              class="collection-card"
+              href="./cards/"
+              data-card-slot="featured-2"
+              data-card-link
+              ><div class="card-meta">
+                <span data-card-slot="featured-2" data-card-type></span
+                ><span data-card-slot="featured-2" data-card-number></span>
+              </div>
+              <div class="card-stage">
+                <img
+                  data-card-slot="featured-2"
+                  data-card-image="card"
+                  hidden
+                  width="821"
+                  height="1121"
+                  alt=""
+                  class=""
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <div class="card-title">
+                <h3 data-card-slot="featured-2" data-card-name></h3>
+                <span aria-hidden="true">↗</span>
+              </div></a
+            ><a
+              class="collection-card"
+              href="./cards/"
+              data-card-slot="featured-3"
+              data-card-link
+              ><div class="card-meta">
+                <span data-card-slot="featured-3" data-card-type></span
+                ><span data-card-slot="featured-3" data-card-number></span>
+              </div>
+              <div class="card-stage">
+                <img
+                  data-card-slot="featured-3"
+                  data-card-image="card"
+                  hidden
+                  width="821"
+                  height="1121"
+                  alt=""
+                  class=""
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <div class="card-title">
+                <h3 data-card-slot="featured-3" data-card-name></h3>
+                <span aria-hidden="true">↗</span>
+              </div></a
+            ><a
+              class="collection-card"
+              href="./cards/"
+              data-card-slot="featured-4"
+              data-card-link
+              ><div class="card-meta">
+                <span data-card-slot="featured-4" data-card-type></span
+                ><span data-card-slot="featured-4" data-card-number></span>
+              </div>
+              <div class="card-stage">
+                <img
+                  data-card-slot="featured-4"
+                  data-card-image="card"
+                  hidden
+                  width="821"
+                  height="1121"
+                  alt=""
+                  class=""
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <div class="card-title">
+                <h3 data-card-slot="featured-4" data-card-name></h3>
+                <span aria-hidden="true">↗</span>
+              </div></a
+            >
+          </div>
+        </section>
       </div>
-
-    </section>
-
-    <section class="section container influencers-section" id="reviews" data-section="reviews">
-      <div class="section-head reveal">
-        <span class="section-kicker" data-i18n="reviews.kicker"></span>
-        <h2 data-i18n="reviews.title"></h2>
-      </div>
-
-      <div class="content-carousel influencer-carousel">
-        <button class="carousel-arrow carousel-arrow--prev" type="button">‹</button>
-        <div class="carousel-track influencer-grid" data-render="reviews"></div>
-        <button class="carousel-arrow carousel-arrow--next" type="button">›</button>
-      </div>
-    </section>
-
-  </main>
-
-  <footer class="site-footer" data-section="footer">
-    <div class="container footer-grid">
-      <div>
-        <div class="footer-brand-wrap">
-          <img data-bind-src="footer.logo" alt="Adonai Logo" class="footer-logo" />
-          <span class="footer-brand" data-i18n="footer.brand"></span>
+      <section class="deck-section">
+        <div class="deck-art">
+          <img
+            data-card-slot="deck"
+            data-card-image="art"
+            hidden
+            width="821"
+            height="1121"
+            alt=""
+            class=""
+            loading="lazy"
+            decoding="async"
+          />
         </div>
-
-        <p data-i18n="footer.description"></p>
+        <div class="deck-copy">
+          <p
+            class="eyebrow"
+            data-pt="04 / Seu primeiro deck"
+            data-en="04 / Your first deck"
+          >
+            04 / Seu primeiro deck
+          </p>
+          <h2
+            data-pt="Uma estratégia
+para chamar
+de sua."
+            data-en="A strategy
+to call
+your own."
+          >
+            Uma estratégia para chamar de sua.
+          </h2>
+          <p
+            data-pt="Explore os decks disponíveis para conhecer combinações de cartas. Quando quiser experimentar suas próprias ideias, abra o Deckbuilder e comece a montar."
+            data-en="Explore the available decks to discover card combinations. When you are ready to try your own ideas, open the Deckbuilder and start building."
+          >
+            Explore os decks disponíveis para conhecer combinações de cartas.
+            Quando quiser experimentar suas próprias ideias, abra o Deckbuilder
+            e comece a montar.
+          </p>
+          <div class="actions">
+            <a href="./decks/" class="button cream"
+              ><span data-pt="Encontrar um deck" data-en="Find a deck"
+                >Encontrar um deck</span
+              ><span aria-hidden="true">↗</span></a
+            ><a href="./deckbuilder/" class="text-link light"
+              ><span data-pt="Montar meu deck" data-en="Build my deck"
+                >Montar meu deck</span
+              ><span aria-hidden="true">↗</span></a
+            >
+          </div>
+        </div>
+      </section>
+      <section
+        class="reviews wrap section"
+        id="reviews"
+        hidden
+        aria-labelledby="reviewsTitle"
+      >
+        <div class="section-top">
+          <div>
+            <p
+              class="eyebrow"
+              data-pt="Na comunidade"
+              data-en="In the community"
+            >
+              Na comunidade
+            </p>
+            <h2
+              id="reviewsTitle"
+              data-pt="Adonai na mesa
+dos criadores."
+              data-en="Adonai at
+the creators’ table."
+            >
+              Adonai na mesa dos criadores.
+            </h2>
+          </div>
+        </div>
+        <div class="reviews-grid" data-render="reviews"></div>
+      </section>
+      <div class="chapter-surface chapter-surface--closing">
+        <section class="next-step wrap">
+          <span class="next-symbol" aria-hidden="true">✦</span>
+          <div>
+            <h2
+              data-pt="A próxima história é sua."
+              data-en="The next story is yours."
+            >
+              A próxima história é sua.
+            </h2>
+            <p
+              data-pt="Conheça as regras. Escolha suas cartas. Comece sua jornada."
+              data-en="Learn the rules. Choose your cards. Begin your journey."
+            >
+              Conheça as regras. Escolha suas cartas. Comece sua jornada.
+            </p>
+          </div>
+          <a href="./how-to-play/" class="button"
+            ><span data-pt="Aprender a jogar" data-en="Learn to play"
+              >Aprender a jogar</span
+            ><span aria-hidden="true">↗</span></a
+          >
+        </section>
       </div>
-
-      <div class="footer-links" data-render="footerLinks"></div>
-    </div>
-  </footer>
-
-  <script src="index/index.js"></script>
-  <script src="index/hero-carousel.js"></script>
-  <script src="index/dynamic-index.js"></script>
-</body>
-
+      <p
+        class="wrap card-data-status"
+        id="cardDataStatus"
+        role="status"
+        hidden
+        data-pt="Algumas imagens de cartas não puderam ser carregadas. Você pode continuar navegando pelo catálogo."
+        data-en="Some card images could not be loaded. You can still browse the catalog."
+      >
+        Algumas imagens de cartas não puderam ser carregadas. Você pode
+        continuar navegando pelo catálogo.
+      </p>
+    </main>
+    <footer class="footer">
+      <div class="wrap footer-top">
+        <a class="wordmark" href="./index.html"
+          ><img
+            width="3508"
+            height="3509"
+            src="assets/logo/adonai_logo_base-4.webp"
+            alt=""
+            class=""
+            loading="lazy"
+            decoding="async"
+          /><span>ADONAI<small>CARD GAME</small></span></a
+        >
+        <p
+          data-pt="Um card game bíblico competitivo sobre escolhas, alianças e estratégia."
+          data-en="A competitive biblical card game about choices, alliances, and strategy."
+        >
+          Um card game bíblico competitivo sobre escolhas, alianças e
+          estratégia.
+        </p>
+        <div class="footer-links" data-render="footerLinks">
+          <a
+            href="./index.html"
+            aria-current="page"
+            data-pt="Início"
+            data-en="Home"
+            >Início</a
+          ><a href="./how-to-play/" data-pt="Como Jogar" data-en="How to Play"
+            >Como Jogar</a
+          ><a href="./cards/" data-pt="Cartas" data-en="Cards">Cartas</a
+          ><a href="./decks/" data-pt="Decks" data-en="Decks">Decks</a
+          ><a href="./deckbuilder/" data-pt="Deckbuilder" data-en="Deckbuilder"
+            >Deckbuilder</a
+          ><a href="./manual/" data-pt="Manual" data-en="Rulebook">Manual</a
+          ><!-- <a href="./lore/">Lore</a> -->
+          <!-- <a href="./index.html#shop">Loja</a> -->
+          <!-- <a href="./gallery/">Galeria</a> -->
+        </div>
+      </div>
+      <div class="wrap footer-bottom">
+        <span>ADONAI CARD GAME</span
+        ><a href="#mainContent"
+          ><span data-pt="Voltar ao início" data-en="Back to top"
+            >Voltar ao início</span
+          >
+          ↑</a
+        >
+      </div>
+    </footer>
+    <script src="shared/site.js"></script>
+    <script src="index/home.js"></script>
+    <script
+      src="shared/card-content.js"
+      data-content="index/home-content.json"
+    ></script>
+    <script src="index/dynamic-index.js"></script>
+  </body>
 </html>

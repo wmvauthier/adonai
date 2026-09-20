@@ -1510,3 +1510,246 @@ button.function-chip{
     grid-template-columns:1fr;
   }
 }
+
+/* Deckbuilder art direction — a compact tactical workbench in the shared system. */
+.deckbuilder-page{
+  --gold-strong:var(--gold);
+  --shadow:0 22px 54px rgba(0,0,0,.3);
+  --header-h:94px;
+  overflow-x:hidden;
+}
+.deckbuilder-page .container{
+  width:min(1840px, calc(100% - 48px));
+  margin-inline:auto;
+}
+.deckbuilder-page .section-kicker{
+  display:block;
+  color:var(--gold);
+  font-size:.66rem;
+  font-weight:800;
+  letter-spacing:.17em;
+  text-transform:uppercase;
+}
+.deckbuilder-page :is(input,select,textarea,button){font-family:var(--sans)}
+.deckbuilder-page .reveal{opacity:1; transform:none}
+.deckbuilder-page .deckbuilder-shell{padding-top:0}
+
+.builder-intro{
+  min-height:440px;
+  display:grid;
+  grid-template-columns:minmax(0, 57%) minmax(0, 43%);
+  background:
+    radial-gradient(circle at 12% 18%, rgba(214,181,113,.12), transparent 36%),
+    #090909;
+  border-bottom:1px solid var(--line);
+}
+.builder-intro-copy{
+  align-self:center;
+  padding-block:62px;
+  padding-right:7%;
+}
+.deckbuilder-page .builder-intro h1{
+  max-width:790px;
+  margin:0 0 24px;
+  font-family:var(--serif);
+  font-size:clamp(3.3rem, 4.8vw, 5.5rem);
+  font-weight:400;
+  line-height:.96;
+  letter-spacing:-.045em;
+}
+.builder-intro-copy > p:not(.eyebrow){max-width:650px; margin-bottom:0; color:var(--muted); font-size:.94rem}
+.builder-highlights{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  max-width:640px;
+  margin:34px 0 0;
+  padding:0;
+  border-block:1px solid var(--line);
+}
+.builder-highlights div{padding:14px 18px 13px 0; border-right:1px solid var(--line)}
+.builder-highlights div:not(:first-child){padding-left:18px}
+.builder-highlights div:last-child{border-right:0}
+.builder-highlights dt{color:var(--gold); font-family:var(--serif); font-size:1.8rem; line-height:1}
+.builder-highlights dd{margin:6px 0 0; color:var(--muted); font-size:.59rem; font-weight:700; letter-spacing:.11em; text-transform:uppercase}
+.builder-intro-visual{
+  position:relative;
+  min-height:440px;
+  overflow:hidden;
+  background:linear-gradient(145deg, #211d14, #0d0d0c 72%);
+  border-left:1px solid var(--line);
+  isolation:isolate;
+}
+.builder-intro-visual::before{
+  content:"";
+  position:absolute;
+  inset:7%;
+  border:1px solid rgba(214,181,113,.27);
+}
+.builder-intro-grid,
+.builder-intro-visual > span:first-child{
+  position:absolute;
+  inset:7%;
+  opacity:.45;
+  background-image:
+    linear-gradient(rgba(214,181,113,.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(214,181,113,.08) 1px, transparent 1px);
+  background-size:48px 48px;
+  mask-image:linear-gradient(135deg, #000, transparent 86%);
+}
+.builder-intro-card{
+  position:absolute;
+  z-index:2;
+  width:min(27%, 190px);
+  margin:0;
+  filter:drop-shadow(0 25px 30px rgba(0,0,0,.58));
+}
+.builder-intro-card img{width:100%; border-radius:4.4%}
+.builder-intro-card:nth-of-type(1){left:12%; top:22%; transform:rotate(-10deg)}
+.builder-intro-card:nth-of-type(2){left:37%; top:10%; z-index:3; transform:rotate(1deg)}
+.builder-intro-card:nth-of-type(3){right:10%; top:24%; transform:rotate(10deg)}
+
+.deckbuilder-page .deckbuilder-toolbar{
+  align-items:end;
+  margin-block:54px 20px;
+  padding-bottom:20px;
+  border-bottom:1px solid var(--line);
+}
+.deckbuilder-page .deckbuilder-toolbar h2{
+  margin:7px 0 0;
+  font-family:var(--serif);
+  font-size:clamp(2rem, 3vw, 3.2rem);
+  font-weight:400;
+}
+.deckbuilder-page .assistant-toggle{
+  min-height:40px;
+  border-radius:0;
+  border-color:var(--line);
+  background:var(--surface);
+  color:var(--text);
+  font-size:.72rem;
+  font-weight:700;
+}
+.deckbuilder-page .toggle-icon{border-radius:0; background:var(--bg); color:var(--gold)}
+.deckbuilder-page .deckbuilder-layout{
+  grid-template-columns:minmax(240px, 310px) minmax(560px, 1fr) minmax(260px, 310px);
+  gap:14px;
+  margin-bottom:72px;
+}
+.deckbuilder-page .deckbuilder-layout.is-assistant-hidden{
+  grid-template-columns:minmax(240px, 310px) minmax(560px, 1fr) minmax(260px, 310px);
+}
+.deckbuilder-page .deckbuilder-layout.is-catalog-hidden{
+  grid-template-columns:minmax(560px, 1fr) minmax(260px, 310px);
+}
+.deckbuilder-page .builder-panel{
+  border-radius:0;
+  border-color:var(--line);
+  background:var(--surface);
+  box-shadow:0 18px 38px rgba(0,0,0,.2);
+}
+.deckbuilder-page .catalog-panel,
+.deckbuilder-page .right-panels{
+  position:sticky;
+  top:112px;
+  max-height:calc(100svh - 128px);
+  overflow:auto;
+  scrollbar-width:thin;
+  scrollbar-color:var(--gold) transparent;
+}
+.deckbuilder-page .right-panels{padding-right:2px}
+.deckbuilder-page .panel-head{padding-bottom:10px; border-bottom:1px solid var(--line)}
+.deckbuilder-page :is(.catalog-filters input,.catalog-filters select,.assistant-grid select,.assistant-grid textarea,#deckText){
+  border-radius:0;
+  border-color:var(--line);
+  background:var(--bg);
+  color:var(--text);
+}
+.deckbuilder-page :is(.catalog-filters select,.assistant-grid select){color:var(--text)}
+.deckbuilder-page :is(.catalog-filters select option,.assistant-grid select option){background:var(--bg); color:var(--text)}
+.deckbuilder-page .catalog-range-grid label{color:var(--muted); font-weight:700}
+.deckbuilder-page .catalog-range-grid label strong{color:var(--text)}
+.deckbuilder-page .virtue-filter{border-radius:0; border-color:var(--line); background:var(--bg); color:var(--text)}
+.deckbuilder-page .card-catalog{max-height:none; gap:8px}
+.deckbuilder-page .catalog-card{border-radius:3px; border-color:transparent; background:var(--bg)}
+.deckbuilder-page .catalog-card:hover{border-color:var(--gold); box-shadow:0 0 0 1px var(--gold)}
+.deckbuilder-page .catalog-card-actions button{border-radius:0}
+.deckbuilder-page .deck-panel{min-height:720px}
+.deckbuilder-page .deck-current-head{padding-bottom:14px}
+.deckbuilder-page :is(.status-chip,.deck-pill,.card-tag){border-radius:0; border-color:var(--line); background:var(--bg); color:var(--text)}
+.deckbuilder-page .deck-board-tools{border-radius:0; border-color:var(--line); background:var(--bg)}
+.deckbuilder-page :is(.deck-layout-mode,.deck-layout-actions){border-radius:0}
+.deckbuilder-page :is(.deck-layout-mode button,.deck-layout-actions button){border-radius:0}
+.deckbuilder-page .deck-board{border-radius:0; border-color:var(--line); background:#090909}
+.deckbuilder-page .deck-lane{border-radius:0}
+.deckbuilder-page :is(.identity-board-slot,.deck-board-card){border-radius:3px}
+.deckbuilder-page :is(.analysis-section,.curve-chart,.curve-row.is-sweetspot,.pick-item,.suggestion-row,.function-row){border-radius:0}
+.deckbuilder-page .deck-actions button,
+.deckbuilder-page .suggestion-row button,
+.deckbuilder-page .pick-item button{border-radius:0}
+.deckbuilder-page .deck-actions button:first-child{border-color:var(--gold); background:var(--gold); color:var(--on-gold)}
+.deckbuilder-page .lore-empty,
+.deckbuilder-page .lore-loading{border-radius:0; background:var(--bg)}
+
+:root[data-theme="light"] .deckbuilder-page{--shadow:0 18px 42px rgba(20,44,49,.13)}
+[data-theme="light"] .builder-intro{background:#f3f0e7}
+[data-theme="light"] .builder-intro-visual{background:linear-gradient(145deg, #17353b, #0f2428); border-left:0}
+[data-theme="light"] .deckbuilder-page .builder-panel,
+[data-theme="light"] .deckbuilder-page .assistant-toggle{background:#e4e2d8; box-shadow:none}
+[data-theme="light"] .deckbuilder-page :is(.catalog-filters input,.catalog-filters select,.assistant-grid select,.assistant-grid textarea,#deckText,.virtue-filter,.status-chip,.deck-pill,.card-tag,.deck-board-tools){background:#f3f0e7; color:#142c31}
+[data-theme="light"] .deckbuilder-page :is(.catalog-filters select option,.assistant-grid select option){background:#f3f0e7; color:#142c31}
+[data-theme="light"] .deckbuilder-page :is(.catalog-range-grid label strong,.identity-slot strong,.function-row strong,.suggestion-row strong,.pick-item strong,.curve-summary strong){color:#142c31}
+[data-theme="light"] .deckbuilder-page .deck-board{background:#142c31}
+[data-theme="light"] .deckbuilder-page .analysis-section,
+[data-theme="light"] .deckbuilder-page :is(.curve-chart,.pick-item,.suggestion-row,.function-row){background:#f3f0e7}
+[data-theme="light"] .deckbuilder-page :is(.function-row,.suggestion-row,.pick-item){color:#142c31}
+[data-theme="light"] .deckbuilder-page .curve-track{background:#d3d5ca}
+[data-theme="light"] .deckbuilder-page .catalog-card{box-shadow:0 8px 18px rgba(20,44,49,.15)}
+[data-theme="light"] .deckbuilder-page .catalog-card-actions{background:rgba(20,44,49,.84)}
+
+@media (max-width:1240px){
+  .deckbuilder-page .deckbuilder-layout,
+  .deckbuilder-page .deckbuilder-layout.is-assistant-hidden,
+  .deckbuilder-page .deckbuilder-layout.is-catalog-hidden{grid-template-columns:1fr}
+  .deckbuilder-page .catalog-panel,
+  .deckbuilder-page .right-panels{position:relative; top:auto; max-height:none; overflow:visible}
+  .deckbuilder-page .card-catalog{grid-template-columns:repeat(6, minmax(0, 1fr))}
+}
+@media (max-width:900px){
+  .deckbuilder-page{--header-h:78px}
+  .builder-intro{grid-template-columns:1fr; min-height:0}
+  .builder-intro-copy{padding:62px 32px}
+  .builder-intro-visual{min-height:440px; border-left:0; border-top:1px solid var(--line)}
+  .deckbuilder-page .container{width:calc(100% - 48px)}
+  .deckbuilder-page .card-catalog{grid-template-columns:repeat(4, minmax(0, 1fr))}
+}
+@media (max-width:760px){
+  .deckbuilder-page .container{width:calc(100% - 32px)}
+  .builder-intro-copy{padding:54px 16px}
+  .deckbuilder-page .builder-intro h1{font-size:clamp(3.1rem, 14vw, 4.7rem)}
+  .builder-intro-visual{min-height:360px}
+  .builder-intro-card{width:min(29%, 160px)}
+  .builder-intro-card:nth-of-type(1){left:7%}
+  .builder-intro-card:nth-of-type(2){left:35%}
+  .builder-intro-card:nth-of-type(3){right:7%}
+  .deckbuilder-page .deckbuilder-toolbar{align-items:start; margin-top:42px}
+  .deckbuilder-page .deckbuilder-view-actions{justify-content:flex-start}
+  .deckbuilder-page .assistant-toggle{padding-inline:10px}
+  .deckbuilder-page .card-catalog{
+    grid-template-columns:repeat(3, minmax(0, 1fr));
+    max-height:68svh;
+    overflow:auto;
+    padding-right:4px;
+  }
+  .deckbuilder-page .deck-panel{min-height:560px}
+}
+@media (max-width:460px){
+  .builder-highlights div{padding:13px 5px 13px 0}
+  .builder-highlights div:not(:first-child){padding-left:8px}
+  .builder-highlights dt{font-size:1.55rem}
+  .builder-highlights dd{font-size:.52rem}
+  .builder-intro-visual{min-height:310px}
+  .deckbuilder-page .deckbuilder-view-actions{display:grid; grid-template-columns:1fr 1fr; width:100%}
+  .deckbuilder-page .assistant-toggle{justify-content:flex-start; width:100%}
+  .deckbuilder-page .card-catalog{grid-template-columns:repeat(2, minmax(0, 1fr))}
+  .deckbuilder-page .builder-panel{padding:14px}
+}

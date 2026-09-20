@@ -12,7 +12,12 @@ const els = {
   content: document.getElementById("manualContent"),
   askRules: document.getElementById("askRules"),
   modeButtons: document.querySelectorAll(".manual-mode-btn"),
-  assistantResults: document.getElementById("assistantResults")
+  assistantResults: document.getElementById("assistantResults"),
+  manualChapterCount: document.getElementById("manualChapterCount"),
+  manualSectionCount: document.getElementById("manualSectionCount"),
+  manualLineCount: document.getElementById("manualLineCount"),
+  tocPanel: document.querySelector(".manual-toc"),
+  tocToggle: document.getElementById("tocToggle")
 };
 
 const copy = {
@@ -63,6 +68,25 @@ const queryAliases = {
 
 function t(key) {
   return copy[currentLang][key] || copy.pt[key] || key;
+}
+
+function updateTocToggleLabel() {
+  if (!els.tocToggle) return;
+  const expanded = els.tocToggle.getAttribute("aria-expanded") === "true";
+  const label = currentLang === "en"
+    ? expanded ? "Close contents" : "Open contents"
+    : expanded ? "Fechar índice" : "Abrir índice";
+  els.tocToggle.textContent = label;
+}
+
+function updateManualStats(markdown) {
+  if (els.manualChapterCount) {
+    els.manualChapterCount.textContent = String(sections.filter((section) => section.level === 1).length);
+  }
+  if (els.manualSectionCount) els.manualSectionCount.textContent = String(sections.length);
+  if (els.manualLineCount) {
+    els.manualLineCount.textContent = String(markdown.split(/\r?\n/).filter((line) => line.trim()).length);
+  }
 }
 
 function escapeHtml(value) {
@@ -289,7 +313,7 @@ function renderManual() {
   }
 
   els.content.innerHTML = visibleSections.map((section) => `
-    <article class="rule-section" id="${escapeHtml(section.id)}" data-section-id="${escapeHtml(section.id)}" tabindex="0">
+    <article class="rule-section ${section.level <= 1 ? "rule-section--chapter" : ""}" id="${escapeHtml(section.id)}" data-section-id="${escapeHtml(section.id)}" tabindex="0">
       ${section.level <= 1
         ? `<h2>${formatInline(section.title, query)}</h2>`
         : `<h3>${formatInline(section.title, query)}</h3>`}
@@ -379,8 +403,12 @@ function applyLanguage(lang) {
     }
   });
   els.langButtons.forEach((button) => button.classList.toggle("is-active", button.dataset.lang === lang));
+  els.langButtons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.lang === lang)));
+  els.mobileToggle?.setAttribute("aria-label", lang === "pt" ? "Alternar menu" : "Toggle menu");
+  updateTocToggleLabel();
   setQueryMode(queryMode);
   renderManual();
+  document.dispatchEvent(new CustomEvent("home:language", { detail: lang }));
 }
 
 function handleHeader() {
@@ -402,6 +430,7 @@ async function init() {
     if (!response.ok) throw new Error(`Could not load ${RULES_URL}`);
     const markdown = await response.text();
     sections = parseMarkdown(markdown);
+    updateManualStats(markdown);
     renderToc();
 
     const params = new URLSearchParams(window.location.search);
@@ -448,6 +477,18 @@ els.modeButtons.forEach((button) => {
     else renderManual();
     els.search.focus();
   });
+});
+els.tocToggle?.addEventListener("click", () => {
+  const expanded = els.tocToggle.getAttribute("aria-expanded") === "true";
+  els.tocToggle.setAttribute("aria-expanded", String(!expanded));
+  els.tocPanel?.classList.toggle("is-open", !expanded);
+  updateTocToggleLabel();
+});
+els.toc?.addEventListener("click", (event) => {
+  if (!event.target.closest(".toc-link")) return;
+  els.tocPanel?.classList.remove("is-open");
+  els.tocToggle?.setAttribute("aria-expanded", "false");
+  updateTocToggleLabel();
 });
 els.mobileToggle?.addEventListener("click", () => {
   const isOpen = els.primaryNav.classList.toggle("is-open");

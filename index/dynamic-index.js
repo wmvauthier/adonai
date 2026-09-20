@@ -1,142 +1,137 @@
 (() => {
-  const CONTENT_URL = "index/index-content.json";
-
-  const getLang = () => {
-    const active = document.querySelector(".lang-btn.is-active");
-    return active?.dataset.lang || "pt";
+  const section = document.getElementById("reviews");
+  const track = document.querySelector('[data-render="reviews"]');
+  let reviews = [];
+  let footerLinks = null;
+  const text = (value, lang) =>
+    typeof value === "string"
+      ? value
+      : value?.[lang] || value?.pt || value?.en || "";
+  const safeUrl = (value) => {
+    if (typeof value !== "string" || !value.trim()) return "";
+    try {
+      const url = new URL(value, document.baseURI);
+      return ["https:", "http:"].includes(url.protocol) ? url.href : "";
+    } catch {
+      return "";
+    }
   };
-
-  const text = (value, lang) => {
-    if (!value) return "";
-    if (typeof value === "string") return value;
-    return value[lang] || value.pt || value.en || "";
+  const thumbnail = (item) => {
+    if (safeUrl(item.thumbnail)) return safeUrl(item.thumbnail);
+    try {
+      const url = new URL(item.url);
+      const id =
+        item.youtubeId ||
+        (url.hostname === "youtu.be"
+          ? url.pathname.slice(1)
+          : ["youtube.com", "www.youtube.com", "m.youtube.com"].includes(
+                url.hostname,
+              )
+            ? url.searchParams.get("v") ||
+              url.pathname.match(/^\/(?:shorts|embed)\/([^/]+)/)?.[1]
+            : "");
+      if (/^[\w-]{11}$/.test(id || ""))
+        return `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+    } catch {
+      /* A imagem padrão mantém o review utilizável. */
+    }
+    return "assets/logo/adonai_logo_base-4.webp";
   };
-
-  const youtubeThumb = (item) => {
-    if (item.thumbnail) return item.thumbnail;
-    if (item.youtubeId)
-      return `https://img.youtube.com/vi/${item.youtubeId}/maxresdefault.jpg`;
-    return "";
-  };
-
-  const setTextBindings = (data, lang) => {
-    document.querySelectorAll("[data-i18n]").forEach((el) => {
-      const path = el.dataset.i18n.split(".");
-      const value = path.reduce((acc, key) => acc?.[key], data);
-      el.textContent = text(value, lang);
-    });
-
-    document.querySelectorAll("[data-bind-src]").forEach((el) => {
-      const path = el.dataset.bindSrc.split(".");
-      const value = path.reduce((acc, key) => acc?.[key], data);
-      if (value) el.src = value;
-    });
-  };
-
-  const renderTutorials = (items, lang) => {
-    const track = document.querySelector('[data-render="tutorials"]');
-    if (!track) return;
-
-    track.innerHTML = items
-      .map(
-        (item) => `
-      <a class="media-card" href="${item.url}" target="_blank" rel="noopener noreferrer">
-        <img src="${youtubeThumb(item)}" alt="${text(item.title, lang)}">
-        <div class="media-copy">
-          <span>${text(item.tag, lang)}</span>
-          <h3>${text(item.title, lang)}</h3>
-        </div>
-      </a>
-    `,
+  const renderReviews = () => {
+    const lang = document.documentElement.lang === "en" ? "en" : "pt";
+    track.replaceChildren();
+    reviews.forEach((item) => {
+      if (
+        !item ||
+        item.enabled === false ||
+        typeof item.name !== "string" ||
+        !item.name.trim() ||
+        !safeUrl(item.url)
       )
-      .join("");
+        return;
+      const card = document.createElement("a");
+      card.className = "home-review";
+      card.href = safeUrl(item.url);
+      card.target = "_blank";
+      card.rel = "noopener noreferrer";
+      const image = document.createElement("img");
+      image.src = thumbnail(item);
+      image.alt = "";
+      image.loading = "lazy";
+      image.addEventListener(
+        "error",
+        () => {
+          image.src = "assets/logo/adonai_logo_base-4.webp";
+        },
+        { once: true },
+      );
+      const copy = document.createElement("div");
+      copy.className = "home-review-copy";
+      const name = document.createElement("h3");
+      name.textContent = item.name;
+      copy.append(name);
+      const quoteText = text(item.quote, lang);
+      if (quoteText) {
+        const quote = document.createElement("blockquote");
+        quote.textContent = quoteText;
+        copy.append(quote);
+      }
+      const label = document.createElement("span");
+      label.className = "home-review-label";
+      label.textContent = lang === "pt" ? "Ver review ↗" : "View review ↗";
+      copy.append(label);
+      card.append(image, copy);
+      track.append(card);
+    });
+    section.hidden = !track.childElementCount;
   };
-
-  const renderReviews = (items, lang) => {
-    const track = document.querySelector('[data-render="reviews"]');
-    if (!track) return;
-
-    track.innerHTML = items
-      .map(
-        (item) => `
-      <a class="influencer-card review-card" href="${item.url}" target="_blank" rel="noopener noreferrer">
-        <img src="${youtubeThumb(item)}" alt="Review de ${item.name}">
-        <div>
-          <strong>${item.name}</strong>
-          <span>“${text(item.quote, lang)}”</span>
-        </div>
-      </a>
-    `,
-      )
-      .join("");
-  };
-
-  const renderFooterLinks = (links, lang) => {
+  const renderFooter = () => {
+    if (!footerLinks) return;
+    const lang = document.documentElement.lang === "en" ? "en" : "pt";
     const container = document.querySelector('[data-render="footerLinks"]');
-    if (!container) return;
-
-    container.innerHTML = links
-      // Oculta as opções reservadas para uma próxima fase de produção.
-      .filter((link) => link.enabled !== false)
-      .map(
-        (link) => `
-      <a href="${link.href}">${text(link.label, lang)}</a>
-    `,
-      )
-      .join("");
-  };
-
-  const initCarousels = () => {
-    document.querySelectorAll(".content-carousel").forEach((carousel) => {
-      const track = carousel.querySelector(".carousel-track");
-      const prev = carousel.querySelector(".carousel-arrow--prev");
-      const next = carousel.querySelector(".carousel-arrow--next");
-
-      if (!track || !prev || !next) return;
-
-      const getStep = () => {
-        const firstItem = track.children[0];
-        const styles = window.getComputedStyle(track);
-        const gap = parseFloat(styles.columnGap || styles.gap || 0);
-        return firstItem.getBoundingClientRect().width + gap;
-      };
-
-      prev.onclick = () => {
-        track.scrollBy({ left: -getStep(), behavior: "smooth" });
-      };
-
-      next.onclick = () => {
-        track.scrollBy({ left: getStep(), behavior: "smooth" });
-      };
-    });
-  };
-
-  const render = (data) => {
-    const lang = getLang();
-
-    setTextBindings(data, lang);
-    renderTutorials(data.tutorials.items, lang);
-    renderReviews(data.reviews.items, lang);
-    renderFooterLinks(data.footer.links, lang);
-    initCarousels();
-  };
-
-  fetch(CONTENT_URL)
-    .then((res) => res.json())
-    .then((data) => {
-      render(data);
-
-      document.querySelectorAll(".lang-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          document
-            .querySelectorAll(".lang-btn")
-            .forEach((b) => b.classList.remove("is-active"));
-          btn.classList.add("is-active");
-          render(data);
-        });
+    container.replaceChildren();
+    footerLinks
+      .filter((link) => link.enabled !== false && safeUrl(link.href))
+      .forEach((link) => {
+        const anchor = document.createElement("a");
+        anchor.href = safeUrl(link.href);
+        anchor.textContent = text(link.label, lang);
+        if (
+          new URL(anchor.href).pathname ===
+          new URL("index.html", document.baseURI).pathname
+        ) {
+          anchor.setAttribute("aria-current", "page");
+        }
+        container.append(anchor);
       });
+  };
+  document.addEventListener("home:language", () => {
+    renderReviews();
+    renderFooter();
+  });
+  fetch("index/index-content.json")
+    .then((response) => {
+      if (!response.ok) throw new Error(`Home: HTTP ${response.status}`);
+      return response.json();
     })
-    .catch((err) => {
-      console.error("Erro ao carregar " + CONTENT_URL + ":", err);
+    .then((data) => {
+      if (Array.isArray(data.footer?.links)) footerLinks = data.footer.links;
+      renderFooter();
+    })
+    .catch((error) =>
+      console.error("Mantendo a navegação padrão do rodapé.", error),
+    );
+  fetch("data/content/reviews.json")
+    .then((response) => {
+      if (!response.ok) throw new Error(`Reviews: HTTP ${response.status}`);
+      return response.json();
+    })
+    .then((data) => {
+      reviews = Array.isArray(data) ? data : [];
+      renderReviews();
+    })
+    .catch((error) => {
+      section.hidden = true;
+      console.error("Não foi possível carregar os reviews.", error);
     });
 })();

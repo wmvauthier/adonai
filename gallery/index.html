@@ -1,55 +1,73 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../shared/theme.js"></script>
   <title>Adonai Card Game — Galeria</title>
   <meta name="description"
     content="Galeria funcional de conteúdos de Adonai Card Game reunindo vídeos do YouTube e posts do Instagram." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="../shared/generic.css" />
+  <link rel="stylesheet" href="../shared/site.css" />
+  <link rel="stylesheet" href="../shared/site-light.css" />
   <link rel="stylesheet" href="./gallery.css" />
 </head>
 
-<body>
-  <div class="page-noise" aria-hidden="true"></div>
-
-  <header class="site-header" id="siteHeader">
-    <a href="../index.html" class="brand" aria-label="Adonai Card Game">
-      <img src="../assets/logo/adonai_logo_base-4.webp" alt="Adonai Logo" class="brand-logo" />
+<body class="gallery-page">
+  <a class="skip" href="#mainContent" data-pt="Pular para o conteúdo" data-en="Skip to content">Pular para o conteúdo</a>
+  <header class="masthead" id="siteHeader">
+    <a class="wordmark" href="../index.html" aria-label="Adonai — Início">
+      <img width="3508" height="3509" src="../assets/logo/adonai_logo_base-4.webp" alt="" fetchpriority="high" decoding="async" />
+      <span>ADONAI<small>CARD GAME</small></span>
     </a>
-
-    <button class="mobile-toggle" id="mobileToggle" aria-expanded="false" aria-controls="primaryNav"
-      aria-label="Abrir menu">
-      <span></span><span></span><span></span>
-    </button>
-
-    <nav class="site-nav" id="primaryNav">
+    <nav class="navigation" id="primaryNav" aria-label="Principal">
       <a href="../index.html" data-pt="Início" data-en="Home">Início</a>
       <a href="../how-to-play/" data-pt="Como Jogar" data-en="How to Play">Como Jogar</a>
       <a href="../cards/" data-pt="Cartas" data-en="Cards">Cartas</a>
       <a href="../decks/" data-pt="Decks" data-en="Decks">Decks</a>
       <a href="../deckbuilder/" data-pt="Deckbuilder" data-en="Deckbuilder">Deckbuilder</a>
       <a href="../manual/" data-pt="Manual" data-en="Rulebook">Manual</a>
-      <!-- <a href="./" data-pt="Galeria" data-en="Gallery">Galeria</a> -->
-      <!-- <a href="../lore/" data-pt="Lore" data-en="Lore">Lore</a> -->
-      <!-- <a href="../index.html#shop" data-pt="Loja" data-en="Shop">Loja</a> -->
+      <!-- <a href="../lore/">Lore</a> -->
+      <!-- <a href="../index.html#shop">Loja</a> -->
+      <!-- <a href="../gallery/">Galeria</a> -->
     </nav>
-
-    <div class="header-actions">
-      <div class="lang-switch" aria-label="Alternar idioma">
-        <button class="lang-btn is-active" data-lang="pt">PT</button>
-        <button class="lang-btn" data-lang="en">EN</button>
+    <div class="header-tools">
+      <div class="theme-control" role="group" aria-label="Tema da página">
+        <button class="theme-button" type="button" data-theme-option="light" aria-label="Ativar modo claro" aria-pressed="false" title="Ativar modo claro">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true" focusable="false">
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" />
+          </svg>
+        </button>
+        <button class="theme-button" type="button" data-theme-option="dark" aria-label="Ativar modo escuro" aria-pressed="true" title="Ativar modo escuro">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <path d="M20.5 13.3A8.6 8.6 0 0 1 10.7 3.5 8.7 8.7 0 1 0 20.5 13.3Z" />
+          </svg>
+        </button>
       </div>
+      <div class="languages" aria-label="Idioma">
+        <button class="lang-btn is-active" data-lang="pt" aria-pressed="true">PT</button><span aria-hidden="true">/</span><button class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <button id="mobileToggle" class="menu-toggle" type="button" aria-controls="primaryNav" aria-expanded="false" aria-label="Alternar menu"><span></span><span></span></button>
     </div>
   </header>
 
-  <main>
+  <main id="mainContent">
+    <!-- <section class="gallery-intro">
+      <div class="container">
+        <p class="eyebrow" data-pt="A comunidade em cena" data-en="Community in the spotlight">A comunidade em cena</p>
+        <h1 data-pt="O jogo vai além da mesa." data-en="The game goes beyond the table.">O jogo vai além da mesa.</h1>
+        <div class="gallery-intro-bottom">
+          <p data-pt="Conheça Adonai pelos olhos de quem joga. Vídeos, descobertas e conversas da nossa comunidade, em um só lugar." data-en="Discover Adonai through the eyes of its players. Videos, discoveries, and conversations from our community, all in one place.">Conheça Adonai pelos olhos de quem joga. Vídeos, descobertas e conversas da nossa comunidade, em um só lugar.</p>
+          <a class="button" href="#galleryTools"><span data-pt="Explorar conteúdos" data-en="Explore content">Explorar conteúdos</span><span aria-hidden="true">↓</span></a>
+        </div>
+      </div>
+    </section> -->
     <section class="section gallery-shell" id="galleryFeed">
       <section class="container gallery-featured reveal" id="galleryHighlights" hidden>
         <div class="gallery-featured-head">
@@ -58,16 +76,17 @@
         <div class="featured-strip" id="featuredStrip"></div>
       </section>
 
-      <div class="container gallery-tools reveal">
+      <div class="container gallery-tools reveal" id="galleryTools">
 
         <div class="gallery-featured-head">
           <span class="section-kicker" data-pt="Galeria" data-en="Gallery">Galeria</span>
         </div>
 
+        <label class="gallery-search" for="gallerySearch"><span data-pt="Encontre sua próxima descoberta" data-en="Find your next discovery">Encontre sua próxima descoberta</span><input id="gallerySearch" type="search" data-pt="Buscar título ou criador…" data-en="Search title or creator…" placeholder="Buscar título ou criador…" /></label>
         <div class="gallery-tool-groups">
           <div class="gallery-tool-group">
             <span data-pt="Plataforma" data-en="Platform">Plataforma</span>
-            <div class="toolbar-group toolbar-filters" role="tablist" aria-label="Filtrar plataforma">
+            <div class="toolbar-group toolbar-filters" role="group" aria-label="Filtrar plataforma">
               <button class="toolbar-chip is-active" type="button" data-filter="all" data-pt="Tudo"
                 data-en="All">Tudo</button>
               <button class="toolbar-chip toolbar-chip--youtube" type="button" data-filter="youtube">YouTube</button>
@@ -78,7 +97,7 @@
 
           <div class="gallery-tool-group">
             <span data-pt="Período" data-en="Date range">Período</span>
-            <div class="toolbar-group toolbar-date" role="tablist" aria-label="Filtrar período">
+            <div class="toolbar-group toolbar-date" role="group" aria-label="Filtrar período">
               <button class="toolbar-chip is-active" type="button" data-date-filter="all" data-pt="Tudo"
                 data-en="All">Tudo</button>
               <button class="toolbar-chip" type="button" data-date-filter="30" data-pt="30 dias" data-en="30 days">30
@@ -94,7 +113,7 @@
         <div class="gallery-creators" id="creatorFilters" aria-label="Filtrar criador"></div>
 
         <div class="gallery-meta">
-          <p id="gallerySummary">Carregando conteúdos...</p>
+          <p id="gallerySummary" role="status">Carregando conteúdos...</p>
         </div>
       </div>
 
@@ -102,19 +121,13 @@
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container footer-grid">
-      <div>
-        <div class="footer-brand-wrap">
-          <img src="../assets/logo/adonai_logo_base-4.webp" alt="Adonai Logo" class="footer-logo" />
-          <span class="footer-brand">Adonai Card Game</span>
-        </div>
-        <p data-pt="Um card game bíblico competitivo sobre escolhas, alianças, consequências e caminhos estratégicos."
-          data-en="A competitive biblical card game about choices, alliances, consequences, and strategic paths.">
-          Um card game bíblico competitivo sobre escolhas, alianças, consequências e caminhos estratégicos.
-        </p>
-      </div>
-
+  <footer class="footer">
+    <div class="wrap footer-top">
+      <a class="wordmark" href="../index.html">
+        <img width="3508" height="3509" src="../assets/logo/adonai_logo_base-4.webp" alt="" loading="lazy" decoding="async" />
+        <span>ADONAI<small>CARD GAME</small></span>
+      </a>
+      <p data-pt="Um card game bíblico competitivo sobre escolhas, alianças e estratégia." data-en="A competitive biblical card game about choices, alliances, and strategy.">Um card game bíblico competitivo sobre escolhas, alianças e estratégia.</p>
       <div class="footer-links">
         <a href="../index.html" data-pt="Início" data-en="Home">Início</a>
         <a href="../how-to-play/" data-pt="Como Jogar" data-en="How to Play">Como Jogar</a>
@@ -122,10 +135,14 @@
         <a href="../decks/" data-pt="Decks" data-en="Decks">Decks</a>
         <a href="../deckbuilder/" data-pt="Deckbuilder" data-en="Deckbuilder">Deckbuilder</a>
         <a href="../manual/" data-pt="Manual" data-en="Rulebook">Manual</a>
-        <!-- <a href="./" data-pt="Galeria" data-en="Gallery">Galeria</a> -->
-        <!-- <a href="../lore/" data-pt="Lore" data-en="Lore">Lore</a> -->
-        <!-- <a href="../index.html#shop" data-pt="Loja" data-en="Shop">Loja</a> -->
+        <!-- <a href="../lore/">Lore</a> -->
+        <!-- <a href="../index.html#shop">Loja</a> -->
+        <!-- <a href="../gallery/">Galeria</a> -->
       </div>
+    </div>
+    <div class="wrap footer-bottom">
+      <span>ADONAI CARD GAME</span>
+      <a href="#mainContent"><span data-pt="Voltar ao início" data-en="Back to top">Voltar ao início</span> ↑</a>
     </div>
   </footer>
 

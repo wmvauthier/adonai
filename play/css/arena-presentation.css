@@ -1,0 +1,66 @@
+/* Presentation layer: game layout and rules remain owned by the arena engine. */
+:root { --arena-gold: #d8b878; --arena-ink: #090b10; }
+body { background: #090b10; }
+.play-shell { background: radial-gradient(ellipse at 50% 0%, #78603526, transparent 65%), #090b10; }
+.play-setup { width: 100%; overflow-y: auto !important; overscroll-behavior: contain; align-items: start; padding: 20px 10px 32px; }
+.play-setup-panel { width: min(1180px, 100%); height: auto; max-height: none !important; overflow: visible !important; display: block; padding: 0 !important; border: 0; border-radius: 0 !important; background: transparent; box-shadow: none; }
+.setup-copy { position: relative; padding: 12px 4px 28px; }
+.arena-home { display: inline-flex; align-items: center; gap: 12px; color: #f0debb; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 25px; letter-spacing: .18em; text-decoration: none; min-height: 44px; margin-bottom: 26px; }
+.arena-home span { font: 9px Inter, sans-serif; letter-spacing: .2em; border-left: 1px solid #d8b87855; padding-left: 12px; }
+.setup-copy .section-kicker { display: block; color: #d8b878; font-size: 10px; letter-spacing: .15em; line-height: 1.5; }
+.setup-copy h1 { font: 500 clamp(46px, 8vw, 88px)/.94 'Cormorant Garamond', Georgia, serif; color: #f7edd9; letter-spacing: -.035em; margin: 16px 0; }
+.setup-copy p { color: #b1afaa; font-size: 13px; line-height: 1.7; max-width: 380px; }
+.arena-steps { display: flex; flex-wrap: wrap; gap: 10px 20px; margin-top: 24px; color: #a79b85; font-size: 10px; }
+.setup-match-preview { height: auto; overflow: visible !important; grid-template-columns: minmax(0, 1fr) !important; grid-template-rows: auto auto auto auto; gap: 14px; }
+.setup-deck-card { position: relative; min-height: 270px !important; padding: 24px 40px !important; border: 1px solid #d8b87855; border-radius: 12px !important; background: linear-gradient(180deg, #0a10154d, #080b12ed 85%), var(--setup-wallpaper) center/cover; box-shadow: inset 0 1px #fff2, 0 18px 40px #0005; display: grid; grid-template-rows: auto auto auto auto; gap: 16px; }
+.setup-deck-heading strong { font: 600 26px/1.05 'Cormorant Garamond', Georgia, serif; color: #fff0d4; }
+.setup-deck-heading small { font-size: 12px; line-height: 1.5; }
+.setup-deck-heading span { font-size: 10px; letter-spacing: .1em; color: #e5c68b; }
+.setup-champion-avatar { width: 64px; height: 64px; flex-basis: 64px; box-shadow: 0 0 24px #e8b95325; }
+.setup-identity-strip img { max-height: 105px; aspect-ratio: 1.6; object-fit: cover; }
+.setup-identity-strip figcaption { font-size: 10px; }
+.setup-deck-facts { gap: 6px; }
+.setup-deck-facts span { font-size: 10px; padding: 5px 7px; }
+.setup-carousel-button { width: 36px; height: 56px; font-size: 26px; background: #090c13ba; }
+.setup-difficulty > span { font-size: 10px; }
+.setup-difficulty > div { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.setup-difficulty button { min-height: 44px; font-size: 10px; padding: 4px; border-radius: 5px; }
+.setup-difficulty button.is-active { background: linear-gradient(#e5ca92, #b68a46); color: #17130d; border-color: #e5ca92; box-shadow: 0 2px 14px #d8b87825; }
+.setup-versus { width: 38px !important; height: 38px !important; font: italic 18px Georgia, serif; color: #e7c98e; box-shadow: 0 0 30px #d8b87820; }
+.setup-actions { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 10px; margin-top: 24px !important; padding-bottom: 12px; }
+.setup-actions a, .setup-actions button { min-height: 48px !important; font-size: 12px !important; border-radius: 6px; }
+.setup-actions .primary-action { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; min-height: 56px !important; padding: 0 24px !important; background: linear-gradient(120deg, #f0d79d, #bd914c); color: #17130d; border: 1px solid #ffe5ae; font-weight: 700; letter-spacing: .04em; box-shadow: 0 8px 28px #c3984930, inset 0 1px #fff7; }
+.play-shell :is(button, a):focus-visible { outline: 2px solid #ffdc92; outline-offset: 4px; }
+.play-shell button { touch-action: manipulation; }
+.battlefield-shell { border-color: #d8b87850; box-shadow: inset 0 0 60px #0008, 0 0 0 1px #000, 0 12px 40px #0006; }
+.phase-panel { border-color: #d8b87860; background: linear-gradient(90deg, #090c14ed, #302719eb, #090c14ed); }
+.phase-current strong { color: #f5dca8; text-shadow: 0 2px 8px #000; letter-spacing: .04em; }
+.arena-phase-cue { position: fixed; z-index: 180; top: 25%; left: 50%; transform: translateX(-50%); max-width: calc(100% - 32px); padding: 14px 26px; border-block: 1px solid #dfbe76a6; background: linear-gradient(90deg, #0a0d12e8, #302516f5, #0a0d12e8); color: #f6dfae; font: 600 23px/1.2 'Cormorant Garamond', Georgia, serif; text-align: center; pointer-events: none; box-shadow: 0 12px 40px #0005; }
+.arena-phase-cue[hidden] { display: none; }
+@media (min-width: 800px) {
+  .play-setup { padding: 28px 36px 40px; }
+  .setup-copy h1 br { display: none; }
+  .setup-copy { padding-bottom: 36px; }
+  .setup-copy p { max-width: none; }
+  .setup-match-preview { grid-template-columns: minmax(0, 1fr) 48px minmax(0, 1fr) !important; grid-template-rows: auto auto; align-items: stretch; gap: 18px; }
+  .setup-versus { align-self: center; }
+  .setup-deck-card { min-height: 340px !important; padding: 30px 46px !important; }
+  .setup-debug-tools { grid-column: 1 / -1; }
+  .setup-actions { grid-template-columns: auto auto minmax(240px, 1fr) !important; }
+  .setup-actions .primary-action { grid-column: auto; max-width: 360px; width: 100%; justify-self: end; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .setup-copy { animation: arena-reveal .6s both; }
+  .setup-deck-card { animation: arena-reveal .65s .12s both; }
+  .setup-deck-card:last-of-type { animation-delay: .2s; }
+  .play-board:not(.is-hidden) { animation: arena-reveal .55s both; }
+  .setup-actions button, .setup-difficulty button { transition: filter .2s, box-shadow .2s, translate .2s; }
+  .setup-actions button:active, .setup-difficulty button:active { translate: 0 2px; }
+}
+@media (hover: hover) {
+  .setup-actions .primary-action:hover { filter: brightness(1.12); box-shadow: 0 8px 35px #c3984960; }
+}
+@keyframes arena-reveal { from { opacity: 0; translate: 0 14px; } to { opacity: 1; translate: 0 0; } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}

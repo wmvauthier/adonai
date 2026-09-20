@@ -83,6 +83,7 @@ let collections = new Map();
 let types = new Map();
 let virtues = new Map();
 let pageTurnTimer = null;
+let returnBookId = "";
 
 function t(key) {
   return copy[state.lang][key] || copy.pt[key] || key;
@@ -241,22 +242,36 @@ function getActiveChapter() {
 }
 
 function saveProgress() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify({
     bookId: state.activeBookId,
     chapterId: state.activeChapterId
-  }));
+  })); } catch { /* Reading remains available when storage is disabled. */ }
 }
 
 function openDrawer() {
+  returnBookId = state.activeBookId;
+  els.drawer.inert = false;
   els.drawer.classList.add("is-open");
   els.drawer.setAttribute("aria-hidden", "false");
   document.body.classList.add("lore-drawer-open");
+  document.querySelector('main').inert = true;
+  els.header.inert = true;
+  document.querySelector('.footer').inert = true;
+  els.drawerClose.focus();
+  resetReadingScroll();
 }
 
 function closeDrawer() {
+  clearTimeout(pageTurnTimer);
+  els.readingRoom.classList.remove("is-turning-next", "is-turning-prev");
   els.drawer.classList.remove("is-open");
   els.drawer.setAttribute("aria-hidden", "true");
   document.body.classList.remove("lore-drawer-open");
+  document.querySelector('main').inert = false;
+  els.header.inert = false;
+  document.querySelector('.footer').inert = false;
+  Array.from(els.bookGrid.querySelectorAll('[data-book-id]')).find(button => button.dataset.bookId === returnBookId)?.focus();
+  els.drawer.inert = true;
 }
 
 function restoreProgress() {
@@ -265,7 +280,7 @@ function restoreProgress() {
     if (saved.bookId) state.activeBookId = saved.bookId;
     if (saved.chapterId) state.activeChapterId = saved.chapterId;
   } catch (error) {
-    localStorage.removeItem(STORAGE_KEY);
+    // Ignore unavailable or malformed storage.
   }
 }
 
@@ -368,6 +383,9 @@ function renderReader() {
     .join("");
   els.prevChapter.disabled = currentIndex <= 0;
   els.nextChapter.disabled = currentIndex >= book.chapters.length - 1;
+  els.chapterList.querySelectorAll('[data-chapter-id]').forEach(button => {
+    button.setAttribute('aria-current', String(button.dataset.chapterId === chapter.cardId));
+  });
 }
 
 function renderAll() {
@@ -388,12 +406,18 @@ function setActiveChapterByOffset(offset) {
 
 function setActiveChapter(cardId, direction = "next") {
   if (!cardId || cardId === state.activeChapterId) return;
+  const restoreChapterFocus = els.chapterList.contains(document.activeElement);
+  const finishNavigation = () => {
+    resetReadingScroll();
+    if (restoreChapterFocus) els.chapterList.querySelector('[aria-current="true"]')?.focus({ preventScroll: true });
+  };
   const shouldAnimate = els.drawer.classList.contains("is-open")
     && els.readingRoom
     && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (!shouldAnimate) {
     state.activeChapterId = cardId;
     renderAll();
+    finishNavigation();
     return;
   }
   clearTimeout(pageTurnTimer);
@@ -403,10 +427,18 @@ function setActiveChapter(cardId, direction = "next") {
   pageTurnTimer = setTimeout(() => {
     state.activeChapterId = cardId;
     renderAll();
+    finishNavigation();
     requestAnimationFrame(() => {
       els.readingRoom.classList.remove("is-turning-next", "is-turning-prev");
     });
   }, 170);
+}
+
+function resetReadingScroll() {
+  els.readingMain.scrollTop = 0;
+  if (window.matchMedia('(max-width: 799px)').matches) {
+    els.readingRoom.scrollTop = els.readingMain.offsetTop - 76;
+  }
 }
 
 function applyLanguage(lang) {
@@ -418,7 +450,13 @@ function applyLanguage(lang) {
     if (node.matches("input")) node.placeholder = value;
     else node.textContent = value;
   });
-  els.langButtons.forEach((button) => button.classList.toggle("is-active", button.dataset.lang === lang));
+  els.langButtons.forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.lang === lang);
+    button.setAttribute('aria-pressed', String(button.dataset.lang === lang));
+  });
+  els.drawerClose.setAttribute('aria-label', lang === 'pt' ? 'Fechar leitura' : 'Close reader');
+  els.drawerBackdrop.setAttribute('aria-label', lang === 'pt' ? 'Fechar leitura' : 'Close reader');
+  document.dispatchEvent(new CustomEvent('home:language', { detail: { lang } }));
   if (books.length) renderAll();
 }
 
@@ -455,8 +493,10 @@ function bindEvents() {
     if (!button) return;
     const book = books.find((item) => item.id === button.dataset.bookId);
     if (!book) return;
+    const resume = state.activeBookId === book.id && book.chapters.some(chapter => chapter.cardId === state.activeChapterId);
     state.activeBookId = book.id;
-    state.activeChapterId = book.chapters[0] ? book.chapters[0].cardId : "";
+    if (!resume) state.activeChapterId = book.chapters[0] ? book.chapters[0].cardId : "";
+    if (state.query) state.activeChapterId = book.chapters.find(chapter => chapter.searchText.includes(state.query))?.cardId || state.activeChapterId;
     renderAll();
     openDrawer();
   });
@@ -498,6 +538,17 @@ function bindEvents() {
 
   window.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && els.drawer.classList.contains("is-open")) closeDrawer();
+    else if (event.key === 'Escape' && els.primaryNav.classList.contains('is-open')) {
+      els.primaryNav.classList.remove('is-open');
+      els.mobileToggle.setAttribute('aria-expanded', 'false');
+      els.mobileToggle.focus();
+    }
+    if (event.key === 'Tab' && els.drawer.classList.contains('is-open')) {
+      const buttons = Array.from(els.drawer.querySelectorAll('button:not(:disabled)')).filter(button => button.offsetParent !== null);
+      const first = buttons[0], last = buttons[buttons.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    }
   });
 
   window.addEventListener("scroll", () => {
@@ -516,6 +567,9 @@ async function loadLore() {
       fetch(DATA_URLS.types),
       fetch(DATA_URLS.virtues)
     ]);
+    if ([loreResponse, cardsResponse, collectionsResponse, typesResponse, virtuesResponse].some(response => !response.ok)) {
+      throw new Error('Lore content unavailable');
+    }
 
     const [lorePayload, cardsPayload, collectionsPayload, typesPayload, virtuesPayload] = await Promise.all([
       loreResponse.json(),
@@ -539,12 +593,12 @@ async function loadLore() {
     renderAll();
   } catch (error) {
     console.error(error);
-    els.librarySummary.textContent = "Erro";
+    els.librarySummary.textContent = state.lang === 'pt' ? 'Biblioteca indisponível' : 'Library unavailable';
     els.bookGrid.innerHTML = `
       <div class="lore-empty">
         <div>
-          <h3>Não foi possível carregar a lore</h3>
-          <p>Confira se a página está sendo servida por um servidor local e se os arquivos em data existem.</p>
+          <h3>${state.lang === 'pt' ? 'Não foi possível carregar a lore' : 'Could not load the lore'}</h3>
+          <p>${state.lang === 'pt' ? 'Tente recarregar a página para abrir a biblioteca.' : 'Try reloading the page to open the library.'}</p>
         </div>
       </div>
     `;

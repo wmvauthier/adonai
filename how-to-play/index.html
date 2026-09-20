@@ -1,691 +1,1153 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Adonai Card Game — Como Jogar</title>
-  <meta name="description"
-    content="Guia tutorial para aprender Adonai Card Game: identidade, preparação, alistamento, turno, tipos de carta, consequências e manual completo.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet">
-
-  <link rel="stylesheet" href="../shared/generic.css">
-  <link rel="stylesheet" href="./how-to-play.css">
-
-</head>
-
-<body>
-  <div class="page-noise" aria-hidden="true"></div>
-
-  <header class="site-header" id="siteHeader">
-    <a href="../index.html" class="brand" aria-label="Adonai Card Game">
-      <img src="../assets/logo/adonai_logo_base-4.webp" alt="Adonai Logo" class="brand-logo">
-    </a>
-
-    <button class="mobile-toggle" id="mobileToggle" aria-expanded="false" aria-controls="primaryNav"
-      aria-label="Abrir menu">
-      <span></span><span></span><span></span>
-    </button>
-
-    <nav class="site-nav" id="primaryNav">
-      <a href="../index.html" data-pt="Início" data-en="Home">Início</a>
-      <a href="./" data-pt="Como Jogar" data-en="How to Play">Como Jogar</a>
-      <a href="../cards/" data-pt="Cartas" data-en="Cards">Cartas</a>
-      <a href="../decks/" data-pt="Decks" data-en="Decks">Decks</a>
-      <a href="../deckbuilder/" data-pt="Deckbuilder" data-en="Deckbuilder">Deckbuilder</a>
-      <a href="../manual/" data-pt="Manual" data-en="Rulebook">Manual</a>
-      <!-- <a href="../gallery/" data-pt="Galeria" data-en="Gallery">Galeria</a> -->
-      <!-- <a href="../lore/" data-pt="Lore" data-en="Lore">Lore</a> -->
-      <!-- <a href="../index.html#shop" data-pt="Loja" data-en="Shop">Loja</a> -->
-    </nav>
-
-    <div class="header-actions">
-      <div class="lang-switch" aria-label="Alternar idioma">
-        <button class="lang-btn is-active" data-lang="pt">PT</button>
-        <button class="lang-btn" data-lang="en">EN</button>
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="../shared/theme.js"></script>
+    <title>Como Jogar — Adonai Card Game</title>
+    <meta
+      name="description"
+      content="Aprenda Adonai passo a passo: identidade, preparação, turno, cartas e consequências. Consulte o guia e o manual completo."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;650;700;800&family=DM+Serif+Display:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../shared/site.css" />
+    <link rel="stylesheet" href="../shared/site-light.css" />
+    <link rel="stylesheet" href="./how-to-play.css" />
+  </head>
+  <body class="guide-page">
+    <a
+      class="skip"
+      href="#mainContent"
+      data-pt="Pular para o conteúdo"
+      data-en="Skip to content"
+      >Pular para o conteúdo</a
+    >
+    <header class="masthead" id="siteHeader">
+      <a class="wordmark" href="../index.html" aria-label="Adonai — Início"
+        ><img
+          width="3508"
+          height="3509"
+          src="../assets/logo/adonai_logo_base-4.webp"
+          alt=""
+          class=""
+          fetchpriority="high"
+          decoding="async"
+        /><span>ADONAI<small>CARD GAME</small></span></a
+      >
+      <nav id="primaryNav" class="navigation" aria-label="Principal">
+        <a href="../index.html" data-pt="Início" data-en="Home">Início</a
+        ><a
+          href="./"
+          aria-current="page"
+          data-pt="Como Jogar"
+          data-en="How to Play"
+          >Como Jogar</a
+        ><a href="../cards/" data-pt="Cartas" data-en="Cards">Cartas</a
+        ><a href="../decks/" data-pt="Decks" data-en="Decks">Decks</a
+        ><a href="../deckbuilder/" data-pt="Deckbuilder" data-en="Deckbuilder"
+          >Deckbuilder</a
+        ><a href="../manual/" data-pt="Manual" data-en="Rulebook">Manual</a
+        ><!-- <a href="../lore/">Lore</a> -->
+        <!-- <a href="../index.html#shop">Loja</a> -->
+        <!-- <a href="../gallery/">Galeria</a> -->
+      </nav>
+      <div class="header-tools">
+        <div class="theme-control" role="group" aria-label="Tema da página">
+          <button
+            class="theme-button"
+            type="button"
+            data-theme-option="light"
+            aria-label="Ativar modo claro"
+            aria-pressed="false"
+            title="Ativar modo claro"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"
+              stroke-linecap="round"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <circle cx="12" cy="12" r="4" />
+              <path
+                d="M12 2v2m0 16v2M2 12h2m16 0h2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"
+              />
+            </svg>
+          </button>
+          <button
+            class="theme-button"
+            type="button"
+            data-theme-option="dark"
+            aria-label="Ativar modo escuro"
+            aria-pressed="true"
+            title="Ativar modo escuro"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M20.5 13.3A8.6 8.6 0 0 1 10.7 3.5 8.7 8.7 0 1 0 20.5 13.3Z"
+              />
+            </svg>
+          </button>
+        </div>
+        <div class="languages" aria-label="Idioma">
+          <button class="lang-btn is-active" data-lang="pt" aria-pressed="true">
+            PT</button
+          ><span aria-hidden="true">/</span
+          ><button class="lang-btn" data-lang="en" aria-pressed="false">
+            EN
+          </button>
+        </div>
+        <button
+          id="mobileToggle"
+          class="menu-toggle"
+          type="button"
+          aria-controls="primaryNav"
+          aria-expanded="false"
+          aria-label="Alternar menu"
+        >
+          <span></span><span></span>
+        </button>
       </div>
-    </div>
-  </header>
+    </header>
+    <main id="mainContent">
+      <!-- HERO -->
+      <section class="hero guide-hero" id="top">
+        <div class="hero-copy">
+          <span class="eyebrow" data-pt="Como jogar" data-en="How to play"
+            >Como jogar</span
+          >
 
-  <main>
+          <h1
+            data-pt="Toda partida começa com uma escolha."
+            data-en="Every match begins with a choice."
+          >
+            Toda partida começa com uma escolha.
+          </h1>
 
-    <!-- HERO -->
-    <section class="rules-hero cinematic-hero" id="top">
-      <div class="rules-hero-media">
-        <img src="../assets/imgs/Milagre - Foundations-3 - img.webp" alt="Arte de fundo de Adonai">
-        <div class="rules-hero-overlay"></div>
+          <p
+            data-pt="Neste guia, você aprenderá Adonai passo a passo: da construção da sua identidade ao combate, passando pelos recursos, tipos de carta e consequências que moldam cada jornada."
+            data-en="In this guide, you will learn Adonai step by step: from building your identity to combat, through resources, card types, and consequences that shape every journey."
+          >
+            Neste guia, você aprenderá Adonai passo a passo: da construção da
+            sua identidade ao combate, passando pelos recursos, tipos de carta e
+            consequências que moldam cada jornada.
+          </p>
+
+          <div class="actions">
+            <a
+              href="#identity"
+              class="button"
+              data-pt="Começar pelo Passo 1"
+              data-en="Start with Step 1"
+              >Começar pelo Passo 1</a
+            >
+            <a
+              href="../manual/"
+              class="text-link"
+              data-pt="Abrir manual completo"
+              data-en="Open full rulebook"
+              >Abrir manual completo</a
+            >
+          </div>
+        </div>
+        <div class="hero-art">
+          <img
+            data-card-slot="card-1-031"
+            data-card-image="art"
+            hidden
+            class="hero-illustration"
+            alt="Arte de Adonai"
+            fetchpriority="high"
+          />
+        </div>
+      </section>
+      <nav class="guide-chapters" aria-label="Etapas do guia">
+        <div class="wrap guide-chapter-links">
+          <a href="#identity"
+            ><span aria-hidden="true">01</span
+            ><span data-pt="Identidade" data-en="Identity">Identidade</span></a
+          ><a href="#preparation"
+            ><span aria-hidden="true">02</span
+            ><span data-pt="Preparação" data-en="Preparation"
+              >Preparação</span
+            ></a
+          ><a href="#turnFlow"
+            ><span aria-hidden="true">03</span
+            ><span data-pt="O turno" data-en="The turn">O turno</span></a
+          ><a href="#cardFamilies"
+            ><span aria-hidden="true">04</span
+            ><span data-pt="As cartas" data-en="The cards">As cartas</span></a
+          ><a href="#consequences"
+            ><span aria-hidden="true">05</span
+            ><span data-pt="Consequências" data-en="Consequences"
+              >Consequências</span
+            ></a
+          ><a href="#tutorials"
+            ><span aria-hidden="true">06</span
+            ><span data-pt="Tutoriais" data-en="Tutorials">Tutoriais</span></a
+          ><a href="#manual"
+            ><span aria-hidden="true">07</span
+            ><span data-pt="Manual" data-en="Rulebook">Manual</span></a
+          >
+        </div>
+      </nav>
+
+      <!-- IDENTITY -->
+      <section class="section rules-layout-shell" id="identity">
+        <div class="wrap rules-layout-grid">
+          <div class="rules-layout-media">
+            <img
+              loading="lazy"
+              data-card-slot="card-1-030"
+              data-card-image="art"
+              hidden
+              alt="Campeão, Templo, Território e Baralho em destaque"
+            />
+          </div>
+
+          <div class="rules-layout-copy">
+            <div class="rules-sticky-copy">
+              <span class="eyebrow" data-pt="Passo 1" data-en="Step 1">
+                Passo 1
+              </span>
+
+              <h2
+                data-pt="Defina sua identidade."
+                data-en="Define your identity."
+              >
+                Defina sua identidade.
+              </h2>
+
+              <p
+                data-pt="Antes de a mesa tomar forma, revele aquilo que define quem você é na partida: Campeão, Templo, Território e Baralho. Esses quatro elementos mostram quem guia sua jornada, como você se conecta ao divino, o que precisa proteger e quais experiências levará para construir sua vitória."
+                data-en="Before the board takes shape, reveal what defines who you are in the match: Champion, Temple, Territory, and Deck. These four elements show who guides your journey, how you connect with the divine, what you must protect, and which experiences you will carry to build your victory."
+              >
+                Antes de a mesa tomar forma, revele aquilo que define quem você
+                é na partida: Campeão, Templo, Território e Baralho. Esses
+                quatro elementos mostram quem guia sua jornada, como você se
+                conecta ao divino, o que precisa proteger e quais experiências
+                levará para construir sua vitória.
+              </p>
+
+              <div class="guide-identity-card-row">
+                <article class="guide-identity-card">
+                  <img
+                    loading="lazy"
+                    data-card-slot="card-1-046"
+                    data-card-image="art"
+                    hidden
+                    alt="Carta Campeão"
+                  />
+
+                  <div>
+                    <span data-pt="Campeão" data-en="Champion"> Campeão </span>
+
+                    <strong
+                      data-pt="Seu líder: guia sua estratégia e inspira suas tropas."
+                      data-en="Your leader: guides your strategy and inspires your troops."
+                    >
+                      Seu líder: guia sua estratégia e inspira suas tropas.
+                    </strong>
+                  </div>
+                </article>
+
+                <article class="guide-identity-card">
+                  <img
+                    loading="lazy"
+                    data-card-slot="card-1-050"
+                    data-card-image="art"
+                    hidden
+                    alt="Carta Templo"
+                  />
+
+                  <div>
+                    <span data-pt="Templo" data-en="Temple"> Templo </span>
+
+                    <strong
+                      data-pt="Seu fundamento: molda sua comunicação com o divino."
+                      data-en="Your foundation: shapes your connection with the divine."
+                    >
+                      Seu fundamento: molda sua comunicação com o divino.
+                    </strong>
+                  </div>
+                </article>
+
+                <article class="guide-identity-card">
+                  <img
+                    loading="lazy"
+                    data-card-slot="card-1-043"
+                    data-card-image="art"
+                    hidden
+                    alt="Carta Território"
+                  />
+
+                  <div>
+                    <span data-pt="Território" data-en="Territory">
+                      Território
+                    </span>
+
+                    <strong
+                      data-pt="Sua resistência: representa seu povo, sua terra e sua integridade espiritual."
+                      data-en="Your endurance: represents your people, your land, and your spiritual integrity."
+                    >
+                      Sua resistência: representa seu povo, sua terra e sua
+                      integridade espiritual.
+                    </strong>
+                  </div>
+                </article>
+
+                <article class="guide-identity-card">
+                  <img
+                    loading="lazy"
+                    src="../assets/logo/Fundo - Foundation.webp"
+                    alt="Baralho de Adonai"
+                  />
+
+                  <div>
+                    <span data-pt="Baralho" data-en="Deck"> Baralho </span>
+
+                    <strong
+                      data-pt="Suas experiências: 40 cartas que você levará para construir sua vitória."
+                      data-en="Your experiences: 40 cards you will carry to build your victory."
+                    >
+                      Suas experiências: 40 cartas que você levará para
+                      construir sua vitória.
+                    </strong>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PREPARATION -->
+      <div class="guide-band guide-band--preparation">
+        <section class="section wrap preparation-section" id="preparation">
+          <div class="section-head">
+            <span class="eyebrow" data-pt="Passo 2" data-en="Step 2"
+              >Passo 2</span
+            >
+
+            <h2
+              data-pt="Prepare-se para a batalha."
+              data-en="Prepare for battle."
+            >
+              Prepare-se para a batalha.
+            </h2>
+          </div>
+
+          <div class="preparation-grid preparation-grid--with-images">
+            <article class="prep-panel prep-panel--image">
+              <img
+                loading="lazy"
+                data-card-slot="card-1-003"
+                data-card-image="art"
+                hidden
+                alt="Identidades reveladas na mesa"
+              />
+
+              <div>
+                <span
+                  class="summary-label"
+                  data-pt="Sinais Revelados"
+                  data-en="Revealed Signs"
+                >
+                  Sinais Revelados
+                </span>
+                <h3
+                  data-pt="Estude seus oponentes."
+                  data-en="Study your opponents."
+                >
+                  Estude seus oponentes.
+                </h3>
+
+                <p
+                  data-pt="No início do jogo, todos os jogadores revelam seus Campeões, Templos e Territórios. Observe essas escolhas para entender quem você enfrentará, quais planos podem surgir e que ameaças você precisa respeitar."
+                  data-en="At the beginning of the game, all players reveal their Champions, Temples, and Territories. Observe these choices to understand who you are facing, which plans may emerge, and which threats you must respect."
+                >
+                  No início do jogo, todos os jogadores revelam seus Campeões,
+                  Templos e Territórios. Observe essas escolhas para entender
+                  quem você enfrentará, quais planos podem surgir e que ameaças
+                  você precisa respeitar.
+                </p>
+              </div>
+            </article>
+
+            <article class="prep-panel prep-panel--image">
+              <img
+                loading="lazy"
+                data-card-slot="card-1-024"
+                data-card-image="art"
+                hidden
+                alt="Escolha estratégica de cartas"
+              />
+
+              <div>
+                <span
+                  class="summary-label"
+                  data-pt="O Que Levar"
+                  data-en="What to Carry"
+                >
+                  O Que Levar
+                </span>
+                <h3 data-pt="Refine seu baralho." data-en="Refine your deck.">
+                  Refine seu baralho.
+                </h3>
+
+                <p
+                  data-pt="Depois de analisar seus oponentes, escolha quais cartas do seu baralho inicial de 40 permanecerão na partida. Você pode reduzi-lo para até 30 cartas; o que ficar de fora vai para a Reserva, como parte da sua adaptação contra aqueles oponentes específicos."
+                  data-en="After analyzing your opponents, choose which cards from your initial 40-card deck will remain in the match. You may reduce it to as few as 30 cards; the remaining cards go to the Reserve as part of your adaptation against those specific opponents."
+                >
+                  Depois de analisar seus oponentes, escolha quais cartas do seu
+                  baralho inicial de 40 permanecerão na partida. Você pode
+                  reduzi-lo para até 30 cartas; o que ficar de fora vai para a
+                  Reserva, como parte da sua adaptação contra aqueles oponentes
+                  específicos.
+                </p>
+              </div>
+            </article>
+
+            <article class="prep-panel prep-panel--image">
+              <img
+                loading="lazy"
+                data-card-slot="card-1-039"
+                data-card-image="art"
+                hidden
+                alt="Mão inicial e mulligan"
+              />
+
+              <div>
+                <span
+                  class="summary-label"
+                  data-pt="Primeiros Presságios"
+                  data-en="First Omens"
+                >
+                  Primeiros Presságios
+                </span>
+                <h3
+                  data-pt="Ajuste sua mão inicial."
+                  data-en="Adjust your opening hand."
+                >
+                  Ajuste sua mão inicial.
+                </h3>
+
+                <p
+                  data-pt="Embaralhe seu baralho e compre sua mão inicial. Se ela ainda não lhe mostrar um bom caminho, você pode trocar parte das cartas, ou todas elas, e comprar novas até três vezes antes da partida realmente começar."
+                  data-en="Shuffle your deck and draw your opening hand. If it still does not reveal a good path forward, you may replace part of it, or all of them, and draw new cards up to three times before the match truly begins."
+                >
+                  Embaralhe seu baralho e compre sua mão inicial. Se ela ainda
+                  não lhe mostrar um bom caminho, você pode trocar parte das
+                  cartas, ou todas elas, e comprar novas até três vezes antes da
+                  partida realmente começar.
+                </p>
+              </div>
+            </article>
+          </div>
+        </section>
       </div>
 
-      <div class="container rules-hero-copy reveal">
-        <span class="section-kicker" data-pt="Como jogar" data-en="How to play">Como jogar</span>
+      <!-- TURN FLOW -->
+      <section
+        class="section rules-layout-shell rules-layout-shell--reverse"
+        id="turnFlow"
+      >
+        <div class="wrap rules-layout-grid">
+          <div class="rules-layout-copy">
+            <div class="rules-sticky-copy">
+              <span class="eyebrow" data-pt="Passo 3" data-en="Step 3">
+                Passo 3
+              </span>
 
-        <h1 data-pt="Toda partida começa com uma escolha." data-en="Every match begins with a choice.">
-          Toda partida começa com uma escolha.
-        </h1>
+              <h2
+                data-pt="Aprenda o fluxo do turno."
+                data-en="Learn the flow of a turn."
+              >
+                Aprenda o fluxo do turno.
+              </h2>
 
-        <p data-pt="Neste guia, você aprenderá Adonai passo a passo: da construção da sua identidade ao combate, passando pelos recursos, tipos de carta e consequências que moldam cada jornada."
-          data-en="In this guide, you will learn Adonai step by step: from building your identity to combat, through resources, card types, and consequences that shape every journey.">
-          Neste guia, você aprenderá Adonai passo a passo: da construção da sua identidade ao combate, passando pelos
-          recursos, tipos de carta e consequências que moldam cada jornada.
+              <p
+                data-pt="Todo turno segue uma ordem fixa de ações. Entender esse fluxo é aprender quando desenvolver sua mesa, quando guardar respostas e quando agir para mudar o rumo da partida."
+                data-en="Every turn follows a fixed sequence of actions. Understanding this flow means learning when to develop your board, when to hold your answers, and when to act to change the course of the match."
+              >
+                Todo turno segue uma ordem fixa de ações. Entender esse fluxo é
+                aprender quando desenvolver sua mesa, quando guardar respostas e
+                quando agir para mudar o rumo da partida.
+              </p>
+
+              <div class="turn-flow-stack" id="turnFlowStack">
+                <article class="turn-step" data-step="1">
+                  <span class="turn-step-index">01</span>
+
+                  <div>
+                    <h3 data-pt="Preparação" data-en="Preparation">
+                      Preparação
+                    </h3>
+
+                    <p
+                      data-pt="Na Preparação, seu Campeão, suas permanentes e Essências voltam a ficar prontas. Esse é o momento em que sua mesa se reorganiza e você recupera espaço para crescer, desenvolver recursos e avançar sua estratégia."
+                      data-en="At the start of your turn, your Champion, permanents, and Essences become ready again. This is the moment your board reorganizes and you recover room to grow, develop resources, and advance your strategy."
+                    >
+                      Na Preparação, seu Campeão, suas permanentes e Essências
+                      voltam a ficar prontas. Esse é o momento em que sua mesa
+                      se reorganiza e você recupera espaço para crescer,
+                      desenvolver recursos e avançar sua estratégia.
+                    </p>
+                  </div>
+                </article>
+
+                <article class="turn-step" data-step="2">
+                  <span class="turn-step-index">02</span>
+
+                  <div>
+                    <h3
+                      data-pt="Receba novos caminhos"
+                      data-en="Receive new paths"
+                    >
+                      Receba novos caminhos
+                    </h3>
+
+                    <p
+                      data-pt="Compre 2 cartas. Cada nova carta pode trazer respostas, ameaças ou decisões capazes de mudar completamente o rumo da rodada."
+                      data-en="Draw 2 cards. Every new card may bring answers, threats, or decisions capable of completely changing the course of the round."
+                    >
+                      Compre 2 cartas. Cada nova carta pode trazer respostas,
+                      ameaças ou decisões capazes de mudar completamente o rumo
+                      da rodada.
+                    </p>
+                  </div>
+                </article>
+
+                <article class="turn-step" data-step="3">
+                  <span class="turn-step-index">03</span>
+
+                  <div>
+                    <h3
+                      data-pt="Consagre, Profane ou se Omita"
+                      data-en="Consecrate, Profane, or Omit"
+                    >
+                      Consagre, Profane ou se Omita
+                    </h3>
+
+                    <p
+                      data-pt="Escolha uma ação: transformar uma carta da mão em Essência, retornar uma Essência para a mão ou não fazer nenhuma das duas. Essências são recursos permanentes usados para pagar custos, e essas escolhas moldam tanto sua estratégia quanto suas Virtudes e Desvirtudes."
+                      data-en="Choose one action: transform a card from your hand into Essence, return an Essence to your hand, or do neither. Essences are permanent resources used to pay costs, and these choices shape both your strategy and your Virtues and Desvirtudes."
+                    >
+                      Escolha uma ação: transformar uma carta da mão em
+                      Essência, retornar uma Essência para a mão ou não fazer
+                      nenhuma das duas. Essências são recursos permanentes
+                      usados para pagar custos, e essas escolhas moldam tanto
+                      sua estratégia quanto suas Virtudes e Desvirtudes.
+                    </p>
+                  </div>
+                </article>
+
+                <article class="turn-step" data-step="4">
+                  <span class="turn-step-index">04</span>
+
+                  <div>
+                    <h3 data-pt="Alistamento" data-en="Muster">Alistamento</h3>
+
+                    <p
+                      data-pt="No Alistamento, jogue personagens, artefatos, milagres e pecados. Reorganize equipamentos, planeje respostas e fortaleça sua presença antes do combate. Cada escolha também influencia suas Virtudes e Desvirtudes ao longo da partida."
+                      data-en="During Muster, play characters, artifacts, miracles, and sins. Rearrange equipment, plan responses, and strengthen your presence before combat. Every choice also influences your Virtues and Desvirtudes throughout the match."
+                    >
+                      No Alistamento, jogue personagens, artefatos, milagres e
+                      pecados. Reorganize equipamentos, planeje respostas e
+                      fortaleça sua presença antes do combate. Cada escolha
+                      também influencia suas Virtudes e Desvirtudes ao longo da
+                      partida.
+                    </p>
+                  </div>
+                </article>
+
+                <article class="turn-step" data-step="5">
+                  <span class="turn-step-index">05</span>
+
+                  <div>
+                    <h3 data-pt="Entre em combate" data-en="Enter combat">
+                      Entre em combate
+                    </h3>
+
+                    <p
+                      data-pt="Ataque territórios ou personagens desativados. O defensor pode utilizar personagens ativos para bloquear os ataques, e o dano é aplicado simultaneamente."
+                      data-en="Attack territories or deactivated characters. The defender may use active characters to block attacks, and damage is applied simultaneously."
+                    >
+                      Ataque territórios ou personagens desativados. O defensor
+                      pode utilizar personagens ativos para bloquear os ataques,
+                      e o dano é aplicado simultaneamente.
+                    </p>
+                  </div>
+                </article>
+
+                <article class="turn-step" data-step="6">
+                  <span class="turn-step-index">06</span>
+
+                  <div>
+                    <h3 data-pt="Reagrupe e encerre" data-en="Regroup and end">
+                      Reagrupe e encerre
+                    </h3>
+
+                    <p
+                      data-pt="No Reagrupamento, efeitos temporários se encerram e instruções de fim de turno são resolvidas. Depois, descarte até o limite de mão e prepare-se para enfrentar o próximo turno."
+                      data-en="During Regrouping, temporary effects end and end-of-turn instructions resolve. Then discard down to your hand limit and prepare yourself for the next turn."
+                    >
+                      No Reagrupamento, efeitos temporários se encerram e
+                      instruções de fim de turno são resolvidas. Depois,
+                      descarte até o limite de mão e prepare-se para enfrentar o
+                      próximo turno.
+                    </p>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+
+          <div class="rules-layout-media">
+            <img
+              loading="lazy"
+              data-card-slot="card-1-029"
+              data-card-image="art"
+              hidden
+              alt="Mesa e jornada em Adonai"
+            />
+          </div>
+        </div>
+      </section>
+
+      <!-- CARD TYPES -->
+      <div class="guide-band guide-band--cardFamilies">
+        <section class="section wrap" id="cardFamilies">
+          <div class="section-head">
+            <span class="eyebrow" data-pt="Passo 4" data-en="Step 4">
+              Passo 4
+            </span>
+
+            <h2
+              data-pt="Entenda o papel de cada carta."
+              data-en="Understand each card&#x27;s role."
+            >
+              Entenda o papel de cada carta.
+            </h2>
+          </div>
+
+          <div class="card-family-grid card-family-grid--wide">
+            <article class="card-family">
+              <img
+                loading="lazy"
+                data-card-slot="card-1-047"
+                data-card-image="card"
+                hidden
+                alt="Carta Campeão"
+              />
+
+              <div class="card-family-copy">
+                <div class="card-family-top">
+                  <span data-pt="Campeões" data-en="Champions"> Campeões </span>
+                </div>
+
+                <p
+                  data-pt="O líder da sua jornada. Fica na zona de Identidade e oferece habilidades que moldam o ritmo e o estilo da sua estratégia."
+                  data-en="The leader of your journey. Stays in the Identity zone and offers abilities that shape the rhythm and style of your strategy."
+                >
+                  O líder da sua jornada. Fica na zona de Identidade e oferece
+                  habilidades que moldam o ritmo e o estilo da sua estratégia.
+                </p>
+              </div>
+            </article>
+
+            <article class="card-family">
+              <img
+                loading="lazy"
+                data-card-slot="card-1-051"
+                data-card-image="card"
+                hidden
+                alt="Carta Templo"
+              />
+
+              <div class="card-family-copy">
+                <div class="card-family-top">
+                  <span data-pt="Templos" data-en="Temples"> Templos </span>
+                </div>
+
+                <p
+                  data-pt="O centro espiritual da sua mesa. Permanece na zona de Identidade e altera como você Consagra, Profana e administra seus recursos."
+                  data-en="The spiritual center of your board. Remains in the Identity zone and changes how you Consecrate, Profane, and manage your resources."
+                >
+                  O centro espiritual da sua mesa. Permanece na zona de
+                  Identidade e altera como você Consagra, Profana e administra
+                  seus recursos.
+                </p>
+              </div>
+            </article>
+
+            <article class="card-family">
+              <img
+                loading="lazy"
+                data-card-slot="card-1-041"
+                data-card-image="card"
+                hidden
+                alt="Carta Território"
+              />
+
+              <div class="card-family-copy">
+                <div class="card-family-top">
+                  <span data-pt="Territórios" data-en="Territories">
+                    Territórios
+                  </span>
+                </div>
+
+                <p
+                  data-pt="Aquilo que você jurou proteger. Quando o dano marcado nele alcança sua Resistência, sua jornada chega ao fim."
+                  data-en="What you swore to protect. When the damage marked on it reaches its Resistance, your journey comes to an end."
+                >
+                  Aquilo que você jurou proteger. Quando o dano marcado nele
+                  alcança sua Resistência, sua jornada chega ao fim.
+                </p>
+              </div>
+            </article>
+
+            <article class="card-family">
+              <img
+                loading="lazy"
+                src="../assets/virtudes/Virtudes - Foundations-9.webp"
+                alt="Carta Virtude"
+              />
+
+              <div class="card-family-copy">
+                <div class="card-family-top">
+                  <span
+                    data-pt="Virtudes e Desvirtudes"
+                    data-en="Virtues and Desvirtues"
+                  >
+                    Virtudes e Desvirtudes
+                  </span>
+                </div>
+
+                <p
+                  data-pt="Representam os caminhos morais da sua jornada. Consagrar, Profanar e resolver cartas altera esses atributos, influenciando habilidades, estratégias e a forma como sua partida se desenvolve."
+                  data-en="They represent the moral paths of your journey. Consecrating, Profaning, and resolving cards changes these attributes, influencing abilities, strategies, and the way your match unfolds."
+                >
+                  Representam os caminhos morais da sua jornada. Consagrar,
+                  Profanar e resolver cartas altera esses atributos,
+                  influenciando habilidades, estratégias e a forma como sua
+                  partida se desenvolve.
+                </p>
+              </div>
+            </article>
+
+            <article class="card-family">
+              <img
+                loading="lazy"
+                data-card-slot="card-1-005"
+                data-card-image="card"
+                hidden
+                alt="Carta Personagem"
+              />
+
+              <div class="card-family-copy">
+                <div class="card-family-top">
+                  <span data-pt="Personagens" data-en="Characters">
+                    Personagens
+                  </span>
+                </div>
+
+                <p
+                  data-pt="Seus aliados em campo. Entram como permanentes, atacam, bloqueiam e recebem dano. Use-os para pressionar territórios, proteger sua mesa e disputar o ritmo do combate."
+                  data-en="Your allies on the field. They enter as permanents, attack, block, and take damage. Use them to pressure territories, protect your board, and control the pace of combat."
+                >
+                  Seus aliados em campo. Entram como permanentes, atacam,
+                  bloqueiam e recebem dano. Use-os para pressionar territórios,
+                  proteger sua mesa e disputar o ritmo do combate.
+                </p>
+              </div>
+            </article>
+
+            <article class="card-family">
+              <img
+                loading="lazy"
+                data-card-slot="card-1-033"
+                data-card-image="card"
+                hidden
+                alt="Carta Milagre"
+              />
+
+              <div class="card-family-copy">
+                <div class="card-family-top">
+                  <span data-pt="Milagres" data-en="Miracles"> Milagres </span>
+                </div>
+
+                <p
+                  data-pt="Respostas rápidas e imprevisíveis. Podem ser usados em janelas abertas para proteger aliados, interromper jogadas ou mudar completamente o rumo da batalha."
+                  data-en="Fast and unpredictable responses. They may be used during open windows to protect allies, interrupt plays, or completely change the course of battle."
+                >
+                  Respostas rápidas e imprevisíveis. Podem ser usados em janelas
+                  abertas para proteger aliados, interromper jogadas ou mudar
+                  completamente o rumo da batalha.
+                </p>
+              </div>
+            </article>
+
+            <article class="card-family">
+              <img
+                loading="lazy"
+                data-card-slot="card-1-022"
+                data-card-image="card"
+                hidden
+                alt="Carta Pecado"
+              />
+
+              <div class="card-family-copy">
+                <div class="card-family-top">
+                  <span data-pt="Pecados" data-en="Sins"> Pecados </span>
+                </div>
+
+                <p
+                  data-pt="Poder imediato em troca de sofrimento. São pagos causando dano ao próprio Território e costumam oferecer efeitos agressivos, arriscados ou difíceis de responder."
+                  data-en="Immediate power in exchange for suffering. They are paid by damaging your own Territory and usually offer aggressive, risky, or difficult-to-answer effects."
+                >
+                  Poder imediato em troca de sofrimento. São pagos causando dano
+                  ao próprio Território e costumam oferecer efeitos agressivos,
+                  arriscados ou difíceis de responder.
+                </p>
+              </div>
+            </article>
+
+            <article class="card-family">
+              <img
+                loading="lazy"
+                data-card-slot="card-1-037"
+                data-card-image="card"
+                hidden
+                alt="Carta Artefato"
+              />
+
+              <div class="card-family-copy">
+                <div class="card-family-top">
+                  <span data-pt="Artefatos" data-en="Artifacts">
+                    Artefatos
+                  </span>
+                </div>
+
+                <p
+                  data-pt="Relíquias, armas e símbolos permanentes que permanecem em campo reforçando personagens, criando vantagens contínuas e sustentando estratégias específicas."
+                  data-en="Relics, weapons, and permanent symbols that remain on the field reinforcing characters, creating ongoing advantages, and supporting specific strategies."
+                >
+                  Relíquias, armas e símbolos permanentes que permanecem em
+                  campo reforçando personagens, criando vantagens contínuas e
+                  sustentando estratégias específicas.
+                </p>
+              </div>
+            </article>
+          </div>
+        </section>
+      </div>
+
+      <!-- CONSEQUENCES -->
+      <section class="section consequence-band" id="consequences">
+        <div class="wrap consequence-grid">
+          <div class="consequence-copy">
+            <span class="eyebrow" data-pt="Passo 5" data-en="Step 5">
+              Passo 5
+            </span>
+
+            <h2
+              data-pt="Jogue entendendo as consequências."
+              data-en="Play with consequences in mind."
+            >
+              Jogue entendendo as consequências.
+            </h2>
+
+            <p
+              data-pt="Suas escolhas moldam suas características ao longo da partida. Cada decisão pode gerar consequências permanentes: comprar cartas extras, curar seu Território, perder recursos, sofrer dano ou alterar o ritmo da mesa. Em Adonai, suas ações não desaparecem depois de resolvidas — elas transformam a forma como sua jornada continua."
+              data-en="Your choices shape your traits throughout the match. Every decision may create permanent consequences: drawing extra cards, healing your Territory, losing resources, taking damage, or changing the pace of the board. In Adonai, your actions do not disappear after they resolve — they transform the way your journey continues."
+            >
+              Suas escolhas moldam suas características ao longo da partida.
+              Cada decisão pode gerar consequências permanentes: comprar cartas
+              extras, curar seu Território, perder recursos, sofrer dano ou
+              alterar o ritmo da mesa. Em Adonai, suas ações não desaparecem
+              depois de resolvidas — elas transformam a forma como sua jornada
+              continua.
+            </p>
+
+            <a
+              href="../manual/"
+              class="button"
+              data-pt="Ler regras completas"
+              data-en="Read full rules"
+            >
+              Ler regras completas
+            </a>
+          </div>
+
+          <div class="virtue-orbit" aria-hidden="true">
+            <img
+              loading="lazy"
+              class="virtue-orb"
+              src="../assets/icons/13-caridade.webp"
+              alt=""
+            />
+            <img
+              loading="lazy"
+              class="virtue-orb"
+              src="../assets/icons/09-esperanca.webp"
+              alt=""
+            />
+            <img
+              loading="lazy"
+              class="virtue-orb"
+              src="../assets/icons/07-fortaleza.webp"
+              alt=""
+            />
+            <img
+              loading="lazy"
+              class="virtue-orb"
+              src="../assets/icons/11-prudencia.webp"
+              alt=""
+            />
+            <img
+              loading="lazy"
+              class="virtue-orb"
+              src="../assets/icons/04-descontrole.webp"
+              alt=""
+            />
+            <img
+              loading="lazy"
+              class="virtue-orb"
+              src="../assets/icons/06-iniquidade.webp"
+              alt=""
+            />
+            <img
+              loading="lazy"
+              class="virtue-orb"
+              src="../assets/icons/02-duvida.webp"
+              alt=""
+            />
+            <img
+              loading="lazy"
+              class="virtue-orb"
+              src="../assets/icons/14-egoismo.webp"
+              alt=""
+            />
+            <img
+              loading="lazy"
+              class="virtue-orb"
+              src="../assets/icons/10-desespero.webp"
+              alt=""
+            />
+            <img
+              loading="lazy"
+              class="virtue-orb"
+              src="../assets/icons/08-covardia.webp"
+              alt=""
+            />
+            <img
+              loading="lazy"
+              class="virtue-orb"
+              src="../assets/icons/12-insensatez.webp"
+              alt=""
+            />
+            <img
+              loading="lazy"
+              class="virtue-orb"
+              src="../assets/icons/03-temperanca.webp"
+              alt=""
+            />
+            <img
+              loading="lazy"
+              class="virtue-orb"
+              src="../assets/icons/05-justica.webp"
+              alt=""
+            />
+            <img
+              loading="lazy"
+              class="virtue-orb"
+              src="../assets/icons/01-fe.webp"
+              alt=""
+            />
+          </div>
+        </div>
+      </section>
+
+      <!-- TUTORIALS -->
+      <section
+        class="section media-section"
+        id="tutorials"
+        data-section="tutorials"
+      >
+        <div class="wrap">
+          <div class="section-head">
+            <span class="eyebrow" data-pt="Passo 6" data-en="Step 6">
+              Passo 6
+            </span>
+
+            <h2
+              data-pt="Assista aos tutoriais rápidos."
+              data-en="Watch the quick tutorials."
+            >
+              Assista aos tutoriais rápidos.
+            </h2>
+
+            <p
+              data-pt="Acompanhe esta série de mini vídeos para ver, na prática, os conceitos básicos que você acabou de aprender: identidade, preparação, alistamento, turno, tipos de carta, combate e consequências."
+              data-en="Follow this series of short videos to see the basic concepts you just learned in practice: identity, preparation, muster, turn flow, card types, combat, and consequences."
+            >
+              Acompanhe esta série de mini vídeos para ver, na prática, os
+              conceitos básicos que você acabou de aprender: identidade,
+              preparação, alistamento, turno, tipos de carta, combate e
+              consequências.
+            </p>
+          </div>
+
+          <div class="content-carousel media-carousel">
+            <button
+              class="carousel-arrow carousel-arrow--prev"
+              type="button"
+              aria-label="Tutoriais anteriores"
+            >
+              ‹
+            </button>
+            <div
+              class="carousel-track media-grid"
+              data-render="tutorials"
+            ></div>
+            <button
+              class="carousel-arrow carousel-arrow--next"
+              type="button"
+              aria-label="Próximos tutoriais"
+            >
+              ›
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- MANUAL CTA -->
+      <div class="guide-band guide-band--manual">
+        <section class="section wrap manual-cta" id="manual">
+          <div class="manual-panel">
+            <div>
+              <span class="eyebrow" data-pt="Passo 7" data-en="Step 7">
+                Passo 7
+              </span>
+
+              <h2
+                data-pt="Aprofunde-se nas regras completas."
+                data-en="Dive into the complete rules."
+              >
+                Aprofunde-se nas regras completas.
+              </h2>
+
+              <p
+                data-pt="O guia acima ensina o essencial para começar sua jornada. Para dominar Adonai em profundidade, consulte o Manual Completo: um conjunto detalhado de regras, interações, palavras-chave, zonas, prioridades, combate, características, resolução de efeitos e casos avançados da partida."
+                data-en="The guide above teaches the essentials to begin your journey. To truly master Adonai, consult the Complete Rulebook: a detailed system covering interactions, keywords, zones, priorities, combat, traits, effect resolution, and advanced gameplay cases."
+              >
+                O guia acima ensina o essencial para começar sua jornada. Para
+                dominar Adonai em profundidade, consulte o Manual Completo: um
+                conjunto detalhado de regras, interações, palavras-chave, zonas,
+                prioridades, combate, características, resolução de efeitos e
+                casos avançados da partida.
+              </p>
+            </div>
+
+            <a
+              href="../manual/"
+              class="button"
+              data-pt="Abrir Manual Completo"
+              data-en="Open Complete Rulebook"
+            >
+              Abrir Manual Completo
+            </a>
+          </div>
+        </section>
+      </div>
+
+      <p
+        class="wrap card-data-status"
+        id="cardDataStatus"
+        role="status"
+        hidden
+        data-pt="Algumas imagens não puderam ser carregadas. As instruções continuam disponíveis."
+        data-en="Some images could not be loaded. The instructions remain available."
+      >
+        Algumas imagens não puderam ser carregadas. As instruções continuam
+        disponíveis.
+      </p>
+    </main>
+    <footer class="footer">
+      <div class="wrap footer-top">
+        <a class="wordmark" href="../index.html"
+          ><img
+            width="3508"
+            height="3509"
+            src="../assets/logo/adonai_logo_base-4.webp"
+            alt=""
+            class=""
+            loading="lazy"
+            decoding="async"
+          /><span>ADONAI<small>CARD GAME</small></span></a
+        >
+        <p
+          data-pt="Um card game bíblico competitivo sobre escolhas, alianças e estratégia."
+          data-en="A competitive biblical card game about choices, alliances, and strategy."
+        >
+          Um card game bíblico competitivo sobre escolhas, alianças e
+          estratégia.
         </p>
-
-        <div class="hero-actions">
-          <a href="#identity" class="btn btn-primary" data-pt="Começar pelo Passo 1" data-en="Start with Step 1">Começar
-            pelo Passo 1</a>
-          <a href="../manual/" class="btn btn-secondary" data-pt="Abrir manual completo" data-en="Open full rulebook">Abrir manual
-            completo</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- IDENTITY -->
-    <section class="section rules-layout-shell" id="identity">
-      <div class="container rules-layout-grid">
-
-        <div class="rules-layout-media reveal">
-          <img src="../assets/imgs/Milagre - Foundations-2 - img.webp"
-            alt="Campeão, Templo, Território e Baralho em destaque">
-        </div>
-
-        <div class="rules-layout-copy">
-          <div class="rules-sticky-copy reveal">
-
-            <span class="section-kicker" data-pt="Passo 1" data-en="Step 1">
-              Passo 1
-            </span>
-
-            <h2 data-pt="Defina sua identidade." data-en="Define your identity.">
-              Defina sua identidade.
-            </h2>
-
-            <p data-pt="Antes de a mesa tomar forma, revele aquilo que define quem você é na partida: Campeão, Templo, Território e Baralho. Esses quatro elementos mostram quem guia sua jornada, como você se conecta ao divino, o que precisa proteger e quais experiências levará para construir sua vitória."
-              data-en="Before the board takes shape, reveal what defines who you are in the match: Champion, Temple, Territory, and Deck. These four elements show who guides your journey, how you connect with the divine, what you must protect, and which experiences you will carry to build your victory.">
-              Antes de a mesa tomar forma, revele aquilo que define quem você é na partida: Campeão, Templo, Território
-              e Baralho. Esses quatro elementos mostram quem guia sua jornada, como você se conecta ao divino, o que
-              precisa proteger e quais experiências levará para construir sua vitória.
-            </p>
-
-            <div class="identity-card-row">
-
-              <article class="identity-card">
-                <img src="../assets/imgs/Campeão - Foundations-2 - img.webp" alt="Carta Campeão">
-
-                <div>
-                  <span data-pt="Campeão" data-en="Champion">
-                    Campeão
-                  </span>
-
-                  <strong data-pt="Seu líder: guia sua estratégia e inspira suas tropas."
-                    data-en="Your leader: guides your strategy and inspires your troops.">
-                    Seu líder: guia sua estratégia e inspira suas tropas.
-                  </strong>
-                </div>
-              </article>
-
-              <article class="identity-card">
-                <img src="../assets/imgs/Templo - Foundations-2 - img.webp" alt="Carta Templo">
-
-                <div>
-                  <span data-pt="Templo" data-en="Temple">
-                    Templo
-                  </span>
-
-                  <strong data-pt="Seu fundamento: molda sua comunicação com o divino."
-                    data-en="Your foundation: shapes your connection with the divine.">
-                    Seu fundamento: molda sua comunicação com o divino.
-                  </strong>
-                </div>
-              </article>
-
-              <article class="identity-card">
-                <img src="../assets/imgs/Território - Foundations-3 - img.webp" alt="Carta Território">
-
-                <div>
-                  <span data-pt="Território" data-en="Territory">
-                    Território
-                  </span>
-
-                  <strong data-pt="Sua resistência: representa seu povo, sua terra e sua integridade espiritual."
-                    data-en="Your endurance: represents your people, your land, and your spiritual integrity.">
-                    Sua resistência: representa seu povo, sua terra e sua integridade espiritual.
-                  </strong>
-                </div>
-              </article>
-
-              <article class="identity-card">
-                <img src="../assets/logo/Fundo - Foundation.webp" alt="Baralho de Adonai">
-
-                <div>
-                  <span data-pt="Baralho" data-en="Deck">
-                    Baralho
-                  </span>
-
-                  <strong data-pt="Suas experiências: 40 cartas que você levará para construir sua vitória."
-                    data-en="Your experiences: 40 cards you will carry to build your victory.">
-                    Suas experiências: 40 cartas que você levará para construir sua vitória.
-                  </strong>
-                </div>
-              </article>
-
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- PREPARATION -->
-    <section class="section container preparation-section" id="preparation">
-
-      <div class="section-head reveal">
-        <span class="section-kicker" data-pt="Passo 2" data-en="Step 2">Passo 2</span>
-
-        <h2 data-pt="Prepare-se para a batalha." data-en="Prepare for battle.">
-          Prepare-se para a batalha.
-        </h2>
-      </div>
-
-      <div class="preparation-grid preparation-grid--with-images">
-
-        <article class="prep-panel prep-panel--image reveal tilt-card">
-          <img src="../assets/imgs/Personagem - Foundations-3 - img.webp" alt="Identidades reveladas na mesa">
-
-          <div>
-            <span class="summary-label" data-pt="Sinais Revelados" data-en="Revealed Signs">
-              Sinais Revelados
-            </span>
-            <h3 data-pt="Estude seus oponentes." data-en="Study your opponents.">
-              Estude seus oponentes.
-            </h3>
-
-            <p data-pt="No início do jogo, todos os jogadores revelam seus Campeões, Templos e Territórios. Observe essas escolhas para entender quem você enfrentará, quais planos podem surgir e que ameaças você precisa respeitar."
-              data-en="At the beginning of the game, all players reveal their Champions, Temples, and Territories. Observe these choices to understand who you are facing, which plans may emerge, and which threats you must respect.">
-              No início do jogo, todos os jogadores revelam seus Campeões, Templos e Territórios. Observe essas escolhas
-              para entender quem você enfrentará, quais planos podem surgir e que ameaças você precisa respeitar.
-            </p>
-          </div>
-        </article>
-
-        <article class="prep-panel prep-panel--image reveal stagger-1 tilt-card">
-          <img src="../assets/imgs/Pecado - Foundations-4 - img.webp" alt="Escolha estratégica de cartas">
-
-          <div>
-            <span class="summary-label" data-pt="O Que Levar" data-en="What to Carry">
-              O Que Levar
-            </span>
-            <h3 data-pt="Refine seu baralho." data-en="Refine your deck.">
-              Refine seu baralho.
-            </h3>
-
-            <p data-pt="Depois de analisar seus oponentes, escolha quais cartas do seu baralho inicial de 40 permanecerão na partida. Você pode reduzi-lo para até 30 cartas; o que ficar de fora vai para a Reserva, como parte da sua adaptação contra aqueles oponentes específicos."
-              data-en="After analyzing your opponents, choose which cards from your initial 40-card deck will remain in the match. You may reduce it to as few as 30 cards; the remaining cards go to the Reserve as part of your adaptation against those specific opponents.">
-              Depois de analisar seus oponentes, escolha quais cartas do seu baralho inicial de 40 permanecerão na
-              partida. Você pode reduzi-lo para até 30 cartas; o que ficar de fora vai para a Reserva, como parte da sua
-              adaptação contra aqueles oponentes específicos.
-            </p>
-          </div>
-        </article>
-
-        <article class="prep-panel prep-panel--image reveal stagger-2 tilt-card">
-          <img src="../assets/imgs/Artefato - Foundations-3 - img.webp" alt="Mão inicial e mulligan">
-
-          <div>
-            <span class="summary-label" data-pt="Primeiros Presságios" data-en="First Omens">
-              Primeiros Presságios
-            </span>
-            <h3 data-pt="Ajuste sua mão inicial." data-en="Adjust your opening hand.">
-              Ajuste sua mão inicial.
-            </h3>
-
-            <p data-pt="Embaralhe seu baralho e compre sua mão inicial. Se ela ainda não lhe mostrar um bom caminho, você pode trocar parte das cartas, ou todas elas, e comprar novas até três vezes antes da partida realmente começar."
-              data-en="Shuffle your deck and draw your opening hand. If it still does not reveal a good path forward, you may replace part of it, or all of them, and draw new cards up to three times before the match truly begins.">
-              Embaralhe seu baralho e compre sua mão inicial. Se ela ainda não lhe mostrar um bom caminho, você pode
-              trocar parte das cartas, ou todas elas, e comprar novas até três vezes antes da partida realmente começar.
-            </p>
-          </div>
-        </article>
-
-      </div>
-
-    </section>
-
-    <!-- TURN FLOW -->
-    <section class="section rules-layout-shell rules-layout-shell--reverse" id="turnFlow">
-
-      <div class="container rules-layout-grid">
-
-        <div class="rules-layout-copy">
-          <div class="rules-sticky-copy reveal">
-
-            <span class="section-kicker" data-pt="Passo 3" data-en="Step 3">
-              Passo 3
-            </span>
-
-            <h2 data-pt="Aprenda o fluxo do turno." data-en="Learn the flow of a turn.">
-              Aprenda o fluxo do turno.
-            </h2>
-
-            <p data-pt="Todo turno segue uma ordem fixa de ações. Entender esse fluxo é aprender quando desenvolver sua mesa, quando guardar respostas e quando agir para mudar o rumo da partida."
-              data-en="Every turn follows a fixed sequence of actions. Understanding this flow means learning when to develop your board, when to hold your answers, and when to act to change the course of the match.">
-              Todo turno segue uma ordem fixa de ações. Entender esse fluxo é aprender quando desenvolver sua mesa,
-              quando guardar respostas e quando agir para mudar o rumo da partida.
-            </p>
-
-            <div class="turn-flow-stack" id="turnFlowStack">
-
-              <article class="turn-step is-active" data-step="1">
-                <span class="turn-step-index">01</span>
-
-                <div>
-                  <h3 data-pt="Preparação" data-en="Preparation">
-                    Preparação
-                  </h3>
-
-                  <p data-pt="Na Preparação, seu Campeão, suas permanentes e Essências voltam a ficar prontas. Esse é o momento em que sua mesa se reorganiza e você recupera espaço para crescer, desenvolver recursos e avançar sua estratégia."
-                    data-en="At the start of your turn, your Champion, permanents, and Essences become ready again. This is the moment your board reorganizes and you recover room to grow, develop resources, and advance your strategy.">
-                    Na Preparação, seu Campeão, suas permanentes e Essências voltam a ficar prontas. Esse é o
-                    momento em que sua mesa se reorganiza e você recupera espaço para crescer, desenvolver recursos e
-                    avançar sua estratégia.
-                  </p>
-                </div>
-              </article>
-
-              <article class="turn-step" data-step="2">
-                <span class="turn-step-index">02</span>
-
-                <div>
-                  <h3 data-pt="Receba novos caminhos" data-en="Receive new paths">
-                    Receba novos caminhos
-                  </h3>
-
-                  <p data-pt="Compre 2 cartas. Cada nova carta pode trazer respostas, ameaças ou decisões capazes de mudar completamente o rumo da rodada."
-                    data-en="Draw 2 cards. Every new card may bring answers, threats, or decisions capable of completely changing the course of the round.">
-                    Compre 2 cartas. Cada nova carta pode trazer respostas, ameaças ou decisões capazes de mudar
-                    completamente o rumo da rodada.
-                  </p>
-                </div>
-              </article>
-
-              <article class="turn-step" data-step="3">
-                <span class="turn-step-index">03</span>
-
-                <div>
-                  <h3 data-pt="Consagre, Profane ou se Omita" data-en="Consecrate, Profane, or Omit">
-                    Consagre, Profane ou se Omita
-                  </h3>
-
-                  <p data-pt="Escolha uma ação: transformar uma carta da mão em Essência, retornar uma Essência para a mão ou não fazer nenhuma das duas. Essências são recursos permanentes usados para pagar custos, e essas escolhas moldam tanto sua estratégia quanto suas Virtudes e Desvirtudes."
-                    data-en="Choose one action: transform a card from your hand into Essence, return an Essence to your hand, or do neither. Essences are permanent resources used to pay costs, and these choices shape both your strategy and your Virtues and Desvirtudes.">
-                    Escolha uma ação: transformar uma carta da mão em Essência, retornar uma Essência para a mão ou não
-                    fazer nenhuma das duas. Essências são recursos permanentes usados para pagar custos, e essas
-                    escolhas moldam tanto sua estratégia quanto suas Virtudes e Desvirtudes.
-                  </p>
-                </div>
-              </article>
-
-              <article class="turn-step" data-step="4">
-                <span class="turn-step-index">04</span>
-
-                <div>
-                  <h3 data-pt="Alistamento" data-en="Muster">
-                    Alistamento
-                  </h3>
-
-                  <p data-pt="No Alistamento, jogue personagens, artefatos, milagres e pecados. Reorganize equipamentos, planeje respostas e fortaleça sua presença antes do combate. Cada escolha também influencia suas Virtudes e Desvirtudes ao longo da partida."
-                    data-en="During Muster, play characters, artifacts, miracles, and sins. Rearrange equipment, plan responses, and strengthen your presence before combat. Every choice also influences your Virtues and Desvirtudes throughout the match.">
-                    No Alistamento, jogue personagens, artefatos, milagres e pecados. Reorganize equipamentos, planeje respostas e
-                    fortaleça sua presença antes do combate. Cada escolha também influencia suas Virtudes e Desvirtudes
-                    ao longo da partida.
-                  </p>
-                </div>
-              </article>
-
-              <article class="turn-step" data-step="5">
-                <span class="turn-step-index">05</span>
-
-                <div>
-                  <h3 data-pt="Entre em combate" data-en="Enter combat">
-                    Entre em combate
-                  </h3>
-
-                  <p data-pt="Ataque territórios ou personagens desativados. O defensor pode utilizar personagens ativos para bloquear os ataques, e o dano é aplicado simultaneamente."
-                    data-en="Attack territories or deactivated characters. The defender may use active characters to block attacks, and damage is applied simultaneously.">
-                    Ataque territórios ou personagens desativados. O defensor pode utilizar personagens ativos para
-                    bloquear os ataques, e o dano é aplicado simultaneamente.
-                  </p>
-                </div>
-              </article>
-
-              <article class="turn-step" data-step="6">
-                <span class="turn-step-index">06</span>
-
-                <div>
-                  <h3 data-pt="Reagrupe e encerre" data-en="Regroup and end">
-                    Reagrupe e encerre
-                  </h3>
-
-                  <p data-pt="No Reagrupamento, efeitos temporários se encerram e instruções de fim de turno são resolvidas. Depois, descarte até o limite de mão e prepare-se para enfrentar o próximo turno."
-                    data-en="During Regrouping, temporary effects end and end-of-turn instructions resolve. Then discard down to your hand limit and prepare yourself for the next turn.">
-                    No Reagrupamento, efeitos temporários se encerram e instruções de fim de turno são resolvidas.
-                    Depois, descarte até o limite de mão e prepare-se para enfrentar o próximo turno.
-                  </p>
-                </div>
-              </article>
-
-            </div>
-          </div>
-        </div>
-
-        <div class="rules-layout-media reveal">
-          <img src="../assets/imgs/Milagre - Foundations-1 - img.webp" alt="Mesa e jornada em Adonai">
-        </div>
-
-      </div>
-
-    </section>
-
-    <!-- CARD TYPES -->
-    <section class="section container" id="cardFamilies">
-
-      <div class="section-head reveal">
-        <span class="section-kicker" data-pt="Passo 4" data-en="Step 4">
-          Passo 4
-        </span>
-
-        <h2 data-pt="Entenda o papel de cada carta." data-en="Understand each card's role.">
-          Entenda o papel de cada carta.
-        </h2>
-      </div>
-
-      <div class="card-family-grid card-family-grid--wide">
-
-        <article class="card-family reveal tilt-card">
-          <img src="../assets/cards/Campeão - Foundations-3.webp" alt="Carta Campeão">
-
-          <div class="card-family-copy">
-            <div class="card-family-top">
-              <span data-pt="Campeões" data-en="Champions">
-                Campeões
-              </span>
-            </div>
-
-            <p data-pt="O líder da sua jornada. Fica na zona de Identidade e oferece habilidades que moldam o ritmo e o estilo da sua estratégia."
-              data-en="The leader of your journey. Stays in the Identity zone and offers abilities that shape the rhythm and style of your strategy.">
-              O líder da sua jornada. Fica na zona de Identidade e oferece habilidades que moldam o ritmo e o estilo da
-              sua estratégia.
-            </p>
-          </div>
-        </article>
-
-        <article class="card-family reveal tilt-card">
-          <img src="../assets/cards/Templo - Foundations-3.webp" alt="Carta Templo">
-
-          <div class="card-family-copy">
-            <div class="card-family-top">
-              <span data-pt="Templos" data-en="Temples">
-                Templos
-              </span>
-            </div>
-
-            <p data-pt="O centro espiritual da sua mesa. Permanece na zona de Identidade e altera como você Consagra, Profana e administra seus recursos."
-              data-en="The spiritual center of your board. Remains in the Identity zone and changes how you Consecrate, Profane, and manage your resources.">
-              O centro espiritual da sua mesa. Permanece na zona de Identidade e altera como você Consagra, Profana e
-              administra seus recursos.
-            </p>
-          </div>
-        </article>
-
-        <article class="card-family reveal stagger-1 tilt-card">
-          <img src="../assets/cards/Território - Foundations-1.webp" alt="Carta Território">
-
-          <div class="card-family-copy">
-            <div class="card-family-top">
-              <span data-pt="Territórios" data-en="Territories">
-                Territórios
-              </span>
-            </div>
-
-            <p data-pt="Aquilo que você jurou proteger. Quando o dano marcado nele alcança sua Resistência, sua jornada chega ao fim."
-              data-en="What you swore to protect. When the damage marked on it reaches its Resistance, your journey comes to an end.">
-              Aquilo que você jurou proteger. Quando o dano marcado nele alcança sua Resistência, sua jornada chega ao
-              fim.
-            </p>
-          </div>
-        </article>
-
-        <article class="card-family reveal stagger-3 tilt-card">
-          <img src="../assets/virtudes/Virtudes - Foundations-9.webp" alt="Carta Virtude">
-
-          <div class="card-family-copy">
-            <div class="card-family-top">
-              <span data-pt="Virtudes e Desvirtudes" data-en="Virtues and Desvirtues">
-                Virtudes e Desvirtudes
-              </span>
-            </div>
-
-            <p data-pt="Representam os caminhos morais da sua jornada. Consagrar, Profanar e resolver cartas altera esses atributos, influenciando habilidades, estratégias e a forma como sua partida se desenvolve."
-              data-en="They represent the moral paths of your journey. Consecrating, Profaning, and resolving cards changes these attributes, influencing abilities, strategies, and the way your match unfolds.">
-              Representam os caminhos morais da sua jornada. Consagrar, Profanar e resolver cartas altera esses
-              atributos, influenciando habilidades, estratégias e a forma como sua partida se desenvolve.
-            </p>
-          </div>
-        </article>
-
-        <article class="card-family reveal stagger-1 tilt-card">
-          <img src="../assets/cards/Personagem - Foundations-5.webp" alt="Carta Personagem">
-
-          <div class="card-family-copy">
-            <div class="card-family-top">
-              <span data-pt="Personagens" data-en="Characters">
-                Personagens
-              </span>
-            </div>
-
-            <p data-pt="Seus aliados em campo. Entram como permanentes, atacam, bloqueiam e recebem dano. Use-os para pressionar territórios, proteger sua mesa e disputar o ritmo do combate."
-              data-en="Your allies on the field. They enter as permanents, attack, block, and take damage. Use them to pressure territories, protect your board, and control the pace of combat.">
-              Seus aliados em campo. Entram como permanentes, atacam, bloqueiam e recebem dano. Use-os para pressionar
-              territórios, proteger sua mesa e disputar o ritmo do combate.
-            </p>
-          </div>
-        </article>
-
-        <article class="card-family reveal stagger-2 tilt-card">
-          <img src="../assets/cards/Milagre - Foundations-5.webp" alt="Carta Milagre">
-
-          <div class="card-family-copy">
-            <div class="card-family-top">
-              <span data-pt="Milagres" data-en="Miracles">
-                Milagres
-              </span>
-            </div>
-
-            <p data-pt="Respostas rápidas e imprevisíveis. Podem ser usados em janelas abertas para proteger aliados, interromper jogadas ou mudar completamente o rumo da batalha."
-              data-en="Fast and unpredictable responses. They may be used during open windows to protect allies, interrupt plays, or completely change the course of battle.">
-              Respostas rápidas e imprevisíveis. Podem ser usados em janelas abertas para proteger aliados, interromper
-              jogadas ou mudar completamente o rumo da batalha.
-            </p>
-          </div>
-        </article>
-
-        <article class="card-family reveal stagger-2 tilt-card">
-          <img src="../assets/cards/Pecado - Foundations-2.webp" alt="Carta Pecado">
-
-          <div class="card-family-copy">
-            <div class="card-family-top">
-              <span data-pt="Pecados" data-en="Sins">
-                Pecados
-              </span>
-            </div>
-
-            <p data-pt="Poder imediato em troca de sofrimento. São pagos causando dano ao próprio Território e costumam oferecer efeitos agressivos, arriscados ou difíceis de responder."
-              data-en="Immediate power in exchange for suffering. They are paid by damaging your own Territory and usually offer aggressive, risky, or difficult-to-answer effects.">
-              Poder imediato em troca de sofrimento. São pagos causando dano ao próprio Território e costumam oferecer
-              efeitos agressivos, arriscados ou difíceis de responder.
-            </p>
-          </div>
-        </article>
-
-        <article class="card-family reveal stagger-3 tilt-card">
-          <img src="../assets/cards/Artefato - Foundations-1.webp" alt="Carta Artefato">
-
-          <div class="card-family-copy">
-            <div class="card-family-top">
-              <span data-pt="Artefatos" data-en="Artifacts">
-                Artefatos
-              </span>
-            </div>
-
-            <p data-pt="Relíquias, armas e símbolos permanentes que permanecem em campo reforçando personagens, criando vantagens contínuas e sustentando estratégias específicas."
-              data-en="Relics, weapons, and permanent symbols that remain on the field reinforcing characters, creating ongoing advantages, and supporting specific strategies.">
-              Relíquias, armas e símbolos permanentes que permanecem em campo reforçando personagens, criando vantagens
-              contínuas e sustentando estratégias específicas.
-            </p>
-          </div>
-        </article>
-
-      </div>
-
-    </section>
-
-    <!-- CONSEQUENCES -->
-    <section class="section consequence-band" id="consequences">
-      <div class="container consequence-grid">
-
-        <div class="consequence-copy reveal">
-          <span class="section-kicker" data-pt="Passo 5" data-en="Step 5">
-            Passo 5
-          </span>
-
-          <h2 data-pt="Jogue entendendo as consequências." data-en="Play with consequences in mind.">
-            Jogue entendendo as consequências.
-          </h2>
-
-          <p data-pt="Suas escolhas moldam suas características ao longo da partida. Cada decisão pode gerar consequências permanentes: comprar cartas extras, curar seu Território, perder recursos, sofrer dano ou alterar o ritmo da mesa. Em Adonai, suas ações não desaparecem depois de resolvidas — elas transformam a forma como sua jornada continua."
-            data-en="Your choices shape your traits throughout the match. Every decision may create permanent consequences: drawing extra cards, healing your Territory, losing resources, taking damage, or changing the pace of the board. In Adonai, your actions do not disappear after they resolve — they transform the way your journey continues.">
-            Suas escolhas moldam suas características ao longo da partida. Cada decisão pode gerar consequências
-            permanentes: comprar cartas extras, curar seu Território, perder recursos, sofrer dano ou alterar o ritmo da
-            mesa. Em Adonai, suas ações não desaparecem depois de resolvidas — elas transformam a forma como sua jornada
-            continua.
-          </p>
-
-          <a href="../manual/" class="btn btn-primary" data-pt="Ler regras completas" data-en="Read full rules">
-            Ler regras completas
-          </a>
-        </div>
-
-        <div class="virtue-orbit reveal stagger-1" aria-hidden="true">
-          <img class="virtue-orb" src="../assets/icons/13-caridade.webp" alt="">
-          <img class="virtue-orb" src="../assets/icons/09-esperanca.webp" alt="">
-          <img class="virtue-orb" src="../assets/icons/07-fortaleza.webp" alt="">
-          <img class="virtue-orb" src="../assets/icons/11-prudencia.webp" alt="">
-          <img class="virtue-orb" src="../assets/icons/04-descontrole.webp" alt="">
-          <img class="virtue-orb" src="../assets/icons/06-iniquidade.webp" alt="">
-          <img class="virtue-orb" src="../assets/icons/02-duvida.webp" alt="">
-          <img class="virtue-orb" src="../assets/icons/14-egoismo.webp" alt="">
-          <img class="virtue-orb" src="../assets/icons/10-desespero.webp" alt="">
-          <img class="virtue-orb" src="../assets/icons/08-covardia.webp" alt="">
-          <img class="virtue-orb" src="../assets/icons/12-insensatez.webp" alt="">
-          <img class="virtue-orb" src="../assets/icons/03-temperanca.webp" alt="">
-          <img class="virtue-orb" src="../assets/icons/05-justica.webp" alt="">
-          <img class="virtue-orb" src="../assets/icons/01-fe.webp" alt="">
-        </div>
-
-      </div>
-    </section>
-
-    <!-- TUTORIALS -->
-    <section class="section media-section" id="tutorials" data-section="tutorials" style="padding-top:40px;">
-      <div class="container">
-        <div class="section-head reveal">
-          <span class="section-kicker" data-pt="Passo 6" data-en="Step 6">
-            Passo 6
-          </span>
-
-          <h2 data-pt="Assista aos tutoriais rápidos." data-en="Watch the quick tutorials.">
-            Assista aos tutoriais rápidos.
-          </h2>
-
-          <p data-pt="Acompanhe esta série de mini vídeos para ver, na prática, os conceitos básicos que você acabou de aprender: identidade, preparação, alistamento, turno, tipos de carta, combate e consequências."
-            data-en="Follow this series of short videos to see the basic concepts you just learned in practice: identity, preparation, muster, turn flow, card types, combat, and consequences.">
-            Acompanhe esta série de mini vídeos para ver, na prática, os conceitos básicos que você acabou de aprender:
-            identidade, preparação, alistamento, turno, tipos de carta, combate e consequências.
-          </p>
-        </div>
-
-        <div class="content-carousel media-carousel">
-          <button class="carousel-arrow carousel-arrow--prev" type="button">‹</button>
-          <div class="carousel-track media-grid" data-render="tutorials"></div>
-          <button class="carousel-arrow carousel-arrow--next" type="button">›</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- MANUAL CTA -->
-    <section class="section container manual-cta" id="manual" style="padding-top:0px;">
-
-      <div class="manual-panel reveal">
-
-        <div>
-          <span class="section-kicker" data-pt="Passo 7" data-en="Step 7">
-            Passo 7
-          </span>
-
-          <h2 data-pt="Aprofunde-se nas regras completas." data-en="Dive into the complete rules.">
-            Aprofunde-se nas regras completas.
-          </h2>
-
-          <p data-pt="O guia acima ensina o essencial para começar sua jornada. Para dominar Adonai em profundidade, consulte o Manual Completo: um conjunto detalhado de regras, interações, palavras-chave, zonas, prioridades, combate, características, resolução de efeitos e casos avançados da partida."
-            data-en="The guide above teaches the essentials to begin your journey. To truly master Adonai, consult the Complete Rulebook: a detailed system covering interactions, keywords, zones, priorities, combat, traits, effect resolution, and advanced gameplay cases.">
-            O guia acima ensina o essencial para começar sua jornada. Para dominar Adonai em profundidade, consulte o
-            Manual Completo: um conjunto detalhado de regras, interações, palavras-chave, zonas, prioridades, combate,
-            características, resolução de efeitos e casos avançados da partida.
-          </p>
-        </div>
-
-        <a href="../manual/" class="btn btn-primary" data-pt="Abrir Manual Completo" data-en="Open Complete Rulebook">
-          Abrir Manual Completo
-        </a>
-
-      </div>
-
-    </section>
-
-    <footer class="site-footer">
-      <div class="container footer-grid">
-        <div>
-          <div class="footer-brand-wrap">
-            <img src="../assets/logo/adonai_logo_base-4.webp" alt="Adonai Logo" class="footer-logo">
-            <span class="footer-brand">Adonai Card Game</span>
-          </div>
-          <p data-pt="Um card game bíblico competitivo sobre identidade, alianças, escolhas e consequências."
-            data-en="A competitive biblical card game about identity, alliances, choices, and consequences.">
-            Um card game bíblico competitivo sobre identidade, alianças, escolhas e consequências.
-          </p>
-        </div>
-
         <div class="footer-links">
-          <a href="../index.html" data-pt="Início" data-en="Home">Início</a>
-          <a href="./" data-pt="Como Jogar" data-en="How to Play">Como Jogar</a>
-          <a href="../cards/" data-pt="Cartas" data-en="Cards">Cartas</a>
-          <a href="../decks/" data-pt="Decks" data-en="Decks">Decks</a>
-          <a href="../deckbuilder/" data-pt="Deckbuilder" data-en="Deckbuilder">Deckbuilder</a>
-          <a href="../manual/" data-pt="Manual" data-en="Rulebook">Manual</a>
-          <!-- <a href="../gallery/" data-pt="Galeria" data-en="Gallery">Galeria</a> -->
-          <!-- <a href="../lore/" data-pt="Lore" data-en="Lore">Lore</a> -->
-          <!-- <a href="../index.html#shop" data-pt="Loja" data-en="Shop">Loja</a> -->
+          <a href="../index.html" data-pt="Início" data-en="Home">Início</a
+          ><a
+            href="./"
+            aria-current="page"
+            data-pt="Como Jogar"
+            data-en="How to Play"
+            >Como Jogar</a
+          ><a href="../cards/" data-pt="Cartas" data-en="Cards">Cartas</a
+          ><a href="../decks/" data-pt="Decks" data-en="Decks">Decks</a
+          ><a href="../deckbuilder/" data-pt="Deckbuilder" data-en="Deckbuilder"
+            >Deckbuilder</a
+          ><a href="../manual/" data-pt="Manual" data-en="Rulebook">Manual</a
+          ><!-- <a href="../lore/">Lore</a> -->
+          <!-- <a href="../index.html#shop">Loja</a> -->
+          <!-- <a href="../gallery/">Galeria</a> -->
         </div>
+      </div>
+      <div class="wrap footer-bottom">
+        <span>ADONAI CARD GAME</span
+        ><a href="#mainContent"
+          ><span data-pt="Voltar ao início" data-en="Back to top"
+            >Voltar ao início</span
+          >
+          ↑</a
+        >
       </div>
     </footer>
-
-    <script src="../shared/script.js"></script>
+    <script src="../shared/site.js"></script>
+    <script
+      src="../shared/card-content.js"
+      data-content="./card-content.json"
+    ></script>
     <script src="./how-to-play.js"></script>
     <script src="./dynamic-how-to-play.js"></script>
-
-</body>
-
+  </body>
 </html>

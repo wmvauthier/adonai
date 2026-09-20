@@ -12,7 +12,8 @@
           "pt": "Como começar em Adonai",
           "en": "How to Start in Adonai"
         },
-        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "enabled": false
       },
       {
         "youtubeId": "dQw4w9WgXcQ",
@@ -24,7 +25,8 @@
           "pt": "Virtudes, desvirtudes e consequências",
           "en": "Virtues, Vices, and Consequences"
         },
-        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "enabled": false
       },
       {
         "youtubeId": "dQw4w9WgXcQ",
@@ -36,7 +38,8 @@
           "pt": "Construindo sua estratégia",
           "en": "Building Your Strategy"
         },
-        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "enabled": false
       },
       {
         "youtubeId": "dQw4w9WgXcQ",
@@ -48,7 +51,8 @@
           "pt": "Partida competitiva completa",
           "en": "Full Competitive Match"
         },
-        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "enabled": false
       },
       {
         "youtubeId": "dQw4w9WgXcQ",
@@ -60,7 +64,8 @@
           "pt": "Erros que custam a vitória",
           "en": "Mistakes That Cost Victory"
         },
-        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "enabled": false
       }
     ]
   }

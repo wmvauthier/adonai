@@ -1,61 +1,89 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../shared/theme.js"></script>
   <title>Adonai Card Game — Manual Completo</title>
   <meta name="description"
     content="Manual completo de regras de Adonai Card Game com busca, índice navegável e assistente de regras." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;650;700;800&family=DM+Serif+Display:ital@0;1&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="../shared/generic.css" />
+  <link rel="stylesheet" href="../shared/site.css" />
+  <link rel="stylesheet" href="../shared/site-light.css" />
   <link rel="stylesheet" href="./manual.css" />
 </head>
 
-<body>
-  <div class="page-noise" aria-hidden="true"></div>
-
-  <header class="site-header" id="siteHeader">
-    <a href="../index.html" class="brand" aria-label="Adonai Card Game">
-      <img src="../assets/logo/adonai_logo_base-4.webp" alt="Adonai Logo" class="brand-logo" />
+<body class="manual-page">
+  <a class="skip" href="#mainContent" data-pt="Pular para o conteúdo" data-en="Skip to content">Pular para o conteúdo</a>
+  <header class="masthead" id="siteHeader">
+    <a class="wordmark" href="../index.html" aria-label="Adonai — Início">
+      <img width="3508" height="3509" src="../assets/logo/adonai_logo_base-4.webp" alt="" fetchpriority="high" decoding="async" />
+      <span>ADONAI<small>CARD GAME</small></span>
     </a>
-
-    <button class="mobile-toggle" id="mobileToggle" aria-expanded="false" aria-controls="primaryNav"
-      aria-label="Abrir menu">
-      <span></span><span></span><span></span>
-    </button>
-
-    <nav class="site-nav" id="primaryNav">
+    <nav class="navigation" id="primaryNav" aria-label="Principal">
       <a href="../index.html" data-pt="Início" data-en="Home">Início</a>
       <a href="../how-to-play/" data-pt="Como Jogar" data-en="How to Play">Como Jogar</a>
       <a href="../cards/" data-pt="Cartas" data-en="Cards">Cartas</a>
       <a href="../decks/" data-pt="Decks" data-en="Decks">Decks</a>
       <a href="../deckbuilder/" data-pt="Deckbuilder" data-en="Deckbuilder">Deckbuilder</a>
-      <a href="./" data-pt="Manual" data-en="Rulebook">Manual</a>
-      <!-- <a href="../gallery/" data-pt="Galeria" data-en="Gallery">Galeria</a> -->
-      <!-- <a href="../lore/" data-pt="Lore" data-en="Lore">Lore</a> -->
-      <!-- <a href="../index.html#shop" data-pt="Loja" data-en="Shop">Loja</a> -->
+      <a href="./" aria-current="page" data-pt="Manual" data-en="Rulebook">Manual</a>
+      <!-- <a href="../lore/">Lore</a> -->
+      <!-- <a href="../index.html#shop">Loja</a> -->
+      <!-- <a href="../gallery/">Galeria</a> -->
     </nav>
-
-    <div class="header-actions">
-      <div class="lang-switch" aria-label="Alternar idioma">
-        <button class="lang-btn is-active" data-lang="pt">PT</button>
-        <button class="lang-btn" data-lang="en">EN</button>
+    <div class="header-tools">
+      <div class="theme-control" role="group" aria-label="Tema da página">
+        <button class="theme-button" type="button" data-theme-option="light" aria-label="Ativar modo claro" aria-pressed="false" title="Ativar modo claro">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true" focusable="false">
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" />
+          </svg>
+        </button>
+        <button class="theme-button" type="button" data-theme-option="dark" aria-label="Ativar modo escuro" aria-pressed="true" title="Ativar modo escuro">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <path d="M20.5 13.3A8.6 8.6 0 0 1 10.7 3.5 8.7 8.7 0 1 0 20.5 13.3Z" />
+          </svg>
+        </button>
       </div>
+      <div class="languages" aria-label="Idioma">
+        <button class="lang-btn is-active" data-lang="pt" aria-pressed="true">PT</button><span aria-hidden="true">/</span><button class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <button id="mobileToggle" class="menu-toggle" type="button" aria-controls="primaryNav" aria-expanded="false" aria-label="Alternar menu"><span></span><span></span></button>
     </div>
   </header>
 
-  <main>
+  <main id="mainContent">
+    <!-- <section class="manual-hero" aria-labelledby="manualTitle">
+      <div class="manual-hero-copy">
+        <p class="eyebrow" data-pt="Regras completas" data-en="Comprehensive rules">Regras completas</p>
+        <h1 id="manualTitle" data-pt="Clareza para cada decisão da partida." data-en="Clarity for every decision in the match.">Clareza para cada decisão da partida.</h1>
+        <p data-pt="Consulte a estrutura oficial de Adonai, encontre interações específicas e esclareça dúvidas sem interromper o ritmo do jogo." data-en="Consult Adonai's official structure, find specific interactions, and resolve questions without interrupting the flow of play.">Consulte a estrutura oficial de Adonai, encontre interações específicas e esclareça dúvidas sem interromper o ritmo do jogo.</p>
+        <a class="button" href="#manualQuery"><span data-pt="Consultar regras" data-en="Browse rules">Consultar regras</span><span aria-hidden="true">↓</span></a>
+        <dl class="manual-highlights">
+          <div><dt id="manualChapterCount">—</dt><dd data-pt="capítulos" data-en="chapters">capítulos</dd></div>
+          <div><dt id="manualSectionCount">—</dt><dd data-pt="seções" data-en="sections">seções</dd></div>
+          <div><dt id="manualLineCount">—</dt><dd data-pt="linhas de regras" data-en="rule lines">linhas de regras</dd></div>
+        </dl>
+      </div>
+      <div class="manual-hero-visual" aria-hidden="true">
+        <img src="../assets/imgs/Templo - Foundations-4 - img.webp" alt="" decoding="async" />
+        <span class="manual-hero-frame"></span>
+      </div>
+    </section> -->
+
     <section class="section manual-shell">
       <div class="container manual-heading reveal">
-        <span class="section-kicker" data-pt="Manual Completo" data-en="Complete Rulebook">Manual Completo</span>
+        <p class="eyebrow" data-pt="Manual completo" data-en="Complete rulebook">Manual completo</p>
+        <h2 data-pt="Encontre a regra. Volte ao jogo." data-en="Find the rule. Return to play.">Encontre a regra. Volte ao jogo.</h2>
+        <p data-pt="Use a busca para localizar termos exatos ou faça uma pergunta para receber sugestões de seções relacionadas." data-en="Use search to locate exact terms or ask a question to receive suggestions for related sections.">Use a busca para localizar termos exatos ou faça uma pergunta para receber sugestões de seções relacionadas.</p>
       </div>
 
-      <div class="container manual-search-panel reveal">
+      <div class="container manual-search-panel reveal" id="manualQuery">
         <div class="manual-search-main">
           <div class="manual-query-head">
             <label for="manualSearch" data-pt="Consulta ao manual" data-en="Rulebook query">Consulta ao manual</label>
@@ -81,6 +109,7 @@
         <aside class="manual-toc reveal" aria-label="Índice do manual">
           <div class="manual-toc-head">
             <span class="section-kicker" data-pt="Índice" data-en="Contents">Índice</span>
+            <button class="toc-toggle" id="tocToggle" type="button" aria-expanded="false" data-pt="Abrir índice" data-en="Open contents">Abrir índice</button>
           </div>
           <nav id="manualToc"></nav>
         </aside>
@@ -93,30 +122,28 @@
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container footer-grid">
-      <div>
-        <div class="footer-brand-wrap">
-          <img src="../assets/logo/adonai_logo_base-4.webp" alt="Adonai Logo" class="footer-logo" />
-          <span class="footer-brand">Adonai Card Game</span>
-        </div>
-        <p data-pt="Um card game bíblico competitivo sobre escolhas, alianças, consequências e caminhos estratégicos."
-          data-en="A competitive biblical card game about choices, alliances, consequences, and strategic paths.">
-          Um card game bíblico competitivo sobre escolhas, alianças, consequências e caminhos estratégicos.
-        </p>
-      </div>
-
+  <footer class="footer">
+    <div class="wrap footer-top">
+      <a class="wordmark" href="../index.html">
+        <img width="3508" height="3509" src="../assets/logo/adonai_logo_base-4.webp" alt="" loading="lazy" decoding="async" />
+        <span>ADONAI<small>CARD GAME</small></span>
+      </a>
+      <p data-pt="Um card game bíblico competitivo sobre escolhas, alianças e estratégia." data-en="A competitive biblical card game about choices, alliances, and strategy.">Um card game bíblico competitivo sobre escolhas, alianças e estratégia.</p>
       <div class="footer-links">
         <a href="../index.html" data-pt="Início" data-en="Home">Início</a>
         <a href="../how-to-play/" data-pt="Como Jogar" data-en="How to Play">Como Jogar</a>
         <a href="../cards/" data-pt="Cartas" data-en="Cards">Cartas</a>
         <a href="../decks/" data-pt="Decks" data-en="Decks">Decks</a>
         <a href="../deckbuilder/" data-pt="Deckbuilder" data-en="Deckbuilder">Deckbuilder</a>
-        <a href="./" data-pt="Manual" data-en="Rulebook">Manual</a>
-        <!-- <a href="../gallery/" data-pt="Galeria" data-en="Gallery">Galeria</a> -->
-        <!-- <a href="../lore/" data-pt="Lore" data-en="Lore">Lore</a> -->
-        <!-- <a href="../index.html#shop" data-pt="Loja" data-en="Shop">Loja</a> -->
+        <a href="./" aria-current="page" data-pt="Manual" data-en="Rulebook">Manual</a>
+        <!-- <a href="../lore/">Lore</a> -->
+        <!-- <a href="../index.html#shop">Loja</a> -->
+        <!-- <a href="../gallery/">Galeria</a> -->
       </div>
+    </div>
+    <div class="wrap footer-bottom">
+      <span>ADONAI CARD GAME</span>
+      <a href="#mainContent"><span data-pt="Voltar ao início" data-en="Back to top">Voltar ao início</span> ↑</a>
     </div>
   </footer>
 

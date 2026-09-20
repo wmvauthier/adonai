@@ -1,0 +1,186 @@
+/* Light art direction: paper, deep blue and burnt-red accents.
+   Keep later content/data improvements, without the Dark theme's gold frames. */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f3f0e7;
+  --surface: #e4e2d8;
+  --text: #142c31;
+  --muted: #556263;
+  --gold: #ac3e28;
+  --gold-hover: #873320;
+  --on-gold: #ffffff;
+  --line: #d3d5ca;
+}
+[data-theme="light"] :is(h1, h2, .wordmark > span) {
+  color: var(--text);
+}
+[data-theme="light"] :focus-visible {
+  outline-color: #c96036;
+}
+[data-theme="light"] ::selection {
+  background: #d8b475;
+  color: #142c31;
+}
+[data-theme="light"] .masthead {
+  background: var(--bg);
+  border-color: var(--line);
+  box-shadow: none;
+}
+[data-theme="light"] .hero {
+  background: var(--bg);
+}
+[data-theme="light"] .hero-art {
+  background: #142c31;
+  border: 0;
+  box-shadow: none;
+}
+[data-theme="light"] .hero-art::after {
+  border-color: #ffffff65;
+}
+[data-theme="light"] .hero-seal {
+  background: #ac3e28;
+  color: #f3f0e7;
+  box-shadow: none;
+}
+[data-theme="light"] .button {
+  background: #ac3e28;
+  color: #fff;
+  box-shadow: none;
+}
+[data-theme="light"] .button:hover {
+  background: #873320;
+}
+[data-theme="light"] .theme-strip {
+  background: #142c31;
+  color: #f3f0e7;
+  border: 0;
+  box-shadow: none;
+  font-weight: 400;
+}
+[data-theme="light"] .theme-strip b {
+  color: #c7a576;
+}
+[data-theme="light"]
+  :is(
+    .chapter-surface--story,
+    .chapter-surface--collection,
+    .chapter-surface--closing
+  ) {
+  background: var(--bg);
+  border: 0;
+}
+[data-theme="light"] :is(.identity, .chapter-surface--collection)::before {
+  display: none;
+}
+[data-theme="light"] .intro-image {
+  border: 0;
+  box-shadow: none;
+}
+[data-theme="light"] .intro-image::after {
+  display: none;
+}
+[data-theme="light"] .intro-image figcaption {
+  color: #f3f0e7;
+}
+[data-theme="light"] .intro-image figcaption span {
+  color: #d1b98d;
+}
+[data-theme="light"] .identity {
+  --text: #f3f0e7;
+  --muted: #c0cdcd;
+  --gold: #d1b98d;
+  --gold-hover: #e0ba85;
+  --line: #526367;
+  background: #142c31;
+  border: 0;
+  box-shadow: none;
+}
+[data-theme="light"] .identity-tabs {
+  background: transparent;
+}
+[data-theme="light"] .identity-tab {
+  color: #a0adae;
+}
+[data-theme="light"] .identity-tab[aria-selected="true"] {
+  color: #f0ca94;
+  background: #ffffff08;
+  box-shadow: none;
+  border-top-color: #d0ac77;
+}
+[data-theme="light"] .identity-note {
+  color: #acb8b8;
+}
+[data-theme="light"] .identity-art {
+  border: 0;
+  box-shadow: none;
+  background: #213f45;
+}
+[data-theme="light"] .identity-art::after {
+  background: linear-gradient(90deg, #142c3180, transparent);
+}
+[data-theme="light"] .identity-detail {
+  padding: 25px 0 0;
+  border: 0;
+  background: transparent;
+}
+[data-theme="light"] .light {
+  color: #f3f0e7;
+  border-color: #9ca99c;
+}
+[data-theme="light"] .light:hover {
+  color: #e0ba85;
+  border-color: #e0ba85;
+}
+[data-theme="light"] .collection-card .card-stage {
+  background: #e4e2d8;
+  border: 0;
+  box-shadow: none;
+}
+[data-theme="light"] .collection-card:nth-child(2) .card-stage {
+  background: #dce3de;
+}
+[data-theme="light"] .collection-card:nth-child(3) .card-stage {
+  background: #e8ddca;
+}
+[data-theme="light"] .collection-card:nth-child(4) .card-stage {
+  background: #e6d7d0;
+}
+[data-theme="light"] .card-stage img {
+  box-shadow: 0 8px 16px #142c3130;
+}
+[data-theme="light"] .deck-section {
+  --text: #f3f0e7;
+  --muted: #d0dada;
+  --gold: #debd89;
+  background: #203e43;
+  border: 0;
+}
+[data-theme="light"] .deck-art {
+  border: 0;
+}
+[data-theme="light"] .deck-art::after {
+  display: none;
+}
+[data-theme="light"] .cream {
+  background: #f3f0e7;
+  color: #142c31;
+}
+[data-theme="light"] .cream:hover {
+  background: #dfd7c3;
+  color: #142c31;
+}
+[data-theme="light"] .home-review {
+  background: #e6e4da;
+  border: 0;
+  box-shadow: none;
+}
+[data-theme="light"] .footer {
+  --text: #f3f0e7;
+  --muted: #b7c5c5;
+  background: #10262b;
+  box-shadow: none;
+}
+[data-theme="light"] .card-stage {
+  aspect-ratio: auto;
+  display: block;
+}

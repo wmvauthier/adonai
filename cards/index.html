@@ -1,63 +1,94 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../shared/theme.js"></script>
   <title>Adonai Card Game — Cartas</title>
   <meta name="description"
     content="Catálogo dinâmico de cartas de Adonai Card Game com busca, filtros, paginação e detalhes da coleção." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;650;700;800&family=DM+Serif+Display:ital@0;1&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="../shared/generic.css" />
+  <link rel="stylesheet" href="../shared/site.css" />
+  <link rel="stylesheet" href="../shared/site-light.css" />
   <link rel="stylesheet" href="./cards.css" />
 </head>
 
-<body>
-  <div class="page-noise" aria-hidden="true"></div>
-
-  <header class="site-header" id="siteHeader">
-    <a href="../index.html" class="brand" aria-label="Adonai Card Game">
-      <img src="../assets/logo/adonai_logo_base-4.webp" alt="Adonai Logo" class="brand-logo" />
+<body class="catalog-page">
+  <a class="skip" href="#mainContent" data-pt="Pular para o conteúdo" data-en="Skip to content">Pular para o conteúdo</a>
+  <header class="masthead" id="siteHeader">
+    <a class="wordmark" href="../index.html" aria-label="Adonai — Início">
+      <img width="3508" height="3509" src="../assets/logo/adonai_logo_base-4.webp" alt="" fetchpriority="high" decoding="async" />
+      <span>ADONAI<small>CARD GAME</small></span>
     </a>
-
-    <button class="mobile-toggle" id="mobileToggle" aria-expanded="false" aria-controls="primaryNav">
-      <span></span><span></span><span></span>
-    </button>
-
-    <nav class="site-nav" id="primaryNav">
+    <nav class="navigation" id="primaryNav" aria-label="Principal">
       <a href="../index.html" data-pt="Início" data-en="Home">Início</a>
       <a href="../how-to-play/" data-pt="Como Jogar" data-en="How to Play">Como Jogar</a>
-      <a href="./" data-pt="Cartas" data-en="Cards">Cartas</a>
+      <a href="./" aria-current="page" data-pt="Cartas" data-en="Cards">Cartas</a>
       <a href="../decks/" data-pt="Decks" data-en="Decks">Decks</a>
       <a href="../deckbuilder/" data-pt="Deckbuilder" data-en="Deckbuilder">Deckbuilder</a>
       <a href="../manual/" data-pt="Manual" data-en="Rulebook">Manual</a>
-      <!-- <a href="../gallery/" data-pt="Galeria" data-en="Gallery">Galeria</a> -->
-      <!-- <a href="../lore/" data-pt="Lore" data-en="Lore">Lore</a> -->
-      <!-- <a href="../index.html#shop" data-pt="Loja" data-en="Shop">Loja</a> -->
+      <!-- <a href="../lore/">Lore</a> -->
+      <!-- <a href="../index.html#shop">Loja</a> -->
+      <!-- <a href="../gallery/">Galeria</a> -->
     </nav>
-
-    <div class="header-actions">
-      <div class="lang-switch" aria-label="Alternar idioma">
-        <button class="lang-btn is-active" data-lang="pt">PT</button>
-        <button class="lang-btn" data-lang="en">EN</button>
+    <div class="header-tools">
+      <div class="theme-control" role="group" aria-label="Tema da página">
+        <button class="theme-button" type="button" data-theme-option="light" aria-label="Ativar modo claro" aria-pressed="false" title="Ativar modo claro">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true" focusable="false">
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" />
+          </svg>
+        </button>
+        <button class="theme-button" type="button" data-theme-option="dark" aria-label="Ativar modo escuro" aria-pressed="true" title="Ativar modo escuro">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <path d="M20.5 13.3A8.6 8.6 0 0 1 10.7 3.5 8.7 8.7 0 1 0 20.5 13.3Z" />
+          </svg>
+        </button>
       </div>
+      <div class="languages" aria-label="Idioma">
+        <button class="lang-btn is-active" data-lang="pt" aria-pressed="true">PT</button><span aria-hidden="true">/</span><button class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <button id="mobileToggle" class="menu-toggle" type="button" aria-controls="primaryNav" aria-expanded="false" aria-label="Alternar menu"><span></span><span></span></button>
     </div>
   </header>
 
-  <main><br><br><br>
+  <main id="mainContent">
+    <!-- <section class="catalog-hero" aria-labelledby="catalogTitle">
+      <div class="catalog-hero-copy">
+        <p class="eyebrow" data-pt="Coleção Foundations" data-en="Foundations Collection">Coleção Foundations</p>
+        <h1 id="catalogTitle" data-pt="Encontre a carta certa para a sua estratégia." data-en="Find the right card for your strategy.">Encontre a carta certa para a sua estratégia.</h1>
+        <p class="catalog-hero-text" data-pt="Explore a coleção completa, combine filtros e abra cada carta para consultar características, virtudes, rulings e referências." data-en="Explore the complete collection, combine filters, and open each card to check traits, virtues, rulings, and references.">Explore a coleção completa, combine filtros e abra cada carta para consultar características, virtudes, rulings e referências.</p>
+        <a class="button catalog-hero-action" href="#cardsCatalog"><span data-pt="Explorar catálogo" data-en="Explore catalog">Explorar catálogo</span><span aria-hidden="true">↓</span></a>
+        <dl class="catalog-highlights" aria-label="Resumo da coleção">
+          <div><dt id="collectionCount">—</dt><dd data-pt="cartas" data-en="cards">cartas</dd></div>
+          <div><dt id="typeCount">—</dt><dd data-pt="tipos" data-en="types">tipos</dd></div>
+          <div><dt id="virtueCount">—</dt><dd data-pt="virtudes" data-en="virtues">virtudes</dd></div>
+        </dl>
+      </div>
+      <div class="catalog-hero-visual" id="catalogHeroCards" aria-hidden="true">
+        <span class="catalog-hero-orbit"></span>
+      </div>
+    </section> -->
 
     <section class="section catalog-shell" id="cardsCatalog">
       <div class="container catalog-heading reveal">
-        <span class="section-kicker" data-pt="Catálogo de Cartas" data-en="Card Catalog">Catálogo de Cartas</span>
+        <p class="eyebrow" data-pt="Catálogo de cartas" data-en="Card catalog">Catálogo de cartas</p>
+        <h2 data-pt="Construa sua busca." data-en="Build your search.">Construa sua busca.</h2>
+        <p data-pt="Comece pelo nome ou refine os resultados por atributos. Os filtros podem ser combinados e ficam registrados na URL." data-en="Start with a name or refine results by attributes. Filters can be combined and are saved in the URL.">Comece pelo nome ou refine os resultados por atributos. Os filtros podem ser combinados e ficam registrados na URL.</p>
       </div>
       <div class="container catalog-layout">
         <aside class="filters-panel reveal">
           <div class="filters-panel-head">
-            <span class="section-kicker" data-pt="Filtros" data-en="Filters">Filtros</span>
+            <div>
+              <span class="section-kicker" data-pt="Filtros" data-en="Filters">Filtros</span>
+              <h2 data-pt="Refine a coleção" data-en="Refine the collection">Refine a coleção</h2>
+            </div>
+            <button class="filter-panel-toggle" id="filterPanelToggle" type="button" aria-expanded="false" data-pt="Abrir filtros" data-en="Open filters">Abrir filtros</button>
           </div>
 
           <div class="filter-actions">
@@ -273,30 +304,28 @@
   </aside>
   <div class="hover-preview" id="hoverPreview" aria-hidden="true"></div>
 
-  <footer class="site-footer">
-    <div class="container footer-grid">
-      <div>
-        <div class="footer-brand-wrap">
-          <img src="../assets/logo/adonai_logo_base-4.webp" alt="Adonai Logo" class="footer-logo" />
-          <span class="footer-brand">Adonai Card Game</span>
-        </div>
-        <p data-pt="Um card game bíblico competitivo sobre escolhas, alianças, consequências e caminhos estratégicos."
-          data-en="A competitive biblical card game about choices, alliances, consequences, and strategic paths.">
-          Um card game bíblico competitivo sobre escolhas, alianças, consequências e caminhos estratégicos.
-        </p>
-      </div>
-
+  <footer class="footer">
+    <div class="wrap footer-top">
+      <a class="wordmark" href="../index.html">
+        <img width="3508" height="3509" src="../assets/logo/adonai_logo_base-4.webp" alt="" loading="lazy" decoding="async" />
+        <span>ADONAI<small>CARD GAME</small></span>
+      </a>
+      <p data-pt="Um card game bíblico competitivo sobre escolhas, alianças e estratégia." data-en="A competitive biblical card game about choices, alliances, and strategy.">Um card game bíblico competitivo sobre escolhas, alianças e estratégia.</p>
       <div class="footer-links">
         <a href="../index.html" data-pt="Início" data-en="Home">Início</a>
         <a href="../how-to-play/" data-pt="Como Jogar" data-en="How to Play">Como Jogar</a>
-        <a href="./" data-pt="Cartas" data-en="Cards">Cartas</a>
+        <a href="./" aria-current="page" data-pt="Cartas" data-en="Cards">Cartas</a>
         <a href="../decks/" data-pt="Decks" data-en="Decks">Decks</a>
         <a href="../deckbuilder/" data-pt="Deckbuilder" data-en="Deckbuilder">Deckbuilder</a>
         <a href="../manual/" data-pt="Manual" data-en="Rulebook">Manual</a>
-        <!-- <a href="../gallery/" data-pt="Galeria" data-en="Gallery">Galeria</a> -->
-        <!-- <a href="../lore/" data-pt="Lore" data-en="Lore">Lore</a> -->
-        <!-- <a href="../index.html#shop" data-pt="Loja" data-en="Shop">Loja</a> -->
+        <!-- <a href="../lore/">Lore</a> -->
+        <!-- <a href="../index.html#shop">Loja</a> -->
+        <!-- <a href="../gallery/">Galeria</a> -->
       </div>
+    </div>
+    <div class="wrap footer-bottom">
+      <span>ADONAI CARD GAME</span>
+      <a href="#mainContent"><span data-pt="Voltar ao início" data-en="Back to top">Voltar ao início</span> ↑</a>
     </div>
   </footer>
 

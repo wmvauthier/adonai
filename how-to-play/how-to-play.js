@@ -1,30 +1,27 @@
 (() => {
-  const langButtons = document.querySelectorAll('.lang-btn');
-  const translatable = () => document.querySelectorAll('[data-pt][data-en]');
-
-  const setLanguage = (lang) => {
-    document.documentElement.lang = lang === 'en' ? 'en' : 'pt-BR';
-
-    translatable().forEach((el) => {
-      const value = el.dataset[lang];
-      if (value) el.textContent = value;
+  const links = [...document.querySelectorAll(".guide-chapter-links a")];
+  const chapters = links.map((link) => document.querySelector(link.hash));
+  let scheduled = false;
+  const update = () => {
+    let active = 0;
+    chapters.forEach((chapter, index) => {
+      if (chapter.getBoundingClientRect().top <= 180) active = index;
     });
-
-    langButtons.forEach((btn) => {
-      btn.classList.toggle('is-active', btn.dataset.lang === lang);
+    links.forEach((link, index) => {
+      if (index === active) link.setAttribute("aria-current", "location");
+      else link.removeAttribute("aria-current");
     });
+    scheduled = false;
   };
-
-  langButtons.forEach((btn) => {
-    btn.addEventListener('click', () => setLanguage(btn.dataset.lang || 'pt'));
-  });
-
-  document.querySelectorAll('.turn-step').forEach((step) => {
-    step.addEventListener('mouseenter', () => {
-      document.querySelectorAll('.turn-step').forEach((item) => item.classList.remove('is-active'));
-      step.classList.add('is-active');
-    });
-  });
-
-  setLanguage('pt');
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (!scheduled) {
+        scheduled = true;
+        requestAnimationFrame(update);
+      }
+    },
+    { passive: true },
+  );
+  update();
 })();

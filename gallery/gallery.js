@@ -22,6 +22,7 @@ const els = {
 let currentFilter = "all";
 let currentDateFilter = "all";
 let currentCreator = "all";
+let currentSearch = "";
 let currentLang = "pt";
 let galleryItems = [];
 let maxContentDate = new Date(0);
@@ -194,6 +195,7 @@ function itemMatchesDate(item) {
 
 function getFilteredItems() {
   return galleryItems.filter((item) => {
+    if (currentSearch && !normalizeSearch(`${item.title} ${item.creator}`).includes(currentSearch)) return false;
     if (currentFilter !== "all" && item.platform !== currentFilter) return false;
     if (currentCreator !== "all" && item.creatorKey !== currentCreator) return false;
     return itemMatchesDate(item);
@@ -294,7 +296,11 @@ function renderGallery() {
 }
 
 function setActiveButton(buttons, activeValue, key) {
-  buttons.forEach((button) => button.classList.toggle("is-active", button.dataset[key] === activeValue));
+  buttons.forEach((button) => {
+    const active = button.dataset[key] === activeValue;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
 }
 
 function applyLanguage(lang) {
@@ -308,8 +314,10 @@ function applyLanguage(lang) {
     else node.textContent = value;
   });
 
-  els.langButtons.forEach((button) => button.classList.toggle("is-active", button.dataset.lang === lang));
+  setActiveButton(els.langButtons, lang, "lang");
+  document.dispatchEvent(new CustomEvent("home:language", { detail: { lang } }));
   if (galleryItems.length) {
+    renderCreatorFilters();
     renderFeatured();
     renderGallery();
   }
@@ -341,6 +349,7 @@ function renderCreatorFilters() {
       </button>
     `).join("")}
   `;
+  setActiveButton(els.creatorFilters.querySelectorAll("[data-creator-filter]"), currentCreator, "creatorFilter");
 }
 
 function handleHeader() {
@@ -355,6 +364,25 @@ function handleReveal() {
 }
 
 function bindEvents() {
+  document.getElementById("mainContent").addEventListener("error", (event) => {
+    const image = event.target;
+    if (!(image instanceof HTMLImageElement) || image.dataset.fallback) return;
+    image.dataset.fallback = "true";
+    image.src = PLACEHOLDER_THUMB;
+  }, true);
+  document.getElementById("gallerySearch").addEventListener("input", (event) => {
+    currentSearch = normalizeSearch(event.target.value.trim());
+    renderGallery();
+  });
+  setActiveButton(els.filterButtons, currentFilter, "filter");
+  setActiveButton(els.dateButtons, currentDateFilter, "dateFilter");
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && els.primaryNav.classList.contains("is-open")) {
+      els.primaryNav.classList.remove("is-open");
+      els.mobileToggle.setAttribute("aria-expanded", "false");
+      els.mobileToggle.focus();
+    }
+  });
   if (els.mobileToggle) {
     els.mobileToggle.addEventListener("click", () => {
       const isOpen = els.primaryNav.classList.toggle("is-open");
@@ -420,6 +448,7 @@ async function loadGallery() {
       fetch(DATA_URLS.instagram),
       fetch(DATA_URLS.youtube)
     ]);
+    if (!instagramResponse.ok || !youtubeResponse.ok) throw new Error("Gallery content unavailable");
 
     const instagram = await instagramResponse.json();
     const youtube = await youtubeResponse.json();
@@ -442,7 +471,7 @@ async function loadGallery() {
       <div class="gallery-empty is-visible">
         <div>
           <h3>${currentLang === "pt" ? "Falha ao carregar" : "Loading failed"}</h3>
-          <p>${currentLang === "pt" ? "Verifique se os arquivos JSON estão disponíveis na pasta data." : "Check whether the JSON files are available in the data folder."}</p>
+          <p>${currentLang === "pt" ? "Não foi possível buscar os conteúdos. Tente recarregar a página." : "Content could not be retrieved. Try reloading the page."}</p>
         </div>
       </div>
     `;
