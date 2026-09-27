@@ -4,18 +4,34 @@
   "collections": [
     {
       "id": 1,
-      "code": "FND",
+      "code": "DDG",
       "name": {
-        "pt": "Foundations",
-        "en": "Foundations"
+        "pt": "Desafio do Gigante",
+        "en": "Giant's Challenge"
       },
       "set": {
-        "pt": "FND",
-        "en": "FND"
+        "pt": "DDG",
+        "en": "DDG"
       },
       "label": {
-        "pt": "Foundations (FND)",
-        "en": "Foundations (FND)"
+        "pt": "Desafio do Gigante (DDG)",
+        "en": "Giant's Challenge (DDG)"
+      }
+    },
+    {
+      "id": 2,
+      "code": "TEC",
+      "name": {
+        "pt": "Trono e Culpa",
+        "en": "Throne and Guilt"
+      },
+      "set": {
+        "pt": "TEC",
+        "en": "TEC"
+      },
+      "label": {
+        "pt": "Trono e Culpa (TEC)",
+        "en": "Throne and Guilt (TEC)"
       }
     }
   ]

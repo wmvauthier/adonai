@@ -1,562 +1,310 @@
 {
   "schemaVersion": 4,
-  "updatedAt": "2026-05-30",
+  "updatedAt": "2026-09-26",
   "meta": {
-    "collection": 1,
-    "cardCount": 52,
-    "referencePattern": {
-      "pt": "Use COD 1:1 ou COD 1:1-3 (ex.: GEN 1:1, EXD 1:2-3)",
-      "en": "Use COD 1:1 or COD 1:1-3 (e.g., GEN 1:1, EXD 1:2-3)"
-    }
-  },
-  "defaults": {
-    "collection": 1,
-    "type": [],
-    "subtype": [],
-    "functions": [],
-    "virtues": [],
-    "cost": [
-      "-"
+    "collections": [
+      3,
+      5
     ],
-    "stats": {
-      "attack": null,
-      "resistance": null
-    },
-    "rating": 0,
-    "usage": {
-      "deckCount": 0,
-      "inclusion": 0,
-      "archetypes": []
-    },
-    "role": null,
-    "reference": "",
-    "text": "",
-    "rulings": []
+    "cardCount": 98
   },
   "cards": [
     {
       "number": "001",
       "collection": 1,
       "type": [
-        5
+        2
       ],
-      "subtype": [
-        4
-      ],
+      "subtype": [],
       "name": {
-        "pt": "Davi, Ungido do Senhor",
-        "en": "David, Anointed of the Lord"
+        "pt": "GOLIAS, VOZ DO DESAFIO",
+        "en": "Golias, Voz Do Desafio"
       },
       "images": {
-        "card": "../assets/cards/Personagem - Foundations-1.webp",
-        "art": "../assets/imgs/Personagem - Foundations-1 - img.webp"
+        "card": "../assets/cards/DDG - 001.webp",
+        "art": "../assets/imgs/DDG - 001.webp"
       },
-      "virtues": [
-        1,
-        7,
-        12
-      ],
-      "cost": 3,
+      "virtues": [],
+      "cost": null,
       "stats": {
-        "attack": 3,
-        "resistance": 2
+        "attack": null,
+        "resistance": null
       },
       "rating": 0,
-      "functions": [
-        4,
-        9,
-        18,
-        19,
-        38,
-        64
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Equipamentos",
-            "en": "Equipment"
-          },
-          {
-            "pt": "Midrange",
-            "en": "Midrange"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 32,
-      "reference": "1SA 17:45-49",
-      "text": "Se um Animal ou Gigante fosse causar dano a este personagem, em vez disso, previna esse dano.\nSe este personagem estiver equipado, ele recebe +1/+0.\nATAQUE: Se este personagem estiver equipado, ele causa 1 de dano a até um personagem alvo.",
-      "rulings": [
-        "A prevenção contra Animal ou Gigante se aplica a qualquer dano que seria causado por esse personagem, incluindo dano de combate, luta e dano de habilidades.",
-        "Davi recebe +1/+0 apenas enquanto estiver equipado. Se o último equipamento for desanexado, o bônus deixa de se aplicar imediatamente.",
-        "A habilidade de ATAQUE só desencadeia quando Davi é declarado atacante. Se ele não estiver equipado nesse momento, a habilidade não é colocada na pilha."
-      ]
+      "role": null,
+      "reference": "1 Samuel 17:4-11",
+      "text": "Dúvida Nv1 — Se você controlar um personagem com poder 6 ou mais, desprepare um personagem alvo que um oponente controla com poder 5 ou menos.\n\nInsensatez Nv2 — Um personagem alvo que você controla com poder 6 ou mais pode atacar um personagem preparado neste turno como se ele estivesse despreparado.",
+      "rulings": []
     },
     {
       "number": "002",
       "collection": 1,
       "type": [
-        5
+        2
       ],
-      "subtype": [
-        5,
-        4
-      ],
+      "subtype": [],
       "name": {
-        "pt": "Davi, Rei de Israel",
-        "en": "David, King of Israel"
+        "pt": "JESSÉ, PAI DE DAVI",
+        "en": "Jessé, Pai De Davi"
       },
       "images": {
-        "card": "../assets/cards/Personagem - Foundations-2.webp",
-        "art": "../assets/imgs/Personagem - Foundations-2 - img.webp"
+        "card": "../assets/cards/DDG - 002.webp",
+        "art": "../assets/imgs/DDG - 002.webp"
       },
-      "virtues": [
-        1,
-        7,
-        12,
-        6
-      ],
-      "cost": 6,
+      "virtues": [],
+      "cost": null,
       "stats": {
-        "attack": 4,
-        "resistance": 4
+        "attack": null,
+        "resistance": null
       },
       "rating": 0,
-      "functions": [
-        2,
-        3,
-        4,
-        29,
-        39,
-        71,
-        72
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Fichas",
-            "en": "Tokens"
-          },
-          {
-            "pt": "Midrange",
-            "en": "Midrange"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 2,
-      "reference": "2SA 5:3",
-      "text": "Os outros personagens que você controla recebem +1/+1.\nATAQUE: Crie uma ficha de personagem Soldado Israelita 0/2 desativada e atacando o mesmo alvo que este personagem.",
-      "rulings": [
-        "Davi não concede +1/+1 a si mesmo, apenas aos outros personagens que você controla.",
-        "A ficha criada pela habilidade de ATAQUE entra desativada e atacando o mesmo alvo que Davi, mas não foi declarada atacante e não desencadeia habilidades de ATAQUE.",
-        "Se o alvo que Davi estava atacando não puder mais ser atacado quando a habilidade resolver, crie a ficha desativada; ela não estará atacando nenhum alvo."
-      ]
+      "role": null,
+      "reference": "1 Samuel 16:3",
+      "text": "Caridade Nv1 — Cure 1 de dano de até dois personagens alvo que você controla com poder 2 ou menos.\n\nPrudência Nv2 — Olhe as duas cartas do topo do seu baralho. Você pode revelar um personagem com poder 2 ou menos dentre elas e colocá-lo na sua mão. Coloque o resto no fundo.",
+      "rulings": []
     },
     {
       "number": "003",
       "collection": 1,
       "type": [
-        5
+        2
       ],
-      "subtype": [
-        6,
-        4
-      ],
+      "subtype": [],
       "name": {
-        "pt": "Golias de Gate",
-        "en": "Goliath of Gath"
+        "pt": "ABNER, CHANCELER REAL",
+        "en": "Abner, Chanceler Real"
       },
       "images": {
-        "card": "../assets/cards/Personagem - Foundations-3.webp",
-        "art": "../assets/imgs/Personagem - Foundations-3 - img.webp"
+        "card": "../assets/cards/DDG - 003.webp",
+        "art": "../assets/imgs/DDG - 003.webp"
       },
-      "virtues": [
-        2,
-        2,
-        2,
-        12,
-        12
-      ],
-      "cost": 4,
+      "virtues": [],
+      "cost": null,
       "stats": {
-        "attack": 6,
-        "resistance": 6
+        "attack": null,
+        "resistance": null
       },
       "rating": 0,
-      "functions": [
-        4,
-        33,
-        35,
-        47,
-        61
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Stompy",
-            "en": "Stompy"
-          },
-          {
-            "pt": "Midrange",
-            "en": "Midrange"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 38,
-      "reference": "1SA 17:4",
-      "text": "SOBREPUJAR\nENTRADA: Desative todos os personagens com poder 2 ou menos que seus oponentes controlam.",
-      "rulings": [
-        "A habilidade de ENTRADA verifica o poder dos personagens quando resolve. Modificadores de poder já aplicados naquele momento são considerados.",
-        "Personagens com poder 2 ou menos que já estejam desativados continuam desativados; a habilidade não muda seu controlador nem os remove do combate por si só.",
-        "SOBREPUJAR permite que Golias atribua dano excedente ao alvo original do ataque depois de atribuir dano letal aos bloqueadores."
-      ]
+      "role": null,
+      "reference": "1 Samuel 17:55-58",
+      "text": "Fortaleza Nv1 — Até dois Guerreiros alvo que você controla recebem +0/+1 até o reagrupamento.\n\nPrudência Nv2 — Prepare um personagem alvo que você controla. Ele não pode atacar neste turno.",
+      "rulings": []
     },
     {
       "number": "004",
       "collection": 1,
       "type": [
-        5
+        6
       ],
-      "subtype": [
-        4
-      ],
+      "subtype": [],
       "name": {
-        "pt": "Jônatas, Amigo Verdadeiro",
-        "en": "Jonathan, True Friend"
+        "pt": "Sem Espada e nem Lança",
+        "en": "Sem Espada E Nem Lança"
       },
       "images": {
-        "card": "../assets/cards/Personagem - Foundations-4.webp",
-        "art": "../assets/imgs/Personagem - Foundations-4 - img.webp"
+        "card": "../assets/cards/DDG - 004.webp",
+        "art": "../assets/imgs/DDG - 004.webp"
       },
-      "virtues": [
-        13,
-        12
-      ],
-      "cost": 3,
+      "virtues": [],
+      "cost": 2.0,
       "stats": {
-        "attack": 2,
-        "resistance": 2
+        "attack": null,
+        "resistance": null
       },
       "rating": 0,
-      "functions": [
-        5,
-        19,
-        20,
-        63
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Tempo",
-            "en": "Tempo"
-          },
-          {
-            "pt": "Proteção",
-            "en": "Protection"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 14,
-      "reference": "1SA 18:3",
-      "text": "INESPERADO\nENTRADA: Outro personagem alvo que você controla ganha INDESTRUTÍVEL até o reagrupamento.",
-      "rulings": [
-        "Jônatas não pode escolher a si mesmo como alvo da própria habilidade de ENTRADA porque o texto exige outro personagem.",
-        "O personagem que ganha INDESTRUTÍVEL também tem todo dano que seria causado a ele prevenido enquanto o efeito durar.",
-        "INESPERADO permite jogar Jônatas em qualquer janela de prioridade, inclusive durante combate."
-      ]
+      "role": null,
+      "reference": "1 Samuel 17:45-47",
+      "text": "Ao consagrar um artefato, em vez do efeito normal, você pode escolher um personagem seu sem equipamentos ou só com equipamentos de custo {1} ou menos. Ele recebe +2/+2 até o reagrupamento. Se equipar um de custo {2} ou mais, perde o bônus.",
+      "rulings": []
     },
     {
       "number": "005",
       "collection": 1,
       "type": [
-        5
-      ],
-      "subtype": [
-        5,
-        4
-      ],
-      "name": {
-        "pt": "Saul, Rei Caído",
-        "en": "Saul, Fallen King"
-      },
-      "images": {
-        "card": "../assets/cards/Personagem - Foundations-5.webp",
-        "art": "../assets/imgs/Personagem - Foundations-5 - img.webp"
-      },
-      "virtues": [
-        7,
-        2,
-        12,
         6
       ],
-      "cost": 5,
+      "subtype": [],
+      "name": {
+        "pt": "Pelo Senhor dos Exércitos",
+        "en": "Pelo Senhor Dos Exércitos"
+      },
+      "images": {
+        "card": "../assets/cards/DDG - 005.webp",
+        "art": "../assets/imgs/DDG - 005.webp"
+      },
+      "virtues": [],
+      "cost": 1.0,
       "stats": {
-        "attack": 4,
-        "resistance": 4
+        "attack": null,
+        "resistance": null
       },
       "rating": 0,
-      "functions": [
-        4,
-        18,
-        40,
-        41,
-        71
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Controle",
-            "en": "Control"
-          },
-          {
-            "pt": "Midrange",
-            "en": "Midrange"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 4,
-      "reference": "1SA 15:26",
-      "text": "Toda vez que um personagem entrar no campo de batalha sob controle de um oponente, este personagem causa 1 de dano àquele personagem.\nSAÍDA: Cause 2 de dano ao território de cada oponente.",
-      "rulings": [
-        "A primeira habilidade desencadeia para cada personagem que entrar sob controle de um oponente, incluindo fichas.",
-        "Se Saul deixar o campo antes da habilidade de entrada resolver, a habilidade ainda causa dano usando Saul como fonte conforme existia no campo.",
-        "A habilidade de SAÍDA causa dano aos territórios de todos os oponentes que ainda estejam na partida quando ela resolver."
-      ]
+      "role": null,
+      "reference": "1 Samuel 17:45-47",
+      "text": "Ao consagrar um personagem, em vez do efeito normal, você pode escolher um personagem alvo seu e um personagem alvo de um oponente com poder maior. O primeiro recebe +1/+1 e, até o reagrupamento, ele pode atacar o segundo mesmo preparado.",
+      "rulings": []
     },
     {
       "number": "006",
       "collection": 1,
       "type": [
-        5
+        6
       ],
-      "subtype": [
-        7
-      ],
+      "subtype": [],
       "name": {
-        "pt": "Natã, Profeta",
-        "en": "Nathan, Prophet"
+        "pt": "O Sacrifício em Belém",
+        "en": "O Sacrifício Em Belém"
       },
       "images": {
-        "card": "../assets/cards/Personagem - Foundations-6.webp",
-        "art": "../assets/imgs/Personagem - Foundations-6 - img.webp"
+        "card": "../assets/cards/DDG - 006.webp",
+        "art": "../assets/imgs/DDG - 006.webp"
       },
-      "virtues": [
-        5
-      ],
-      "cost": 3,
+      "virtues": [],
+      "cost": 1.0,
       "stats": {
-        "attack": 2,
-        "resistance": 2
+        "attack": null,
+        "resistance": null
       },
       "rating": 0,
-      "functions": [
-        24,
-        44,
-        69
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Controle",
-            "en": "Control"
-          },
-          {
-            "pt": "Combo",
-            "en": "Combo"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 12,
-      "reference": "2SA 12:7",
-      "text": "ENTRADA: Busque um Milagre ou Pecado em seu baralho e coloque aquela carta no topo dele.",
-      "rulings": [
-        "Você deve revelar a carta encontrada para demonstrar que ela é um Milagre ou Pecado.",
-        "O baralho é embaralhado antes de a carta encontrada ser colocada no topo dele.",
-        "Se não houver Milagre ou Pecado no baralho, nada é revelado e o baralho ainda deve ser embaralhado se foi buscado."
-      ]
+      "role": null,
+      "reference": "1 Samuel 16:1-5",
+      "text": "Quando consagrar um milagre, em vez do efeito normal, você pode escolher um personagem preparado que controla. Até o reagrupamento, enquanto ele permanecer preparado, não poderá ser alvo de cartas nem habilidades de oponentes.",
+      "rulings": []
     },
     {
       "number": "007",
       "collection": 1,
       "type": [
-        5
+        7
       ],
-      "subtype": [
-        4
-      ],
+      "subtype": [],
       "name": {
-        "pt": "Joabe, General",
-        "en": "Joab, General"
+        "pt": "Vale de Elá, Campo do Desafio",
+        "en": "Vale De Elá, Campo Do Desafio"
       },
       "images": {
-        "card": "../assets/cards/Personagem - Foundations-7.webp",
-        "art": "../assets/imgs/Personagem - Foundations-7 - img.webp"
+        "card": "../assets/cards/DDG - 007.webp",
+        "art": "../assets/imgs/DDG - 007.webp"
       },
-      "virtues": [
-        7,
-        1,
-        6,
-        14
-      ],
-      "cost": 3,
+      "virtues": [],
+      "cost": null,
       "stats": {
-        "attack": 2,
-        "resistance": 3
+        "attack": null,
+        "resistance": 18.0
       },
       "rating": 0,
-      "functions": [
-        22,
-        66,
-        67,
-        70
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Aristocratas",
-            "en": "Aristocrats"
-          },
-          {
-            "pt": "Midrange",
-            "en": "Midrange"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 6,
-      "reference": "2SA 8:16",
-      "text": "A primeira vez em cada turno que outro personagem morrer, compre 1 carta e cause 1 de dano ao seu território.",
-      "rulings": [
-        "A habilidade não desencadeia quando o próprio Joabe morre, porque o texto exige outro personagem.",
-        "A habilidade só desencadeia uma vez por turno, mesmo que múltiplos personagens morram ao mesmo tempo.",
-        "Comprar a carta e causar dano ao próprio território fazem parte da mesma resolução."
-      ]
+      "role": null,
+      "reference": "1 Samuel 17:2-3",
+      "text": "A primeira vez em cada turno que um personagem que você controla for declarado atacante contra outro personagem, ele recebe +1/+0 até o reagrupamento. Se o personagem atacado possuir poder maior, ele recebe +2/+0 em vez disso.",
+      "rulings": []
     },
     {
       "number": "008",
       "collection": 1,
       "type": [
-        5
+        7
       ],
-      "subtype": [
-        4
-      ],
+      "subtype": [],
       "name": {
-        "pt": "Absalão, Rebelde",
-        "en": "Absalom, Rebel"
+        "pt": "Belém, Campos de Jessé",
+        "en": "Belém, Campos De Jessé"
       },
       "images": {
-        "card": "../assets/cards/Personagem - Foundations-8.webp",
-        "art": "../assets/imgs/Personagem - Foundations-8 - img.webp"
+        "card": "../assets/cards/DDG - 008.webp",
+        "art": "../assets/imgs/DDG - 008.webp"
       },
-      "virtues": [
-        7,
-        14,
-        12,
-        12,
-        12
-      ],
-      "cost": 5,
+      "virtues": [],
+      "cost": null,
       "stats": {
-        "attack": 4,
-        "resistance": 3
+        "attack": null,
+        "resistance": 24.0
       },
       "rating": 0,
-      "functions": [
-        31,
-        34,
-        63,
-        74,
-        77
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Tempo",
-            "en": "Tempo"
-          },
-          {
-            "pt": "Aggro",
-            "en": "Aggro"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 21,
-      "reference": "2SA 15:6",
-      "text": "Este personagem não pode ser bloqueado exceto por dois ou mais personagens.\nENTRADA: Ganhe controle de um personagem alvo até o reagrupamento e ative-o.",
-      "rulings": [
-        "Absalão pode ser bloqueado por dois ou mais personagens normalmente; um único bloqueador não pode ser declarado para bloqueá-lo.",
-        "Ativar o personagem ganho não o concede permissão especial para atacar fora das regras normais de combate.",
-        "Quando o efeito de controle termina, o personagem volta ao controlador anterior se ainda estiver no campo de batalha."
-      ]
+      "role": null,
+      "reference": "1 Samuel 16:1-13",
+      "text": "No início do seu combate, escolha um personagem que você controla com poder 2 ou menos. Até o reagrupamento, a primeira vez que ele combater contra um personagem com poder maior, previna 1 do dano que receberia naquele combate.",
+      "rulings": []
     },
     {
       "number": "009",
       "collection": 1,
       "type": [
-        5
+        7
       ],
-      "subtype": [
-        4
-      ],
+      "subtype": [],
       "name": {
-        "pt": "Urias, Guerreiro Fiel",
-        "en": "Uriah, Faithful Warrior"
+        "pt": "Socó, o Acampamento Filisteu",
+        "en": "Socó, O Acampamento Filisteu"
       },
       "images": {
-        "card": "../assets/cards/Personagem - Foundations-9.webp",
-        "art": "../assets/imgs/Personagem - Foundations-9 - img.webp"
+        "card": "../assets/cards/DDG - 009.webp",
+        "art": "../assets/imgs/DDG - 009.webp"
       },
-      "virtues": [
-        5
-      ],
-      "cost": 3,
+      "virtues": [],
+      "cost": null,
       "stats": {
-        "attack": 4,
-        "resistance": 4
+        "attack": null,
+        "resistance": 22.0
       },
       "rating": 0,
-      "functions": [
-        55,
-        64,
-        68
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Defesa",
-            "en": "Defense"
-          },
-          {
-            "pt": "Midrange",
-            "en": "Midrange"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 31,
-      "reference": "2SA 11:11",
-      "text": "Quando este personagem for atacado, se ele estiver desativado, sua resistência base torna-se 1 até o reagrupamento.",
-      "rulings": [
-        "A habilidade desencadeia quando Urias é escolhido como alvo de um ataque direto.",
-        "A resistência base tornar-se 1 não remove dano já marcado nele.",
-        "Modificadores posteriores de resistência ainda são aplicados sobre a resistência base alterada."
-      ]
+      "role": null,
+      "reference": "1 Samuel 17:1-11.",
+      "text": "No início do seu combate, você pode revelar um personagem com poder 6 ou mais da mão. Se fizer, progrida em 1 sua Dúvida ou Insensatez e até um personagem alvo sem Fé como virtude associada recebe -2/-0 até o reagrupamento.",
+      "rulings": []
     },
     {
       "number": "010",
@@ -565,54 +313,37 @@
         5
       ],
       "subtype": [
-        4
+        4,
+        5
       ],
       "name": {
-        "pt": "Benaia, Matador de Gigantes",
-        "en": "Benaiah, Giant Slayer"
+        "pt": "Davi, Desafiante do Gigante",
+        "en": "Davi, Desafiante Do Gigante"
       },
       "images": {
-        "card": "../assets/cards/Personagem - Foundations-10.webp",
-        "art": "../assets/imgs/Personagem - Foundations-10 - img.webp"
+        "card": "../assets/cards/DDG - 010.webp",
+        "art": "../assets/imgs/DDG - 010.webp"
       },
       "virtues": [
-        7,
+        1,
         7
       ],
-      "cost": 5,
+      "cost": 3.0,
       "stats": {
-        "attack": 3,
-        "resistance": 3
+        "attack": 2.0,
+        "resistance": 3.0
       },
       "rating": 0,
-      "functions": [
-        16,
-        46,
-        55,
-        64
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Midrange",
-            "en": "Midrange"
-          },
-          {
-            "pt": "Resposta",
-            "en": "Answer"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 36,
-      "reference": "2SA 23:20",
-      "text": "Se um personagem com poder 4 ou mais fosse causar dano a este personagem, em vez disso, destrua aquele personagem.",
-      "rulings": [
-        "O efeito de substituição se aplica antes que o dano seja causado a Benaia.",
-        "O personagem com poder 4 ou mais que causaria o dano é destruído, mas isso não conta como Benaia causando dano.",
-        "Se a fonte tiver INDESTRUTÍVEL ou não puder ser destruída, ela não é destruída, mas o dano a Benaia ainda foi substituído e não é causado."
-      ]
+      "role": null,
+      "reference": "1 Samuel 17:32-49",
+      "text": "Este personagem pode atacar personagens preparados que possuam poder maior que o dele. ATAQUE: Se ele estiver equipado com um equipamento de custo {1} ou menos e atacar um personagem com poder 6 ou mais, destrua o personagem atacado.",
+      "rulings": []
     },
     {
       "number": "011",
@@ -621,52 +352,38 @@
         5
       ],
       "subtype": [
-        8
+        4,
+        5,
+        6
       ],
       "name": {
-        "pt": "Aimeleque, Sacerdote",
-        "en": "Ahimelech, Priest"
+        "pt": "Golias, o Herói Filisteu",
+        "en": "Golias, O Herói Filisteu"
       },
       "images": {
-        "card": "../assets/cards/Personagem - Foundations-11.webp",
-        "art": "../assets/imgs/Personagem - Foundations-11 - img.webp"
+        "card": "../assets/cards/DDG - 011.webp",
+        "art": "../assets/imgs/DDG - 011.webp"
       },
       "virtues": [
-        9
+        2,
+        12
       ],
-      "cost": 3,
+      "cost": 6.0,
       "stats": {
-        "attack": 1,
-        "resistance": 2
+        "attack": 8.0,
+        "resistance": 8.0
       },
       "rating": 0,
-      "functions": [
-        21,
-        22,
-        70
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Controle",
-            "en": "Control"
-          },
-          {
-            "pt": "Valor",
-            "en": "Value"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 1,
-      "reference": "1SA 21:6",
-      "text": "ENTRADA: Compre 1 carta e cure 2 de dano do seu território.",
-      "rulings": [
-        "Você compra a carta antes de curar o território.",
-        "Se seu território não tiver dano marcado, a parte de cura não remove nada.",
-        "A habilidade ainda resolve parcialmente se uma das instruções não puder ser executada."
-      ]
+      "role": null,
+      "reference": "1 Samuel 17:41-44",
+      "text": "SOBREPUJAR. Este personagem pode atacar personagens preparados como se estivessem despreparados. Enquanto um oponente controlar um personagem, este personagem não pode atacar o território daquele oponente.",
+      "rulings": []
     },
     {
       "number": "012",
@@ -674,51 +391,34 @@
       "type": [
         5
       ],
-      "subtype": [
-        9
-      ],
+      "subtype": [],
       "name": {
-        "pt": "Mulher Sábia de Tecoa",
-        "en": "Wise Woman of Tekoa"
+        "pt": "Davi, o pastor de ovelhas",
+        "en": "Davi, O Pastor De Ovelhas"
       },
       "images": {
-        "card": "../assets/cards/Personagem - Foundations-12.webp",
-        "art": "../assets/imgs/Personagem - Foundations-12 - img.webp"
+        "card": "../assets/cards/DDG - 012.webp",
+        "art": "../assets/imgs/DDG - 012.webp"
       },
-      "virtues": [],
-      "cost": 3,
+      "virtues": [
+        1
+      ],
+      "cost": 2.0,
       "stats": {
-        "attack": 1,
-        "resistance": 1
+        "attack": 2.0,
+        "resistance": 3.0
       },
       "rating": 0,
-      "functions": [
-        26,
-        45,
-        70
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Valor",
-            "en": "Value"
-          },
-          {
-            "pt": "Recursão",
-            "en": "Recursion"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 18,
-      "reference": "2SA 14:2",
-      "text": "ENTRADA: Busque um personagem alvo do seu cemitério para a sua mão.",
-      "rulings": [
-        "O alvo deve ser uma carta de personagem no seu cemitério no momento em que a habilidade é colocada na pilha.",
-        "Se o alvo deixar o cemitério antes da resolução, a habilidade é anulada pelas regras por não ter alvo válido.",
-        "Retornar a carta para a mão não conta como jogar aquela carta."
-      ]
+      "role": null,
+      "reference": "1 Samuel 16:11-13",
+      "text": "Animais que seus oponentes controlam recebem -1/-0. Animais que você controla recebem +0/+1.",
+      "rulings": []
     },
     {
       "number": "013",
@@ -727,49 +427,38 @@
         5
       ],
       "subtype": [
-        9
+        4,
+        5
       ],
       "name": {
-        "pt": "Pastor de Belém",
-        "en": "Shepherd of Bethlehem"
+        "pt": "Saul, o Rei amedrontado",
+        "en": "Saul, O Rei Amedrontado"
       },
       "images": {
-        "card": "../assets/cards/Personagem - Foundations-13.webp",
-        "art": "../assets/imgs/Personagem - Foundations-13 - img.webp"
+        "card": "../assets/cards/DDG - 013.webp",
+        "art": "../assets/imgs/DDG - 013.webp"
       },
-      "virtues": [],
-      "cost": 1,
+      "virtues": [
+        2,
+        10,
+        14
+      ],
+      "cost": 4.0,
       "stats": {
-        "attack": 1,
-        "resistance": 1
+        "attack": 5.0,
+        "resistance": 5.0
       },
       "rating": 0,
-      "functions": [
-        14,
-        15
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Rampa",
-            "en": "Ramp"
-          },
-          {
-            "pt": "Base",
-            "en": "Base"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 13,
-      "reference": "1SA 16:11",
-      "text": "{T}: Gere {E}.",
-      "rulings": [
-        "Como todos os personagens possuem haste por regra geral, Pastor de Belém pode ser desativado para gerar {E} no turno em que entra, se estiver ativado.",
-        "O {E} gerado entra no pool de Essência e se esvazia no reagrupamento se não for usado.",
-        "Desativar o Pastor para pagar o custo impede que ele seja declarado atacante enquanto permanecer desativado."
-      ]
+      "role": null,
+      "reference": "1 Samuel 17:33",
+      "text": "Enquanto um oponente controlar um personagem com poder maior que o deste, este personagem não pode atacar. ENTRADA: Você pode anexar um equipamento que controla a outro personagem alvo que controla sem desprepará-lo.",
+      "rulings": []
     },
     {
       "number": "014",
@@ -778,50 +467,35 @@
         5
       ],
       "subtype": [
-        10
+        7
       ],
       "name": {
-        "pt": "Leão do Deserto",
-        "en": "Desert Lion"
+        "pt": "Samuel, Profeta em Belém",
+        "en": "Samuel, Profeta Em Belém"
       },
       "images": {
-        "card": "../assets/cards/Personagem - Foundations-14.webp",
-        "art": "../assets/imgs/Personagem - Foundations-14 - img.webp"
+        "card": "../assets/cards/DDG - 014.webp",
+        "art": "../assets/imgs/DDG - 014.webp"
       },
-      "virtues": [],
-      "cost": 3,
+      "virtues": [
+        9
+      ],
+      "cost": 2.0,
       "stats": {
-        "attack": 3,
-        "resistance": 3
+        "attack": 0.0,
+        "resistance": 1.0
       },
       "rating": 0,
-      "functions": [
-        9,
-        62,
-        76
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Aggro",
-            "en": "Aggro"
-          },
-          {
-            "pt": "Midrange",
-            "en": "Midrange"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 39,
-      "reference": "1SA 17:34",
-      "text": "Este personagem não pode ter equipamentos anexados a ele.",
-      "rulings": [
-        "Se um equipamento estiver anexado ao Leão do Deserto ilegalmente, ele se torna desanexado como ação baseada no estado.",
-        "O Leão ainda pode ser alvo de habilidades de equipamentos se essas habilidades não tentarem anexar o equipamento a ele.",
-        "Esta restrição não impede outros efeitos que não sejam equipamentos."
-      ]
+      "role": null,
+      "reference": "1 Samuel 16:1-13",
+      "text": "ENTRADA: Olhe as três cartas do topo do seu baralho. Você pode revelar um personagem com poder 2 ou menos dentre elas e colocá-lo na sua mão. Se fizer isso, progrida em 1 sua Esperança. Coloque o resto no fundo.",
+      "rulings": []
     },
     {
       "number": "015",
@@ -830,50 +504,33 @@
         5
       ],
       "subtype": [
-        10
+        9
       ],
       "name": {
-        "pt": "Urso das Colinas",
-        "en": "Hill Bear"
+        "pt": "Jessé, Pai de Davi",
+        "en": "Jessé, Pai De Davi"
       },
       "images": {
-        "card": "../assets/cards/Personagem - Foundations-15.webp",
-        "art": "../assets/imgs/Personagem - Foundations-15 - img.webp"
+        "card": "../assets/cards/DDG - 015.webp",
+        "art": "../assets/imgs/DDG - 015.webp"
       },
       "virtues": [],
-      "cost": 2,
+      "cost": 1.0,
       "stats": {
-        "attack": 2,
-        "resistance": 2
+        "attack": 0.0,
+        "resistance": 2.0
       },
       "rating": 0,
-      "functions": [
-        9,
-        62,
-        76
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Aggro",
-            "en": "Aggro"
-          },
-          {
-            "pt": "Midrange",
-            "en": "Midrange"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 39,
-      "reference": "1SA 17:34",
-      "text": "Este personagem não pode ter equipamentos anexados a ele.",
-      "rulings": [
-        "Se um equipamento estiver anexado ao Urso das Colinas ilegalmente, ele se torna desanexado como ação baseada no estado.",
-        "O Urso ainda pode atacar, bloquear e ser alvo de efeitos que não dependam de equipamento.",
-        "Esta restrição se aplica mesmo que o equipamento tenha entrado anexado por outro efeito."
-      ]
+      "role": null,
+      "reference": "1 Samuel 16:1",
+      "text": "ENTRADA: Olhe as três cartas do topo. Você pode revelar um personagem com poder 2 ou menos dentre elas e colocá-lo na reserva. Se fizer isso, coloque-o na sua mão no início do seu próximo alistamento. Coloque o resto no fundo.",
+      "rulings": []
     },
     {
       "number": "016",
@@ -881,50 +538,35 @@
       "type": [
         5
       ],
-      "subtype": [
-        4
-      ],
+      "subtype": [],
       "name": {
-        "pt": "Capitão Israelita",
-        "en": "Israelite Captain"
+        "pt": "Davi, Portador de Mantimentos",
+        "en": "Davi, Portador De Mantimentos"
       },
       "images": {
-        "card": "../assets/cards/Personagem - Foundations-16.webp",
-        "art": "../assets/imgs/Personagem - Foundations-16 - img.webp"
+        "card": "../assets/cards/DDG - 016.webp",
+        "art": "../assets/imgs/DDG - 016.webp"
       },
-      "virtues": [],
-      "cost": 3,
+      "virtues": [
+        1,
+        13
+      ],
+      "cost": 2.0,
       "stats": {
-        "attack": 2,
-        "resistance": 2
+        "attack": 1.0,
+        "resistance": 1.0
       },
       "rating": 0,
-      "functions": [
-        29,
-        72
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Fichas",
-            "en": "Tokens"
-          },
-          {
-            "pt": "Midrange",
-            "en": "Midrange"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 15,
-      "reference": "2SA 8:16",
-      "text": "ENTRADA: Crie uma ficha de personagem Soldado Israelita 0/2.",
-      "rulings": [
-        "A ficha entra no campo de batalha sob seu controle, salvo se outro efeito disser o contrário.",
-        "A ficha é um personagem e pode bloquear normalmente se estiver ativada.",
-        "Criar a ficha não é jogar uma carta e não usa a pilha separadamente."
-      ]
+      "role": null,
+      "reference": "1 Samuel 17:17-22",
+      "text": "ENTRADA: Cure 1 de dano de até dois Guerreiros alvo que você controla.",
+      "rulings": []
     },
     {
       "number": "017",
@@ -932,53 +574,35 @@
       "type": [
         5
       ],
-      "subtype": [
-        4
-      ],
+      "subtype": [],
       "name": {
-        "pt": "Capitão Filisteu",
-        "en": "Philistine Captain"
+        "pt": "Davi, Harpista de Saul",
+        "en": "Davi, Harpista De Saul"
       },
       "images": {
-        "card": "../assets/cards/Personagem - Foundations-17.webp",
-        "art": "../assets/imgs/Personagem - Foundations-17 - img.webp"
+        "card": "../assets/cards/DDG - 017.webp",
+        "art": "../assets/imgs/DDG - 017.webp"
       },
       "virtues": [
-        2
+        1,
+        9
       ],
-      "cost": 3,
+      "cost": 1.0,
       "stats": {
-        "attack": 2,
-        "resistance": 2
+        "attack": 1.0,
+        "resistance": 1.0
       },
       "rating": 0,
-      "functions": [
-        29,
-        50,
-        72
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Fichas",
-            "en": "Tokens"
-          },
-          {
-            "pt": "Aggro",
-            "en": "Aggro"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 15,
-      "reference": "1SA 17:1",
-      "text": "ENTRADA: Crie uma ficha de personagem Soldado Filisteu 1/1.",
-      "rulings": [
-        "A ficha entra no campo de batalha sob seu controle, salvo se outro efeito disser o contrário.",
-        "A ficha é um personagem 1/1 e pode atacar no turno em que entra se estiver ativada e for legal declará-la atacante.",
-        "A alteração moral associada ao Capitão é aplicada depois que a habilidade de ENTRADA terminar de resolver."
-      ]
+      "role": null,
+      "reference": "1 Samuel 16:21-23",
+      "text": "{T}: Se este personagem estiver equipado com um Instrumento, prepare outro personagem alvo. Se ele possuir Desespero ou Dúvida como desvirtude associada, seu controlador pode progredir em 1 a virtude oposta a uma delas.",
+      "rulings": []
     },
     {
       "number": "018",
@@ -987,52 +611,37 @@
         5
       ],
       "subtype": [
-        9
+        4,
+        5
       ],
       "name": {
-        "pt": "Conselheiro Real",
-        "en": "Royal Counselor"
+        "pt": "Eliabe, o primogênito bonito",
+        "en": "Eliabe, O Primogênito Bonito"
       },
       "images": {
-        "card": "../assets/cards/Personagem - Foundations-18.webp",
-        "art": "../assets/imgs/Personagem - Foundations-18 - img.webp"
+        "card": "../assets/cards/DDG - 018.webp",
+        "art": "../assets/imgs/DDG - 018.webp"
       },
-      "virtues": [],
-      "cost": 3,
+      "virtues": [
+        7,
+        14
+      ],
+      "cost": 2.0,
       "stats": {
-        "attack": 0,
-        "resistance": 2
+        "attack": 3.0,
+        "resistance": 1.0
       },
       "rating": 0,
-      "functions": [
-        22,
-        23,
-        44,
-        69,
-        70
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Controle",
-            "en": "Control"
-          },
-          {
-            "pt": "Valor",
-            "en": "Value"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 6,
-      "reference": "2SA 15:12",
-      "text": "ENTRADA: Compre 1 carta. Olhe as duas cartas do topo do seu baralho e devolva-as ao topo em qualquer ordem.",
-      "rulings": [
-        "Você compra antes de olhar as duas cartas do topo.",
-        "Se houver menos de duas cartas no baralho, olhe o máximo possível.",
-        "Devolver as cartas ao topo em qualquer ordem não embaralha o baralho."
-      ]
+      "role": null,
+      "reference": "1 Samuel 16:6",
+      "text": "ENTRADA: Desprepare outro personagem alvo com poder menor que o deste personagem.",
+      "rulings": []
     },
     {
       "number": "019",
@@ -1041,50 +650,34 @@
         5
       ],
       "subtype": [
-        9
+        4,
+        5
       ],
       "name": {
-        "pt": "Traidor do Reino",
-        "en": "Traitor of the Kingdom"
+        "pt": "Abinadabe e Samá",
+        "en": "Abinadabe E Samá"
       },
       "images": {
-        "card": "../assets/cards/Personagem - Foundations-19.webp",
-        "art": "../assets/imgs/Personagem - Foundations-19 - img.webp"
+        "card": "../assets/cards/DDG - 019.webp",
+        "art": "../assets/imgs/DDG - 019.webp"
       },
       "virtues": [],
-      "cost": 2,
+      "cost": 2.0,
       "stats": {
-        "attack": 1,
-        "resistance": 1
+        "attack": 3.0,
+        "resistance": 1.0
       },
       "rating": 0,
-      "functions": [
-        7,
-        42,
-        43
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Disrupção",
-            "en": "Disruption"
-          },
-          {
-            "pt": "Controle",
-            "en": "Control"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 19,
-      "reference": "2SA 15:12",
-      "text": "ENTRADA: Cada oponente revela a própria mão e descarta 1 carta.",
-      "rulings": [
-        "Cada oponente escolhe qual carta descarta, salvo se outro efeito disser o contrário.",
-        "Se um oponente não tiver cartas na mão, ele revela a mão vazia e não descarta nada.",
-        "As mãos reveladas voltam a ser privadas depois que a habilidade terminar de resolver."
-      ]
+      "role": null,
+      "reference": "1 Samuel 16:8-10",
+      "text": "Sempre que outro personagem com poder 2 ou menos entrar sob seu controle, se este personagem estiver preparado, desprepare-o. Se fizer isso, aquele personagem recebe +1/+1 até o reagrupamento.",
+      "rulings": []
     },
     {
       "number": "020",
@@ -1093,504 +686,329 @@
         5
       ],
       "subtype": [
-        9
+        4,
+        5
       ],
       "name": {
-        "pt": "Ancião de Israel",
-        "en": "Elder of Israel"
+        "pt": "Exército Israelita Amedrontado",
+        "en": "Exército Israelita Amedrontado"
       },
       "images": {
-        "card": "../assets/cards/Personagem - Foundations-20.webp",
-        "art": "../assets/imgs/Personagem - Foundations-20 - img.webp"
+        "card": "../assets/cards/DDG - 020.webp",
+        "art": "../assets/imgs/DDG - 020.webp"
       },
-      "virtues": [],
-      "cost": 1,
+      "virtues": [
+        8
+      ],
+      "cost": 3.0,
       "stats": {
-        "attack": 0,
-        "resistance": 1
+        "attack": 4.0,
+        "resistance": 4.0
       },
       "rating": 0,
-      "functions": [
-        23,
-        44,
-        69
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Valor",
-            "en": "Value"
-          },
-          {
-            "pt": "Setup",
-            "en": "Setup"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 1,
-      "reference": "2SA 5:3",
-      "text": "ENTRADA: Olhe as 2 cartas do topo do seu baralho. Coloque uma delas na sua mão e o restante no fundo do seu baralho.",
-      "rulings": [
-        "Se houver apenas uma carta no baralho, você a coloca na mão e não coloca nada no fundo.",
-        "As cartas olhadas não são reveladas aos oponentes.",
-        "O restante vai para o fundo do baralho em qualquer ordem se houver mais de uma carta restante."
-      ]
+      "role": null,
+      "reference": "1 Samuel 17:24",
+      "text": "Este personagem entra despreparado. No início do seu alistamento, se um oponente controlar um personagem com poder 6 ou mais, desprepare este personagem.",
+      "rulings": []
     },
     {
       "number": "021",
       "collection": 1,
       "type": [
-        4
+        5
       ],
       "subtype": [
-        3
+        4,
+        5
       ],
       "name": {
-        "pt": "Sacrifício de Saul",
-        "en": "Saul's Sacrifice"
+        "pt": "Exército Filisteu Confiante",
+        "en": "Exército Filisteu Confiante"
       },
       "images": {
-        "card": "../assets/cards/Pecado - Foundations-1.webp",
-        "art": "../assets/imgs/Pecado - Foundations-1 - img.webp"
+        "card": "../assets/cards/DDG - 021.webp",
+        "art": "../assets/imgs/DDG - 021.webp"
       },
       "virtues": [
-        12,
-        12,
-        10,
-        10
+        2
       ],
-      "cost": 5,
+      "cost": 4.0,
       "stats": {
-        "attack": null,
-        "resistance": null
+        "attack": 4.0,
+        "resistance": 4.0
       },
       "rating": 0,
-      "functions": [
-        8,
-        24,
-        25,
-        50,
-        66,
-        70
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Combo",
-            "en": "Combo"
-          },
-          {
-            "pt": "Controle",
-            "en": "Control"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 12,
-      "reference": "1SA 13:9",
-      "text": "Busque uma carta em seu baralho ou em sua Reserva e coloque-a em sua mão. Se buscou em seu baralho, embaralhe-o.",
-      "rulings": [
-        "A carta encontrada deve ser revelada independentemente de ter sido buscada no baralho ou na Reserva.",
-        "Se você buscar no baralho, embaralhe o baralho depois da busca.",
-        "As alterações morais associadas ao Pecado são aplicadas depois que a busca terminar de resolver."
-      ]
+      "role": null,
+      "reference": "1 Samuel 17:1-11.",
+      "text": "ATAQUE: Se você controlar outro personagem com poder 6 ou mais, este personagem recebe +1/+0 até o reagrupamento.",
+      "rulings": []
     },
     {
       "number": "022",
       "collection": 1,
       "type": [
-        4
+        5
       ],
       "subtype": [
-        3
+        4,
+        5
       ],
       "name": {
-        "pt": "Assassinato de Urias",
-        "en": "Murder of Uriah"
+        "pt": "Exército Israelita Confiante",
+        "en": "Exército Israelita Confiante"
       },
       "images": {
-        "card": "../assets/cards/Pecado - Foundations-2.webp",
-        "art": "../assets/imgs/Pecado - Foundations-2 - img.webp"
+        "card": "../assets/cards/DDG - 022.webp",
+        "art": "../assets/imgs/DDG - 022.webp"
       },
-      "virtues": [
-        14,
-        14,
-        6,
-        6
-      ],
-      "cost": 3,
+      "virtues": [],
+      "cost": 5.0,
       "stats": {
-        "attack": null,
-        "resistance": null
+        "attack": 5.0,
+        "resistance": 2.0
       },
       "rating": 0,
-      "functions": [
-        7,
-        16,
-        50
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Controle",
-            "en": "Control"
-          },
-          {
-            "pt": "Disrupção",
-            "en": "Disruption"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 8,
-      "reference": "2SA 11:15",
-      "text": "Destrua o personagem alvo desativado.",
-      "rulings": [
-        "O alvo deve ser um personagem desativado tanto ao jogar este Pecado quanto quando ele resolver.",
-        "Se o personagem alvo estiver ativado na resolução, o Pecado é anulado pelas regras por não ter alvo válido.",
-        "Destruir o personagem não conta como renunciá-lo."
-      ]
+      "role": null,
+      "reference": "1 Samuel 17:51-53",
+      "text": "INESPERADO. ENTRADA: Se for seu turno, um personagem com poder 6 ou mais tiver morrido neste turno e você estiver na etapa de combate, após esta etapa haverá uma etapa de combate adicional.",
+      "rulings": []
     },
     {
       "number": "023",
       "collection": 1,
       "type": [
-        4
+        5
       ],
       "subtype": [
-        3
+        4,
+        5
       ],
       "name": {
-        "pt": "Orgulho do Rei",
-        "en": "King's Pride"
+        "pt": "Abner, Comandante de Saul",
+        "en": "Abner, Comandante De Saul"
       },
       "images": {
-        "card": "../assets/cards/Pecado - Foundations-3.webp",
-        "art": "../assets/imgs/Pecado - Foundations-3 - img.webp"
+        "card": "../assets/cards/DDG - 023.webp",
+        "art": "../assets/imgs/DDG - 023.webp"
       },
       "virtues": [
-        2,
-        10
+        7,
+        11
       ],
-      "cost": 3,
+      "cost": 4.0,
       "stats": {
-        "attack": null,
-        "resistance": null
+        "attack": 3.0,
+        "resistance": 4.0
       },
       "rating": 0,
-      "functions": [
-        7,
-        43,
-        50
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Controle",
-            "en": "Control"
-          },
-          {
-            "pt": "Disrupção",
-            "en": "Disruption"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 19,
-      "reference": "2SA 24:10",
-      "text": "Cada oponente descarta 2 cartas.",
-      "rulings": [
-        "Cada oponente descarta até 2 cartas; se tiver menos de 2, descarta todas as cartas da mão.",
-        "O controlador do Pecado não descarta cartas por este efeito.",
-        "As alterações morais associadas são aplicadas depois que todos os descartes terminarem."
-      ]
+      "role": null,
+      "reference": "1 Samuel 17:55-58",
+      "text": "Sempre que outro personagem que você controla destruir em combate um personagem com poder 6 ou mais, se você controlar um Rei, prepare aquele personagem. Ele se torna Nobre além de seus outros tipos.",
+      "rulings": []
     },
     {
       "number": "024",
       "collection": 1,
       "type": [
-        4
+        5
       ],
       "subtype": [
-        3
+        4,
+        5
       ],
       "name": {
-        "pt": "Censo Proibido",
-        "en": "Forbidden Census"
+        "pt": "Escudeiro de Golias",
+        "en": "Escudeiro De Golias"
       },
       "images": {
-        "card": "../assets/cards/Pecado - Foundations-4.webp",
-        "art": "../assets/imgs/Pecado - Foundations-4 - img.webp"
+        "card": "../assets/cards/DDG - 024.webp",
+        "art": "../assets/imgs/DDG - 024.webp"
       },
       "virtues": [
-        6
+        2
       ],
-      "cost": 2,
+      "cost": 1.0,
       "stats": {
-        "attack": null,
-        "resistance": null
+        "attack": 1.0,
+        "resistance": 1.0
       },
       "rating": 0,
-      "functions": [
-        8,
-        18,
-        22,
-        41,
-        50,
-        66
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Controle",
-            "en": "Control"
-          },
-          {
-            "pt": "Risco",
-            "en": "Risk"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 34,
-      "reference": "2SA 24:1-10",
-      "text": "Cause 3 de dano a cada território. Você compra 1 carta.",
-      "rulings": [
-        "O dano é causado a todos os territórios antes de o controlador comprar carta.",
-        "Se o dano fizer um ou mais jogadores perderem, as ações baseadas no estado serão verificadas antes que jogadores recebam prioridade.",
-        "Somente o controlador de Censo Proibido compra carta por este efeito."
-      ]
+      "role": null,
+      "reference": "1 Samuel 17:7, 41",
+      "text": "{T}: Adicione EE. Gaste essa essência somente para jogar personagens com poder 6 ou mais.",
+      "rulings": []
     },
     {
       "number": "025",
       "collection": 1,
       "type": [
-        4
+        5
       ],
       "subtype": [
-        3
+        9
       ],
       "name": {
-        "pt": "Rebelião de Absalão",
-        "en": "Absalom's Rebellion"
+        "pt": "Servo de Saul, o Olhar Atento",
+        "en": "Servo De Saul, O Olhar Atento"
       },
       "images": {
-        "card": "../assets/cards/Pecado - Foundations-5.webp",
-        "art": "../assets/imgs/Pecado - Foundations-5 - img.webp"
+        "card": "../assets/cards/DDG - 025.webp",
+        "art": "../assets/imgs/DDG - 025.webp"
       },
-      "virtues": [
-        14,
-        14,
-        8,
-        8
-      ],
-      "cost": 3,
+      "virtues": [],
+      "cost": 1.0,
       "stats": {
-        "attack": null,
-        "resistance": null
+        "attack": 1.0,
+        "resistance": 1.0
       },
       "rating": 0,
-      "functions": [
-        29,
-        30,
-        50
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Aristocratas",
-            "en": "Aristocrats"
-          },
-          {
-            "pt": "Fichas",
-            "en": "Tokens"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 20,
-      "reference": "2SA 15:10",
-      "text": "Cada jogador renuncia um personagem. Crie duas fichas de personagem Rebelde 1/1.",
-      "rulings": [
-        "Cada jogador escolhe o próprio personagem a renunciar.",
-        "Se um jogador não controla personagens, ele não renuncia nada.",
-        "As fichas de Rebelde entram sob seu controle depois das renúncias."
-      ]
+      "role": null,
+      "reference": "1 Samuel 16:15-18",
+      "text": "ENTRADA: Olhe as três cartas do topo do seu baralho. Você pode revelar um personagem de custo {2} ou menos dentre elas e colocá-lo no topo. Coloque o resto no fundo.",
+      "rulings": []
     },
     {
       "number": "026",
       "collection": 1,
       "type": [
-        4
+        5
       ],
       "subtype": [
-        3
+        9
       ],
       "name": {
-        "pt": "Idolatria em Israel",
-        "en": "Idolatry in Israel"
+        "pt": "Guardador dos Mantimentos",
+        "en": "Guardador Dos Mantimentos"
       },
       "images": {
-        "card": "../assets/cards/Pecado - Foundations-6.webp",
-        "art": "../assets/imgs/Pecado - Foundations-6 - img.webp"
+        "card": "../assets/cards/DDG - 026.webp",
+        "art": "../assets/imgs/DDG - 026.webp"
       },
-      "virtues": [
-        2,
-        2,
-        2,
-        10,
-        10
-      ],
-      "cost": 6,
+      "virtues": [],
+      "cost": 1.0,
       "stats": {
-        "attack": null,
-        "resistance": null
+        "attack": 0.0,
+        "resistance": 2.0
       },
       "rating": 0,
-      "functions": [
-        17,
-        50
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Controle",
-            "en": "Control"
-          },
-          {
-            "pt": "Risco",
-            "en": "Risk"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 9,
-      "reference": "1SA 15:23",
-      "text": "Destrua todos os personagens.",
-      "rulings": [
-        "Todos os personagens são destruídos simultaneamente.",
-        "Personagens indestrutíveis não são destruídos por este efeito.",
-        "Equipamentos anexados aos personagens destruídos tornam-se desanexados e permanecem no campo de batalha, salvo se outro efeito disser o contrário."
-      ]
+      "role": null,
+      "reference": "1 Samuel 17:22.",
+      "text": "ENTRADA: Revele a carta do topo do seu baralho. Se for um artefato, você pode colocá-la na sua mão.",
+      "rulings": []
     },
     {
       "number": "027",
       "collection": 1,
       "type": [
-        4
+        5
       ],
       "subtype": [
-        3
+        10
       ],
       "name": {
-        "pt": "Traição no Reino",
-        "en": "Treachery in the Kingdom"
+        "pt": "Jumentinho do Jessé",
+        "en": "Jumentinho Do Jessé"
       },
       "images": {
-        "card": "../assets/cards/Pecado - Foundations-7.webp",
-        "art": "../assets/imgs/Pecado - Foundations-7 - img.webp"
+        "card": "../assets/cards/DDG - 027.webp",
+        "art": "../assets/imgs/DDG - 027.webp"
       },
-      "virtues": [
-        14,
-        14,
-        6,
-        6
-      ],
-      "cost": 3,
+      "virtues": [],
+      "cost": 1.0,
       "stats": {
-        "attack": null,
-        "resistance": null
+        "attack": 0.0,
+        "resistance": 1.0
       },
       "rating": 0,
-      "functions": [
-        31,
-        50
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Tempo",
-            "en": "Tempo"
-          },
-          {
-            "pt": "Disrupção",
-            "en": "Disruption"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 16,
-      "reference": "2SA 15:12",
-      "text": "Ganhe controle do personagem alvo até o reagrupamento e ative-o.",
-      "rulings": [
-        "Ativar o personagem não o remove de combate se ele já estiver em combate.",
-        "Ganhar controle de um personagem atacante não muda automaticamente o jogador ou objeto que ele está atacando.",
-        "O personagem volta ao controlador anterior no reagrupamento se ainda estiver no campo de batalha."
-      ]
+      "role": null,
+      "reference": "1 Samuel 16:20",
+      "text": "Este personagem entra com três marcadores de suprimento. {T}, remova um marcador de suprimento: cure 1 de dano de um personagem alvo que você controla. Quando o último marcador for removido, renuncie este personagem.",
+      "rulings": []
     },
     {
       "number": "028",
       "collection": 1,
       "type": [
-        4
+        3
       ],
       "subtype": [
         3
       ],
       "name": {
-        "pt": "Zombar de Deus",
-        "en": "Mocking God"
+        "pt": "Pedra à Testa",
+        "en": "Pedra À Testa"
       },
       "images": {
-        "card": "../assets/cards/Pecado - Foundations-8.webp",
-        "art": "../assets/imgs/Pecado - Foundations-8 - img.webp"
+        "card": "../assets/cards/DDG - 028.webp",
+        "art": "../assets/imgs/DDG - 028.webp"
       },
       "virtues": [
-        2,
-        12
+        1
       ],
-      "cost": 1,
+      "cost": 3.0,
       "stats": {
         "attack": null,
         "resistance": null
       },
       "rating": 0,
-      "functions": [
-        33,
-        47,
-        50
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Tempo",
-            "en": "Tempo"
-          },
-          {
-            "pt": "Controle",
-            "en": "Control"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 37,
-      "reference": "GAL 6:7",
-      "text": "Desative todos os personagens com poder 2 ou menos.",
-      "rulings": [
-        "O poder dos personagens é verificado quando o Pecado resolve.",
-        "Personagens já desativados permanecem desativados.",
-        "Este efeito afeta personagens de todos os jogadores, inclusive os seus."
-      ]
+      "role": null,
+      "reference": "1 Samuel 17:48-50",
+      "text": "Cause 3 de dano a um personagem alvo. Se ele possuir poder 6 ou mais, destrua-o em vez disso.",
+      "rulings": []
     },
     {
       "number": "029",
@@ -1602,49 +1020,32 @@
         3
       ],
       "name": {
-        "pt": "Pedra da Funda",
-        "en": "Sling Stone"
+        "pt": "A Batalha é do Senhor",
+        "en": "A Batalha É Do Senhor"
       },
       "images": {
-        "card": "../assets/cards/Milagre - Foundations-1.webp",
-        "art": "../assets/imgs/Milagre - Foundations-1 - img.webp"
+        "card": "../assets/cards/DDG - 029.webp",
+        "art": "../assets/imgs/DDG - 029.webp"
       },
       "virtues": [
         1
       ],
-      "cost": 3,
+      "cost": 3.0,
       "stats": {
         "attack": null,
         "resistance": null
       },
       "rating": 0,
-      "functions": [
-        5,
-        16,
-        18
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Tempo",
-            "en": "Tempo"
-          },
-          {
-            "pt": "Remoção",
-            "en": "Removal"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 8,
-      "reference": "1SA 17:49",
-      "text": "Cause 4 de dano a um personagem alvo.",
-      "rulings": [
-        "O dano é causado ao personagem alvo quando o Milagre resolve.",
-        "Se o personagem alvo for indestrutível, esse dano é prevenido pelas regras de INDESTRUTÍVEL.",
-        "Dano causado por Pedra da Funda não é dano de combate."
-      ]
+      "role": null,
+      "reference": "1 Samuel 17:45-47",
+      "text": "Escolha um personagem alvo que você controla com poder 2 ou menos e um personagem alvo que um oponente controla com poder 6 ou mais. Até o reagrupamento, o primeiro ganha LETAL e INDESTRUTÍVEL. Eles duelam.",
+      "rulings": []
     },
     {
       "number": "030",
@@ -1656,50 +1057,32 @@
         3
       ],
       "name": {
-        "pt": "Proteção Divina",
-        "en": "Divine Protection"
+        "pt": "Recusa da Armadura",
+        "en": "Recusa Da Armadura"
       },
       "images": {
-        "card": "../assets/cards/Milagre - Foundations-2.webp",
-        "art": "../assets/imgs/Milagre - Foundations-2 - img.webp"
+        "card": "../assets/cards/DDG - 030.webp",
+        "art": "../assets/imgs/DDG - 030.webp"
       },
       "virtues": [
-        9
+        11
       ],
-      "cost": 2,
+      "cost": 2.0,
       "stats": {
         "attack": null,
         "resistance": null
       },
       "rating": 0,
-      "functions": [
-        5,
-        19,
-        20,
-        21
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Proteção",
-            "en": "Protection"
-          },
-          {
-            "pt": "Controle",
-            "en": "Control"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 14,
-      "reference": "PSA 91:4",
-      "text": "Previna todo o dano que seria causado ao personagem alvo neste turno. Cure 1 de dano do seu território.",
-      "rulings": [
-        "A prevenção dura até o reagrupamento e se aplica a qualquer dano que seria causado ao personagem alvo.",
-        "A cura do território acontece quando o Milagre resolve, não quando o dano seria prevenido.",
-        "Se o alvo se tornar inválido antes da resolução, o Milagre é anulado pelas regras e a cura não ocorre."
-      ]
+      "role": null,
+      "reference": "1 Samuel 17:38-40",
+      "text": "Devolva um equipamento anexado a um personagem alvo que você controla para a mão de seu dono. Se fizer isso, prepare esse personagem, busque em sua reserva um equipamento de custo menor e coloque-o no campo de batalha anexado a ele.",
+      "rulings": []
     },
     {
       "number": "031",
@@ -1711,49 +1094,33 @@
         3
       ],
       "name": {
-        "pt": "Fuga de Davi",
-        "en": "David's Escape"
+        "pt": "Livramento do Leão e do Urso",
+        "en": "Livramento Do Leão E Do Urso"
       },
       "images": {
-        "card": "../assets/cards/Milagre - Foundations-3.webp",
-        "art": "../assets/imgs/Milagre - Foundations-3 - img.webp"
+        "card": "../assets/cards/DDG - 031.webp",
+        "art": "../assets/imgs/DDG - 031.webp"
       },
       "virtues": [
-        9
+        1,
+        7
       ],
-      "cost": 3,
+      "cost": 3.0,
       "stats": {
         "attack": null,
         "resistance": null
       },
       "rating": 0,
-      "functions": [
-        5,
-        27,
-        64
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Tempo",
-            "en": "Tempo"
-          },
-          {
-            "pt": "Resposta",
-            "en": "Answer"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 16,
-      "reference": "1SA 19:10",
-      "text": "Retorne o personagem alvo para a mão de seu dono.",
-      "rulings": [
-        "Se uma ficha for retornada à mão desta forma, ela deixa de existir após deixar o campo de batalha.",
-        "Retornar um personagem remove todo dano marcado nele.",
-        "Equipamentos anexados ao personagem retornado tornam-se desanexados e permanecem no campo de batalha."
-      ]
+      "role": null,
+      "reference": "1 Samuel 17:34-37",
+      "text": "Escolha um personagem alvo que você controla. Até o reagrupamento, previna todo o dano de combate que personagens com poder base maior causariam a ele. Enquanto ele bloquear um ou mais desses personagens, recebe +3/+0.",
+      "rulings": []
     },
     {
       "number": "032",
@@ -1765,50 +1132,32 @@
         3
       ],
       "name": {
-        "pt": "Conselho do Profeta",
-        "en": "Prophet's Counsel"
+        "pt": "O Senhor Vê o Coração",
+        "en": "O Senhor Vê O Coração"
       },
       "images": {
-        "card": "../assets/cards/Milagre - Foundations-4.webp",
-        "art": "../assets/imgs/Milagre - Foundations-4 - img.webp"
+        "card": "../assets/cards/DDG - 032.webp",
+        "art": "../assets/imgs/DDG - 032.webp"
       },
       "virtues": [
         11
       ],
-      "cost": 3,
+      "cost": 2.0,
       "stats": {
         "attack": null,
         "resistance": null
       },
       "rating": 0,
-      "functions": [
-        5,
-        28,
-        60,
-        73
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Controle",
-            "en": "Control"
-          },
-          {
-            "pt": "Resposta",
-            "en": "Answer"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 3,
-      "reference": "2SA 12:7",
-      "text": "Anule a jogada alvo a menos que seu controlador pague {3}. Se você controla um Rei, em vez disso, anule aquela jogada.",
-      "rulings": [
-        "Se você controla um Rei quando Conselho do Profeta resolve, o controlador da jogada alvo não recebe a opção de pagar {3}.",
-        "Se você não controla um Rei na resolução, o controlador da jogada alvo pode pagar {3} para impedir a anulação.",
-        "A verificação de controlar um Rei é feita na resolução, não no momento em que o Milagre é jogado."
-      ]
+      "role": null,
+      "reference": "1 Samuel 16:6-7;",
+      "text": "O personagem alvo com o menor poder entre os personagens que você controla recebe +2/+2 até o reagrupamento.",
+      "rulings": []
     },
     {
       "number": "033",
@@ -1820,49 +1169,32 @@
         3
       ],
       "name": {
-        "pt": "Força do Senhor",
-        "en": "Strength of the Lord"
+        "pt": "Ainda falta o Menor",
+        "en": "Ainda Falta O Menor"
       },
       "images": {
-        "card": "../assets/cards/Milagre - Foundations-5.webp",
-        "art": "../assets/imgs/Milagre - Foundations-5 - img.webp"
+        "card": "../assets/cards/DDG - 033.webp",
+        "art": "../assets/imgs/DDG - 033.webp"
       },
       "virtues": [
-        7
+        9
       ],
-      "cost": 2,
+      "cost": 2.0,
       "stats": {
         "attack": null,
         "resistance": null
       },
       "rating": 0,
-      "functions": [
-        5,
-        36,
-        37
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Aggro",
-            "en": "Aggro"
-          },
-          {
-            "pt": "Tempo",
-            "en": "Tempo"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 10,
-      "reference": "JDG 16:28",
-      "text": "O personagem alvo recebe +3/+3 até o reagrupamento.",
-      "rulings": [
-        "O bônus altera poder e resistência até o reagrupamento.",
-        "Se o aumento de resistência fizer um personagem sobreviver a dano já marcado, ele pode morrer quando o bônus expirar se o dano marcado for novamente letal.",
-        "Este Milagre pode ser jogado durante combate se você tiver prioridade."
-      ]
+      "role": null,
+      "reference": "1 Samuel 16:11-13",
+      "text": "Jogue esta carta apenas se você não controlar um personagem com poder 2 ou menos. Busque em sua reserva um personagem com poder 2 ou menos e coloque-o na sua mão.",
+      "rulings": []
     },
     {
       "number": "034",
@@ -1870,55 +1202,36 @@
       "type": [
         3
       ],
-      "subtype": [
-        3
-      ],
+      "subtype": [],
       "name": {
-        "pt": "Defesa de Jônatas",
-        "en": "Jonathan's Defense"
+        "pt": "Espírito do Senhor sobre Davi",
+        "en": "Espírito Do Senhor Sobre Davi"
       },
       "images": {
-        "card": "../assets/cards/Milagre - Foundations-6.webp",
-        "art": "../assets/imgs/Milagre - Foundations-6 - img.webp"
+        "card": "../assets/cards/DDG - 034.webp",
+        "art": "../assets/imgs/DDG - 034.webp"
       },
       "virtues": [
-        7,
-        9
+        1,
+        9,
+        13
       ],
-      "cost": 3,
+      "cost": 7.0,
       "stats": {
         "attack": null,
         "resistance": null
       },
       "rating": 0,
-      "functions": [
-        5,
-        20,
-        36,
-        37
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Proteção",
-            "en": "Protection"
-          },
-          {
-            "pt": "Tempo",
-            "en": "Tempo"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 14,
-      "reference": "1SA 20:4",
-      "text": "Até o reagrupamento, o personagem alvo recebe +1/+1 e não pode ser alvo de jogadas ou habilidades que seus oponentes controlam.",
-      "rulings": [
-        "O personagem pode continuar sendo afetado por efeitos que não usem a palavra alvo.",
-        "O bônus +1/+1 e a proteção contra alvos duram até o reagrupamento.",
-        "Jogadas ou habilidades de seus próprios efeitos ainda podem escolher o personagem como alvo."
-      ]
+      "role": null,
+      "reference": "1 Samuel 16:13",
+      "text": "VINCULAR A PERSONAGEM QUE VOCÊ CONTROLA. O personagem vinculado tem INALVEJÁVEL e INDESTRUTÍVEL.",
+      "rulings": []
     },
     {
       "number": "035",
@@ -1926,54 +1239,34 @@
       "type": [
         3
       ],
-      "subtype": [
-        3
-      ],
+      "subtype": [],
       "name": {
-        "pt": "Cura Divina",
-        "en": "Divine Healing"
+        "pt": "A Recompensa do Rei",
+        "en": "A Recompensa Do Rei"
       },
       "images": {
-        "card": "../assets/cards/Milagre - Foundations-7.webp",
-        "art": "../assets/imgs/Milagre - Foundations-7 - img.webp"
+        "card": "../assets/cards/DDG - 035.webp",
+        "art": "../assets/imgs/DDG - 035.webp"
       },
       "virtues": [
-        9
+        7
       ],
-      "cost": 2,
+      "cost": 1.0,
       "stats": {
         "attack": null,
         "resistance": null
       },
       "rating": 0,
-      "functions": [
-        5,
-        21,
-        55,
-        68
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Controle",
-            "en": "Control"
-          },
-          {
-            "pt": "Defesa",
-            "en": "Defense"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 31,
-      "reference": "PSA 103:3",
-      "text": "Cure 5 de dano do seu território.",
-      "rulings": [
-        "Cura Divina remove até 5 de dano marcado no seu território.",
-        "Se seu território tiver menos de 5 de dano marcado, remova todo o dano possível.",
-        "Curar o território não altera sua resistência impressa."
-      ]
+      "role": null,
+      "reference": "1 Samuel 17:25-27",
+      "text": "Quando um personagem seu destruir em combate um de poder 6 ou mais, renuncie este milagre e escolha um: crie duas fichas de Ouro; ele recebe +2/+2 e se torna Nobre além dos seus outros tipos; sua próxima carta neste turno custa {3} a menos.",
+      "rulings": []
     },
     {
       "number": "036",
@@ -1981,157 +1274,106 @@
       "type": [
         3
       ],
-      "subtype": [
-        3
-      ],
+      "subtype": [],
       "name": {
-        "pt": "Sabedoria Celestial",
-        "en": "Heavenly Wisdom"
+        "pt": "Até que ele venha",
+        "en": "Até Que Ele Venha"
       },
       "images": {
-        "card": "../assets/cards/Milagre - Foundations-8.webp",
-        "art": "../assets/imgs/Milagre - Foundations-8 - img.webp"
+        "card": "../assets/cards/DDG - 036.webp",
+        "art": "../assets/imgs/DDG - 036.webp"
       },
       "virtues": [
-        11,
-        11
+        3
       ],
-      "cost": 3,
+      "cost": 2.0,
       "stats": {
         "attack": null,
         "resistance": null
       },
       "rating": 0,
-      "functions": [
-        5,
-        22,
-        70
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Controle",
-            "en": "Control"
-          },
-          {
-            "pt": "Valor",
-            "en": "Value"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 11,
-      "reference": "PRO 2:6",
-      "text": "Compre 2 cartas.",
-      "rulings": [
-        "As duas compras são realizadas uma de cada vez.",
-        "Se você não tiver cartas suficientes no baralho, aplique a regra de dano ao território para cada carta que não puder comprar.",
-        "As alterações morais associadas são aplicadas depois que as compras terminarem."
-      ]
+      "role": null,
+      "reference": "1 Samuel 16:11",
+      "text": "Personagens não podem atacar. Quando um personagem com poder 2 ou menos entrar no campo de batalha, renuncie este milagre. Qualquer jogador pode ativar “Progrida em 2 seu Descontrole: destrua este milagre”.",
+      "rulings": []
     },
     {
       "number": "037",
       "collection": 1,
       "type": [
-        1
+        3
       ],
       "subtype": [
-        2
+        3
       ],
       "name": {
-        "pt": "Funda de Davi",
-        "en": "David's Sling"
+        "pt": "Entre a Corte e o Rebanho",
+        "en": "Entre A Corte E O Rebanho"
       },
       "images": {
-        "card": "../assets/cards/Artefato - Foundations-1.webp",
-        "art": "../assets/imgs/Artefato - Foundations-1 - img.webp"
+        "card": "../assets/cards/DDG - 037.webp",
+        "art": "../assets/imgs/DDG - 037.webp"
       },
       "virtues": [],
-      "cost": 3,
+      "cost": 2.0,
       "stats": {
         "attack": null,
         "resistance": null
       },
       "rating": 0,
-      "functions": [
-        1,
-        16,
-        18,
-        38,
-        46
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Equipamentos",
-            "en": "Equipment"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 32,
-      "reference": "1SA 17:40",
-      "text": "EQUIPÁVEL: {T}: Cause 1 de dano a um personagem alvo. Se aquele personagem tiver poder 6 ou mais, em vez disso, destrua-o.",
-      "rulings": [
-        "A habilidade com {T} é concedida ao personagem equipado; o personagem equipado é desativado para pagar o custo.",
-        "Se o alvo tiver poder 6 ou mais na resolução, ele é destruído em vez de receber 1 de dano.",
-        "Se o personagem equipado deixar de estar equipado antes da habilidade resolver, a habilidade na pilha ainda resolve normalmente."
-      ]
+      "role": null,
+      "reference": "1 Samuel 17:15",
+      "text": "Escolha um personagem que você controla com poder 2 ou menos. Progrida em 1 sua Temperança e coloque-o na reserva. No início do seu próximo alistamento, progrida em 1 sua Esperança e devolva-o ao campo de batalha preparado.",
+      "rulings": []
     },
     {
       "number": "038",
       "collection": 1,
       "type": [
-        1
+        3
       ],
       "subtype": [
-        2
+        3
       ],
       "name": {
-        "pt": "Harpa Real",
-        "en": "Royal Harp"
+        "pt": "Cântico dos Milhares",
+        "en": "Cântico Dos Milhares"
       },
       "images": {
-        "card": "../assets/cards/Artefato - Foundations-2.webp",
-        "art": "../assets/imgs/Artefato - Foundations-2 - img.webp"
+        "card": "../assets/cards/DDG - 038.webp",
+        "art": "../assets/imgs/DDG - 038.webp"
       },
-      "virtues": [],
-      "cost": 1,
+      "virtues": [
+        9
+      ],
+      "cost": 4.0,
       "stats": {
         "attack": null,
         "resistance": null
       },
       "rating": 0,
-      "functions": [
-        1,
-        33,
-        50,
-        64
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Tempo",
-            "en": "Tempo"
-          },
-          {
-            "pt": "Equipamentos",
-            "en": "Equipment"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 1,
-      "reference": "1SA 16:23",
-      "text": "EQUIPÁVEL: {T}: Desative um personagem alvo que um oponente controla. Escolha uma Virtude com valor inferior a 4 daquele oponente. Aquele oponente aplica +1 à Virtude escolhida.",
-      "rulings": [
-        "O controlador da habilidade escolhe qual Virtude do oponente será aumentada.",
-        "Você não pode escolher uma Virtude daquele oponente que já esteja em Nv4 se o aumento não puder modificar legalmente o eixo moral.",
-        "O aumento da Virtude segue as regras de eixos morais; se a Desvirtude oposta estiver ativa, o aumento reduz primeiro aquela Desvirtude."
-      ]
+      "role": null,
+      "reference": "1 Samuel 18:6-9",
+      "text": "Escolha dois personagens alvo que você controla que combateram neste turno. Um deles recebe  +1/+0 e o outro recebe +3/+0. Prepare-os. Se o personagem com maior bônus não for um Rei e você controlar um Rei, progrida 1 Egoísmo.",
+      "rulings": []
     },
     {
       "number": "039",
@@ -2143,50 +1385,30 @@
         2
       ],
       "name": {
-        "pt": "Espada de Golias",
-        "en": "Goliath's Sword"
+        "pt": "Funda e Cinco Pedras",
+        "en": "Funda E Cinco Pedras"
       },
       "images": {
-        "card": "../assets/cards/Artefato - Foundations-3.webp",
-        "art": "../assets/imgs/Artefato - Foundations-3 - img.webp"
+        "card": "../assets/cards/DDG - 039.webp",
+        "art": "../assets/imgs/DDG - 039.webp"
       },
       "virtues": [],
-      "cost": 1,
+      "cost": 1.0,
       "stats": {
         "attack": null,
         "resistance": null
       },
       "rating": 0,
-      "functions": [
-        1,
-        35,
-        36,
-        38,
-        46,
-        61
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Equipamentos",
-            "en": "Equipment"
-          },
-          {
-            "pt": "Midrange",
-            "en": "Midrange"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 22,
-      "reference": "1SA 21:9",
-      "text": "Este equipamento só pode ser anexado a personagens com poder 4 ou mais.\nSe o personagem equipado tiver poder 3 ou menos, desanexe este equipamento dele.\nEQUIPÁVEL: O personagem equipado recebe +2/+0 e SOBREPUJAR.",
-      "rulings": [
-        "A restrição de poder é verificada para anexar o equipamento e também pela instrução que pode desanexá-lo.",
-        "O próprio bônus +2/+0 da Espada pode ajudar o personagem equipado a permanecer com poder 4 ou mais enquanto estiver anexada.",
-        "Se a Espada for desanexada, o personagem perde imediatamente o bônus e SOBREPUJAR concedidos por ela."
-      ]
+      "role": null,
+      "reference": "1 Samuel 17:40",
+      "text": "Este artefato entra com cinco marcadores de pedra. EQUIPÁVEL: {T}, remova dele um marcador de pedra: cause 1 de dano a um personagem alvo. Se o equipado possuir poder 2 ou menos e o alvo possuir poder 6 ou mais, destrua-o em vez disso.",
+      "rulings": []
     },
     {
       "number": "040",
@@ -2198,732 +1420,2129 @@
         2
       ],
       "name": {
-        "pt": "Coroa de Israel",
-        "en": "Crown of Israel"
+        "pt": "Espada de Golias",
+        "en": "Espada De Golias"
       },
       "images": {
-        "card": "../assets/cards/Artefato - Foundations-4.webp",
-        "art": "../assets/imgs/Artefato - Foundations-4 - img.webp"
+        "card": "../assets/cards/DDG - 040.webp",
+        "art": "../assets/imgs/DDG - 040.webp"
       },
       "virtues": [],
-      "cost": 3,
+      "cost": 2.0,
       "stats": {
         "attack": null,
         "resistance": null
       },
       "rating": 0,
-      "functions": [
-        1,
-        36,
-        38,
-        39,
-        48
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Equipamentos",
-            "en": "Equipment"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 32,
-      "reference": "2SA 12:30",
-      "text": "Toda vez que um personagem entrar no campo de batalha sob seu controle, anexe este equipamento a ele, se puder.\nEQUIPÁVEL: O personagem equipado recebe +2/+2.",
-      "rulings": [
-        "A habilidade desencadeia para cada personagem que entrar sob seu controle, incluindo fichas.",
-        "Se a Coroa não puder ser anexada ao personagem que entrou, ela permanece onde está.",
-        "Anexar a Coroa a um novo personagem a desanexa do personagem anterior."
-      ]
+      "role": null,
+      "reference": "1 Samuel 17:51",
+      "text": "EQUIPÁVEL: +4/+0. Quando o personagem equipado morrer em combate, o controlador deste artefato escolhe um personagem que batalhou com ele. O controlador do escolhido ganha o controle deste artefato e pode anexá-lo àquele personagem.",
+      "rulings": []
     },
     {
       "number": "041",
       "collection": 1,
       "type": [
-        7
-      ],
-      "subtype": [
         1
       ],
+      "subtype": [
+        2
+      ],
       "name": {
-        "pt": "Belém, Campo do Pastor",
-        "en": "Bethlehem, Field of the Shepherd"
+        "pt": "Armadura de Saul",
+        "en": "Armadura De Saul"
       },
       "images": {
-        "card": "../assets/cards/Território - Foundations-1.webp",
-        "art": "../assets/imgs/Território - Foundations-1 - img.webp"
+        "card": "../assets/cards/DDG - 041.webp",
+        "art": "../assets/imgs/DDG - 041.webp"
       },
       "virtues": [],
-      "cost": [
-        "-"
-      ],
+      "cost": 2.0,
       "stats": {
         "attack": null,
-        "resistance": 18
+        "resistance": null
       },
       "rating": 0,
-      "functions": [
-        23,
-        44,
-        53,
-        69
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Valor",
-            "en": "Value"
-          },
-          {
-            "pt": "Criaturas",
-            "en": "Creatures"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 25,
-      "reference": "1SA 16:1",
-      "text": "No início do seu combate, você pode revelar 2 cartas do topo do seu baralho. Se fizer isso, escolha uma carta de personagem com menor custo entre as cartas de personagem reveladas desta forma, coloque-a na sua mão e coloque as demais no fundo do seu baralho em qualquer ordem.",
-      "rulings": [
-        "Se nenhuma carta de personagem for revelada, todas as cartas reveladas vão para o fundo do baralho em qualquer ordem.",
-        "Se houver empate entre personagens de menor custo revelados, você escolhe um deles.",
-        "As cartas são reveladas antes de qualquer escolha ser feita."
-      ]
+      "role": null,
+      "reference": "1 Samuel 17:38-39",
+      "text": "EQUIPÁVEL: +0/+4. Se o poder base do personagem equipado for 2 ou menos, ele não pode atacar nem bloquear.",
+      "rulings": []
     },
     {
       "number": "042",
       "collection": 1,
       "type": [
-        7
-      ],
-      "subtype": [
         1
       ],
+      "subtype": [],
       "name": {
-        "pt": "Jerusalém, Trono de Sangue",
-        "en": "Jerusalem, Throne of Blood"
+        "pt": "Chifre de Azeite",
+        "en": "Chifre De Azeite"
       },
       "images": {
-        "card": "../assets/cards/Território - Foundations-2.webp",
-        "art": "../assets/imgs/Território - Foundations-2 - img.webp"
+        "card": "../assets/cards/DDG - 042.webp",
+        "art": "../assets/imgs/DDG - 042.webp"
       },
       "virtues": [],
-      "cost": [
-        "-"
-      ],
+      "cost": 1.0,
       "stats": {
         "attack": null,
-        "resistance": 24
+        "resistance": null
       },
       "rating": 0,
-      "functions": [
-        21,
-        41,
-        54,
-        55,
-        56,
-        66
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Midrange",
-            "en": "Midrange"
-          },
-          {
-            "pt": "Risco",
-            "en": "Risk"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 24,
-      "reference": "2SA 5:6-9",
-      "text": "Se, durante o combate, dano seria causado ao seu território, em vez disso, aquela quantidade de dano +1 é causada ao seu território.\nDurante o combate, toda vez que um ou mais personagens que você controla causarem dano de combate a um território oponente, cure 2 de dano do seu território.",
-      "rulings": [
-        "O primeiro efeito é um efeito de substituição e não desencadeia repetidamente sobre o próprio dano aumentado.",
-        "A habilidade de cura desencadeia uma vez para cada evento em que um ou mais personagens que você controla causam dano de combate a um território oponente.",
-        "Dano não combatente causado a território oponente não desencadeia a segunda habilidade."
-      ]
+      "role": null,
+      "reference": "1 Samuel 16:1, 13",
+      "text": "Renuncie este artefato: prepare um personagem alvo que você controla com poder 2 ou menos. Ele recebe +2/+2 até o reagrupamento.",
+      "rulings": []
     },
     {
       "number": "043",
       "collection": 1,
       "type": [
-        7
-      ],
-      "subtype": [
         1
       ],
+      "subtype": [
+        2
+      ],
       "name": {
-        "pt": "Vale de Elá",
-        "en": "Valley of Elah"
+        "pt": "Harpa de Davi",
+        "en": "Harpa De Davi"
       },
       "images": {
-        "card": "../assets/cards/Território - Foundations-3.webp",
-        "art": "../assets/imgs/Território - Foundations-3 - img.webp"
+        "card": "../assets/cards/DDG - 043.webp",
+        "art": "../assets/imgs/DDG - 043.webp"
       },
       "virtues": [],
-      "cost": [
-        "-"
-      ],
+      "cost": 1.0,
       "stats": {
         "attack": null,
-        "resistance": 16
+        "resistance": null
       },
       "rating": 0,
-      "functions": [
-        36,
-        54,
-        65
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Aggro",
-            "en": "Aggro"
-          },
-          {
-            "pt": "Ataque solo",
-            "en": "Solo attack"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 23,
-      "reference": "1SA 17:2",
-      "text": "Toda vez que você declarar ataque com exatamente um personagem, aquele personagem recebe +2/+0 até o reagrupamento.",
-      "rulings": [
-        "A habilidade verifica quantos personagens foram declarados atacantes naquela declaração de atacantes.",
-        "Personagens que entram já atacando depois da declaração não alteram se a habilidade desencadeou.",
-        "O bônus dura até o reagrupamento e se aplica apenas ao personagem declarado atacante."
-      ]
+      "role": null,
+      "reference": "1 Samuel 16:21-23",
+      "text": "EQUIPÁVEL: {T}: prepare outro personagem alvo. Se ele for um Rei, seu controlador pode progredir em 1 sua Esperança.",
+      "rulings": []
     },
     {
       "number": "044",
       "collection": 1,
       "type": [
-        7
-      ],
-      "subtype": [
         1
       ],
+      "subtype": [],
       "name": {
-        "pt": "Deserto da Provação",
-        "en": "Desert of Trial"
+        "pt": "Espólios do Gigante",
+        "en": "Espólios Do Gigante"
       },
       "images": {
-        "card": "../assets/cards/Território - Foundations-4.webp",
-        "art": "../assets/imgs/Território - Foundations-4 - img.webp"
+        "card": "../assets/cards/DDG - 044.webp",
+        "art": "../assets/imgs/DDG - 044.webp"
       },
       "virtues": [],
-      "cost": [
-        "-"
-      ],
+      "cost": 5.0,
       "stats": {
         "attack": null,
-        "resistance": 20
+        "resistance": null
       },
       "rating": 0,
-      "functions": [
-        8,
-        21,
-        22,
-        56,
-        66,
-        67
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Valor",
-            "en": "Value"
-          },
-          {
-            "pt": "Risco",
-            "en": "Risk"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 25,
-      "reference": "1SA 23:14",
-      "text": "No início do seu combate, escolha um —\n(a) descarte uma carta e cure 2 de dano do seu território; ou\n(b) compre 1 carta e cause 2 de dano ao seu território.",
-      "rulings": [
-        "Você escolhe o modo quando a habilidade vai para a pilha.",
-        "Se escolher o primeiro modo e não tiver cartas na mão, você ainda cura 2 de dano do território se possível.",
-        "Se escolher o segundo modo, compre antes de causar dano ao próprio território."
-      ]
+      "role": null,
+      "reference": "1 Samuel 17:54",
+      "text": "RESERVA: Quando um personagem de um oponente com poder 8 ou mais for destruído, você pode revelar esta carta e colocá-la no campo de batalha. Personagens que você controla não podem ser despreparados por efeitos controlados por oponentes.",
+      "rulings": []
     },
     {
       "number": "045",
       "collection": 1,
       "type": [
-        2
+        4
       ],
-      "subtype": [
-        1
-      ],
+      "subtype": [],
       "name": {
-        "pt": "Davi, Ungido e Rei",
-        "en": "David, Anointed and King"
+        "pt": "Quarenta Dias de Desafio",
+        "en": "Quarenta Dias De Desafio"
       },
       "images": {
-        "card": "../assets/cards/Campeão - Foundations-1.webp",
-        "art": "../assets/imgs/Campeão - Foundations-1 - img.webp"
+        "card": "../assets/cards/DDG - 045.webp",
+        "art": "../assets/imgs/DDG - 045.webp"
       },
       "virtues": [
-        1,
-        1,
-        1,
-        6
+        2
       ],
-      "cost": [
-        "-"
-      ],
+      "cost": 2.0,
       "stats": {
         "attack": null,
         "resistance": null
       },
       "rating": 0,
-      "functions": [
-        36,
-        50,
-        51,
-        52,
-        53,
-        66,
-        70
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Midrange",
-            "en": "Midrange"
-          },
-          {
-            "pt": "Valor",
-            "en": "Value"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 26,
-      "reference": "1SA 16:13",
-      "text": "Fé Nv3 — Até o reagrupamento, um personagem alvo que você controla recebe +1/+1. Reduza em 1 uma Desvirtude à sua escolha.\nIniquidade Nv1 — Compre 2 cartas e cause 4 de dano ao seu território.",
-      "rulings": [
-        "A habilidade de Fé exige que você tenha Fé Nv3 ou maior no momento da ativação.",
-        "Reduzir uma Desvirtude em 1 move o eixo moral na direção da Virtude correspondente.",
-        "A habilidade de Iniquidade compra duas cartas antes de causar 4 de dano ao seu território."
-      ]
+      "role": null,
+      "reference": "1 Samuel 17:16",
+      "text": "No início do combate de cada oponente, ele desprepara um personagem que controla com o menor poder entre os seus personagens. No início do seu reagrupamento, se você não controlar um personagem com poder 6 ou mais, renuncie este pecado.",
+      "rulings": []
     },
     {
       "number": "046",
       "collection": 1,
       "type": [
-        2
+        4
       ],
       "subtype": [
-        1
+        3
       ],
       "name": {
-        "pt": "Golias, o Gigante Profano",
-        "en": "Goliath, the Profane Giant"
+        "pt": "Desprezo do Gigante",
+        "en": "Desprezo Do Gigante"
       },
       "images": {
-        "card": "../assets/cards/Campeão - Foundations-2.webp",
-        "art": "../assets/imgs/Campeão - Foundations-2 - img.webp"
+        "card": "../assets/cards/DDG - 046.webp",
+        "art": "../assets/imgs/DDG - 046.webp"
       },
       "virtues": [
         2,
-        12,
+        4,
+        6,
         12
       ],
-      "cost": [
-        "-"
-      ],
+      "cost": 1.0,
       "stats": {
         "attack": null,
         "resistance": null
       },
       "rating": 0,
-      "functions": [
-        32,
-        33,
-        47,
-        52,
-        53
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Controle",
-            "en": "Control"
-          },
-          {
-            "pt": "Midrange",
-            "en": "Midrange"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 27,
-      "reference": "1SA 17:10",
-      "text": "Dúvida Nv1 — Desative um personagem alvo com poder 2 ou menos.\nInsensatez Nv2 — Escolha um personagem que você controla e outro personagem alvo. Esses personagens lutam entre si.",
-      "rulings": [
-        "A habilidade de Dúvida verifica o poder do alvo tanto na ativação quanto na resolução.",
-        "Na habilidade de Insensatez, o personagem que você controla e o outro personagem alvo causam dano igual ao próprio poder um ao outro.",
-        "Dano causado por luta não é dano de combate."
-      ]
+      "role": null,
+      "reference": "1 Samuel 17:42-44",
+      "text": "Um personagem alvo com poder 2 ou menos recebe -1/-1 até o reagrupamento. Ele recebe -1/-1 adicional se não estiver equipado ou se todos os equipamentos anexados custarem {1} ou menos, e mais -1/-1 se não possuir Fé como virtude associada.",
+      "rulings": []
     },
     {
       "number": "047",
       "collection": 1,
       "type": [
-        2
+        4
       ],
       "subtype": [
-        1
+        3
       ],
       "name": {
-        "pt": "Samuel, Profeta do Ungido",
-        "en": "Samuel, Prophet of the Anointed"
+        "pt": "Com Quem Deixaste as Ovelhas?",
+        "en": "Com Quem Deixaste As Ovelhas?"
       },
       "images": {
-        "card": "../assets/cards/Campeão - Foundations-3.webp",
-        "art": "../assets/imgs/Campeão - Foundations-3 - img.webp"
+        "card": "../assets/cards/DDG - 047.webp",
+        "art": "../assets/imgs/DDG - 047.webp"
       },
       "virtues": [
-        1,
-        9,
-        9,
-        9
+        14
       ],
-      "cost": [
-        "-"
-      ],
+      "cost": 1.0,
       "stats": {
         "attack": null,
         "resistance": null
       },
       "rating": 0,
-      "functions": [
-        20,
-        21,
-        51,
-        53
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Controle",
-            "en": "Control"
-          },
-          {
-            "pt": "Suporte",
-            "en": "Support"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 28,
-      "reference": "1SA 16:12",
-      "text": "Fé Nv1 — Você pode revelar da sua mão uma carta de personagem com custo menor que o custo de um personagem que você controla. Se fizer isso, cure 2 de dano do seu território.\nEsperança Nv3 — Cure 1 de dano de cada personagem que você controla.",
-      "rulings": [
-        "A habilidade de Fé compara o custo da carta revelada com o custo de um personagem que você controla no momento da resolução.",
-        "Você só cura 2 de dano do território se revelar uma carta que satisfaça a condição.",
-        "A habilidade de Esperança cura simultaneamente cada personagem que você controla até o máximo de 1 dano de cada um."
-      ]
+      "role": null,
+      "reference": "1 Samuel 17:28-30",
+      "text": "Escolha um personagem alvo com poder 2 ou menos que um oponente controla. Seu controlador pode devolvê-lo à mão de seu dono. Se não fizer isso, ele recebe -1/-1 até o reagrupamento, ou -2/-2 se for Pastor.",
+      "rulings": []
     },
     {
       "number": "048",
       "collection": 1,
       "type": [
-        2
+        4
       ],
-      "subtype": [
-        1
-      ],
+      "subtype": [],
       "name": {
-        "pt": "Saul, Rei Rejeitado",
-        "en": "Saul, Rejected King"
+        "pt": "Espírito Mau sobre Saul",
+        "en": "Espírito Mau Sobre Saul"
       },
       "images": {
-        "card": "../assets/cards/Campeão - Foundations-4.webp",
-        "art": "../assets/imgs/Campeão - Foundations-4 - img.webp"
+        "card": "../assets/cards/DDG - 048.webp",
+        "art": "../assets/imgs/DDG - 048.webp"
       },
       "virtues": [
-        7,
-        7,
-        10
+        2,
+        10,
+        14
       ],
-      "cost": [
-        "-"
-      ],
+      "cost": 3.0,
       "stats": {
         "attack": null,
         "resistance": null
       },
       "rating": 0,
-      "functions": [
-        30,
-        34,
-        35,
-        36,
-        51,
-        52,
-        53
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Aggro",
-            "en": "Aggro"
-          },
-          {
-            "pt": "Midrange",
-            "en": "Midrange"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 26,
-      "reference": "1SA 15:26",
-      "text": "Fortaleza Nv2 — O personagem alvo recebe +2/+0 e SOBREPUJAR até o reagrupamento.\nDesespero Nv1 — Renuncie um personagem: um personagem alvo recebe +3/+0 e IMBLOQUEÁVEL até o reagrupamento.",
-      "rulings": [
-        "A habilidade de Fortaleza concede SOBREPUJAR apenas até o reagrupamento.",
-        "Na habilidade de Desespero, renunciar um personagem faz parte do custo da habilidade.",
-        "O personagem renunciado para pagar o custo não precisa ser o personagem que receberá +3/+0 e IMBLOQUEÁVEL."
-      ]
+      "role": null,
+      "reference": "1 Samuel 16:14",
+      "text": "VINCULAR A PERSONAGEM QUE VOCÊ CONTROLA. Jogadas e habilidades de oponentes que puderem escolher um personagem seu como alvo devem escolher este se possível. Sempre que ele for alvo dessa forma, desprepare-o e progrida em 1 seu Desespero.",
+      "rulings": []
     },
     {
       "number": "049",
       "collection": 1,
       "type": [
-        6
+        4
       ],
       "subtype": [
-        1
+        3
       ],
       "name": {
-        "pt": "Altar da Aliança Renovada",
-        "en": "Altar of the Renewed Covenant"
+        "pt": "Julgar pela Aparência",
+        "en": "Julgar Pela Aparência"
       },
       "images": {
-        "card": "../assets/cards/Templo - Foundations-1.webp",
-        "art": "../assets/imgs/Templo - Foundations-1 - img.webp"
+        "card": "../assets/cards/DDG - 049.webp",
+        "art": "../assets/imgs/DDG - 049.webp"
       },
-      "virtues": [],
-      "cost": [
-        "-"
+      "virtues": [
+        12
       ],
+      "cost": 3.0,
       "stats": {
         "attack": null,
         "resistance": null
       },
       "rating": 0,
-      "functions": [
-        50,
-        57,
-        75
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Valor",
-            "en": "Value"
-          },
-          {
-            "pt": "Consagração",
-            "en": "Consecration"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 29,
-      "reference": "JOS 24:25",
-      "text": "Durante sua etapa de Consagração, além de Consagrar, Profanar ou não realizar nenhuma dessas ações, você pode colocar três cartas da sua mão no fundo do seu baralho. Se fizer isso, escolha uma característica e aplique +1 ou -1 a ela.",
-      "rulings": [
-        "Esta é uma ação adicional da etapa de Consagração; ela não substitui Consagrar, Profanar ou não realizar nenhuma dessas ações.",
-        "A característica escolhida segue as regras de eixos morais; aplicar +1 a uma Virtude pode reduzir primeiro a Desvirtude oposta.",
-        "Você não pode escolher uma alteração que não possa modificar legalmente nenhum eixo moral."
-      ]
+      "role": null,
+      "reference": "1 Samuel 16:6-7",
+      "text": "Um personagem alvo que você controla recebe +3/+3 até o reagrupamento. Outro personagem alvo que você controla com poder menor recebe -1/-1 até o reagrupamento.",
+      "rulings": []
     },
     {
-      "number": "050",
-      "collection": 1,
+      "number": "001",
+      "collection": 2,
+      "type": [
+        2
+      ],
+      "subtype": [],
+      "name": {
+        "pt": "DAVI, SEGUNDO O CORAÇÃO DE DEUS",
+        "en": "Davi, Segundo O Coração De Deus"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 001.webp",
+        "art": "../assets/imgs/TEC - 001.webp"
+      },
+      "virtues": [],
+      "cost": null,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "Atos 13:22",
+      "text": "Fé Nv2 — Se você controlar três ou mais personagens, personagens que você controla recebem +1/+1 até o reagrupamento.\n\nInsensatez Nv1 — Pulverize 1 carta. Um personagem alvo que você controla recebe +1/+1 e outro personagem alvo que você controla recebe -1/-1.",
+      "rulings": []
+    },
+    {
+      "number": "002",
+      "collection": 2,
+      "type": [
+        2
+      ],
+      "subtype": [],
+      "name": {
+        "pt": "OBEDE-EDOM, O GUARDIÃO DA ARCA",
+        "en": "Obede-Edom, O Guardião Da Arca"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 002.webp",
+        "art": "../assets/imgs/TEC - 002.webp"
+      },
+      "virtues": [],
+      "cost": null,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 6:10-12",
+      "text": "Esperança Nv2 — Se você controlar um artefato Sagrado sua próxima carta neste turno custa {1} a menos.\n\nFé Nv1 — Cure 1 de dano do seu território. Se você controlar um artefato Sagrado, cure 2 em vez disso.",
+      "rulings": []
+    },
+    {
+      "number": "003",
+      "collection": 2,
+      "type": [
+        2
+      ],
+      "subtype": [],
+      "name": {
+        "pt": "ABIGAIL, A GRANDE CONCILIADORA",
+        "en": "Abigail, A Grande Conciliadora"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 003.webp",
+        "art": "../assets/imgs/TEC - 003.webp"
+      },
+      "virtues": [],
+      "cost": null,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "1 Samuel 25:23-35",
+      "text": "Prudência Nv1 — Um personagem alvo não pode atacar até o reagrupamento.\n\nCaridade Nv1 — Até o reagrupamento, se um personagem alvo que você controla fosse ser destruído em combate, coloque-o no topo do seu baralho em vez disso.",
+      "rulings": []
+    },
+    {
+      "number": "004",
+      "collection": 2,
       "type": [
         6
       ],
-      "subtype": [
-        1
-      ],
+      "subtype": [],
       "name": {
-        "pt": "Santuário do Julgamento",
-        "en": "Sanctuary of Judgment"
+        "pt": "Altar do Coração Contrito",
+        "en": "Altar Do Coração Contrito"
       },
       "images": {
-        "card": "../assets/cards/Templo - Foundations-2.webp",
-        "art": "../assets/imgs/Templo - Foundations-2 - img.webp"
+        "card": "../assets/cards/TEC - 004.webp",
+        "art": "../assets/imgs/TEC - 004.webp"
       },
       "virtues": [],
-      "cost": [
-        "-"
-      ],
+      "cost": 2.0,
       "stats": {
         "attack": null,
         "resistance": null
       },
       "rating": 0,
-      "functions": [
-        50,
-        57,
-        59
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Consagração",
-            "en": "Consecration"
-          },
-          {
-            "pt": "Valor",
-            "en": "Value"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 29,
-      "reference": "PSA 9:7",
-      "text": "Quando você consagrar uma carta de personagem, você pode colocar uma carta da sua mão no fundo do seu baralho. Se fizer isso, a alteração de característica da Consagração é de 2 em vez de 1.",
-      "rulings": [
-        "Este efeito substitui apenas o valor da alteração moral da Consagração, não o efeito por tipo da carta consagrada.",
-        "Se a alteração de 2 mover o eixo além do Nv4 no polo escolhido, o polo fica em Nv4 e o excedente é ignorado.",
-        "O atributo afetado continua sendo determinado pela ordem normal da Consagração; o Templo muda a quantidade da alteração, não a prioridade de escolha."
-      ]
+      "role": null,
+      "reference": "Salmo 51:16-17",
+      "text": "Na sua etapa de Consagração, ao declarar Omissão tendo uma desvirtude ativa, você pode descartar 1 carta. Se fizer isso, escolha uma de suas desvirtudes ativas de maior valor e progrida em 2 a virtude oposta.",
+      "rulings": []
     },
     {
-      "number": "051",
-      "collection": 1,
+      "number": "005",
+      "collection": 2,
       "type": [
         6
       ],
-      "subtype": [
-        1
-      ],
+      "subtype": [],
       "name": {
-        "pt": "Tenda da Presença",
-        "en": "Tent of the Presence"
+        "pt": "Altar dos Seis Passos",
+        "en": "Altar Dos Seis Passos"
       },
       "images": {
-        "card": "../assets/cards/Templo - Foundations-3.webp",
-        "art": "../assets/imgs/Templo - Foundations-3 - img.webp"
+        "card": "../assets/cards/TEC - 005.webp",
+        "art": "../assets/imgs/TEC - 005.webp"
       },
       "virtues": [],
-      "cost": [
-        "-"
-      ],
+      "cost": 1.0,
       "stats": {
         "attack": null,
         "resistance": null
       },
       "rating": 0,
-      "functions": [
-        22,
-        43,
-        57,
-        59,
-        75
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Consagração",
-            "en": "Consecration"
-          },
-          {
-            "pt": "Filtro",
-            "en": "Filtering"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 29,
-      "reference": "EXD 33:7",
-      "text": "Quando você consagrar uma carta, você pode escolher não aplicar o efeito correspondente ao tipo daquela carta. Se fizer isso, compre 1 carta, depois descarte 1 carta.",
-      "rulings": [
-        "Você ainda coloca a carta consagrada na zona de Essência normalmente.",
-        "Apenas o efeito correspondente ao tipo da carta é substituído; o ajuste moral da Consagração ainda acontece.",
-        "Você compra antes de descartar."
-      ]
+      "role": null,
+      "reference": "2 Samuel 6:12-13",
+      "text": "No início da sua etapa de Consagração, você pode despreparar um artefato Sagrado e um personagem seu. Se os despreparar e escolher consagrar, você pode consagrar outra carta adicional. Se não os despreparar, renuncie um artefato.",
+      "rulings": []
     },
     {
-      "number": "052",
-      "collection": 1,
+      "number": "006",
+      "collection": 2,
       "type": [
         6
       ],
-      "subtype": [
-        1
-      ],
+      "subtype": [],
       "name": {
-        "pt": "Altar do Pecado Oculto",
-        "en": "Altar of Hidden Sin"
+        "pt": "Casa de Obede-Edom",
+        "en": "Casa De Obede-Edom"
       },
       "images": {
-        "card": "../assets/cards/Templo - Foundations-4.webp",
-        "art": "../assets/imgs/Templo - Foundations-4 - img.webp"
+        "card": "../assets/cards/TEC - 006.webp",
+        "art": "../assets/imgs/TEC - 006.webp"
       },
       "virtues": [],
-      "cost": [
-        "-"
-      ],
+      "cost": 3.0,
       "stats": {
         "attack": null,
         "resistance": null
       },
       "rating": 0,
-      "functions": [
-        49,
-        58,
-        66,
-        67
-      ],
+      "functions": [],
       "usage": {
         "deckCount": 0,
         "inclusion": 0,
-        "archetypes": [
-          {
-            "pt": "Profanação",
-            "en": "Profanation"
-          },
-          {
-            "pt": "Risco",
-            "en": "Risk"
-          }
-        ]
+        "archetypes": []
       },
-      "role": 30,
-      "reference": "PSA 19:12",
-      "text": "Sempre que você Profanar durante sua etapa de Consagração, cause 3 de dano ao seu território. A próxima carta que você jogar neste turno custa {3} a menos.",
-      "rulings": [
-        "A habilidade é obrigatória sempre que você Profanar durante sua etapa de Consagração.",
-        "O dano ao território acontece antes da redução de custo ser criada.",
-        "A redução é consumida pela próxima carta que você jogar neste turno, mesmo que essa carta seja anulada."
-      ]
+      "role": null,
+      "reference": "2 Samuel 6:10-12",
+      "text": "Se você controlar um artefato Sagrado, ao consagrar uma carta, aplique o efeito de Consagração de artefato em vez do efeito correspondente ao tipo dela.",
+      "rulings": []
+    },
+    {
+      "number": "007",
+      "collection": 2,
+      "type": [
+        7
+      ],
+      "subtype": [],
+      "name": {
+        "pt": "Jerusalém, Cidade de Davi",
+        "en": "Jerusalém, Cidade De Davi"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 007.webp",
+        "art": "../assets/imgs/TEC - 007.webp"
+      },
+      "virtues": [],
+      "cost": null,
+      "stats": {
+        "attack": null,
+        "resistance": 18.0
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 5:6-10",
+      "text": "No início da sua etapa de Combate, se você controlar três ou mais personagens, um personagem alvo que você controla recebe +1/+0 e SOBREPUJAR até o reagrupamento.",
+      "rulings": []
+    },
+    {
+      "number": "008",
+      "collection": 2,
+      "type": [
+        7
+      ],
+      "subtype": [],
+      "name": {
+        "pt": "Hebrom, Trono da Unção",
+        "en": "Hebrom, Trono Da Unção"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 008.webp",
+        "art": "../assets/imgs/TEC - 008.webp"
+      },
+      "virtues": [],
+      "cost": null,
+      "stats": {
+        "attack": null,
+        "resistance": 14.0
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 2:1-4",
+      "text": "No início da sua etapa de Combate, escolha um personagem que você controla. personagens que compartilham ao menos uma característica associada com ele recebem +1/+1 até o reagrupamento.",
+      "rulings": []
+    },
+    {
+      "number": "009",
+      "collection": 2,
+      "type": [
+        7
+      ],
+      "subtype": [],
+      "name": {
+        "pt": "Rabá, a Frente Distante",
+        "en": "Rabá, A Frente Distante"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 009.webp",
+        "art": "../assets/imgs/TEC - 009.webp"
+      },
+      "virtues": [],
+      "cost": null,
+      "stats": {
+        "attack": null,
+        "resistance": 18.0
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 11:1",
+      "text": "A primeira vez em cada turno que um ou mais personagens que você controla causarem dano de combate a um território, compre 1 carta e depois descarte 1 carta.",
+      "rulings": []
+    },
+    {
+      "number": "010",
+      "collection": 2,
+      "type": [
+        5
+      ],
+      "subtype": [
+        4,
+        5
+      ],
+      "name": {
+        "pt": "Davi, Rei de Todo Israel",
+        "en": "Davi, Rei De Todo Israel"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 010.webp",
+        "art": "../assets/imgs/TEC - 010.webp"
+      },
+      "virtues": [
+        1,
+        6,
+        7,
+        12
+      ],
+      "cost": 5.0,
+      "stats": {
+        "attack": 4.0,
+        "resistance": 4.0
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 5:1-5",
+      "text": "Enquanto você controlar três ou mais personagens, outros personagens que você controla recebem +1/+1. ATAQUE: Crie uma ficha de personagem Soldado Israelita 0/2 despreparada e atacando o mesmo alvo.",
+      "rulings": []
+    },
+    {
+      "number": "011",
+      "collection": 2,
+      "type": [
+        5
+      ],
+      "subtype": [
+        4,
+        5
+      ],
+      "name": {
+        "pt": "Davi, Rei de Judá",
+        "en": "Davi, Rei De Judá"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 011.webp",
+        "art": "../assets/imgs/TEC - 011.webp"
+      },
+      "virtues": [
+        1,
+        7,
+        9
+      ],
+      "cost": 5.0,
+      "stats": {
+        "attack": 5.0,
+        "resistance": 5.0
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 2:1-4",
+      "text": "Este personagem ataca e bloqueia em cada combate se estiver apto. Enquanto estiver no campo de batalha, todos os territórios perdem todas as habilidades.",
+      "rulings": []
+    },
+    {
+      "number": "012",
+      "collection": 2,
+      "type": [
+        5
+      ],
+      "subtype": [
+        9
+      ],
+      "name": {
+        "pt": "Bate-Seba, Filha de Eliã",
+        "en": "Bate-Seba, Filha De Eliã"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 012.webp",
+        "art": "../assets/imgs/TEC - 012.webp"
+      },
+      "virtues": [],
+      "cost": 1.0,
+      "stats": {
+        "attack": 0.0,
+        "resistance": 1.0
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 11:3",
+      "text": "INESPERADO. Ao jogar esta carta, seu dono escolhe um oponente. Ela entra no campo de batalha sob o controle dele. Enquanto seu controlador tiver Insensatez 1 ou mais, ele pula sua etapa de Combate.",
+      "rulings": []
+    },
+    {
+      "number": "013",
+      "collection": 2,
+      "type": [
+        5
+      ],
+      "subtype": [
+        4,
+        5
+      ],
+      "name": {
+        "pt": "Urias, Guerreiro Leal",
+        "en": "Urias, Guerreiro Leal"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 013.webp",
+        "art": "../assets/imgs/TEC - 013.webp"
+      },
+      "virtues": [
+        5
+      ],
+      "cost": 3.0,
+      "stats": {
+        "attack": 3.0,
+        "resistance": 3.0
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 11:6-13",
+      "text": "PRONTIDÃO. Enquanto este personagem estiver despreparado, sua Resistência base é 1.",
+      "rulings": []
+    },
+    {
+      "number": "014",
+      "collection": 2,
+      "type": [
+        5
+      ],
+      "subtype": [
+        7
+      ],
+      "name": {
+        "pt": "Natã, o Profeta do Rei",
+        "en": "Natã, O Profeta Do Rei"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 014.webp",
+        "art": "../assets/imgs/TEC - 014.webp"
+      },
+      "virtues": [
+        5
+      ],
+      "cost": 1.0,
+      "stats": {
+        "attack": 1.0,
+        "resistance": 1.0
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 12:1-7",
+      "text": "ENTRADA: Um oponente alvo revela a mão. Escolha um Urias, uma Bate-Seba ou um pecado revelado dessa forma. Aquele jogador descarta a carta escolhida.",
+      "rulings": []
+    },
+    {
+      "number": "015",
+      "collection": 2,
+      "type": [
+        5
+      ],
+      "subtype": [
+        4,
+        5
+      ],
+      "name": {
+        "pt": "Joabe, o General da Vanguarda",
+        "en": "Joabe, O General Da Vanguarda"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 015.webp",
+        "art": "../assets/imgs/TEC - 015.webp"
+      },
+      "virtues": [
+        7,
+        11,
+        14
+      ],
+      "cost": 5.0,
+      "stats": {
+        "attack": 4.0,
+        "resistance": 4.0
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 10:9",
+      "text": "COMBATE: Até dois outros personagens alvo que você controla recebem +1/+1 até o reagrupamento.",
+      "rulings": []
+    },
+    {
+      "number": "016",
+      "collection": 2,
+      "type": [
+        5
+      ],
+      "subtype": [],
+      "name": {
+        "pt": "Anciões do Pacto de Hebrom",
+        "en": "Anciões Do Pacto De Hebrom"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 016.webp",
+        "art": "../assets/imgs/TEC - 016.webp"
+      },
+      "virtues": [],
+      "cost": 1.0,
+      "stats": {
+        "attack": 0.0,
+        "resistance": 2.0
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 5:3",
+      "text": "ENTRADA: Um personagem alvo que você controla torna-se Rei além dos outros tipos. Se ele já era Rei, progrida em 1 sua Justiça. Caso contrário, progrida em 1 sua Iniquidade.",
+      "rulings": []
+    },
+    {
+      "number": "017",
+      "collection": 2,
+      "type": [
+        5
+      ],
+      "subtype": [],
+      "name": {
+        "pt": "Abigail, Voz da Prudência",
+        "en": "Abigail, Voz Da Prudência"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 017.webp",
+        "art": "../assets/imgs/TEC - 017.webp"
+      },
+      "virtues": [
+        11,
+        13
+      ],
+      "cost": 3.0,
+      "stats": {
+        "attack": 0.0,
+        "resistance": 3.0
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "1 Samuel 25:23-35",
+      "text": "INESPERADO. ENTRADA: Até o reagrupamento, previna todo o dano de combate que seria causado por personagens.",
+      "rulings": []
+    },
+    {
+      "number": "018",
+      "collection": 2,
+      "type": [
+        5
+      ],
+      "subtype": [
+        9
+      ],
+      "name": {
+        "pt": "Obede-Edom, Anfitrião da Arca",
+        "en": "Obede-Edom, Anfitrião Da Arca"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 018.webp",
+        "art": "../assets/imgs/TEC - 018.webp"
+      },
+      "virtues": [
+        1,
+        7
+      ],
+      "cost": 3.0,
+      "stats": {
+        "attack": 1.0,
+        "resistance": 3.0
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 6:11",
+      "text": "No início do seu reagrupamento, se você controlar um artefato Sagrado, crie uma ficha de Ouro.",
+      "rulings": []
+    },
+    {
+      "number": "019",
+      "collection": 2,
+      "type": [
+        5
+      ],
+      "subtype": [
+        9
+      ],
+      "name": {
+        "pt": "Uza, Mão Impulsiva",
+        "en": "Uza, Mão Impulsiva"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 019.webp",
+        "art": "../assets/imgs/TEC - 019.webp"
+      },
+      "virtues": [],
+      "cost": 3.0,
+      "stats": {
+        "attack": 1.0,
+        "resistance": 1.0
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 6:3-7",
+      "text": "INESPERADO. ENTRADA: Até o reagrupamento, um artefato alvo ganha INDESTRUTÍVEL e não pode ser alvo de jogadas nem habilidades de oponentes. Se o artefato escolhido for Sagrado, renuncie este personagem.",
+      "rulings": []
+    },
+    {
+      "number": "020",
+      "collection": 2,
+      "type": [
+        5
+      ],
+      "subtype": [
+        9
+      ],
+      "name": {
+        "pt": "Aiô, Diante da Arca",
+        "en": "Aiô, Diante Da Arca"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 020.webp",
+        "art": "../assets/imgs/TEC - 020.webp"
+      },
+      "virtues": [],
+      "cost": 1.0,
+      "stats": {
+        "attack": 1.0,
+        "resistance": 2.0
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 6:3-4",
+      "text": "Enquanto você controlar um artefato Sagrado, este personagem recebe +1/+0 durante seu turno.",
+      "rulings": []
+    },
+    {
+      "number": "021",
+      "collection": 2,
+      "type": [
+        5
+      ],
+      "subtype": [],
+      "name": {
+        "pt": "Mical, Olhar da Janela",
+        "en": "Mical, Olhar Da Janela"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 021.webp",
+        "art": "../assets/imgs/TEC - 021.webp"
+      },
+      "virtues": [
+        6,
+        12,
+        14
+      ],
+      "cost": 2.0,
+      "stats": {
+        "attack": 1.0,
+        "resistance": 1.0
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 6:16",
+      "text": "ENTRADA: Escolha um personagem alvo despreparado que um oponente controla sem Fé como virtude associada. Enquanto você tiver Egoísmo 1 ou mais, ele não pode ser preparado.",
+      "rulings": []
+    },
+    {
+      "number": "022",
+      "collection": 2,
+      "type": [
+        5
+      ],
+      "subtype": [
+        9
+      ],
+      "name": {
+        "pt": "Mefibosete, à Mesa do Rei",
+        "en": "Mefibosete, À Mesa Do Rei"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 022.webp",
+        "art": "../assets/imgs/TEC - 022.webp"
+      },
+      "virtues": [],
+      "cost": 3.0,
+      "stats": {
+        "attack": 0.0,
+        "resistance": 1.0
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 9:1-13",
+      "text": "RESERVA: Quando você jogar um Rei, pode revelar esta carta e colocá-la no campo de batalha sob seu controle, despreparada. ENTRADA: Crie uma ficha de Ouro.",
+      "rulings": []
+    },
+    {
+      "number": "023",
+      "collection": 2,
+      "type": [
+        5
+      ],
+      "subtype": [],
+      "name": {
+        "pt": "Ziba, Servo da Casa de Saul",
+        "en": "Ziba, Servo Da Casa De Saul"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 023.webp",
+        "art": "../assets/imgs/TEC - 023.webp"
+      },
+      "virtues": [],
+      "cost": 3.0,
+      "stats": {
+        "attack": 1.0,
+        "resistance": 1.0
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 9:2-5",
+      "text": "ENTRADA: Busque em sua reserva um personagem com poder 0 e coloque-o em sua mão.",
+      "rulings": []
+    },
+    {
+      "number": "024",
+      "collection": 2,
+      "type": [
+        5
+      ],
+      "subtype": [
+        4,
+        5
+      ],
+      "name": {
+        "pt": "Abner, Pacto de Hebrom",
+        "en": "Abner, Pacto De Hebrom"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 024.webp",
+        "art": "../assets/imgs/TEC - 024.webp"
+      },
+      "virtues": [
+        11,
+        14
+      ],
+      "cost": 3.0,
+      "stats": {
+        "attack": 3.0,
+        "resistance": 2.0
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 3:6-21",
+      "text": "ENTRADA: Compre 1 carta, depois descarte 1 carta. SAÍDA: Compre 1 carta, depois descarte 1 carta.",
+      "rulings": []
+    },
+    {
+      "number": "025",
+      "collection": 2,
+      "type": [
+        5
+      ],
+      "subtype": [],
+      "name": {
+        "pt": "Is-Bosete, Rei Sustentado",
+        "en": "Is-Bosete, Rei Sustentado"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 025.webp",
+        "art": "../assets/imgs/TEC - 025.webp"
+      },
+      "virtues": [
+        2,
+        10
+      ],
+      "cost": 1.0,
+      "stats": {
+        "attack": 2.0,
+        "resistance": 2.0
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 2:8-10",
+      "text": "Enquanto você controlar outro personagem com poder 3 ou mais e nenhum outro Rei, este personagem é Rei além dos outros tipos. Sempre que ele deixar de ser Rei, desprepare-o. Enquanto não for Rei, ele não pode atacar nem bloquear.",
+      "rulings": []
+    },
+    {
+      "number": "026",
+      "collection": 2,
+      "type": [
+        5
+      ],
+      "subtype": [],
+      "name": {
+        "pt": "Recabe e Baaná, os Regicidas",
+        "en": "Recabe E Baaná, Os Regicidas"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 026.webp",
+        "art": "../assets/imgs/TEC - 026.webp"
+      },
+      "virtues": [
+        4,
+        6,
+        14
+      ],
+      "cost": 3.0,
+      "stats": {
+        "attack": 3.0,
+        "resistance": 1.0
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 4:5-12",
+      "text": "ENTRADA: Cause 3 de dano a um personagem alvo despreparado. Quando esse dano destruir o alvo, desprepare este personagem e progrida em 1 sua Covardia.",
+      "rulings": []
+    },
+    {
+      "number": "027",
+      "collection": 2,
+      "type": [
+        5
+      ],
+      "subtype": [
+        4,
+        5
+      ],
+      "name": {
+        "pt": "Asael, o Veloz como a Gazela",
+        "en": "Asael, O Veloz Como A Gazela"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 027.webp",
+        "art": "../assets/imgs/TEC - 027.webp"
+      },
+      "virtues": [
+        12
+      ],
+      "cost": 1.0,
+      "stats": {
+        "attack": 2.0,
+        "resistance": 1.0
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 2:18",
+      "text": "Este personagem só pode atacar personagens. Ao atacar, ele causa dano primeiro. Ele não pode ser preparado durante sua etapa de Preparação.",
+      "rulings": []
+    },
+    {
+      "number": "028",
+      "collection": 2,
+      "type": [
+        5
+      ],
+      "subtype": [
+        9
+      ],
+      "name": {
+        "pt": "Paltiel, que seguiu chorando",
+        "en": "Paltiel, Que Seguiu Chorando"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 028.webp",
+        "art": "../assets/imgs/TEC - 028.webp"
+      },
+      "virtues": [
+        10
+      ],
+      "cost": 1.0,
+      "stats": {
+        "attack": 1.0,
+        "resistance": 2.0
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 3:14-16",
+      "text": "Sempre que outro personagem que você controla deixar o campo de batalha sem morrer, se este estiver preparado, desprepare-o. Se fizer isso, compre 1 carta.",
+      "rulings": []
+    },
+    {
+      "number": "029",
+      "collection": 2,
+      "type": [
+        5
+      ],
+      "subtype": [
+        4,
+        5
+      ],
+      "name": {
+        "pt": "Abisai, General do Flanco",
+        "en": "Abisai, General Do Flanco"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 029.webp",
+        "art": "../assets/imgs/TEC - 029.webp"
+      },
+      "virtues": [
+        7
+      ],
+      "cost": 3.0,
+      "stats": {
+        "attack": 3.0,
+        "resistance": 3.0
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 10:10",
+      "text": "{T}: Até o reagrupamento, se um personagem seu fosse causar dano a outro com poder maior, antes disso ele recebe +1/+1 até o reagrupamento. Ative apenas se controlar três ou mais personagens.",
+      "rulings": []
+    },
+    {
+      "number": "030",
+      "collection": 2,
+      "type": [
+        5
+      ],
+      "subtype": [
+        4,
+        5
+      ],
+      "name": {
+        "pt": "Benaia, Capitão dos Quereteus",
+        "en": "Benaia, Capitão Dos Quereteus"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 030.webp",
+        "art": "../assets/imgs/TEC - 030.webp"
+      },
+      "virtues": [
+        5,
+        7
+      ],
+      "cost": 3.0,
+      "stats": {
+        "attack": 3.0,
+        "resistance": 3.0
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 8:15-18",
+      "text": "SOBREPUJAR",
+      "rulings": []
+    },
+    {
+      "number": "031",
+      "collection": 2,
+      "type": [
+        5
+      ],
+      "subtype": [
+        5
+      ],
+      "name": {
+        "pt": "Hirão, Rei de Tiro",
+        "en": "Hirão, Rei De Tiro"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 031.webp",
+        "art": "../assets/imgs/TEC - 031.webp"
+      },
+      "virtues": [
+        5
+      ],
+      "cost": 2.0,
+      "stats": {
+        "attack": 2.0,
+        "resistance": 3.0
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 5:11",
+      "text": "A habilidade a seguir custa {1} a menos se você controlar outro Rei. {5}, {T}: Escolha um — crie uma ficha de Ouro; ou crie uma ficha de personagem Servo 0/1 com CONSTRUIR 2 que não pode atacar nem bloquear.",
+      "rulings": []
+    },
+    {
+      "number": "032",
+      "collection": 2,
+      "type": [
+        3
+      ],
+      "subtype": [
+        3
+      ],
+      "name": {
+        "pt": "Promessa à Casa de Davi",
+        "en": "Promessa À Casa De Davi"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 032.webp",
+        "art": "../assets/imgs/TEC - 032.webp"
+      },
+      "virtues": [
+        1,
+        5
+      ],
+      "cost": 2.0,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 7:8-16",
+      "text": "Como custo adicional para jogar esta carta, revele de sua mão um personagem que compartilhe ao menos um subtipo com um personagem que você controla. Busque em seu baralho uma Construção e coloque-a em sua mão.",
+      "rulings": []
+    },
+    {
+      "number": "033",
+      "collection": 2,
+      "type": [
+        3
+      ],
+      "subtype": [
+        3
+      ],
+      "name": {
+        "pt": "Confissão do Rei Davi",
+        "en": "Confissão Do Rei Davi"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 033.webp",
+        "art": "../assets/imgs/TEC - 033.webp"
+      },
+      "virtues": [
+        3
+      ],
+      "cost": 2.0,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 12:13",
+      "text": "Escolha uma desvirtude ativa sua. Você pode despreparar um Rei preparado que controla. Se fizer isso, progrida em 2 a virtude correspondente; caso contrário, progrida em 1 essa virtude.",
+      "rulings": []
+    },
+    {
+      "number": "034",
+      "collection": 2,
+      "type": [
+        3
+      ],
+      "subtype": [
+        3
+      ],
+      "name": {
+        "pt": "Entrada pelo Canal de Água",
+        "en": "Entrada Pelo Canal De Água"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 034.webp",
+        "art": "../assets/imgs/TEC - 034.webp"
+      },
+      "virtues": [
+        11
+      ],
+      "cost": 4.0,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "1 Crônicas 11:6",
+      "text": "Você pode jogar esta carta sem pagar seu custo se escolher um Joabe que você controla como alvo. Um personagem alvo que você controla ganha IMBLOQUEÁVEL até o reagrupamento.",
+      "rulings": []
+    },
+    {
+      "number": "035",
+      "collection": 2,
+      "type": [
+        3
+      ],
+      "subtype": [
+        3
+      ],
+      "name": {
+        "pt": "Consulta ao Senhor",
+        "en": "Consulta Ao Senhor"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 035.webp",
+        "art": "../assets/imgs/TEC - 035.webp"
+      },
+      "virtues": [
+        1
+      ],
+      "cost": 2.0,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 5:19",
+      "text": "Olhe as três cartas do topo do seu baralho. Coloque uma no topo e o resto no fundo em qualquer ordem. Se você controlar um Rei, compre 1 carta.",
+      "rulings": []
+    },
+    {
+      "number": "036",
+      "collection": 2,
+      "type": [
+        3
+      ],
+      "subtype": [
+        3
+      ],
+      "name": {
+        "pt": "A Ruptura de Baal-Perazim",
+        "en": "A Ruptura De Baal-Perazim"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 036.webp",
+        "art": "../assets/imgs/TEC - 036.webp"
+      },
+      "virtues": [
+        7
+      ],
+      "cost": 4.0,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 5:20",
+      "text": "Se você controlar três ou mais personagens ao jogar esta carta, não escolha alvo: personagens que você controla recebem +1/+0 e SOBREPUJAR até o reagrupamento. Caso contrário, um personagem alvo seu ganha SOBREPUJAR até o reagrupamento.",
+      "rulings": []
+    },
+    {
+      "number": "037",
+      "collection": 2,
+      "type": [
+        3
+      ],
+      "subtype": [
+        3
+      ],
+      "name": {
+        "pt": "Som das Amoreiras",
+        "en": "Som Das Amoreiras"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 037.webp",
+        "art": "../assets/imgs/TEC - 037.webp"
+      },
+      "virtues": [
+        3
+      ],
+      "cost": 4.0,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 5:23-25",
+      "text": "Se esta for sua primeira carta jogada neste turno, jogue-a sem alvo: personagens atacantes que você controla recebem +1/+0 e SOBREPUJAR até o reagrupamento. Caso contrário, um personagem atacante alvo seu recebe +1/+0 até o reagrupamento.",
+      "rulings": []
+    },
+    {
+      "number": "038",
+      "collection": 2,
+      "type": [
+        3
+      ],
+      "subtype": [
+        3
+      ],
+      "name": {
+        "pt": "Bondade por Amor a Jônatas",
+        "en": "Bondade Por Amor A Jônatas"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 038.webp",
+        "art": "../assets/imgs/TEC - 038.webp"
+      },
+      "virtues": [
+        13
+      ],
+      "cost": 2.0,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 9:1-7",
+      "text": "Busque em sua reserva ou em seu cemitério um personagem com poder 0 e coloque-o em sua mão. Cure 1 de dano do seu território.",
+      "rulings": []
+    },
+    {
+      "number": "039",
+      "collection": 2,
+      "type": [
+        3
+      ],
+      "subtype": [
+        3
+      ],
+      "name": {
+        "pt": "Lamento pelos Valentes",
+        "en": "Lamento Pelos Valentes"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 039.webp",
+        "art": "../assets/imgs/TEC - 039.webp"
+      },
+      "virtues": [
+        13
+      ],
+      "cost": 2.0,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 1:17-27",
+      "text": "Compre 1 carta. Depois, você pode colocar um personagem do seu cemitério no fundo do seu baralho. Se fizer isso, cure 2 de dano do seu território.",
+      "rulings": []
+    },
+    {
+      "number": "040",
+      "collection": 2,
+      "type": [
+        1
+      ],
+      "subtype": [],
+      "name": {
+        "pt": "Palácio de Cedro",
+        "en": "Palácio De Cedro"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 040.webp",
+        "art": "../assets/imgs/TEC - 040.webp"
+      },
+      "virtues": [],
+      "cost": 1.0,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 5:11-12",
+      "text": "CONSTRUÇÃO 5:\nDESGUARNECIDO 2: Se você controlar um Rei despreparado, crie uma ficha de Ouro.\nDESGUARNECIDO 1: Se você controlar um Rei preparado, progrida em 1 sua Insensatez.",
+      "rulings": []
+    },
+    {
+      "number": "041",
+      "collection": 2,
+      "type": [
+        1
+      ],
+      "subtype": [],
+      "name": {
+        "pt": "Arca da Aliança",
+        "en": "Arca Da Aliança"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 041.webp",
+        "art": "../assets/imgs/TEC - 041.webp"
+      },
+      "virtues": [
+        1,
+        3,
+        5,
+        7,
+        9,
+        11,
+        13
+      ],
+      "cost": 7.0,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 6:1-15",
+      "text": "Esta carta não pode ser anulada. Se fosse ao cemitério, embaralhe-a no baralho em vez disso. No início do seu reagrupamento, progrida em 1 uma virtude à sua escolha. Se você tinha uma desvirtude ativa nesse momento, renuncie este artefato.",
+      "rulings": []
+    },
+    {
+      "number": "042",
+      "collection": 2,
+      "type": [
+        1
+      ],
+      "subtype": [
+        2
+      ],
+      "name": {
+        "pt": "Éfode de Linho",
+        "en": "Éfode De Linho"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 042.webp",
+        "art": "../assets/imgs/TEC - 042.webp"
+      },
+      "virtues": [],
+      "cost": 1.0,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 6:14",
+      "text": "EQUIPÁVEL: +0/+1. ATAQUE: Se você tiver Fé ativa, o personagem equipado recebe +1/+0 até o reagrupamento.",
+      "rulings": []
+    },
+    {
+      "number": "043",
+      "collection": 2,
+      "type": [
+        1
+      ],
+      "subtype": [
+        2
+      ],
+      "name": {
+        "pt": "Escudos de Ouro de Hadadezer",
+        "en": "Escudos De Ouro De Hadadezer"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 043.webp",
+        "art": "../assets/imgs/TEC - 043.webp"
+      },
+      "virtues": [],
+      "cost": 2.0,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 8:7-11",
+      "text": "EQUIPÁVEL: +0/+2. Sempre que o personagem equipado causar dano de combate a um território, crie uma ficha de Ouro.",
+      "rulings": []
+    },
+    {
+      "number": "044",
+      "collection": 2,
+      "type": [
+        1
+      ],
+      "subtype": [
+        2
+      ],
+      "name": {
+        "pt": "Cordel da Medida",
+        "en": "Cordel Da Medida"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 044.webp",
+        "art": "../assets/imgs/TEC - 044.webp"
+      },
+      "virtues": [],
+      "cost": 4.0,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 8:2",
+      "text": "EQUIPÁVEL: Quando o equipado causar dano de combate ao território de um oponente, você pode renunciar este artefato. Se fizer, progrida em 3 seu Egoísmo e escolha até 3 personagens que esse oponente controla. Destrua 2 dentre eles.",
+      "rulings": []
+    },
+    {
+      "number": "045",
+      "collection": 2,
+      "type": [
+        4
+      ],
+      "subtype": [
+        3
+      ],
+      "name": {
+        "pt": "Ponde Urias na Frente",
+        "en": "Ponde Urias Na Frente"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 045.webp",
+        "art": "../assets/imgs/TEC - 045.webp"
+      },
+      "virtues": [
+        6,
+        14
+      ],
+      "cost": 1.0,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 11:14-17",
+      "text": "Prepare um personagem alvo. Ele deve bloquear neste turno, se estiver apto. Se for Urias, somente ele poderá bloquear neste turno.",
+      "rulings": []
+    },
+    {
+      "number": "046",
+      "collection": 2,
+      "type": [
+        4
+      ],
+      "subtype": [
+        3
+      ],
+      "name": {
+        "pt": "Mulheres e Concubinas de Davi",
+        "en": "Mulheres E Concubinas De Davi"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 046.webp",
+        "art": "../assets/imgs/TEC - 046.webp"
+      },
+      "virtues": [
+        4,
+        12,
+        14
+      ],
+      "cost": 3.0,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 5:13",
+      "text": "Compre 3 cartas. No início do seu próximo reagrupamento, descarte 3 cartas.",
+      "rulings": []
+    },
+    {
+      "number": "047",
+      "collection": 2,
+      "type": [
+        4
+      ],
+      "subtype": [
+        3
+      ],
+      "name": {
+        "pt": "Vingança no Portão de Hebrom",
+        "en": "Vingança No Portão De Hebrom"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 047.webp",
+        "art": "../assets/imgs/TEC - 047.webp"
+      },
+      "virtues": [
+        6,
+        14
+      ],
+      "cost": 4.0,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 3:26-30",
+      "text": "INESPERADO. Jogue apenas durante o reagrupamento de um oponente e se nenhum personagem que ele controla tiver atacado seu território ou um personagem que você controla neste turno. Destrua um personagem alvo que aquele oponente controla.",
+      "rulings": []
+    },
+    {
+      "number": "048",
+      "collection": 2,
+      "type": [
+        4
+      ],
+      "subtype": [
+        3
+      ],
+      "name": {
+        "pt": "Humilhação dos Embaixadores",
+        "en": "Humilhação Dos Embaixadores"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 048.webp",
+        "art": "../assets/imgs/TEC - 048.webp"
+      },
+      "virtues": [
+        14
+      ],
+      "cost": 4.0,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 10:4-6",
+      "text": "Desprepare até dois personagens alvo. Cada personagem despreparado dessa forma recebe -2/-0 até o reagrupamento.",
+      "rulings": []
+    },
+    {
+      "number": "049",
+      "collection": 2,
+      "type": [
+        4
+      ],
+      "subtype": [
+        3
+      ],
+      "name": {
+        "pt": "Combate no tanque de Gibeão",
+        "en": "Combate No Tanque De Gibeão"
+      },
+      "images": {
+        "card": "../assets/cards/TEC - 049.webp",
+        "art": "../assets/imgs/TEC - 049.webp"
+      },
+      "virtues": [
+        8,
+        14
+      ],
+      "cost": 2.0,
+      "stats": {
+        "attack": null,
+        "resistance": null
+      },
+      "rating": 0,
+      "functions": [],
+      "usage": {
+        "deckCount": 0,
+        "inclusion": 0,
+        "archetypes": []
+      },
+      "role": null,
+      "reference": "2 Samuel 2:14-16",
+      "text": "Um personagem alvo com o menor poder entre os que você controla luta com um personagem com o menor poder entre os que um oponente alvo controla.",
+      "rulings": []
     }
   ]
 }

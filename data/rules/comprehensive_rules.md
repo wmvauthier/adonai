@@ -838,9 +838,9 @@
 
 10.4.1. Se a carta consagrada era um Personagem, o controlador escolhe um Personagem que controla. Até o Reagrupamento, esse Personagem recebe +1/+1.
 
-10.4.2. Se a carta consagrada era um Pecado, o jogador escolhe uma Desvirtude ativa de menor valor e progride em 2 a Virtude correspondente. Se o jogador não possuir Desvirtudes ativas, esse efeito específico é ignorado.
+10.4.2. Se a carta consagrada era um Pecado, o jogador escolhe uma Desvirtude ativa de maior valor e progride em 2 a Virtude correspondente, como efeito substitutivo. Se o jogador não possuir Desvirtudes ativas, esse efeito específico é ignorado e o ajuste moral acontece normalmente.
 
-10.4.3. Em caso de empate entre Desvirtudes ativas de menor valor, o jogador escolhe uma entre elas.
+10.4.3. Em caso de empate entre Desvirtudes ativas de maior valor, o jogador escolhe uma entre elas.
 
 10.4.4. Se a carta consagrada era um Artefato, a próxima carta jogada por aquele jogador naquele turno custa {1} a menos para ser jogada. Esse desconto não pode reduzir custo abaixo de 0.
 
@@ -865,8 +865,6 @@
 10.5.2. Em caso de empate entre atributos elegíveis no mesmo caso aplicável, o jogador escolhe entre eles.
 
 10.5.3. Se nenhum eixo moral puder ser ajustado pela Consagração, o ajuste é ignorado.
-
-10.5.4. Consagrar um Pecado pode gerar dois ajustes morais: primeiro o efeito específico de Consagração de Pecado, depois o ajuste moral geral da Consagração.
 
 ## 10.6. Profanar
 
