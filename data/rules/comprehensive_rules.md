@@ -19,6 +19,7 @@
 - **Preparar** e **Despreparar**, para alterar esses estados;
 - **Alvo de carta**, **alvo de habilidade ou efeito** e **alvo de ataque**, como categorias distintas de alvo;
 - **Até o Reagrupamento**, para a duração temporária padrão de efeitos que expiram na etapa de Reagrupamento.
+- **Alvejar** e **ser alvejado**, para a escolha formal de um objeto ou jogador como alvo de carta, habilidade ou efeito, distinta da declaração de atacantes;
 
 0.4. O termo **ativar** fica reservado para habilidades ativadas ou ações equivalentes de uso de habilidade. Ele não significa colocar uma carta no estado preparado.
 
@@ -50,7 +51,7 @@
 
 1.1.4. A conversão de cartas em recurso por Consagração e a recuperação de cartas por Profanação são decisões centrais do sistema.
 
-1.1.5. O uso de dano ao próprio Território como custo existe, especialmente em Pecados, mas é limitado por regras de custo, prevenção e derrota.
+1.1.5. O uso de marcadores de dano no próprio Território como custo existe, especialmente em Pecados. A colocação desses marcadores aumenta o dano marcado no Território, mas não constitui, por si só, um evento de dano.
 
 1.1.6. A pilha e a prioridade são sistemas formais de interação, resposta e resolução.
 
@@ -74,13 +75,19 @@
 
 1.3.5. O Território nunca é destruído por regras gerais do jogo. O dano no Território apenas marca a derrota de seu controlador quando alcança ou supera sua Resistência.
 
-1.3.6. Um jogador pode receber dano em seu Território por ataques, efeitos ou custos.
+1.3.6. Um Território pode sofrer dano por ataques, efeitos ou outras instruções.
 
-1.3.7. Um jogador pode ser instruído a causar dano ao próprio Território como custo.
+1.3.7. Um efeito ou custo pode instruir um jogador a colocar marcadores de dano em seu Território. A colocação desses marcadores conta para a condição de derrota, mas não constitui dano sofrido.
 
 1.3.8. Se múltiplos jogadores perderem simultaneamente e nenhum jogador continuar na partida, o resultado é empate, salvo se um formato específico estabelecer outro resultado.
 
 1.3.9. Em partidas multijogador, o vencedor é o último jogador remanescente.
+
+1.3.10. Um jogador possui uma condição alternativa de vitória: se, durante sua própria etapa de Consagração, escolher Consagrar e, após a conclusão integral dessa ação, possuir as sete Virtudes em Nv4, vence a partida.
+
+1.3.11. Para essa condição, as sete Virtudes são Fé, Esperança, Caridade, Prudência, Justiça, Fortaleza e Temperança. Cada uma deve estar ativa em Nv4. Um eixo neutro ou com Desvirtude ativa não satisfaz essa condição.
+
+1.3.12. A verificação dessa condição ocorre depois da aplicação do efeito de Consagração correspondente ao tipo da carta e do ajuste moral geral, inclusive quando esse ajuste for ignorado por não haver eixo moral elegível. A verificação ocorre antes que habilidades desencadeadas pela Consagração sejam colocadas na pilha e antes que qualquer jogador receba prioridade. Se a condição estiver satisfeita, o jogador vence a partida imediatamente.
 
 ---
 
@@ -570,7 +577,7 @@
 
 7.10.1. Pecado é um tipo de carta que, por regra geral, só pode ser jogado durante a etapa de Alistamento do próprio jogador, salvo se uma regra ou efeito permitir outro momento.
 
-7.10.2. Pecados são pagos exclusivamente causando dano ao próprio Território, salvo custo alternativo ou modificação específica.
+7.10.2. Pecados são pagos exclusivamente colocando no próprio Território a quantidade de marcadores de dano exigida pelo custo, salvo custo alternativo ou modificação específica.
 
 7.10.3. Pecados podem ter o subtipo funcional Momentâneo, Duradouro ou Vínculo.
 
@@ -584,7 +591,7 @@
 
 7.10.8. Um Pecado com INESPERADO pode ser jogado em qualquer momento em que seu controlador tenha prioridade, mesmo fora da etapa de Alistamento.
 
-7.10.9. INESPERADO não altera o custo de um Pecado. O custo ainda é pago causando dano ao próprio Território, salvo se texto específico disser o contrário.
+7.10.9. INESPERADO não altera o custo de um Pecado. O custo continua sendo pago pela colocação dos marcadores de dano exigidos no Território de seu controlador, salvo se o texto da carta disser explicitamente o contrário.
 
 ## 7.11. Momentâneo, Duradouro e Vínculo
 
@@ -672,6 +679,16 @@
 
 8.3.6. Dano marcado em um Território não pode ser reduzido abaixo de 0.
 
+8.3.7. Colocar um marcador de dano no Território acrescenta 1 ponto ao total de dano marcado nele. Essa ação não constitui causar dano nem faz com que o Território sofra dano.
+
+8.3.8. A colocação de marcadores de dano não desencadeia habilidades que exijam que um objeto cause ou sofra dano. Em particular, colocar marcadores de dano no Território não satisfaz uma condição que exija que ele tenha sofrido dano naquele turno.
+
+8.3.9. Efeitos que previnam, reduzam, redirecionem ou substituam dano não afetam a colocação de marcadores de dano, salvo se mencionarem explicitamente essa ação ou esses marcadores.
+
+8.3.10. Os pontos de dano representados por marcadores de dano integram o total de dano marcado no Território e contam normalmente para determinar a derrota de seu controlador.
+
+8.3.11. Curar um Território remove pontos de seu total de dano marcado, independentemente de esses pontos terem sido originados por dano causado ou pela colocação de marcadores de dano. Se forem utilizados marcadores físicos para representar esse total, a cura remove os marcadores correspondentes aos pontos curados.
+
 ## 8.4. Cura
 
 8.4.1. Curar um Personagem ou Território significa remover dano marcado nele.
@@ -680,15 +697,17 @@
 
 8.4.3. Cura não aumenta Resistência, salvo se a carta disser explicitamente que aumenta Resistência.
 
-## 8.5. Dano como custo
+## 8.5. Marcadores de dano como custo
 
-8.5.1. Dano causado ao próprio Território para pagar custo é dano causado.
+8.5.1. Dano causado ao próprio Território para pagar um custo é dano causado e segue as regras gerais de dano, ressalvadas as exceções expressamente definidas neste documento.
 
 8.5.2. Dano causado ao próprio Território como custo não pode ser prevenido, reduzido, redirecionado ou substituído, salvo se o efeito disser explicitamente que afeta dano pago como custo.
 
-8.5.3. Um jogador pode pagar um custo de Pecado que fará o dano marcado em seu Território se tornar igual ou superior à Resistência desse Território.
+8.5.3. Os custos de Pecado não são pagos causando dano. São pagos pela colocação de marcadores de dano no próprio Território, conforme a seção 9.4. Essa colocação não constitui um evento de dano e não é afetada por efeitos que apenas previnam, reduzam, redirecionem ou substituam dano.
 
-8.5.4. Nesse caso, depois que o Pecado for colocado na pilha e antes que qualquer jogador receba prioridade, ações baseadas no estado são verificadas. O jogador perde a partida antes de o Pecado resolver.
+8.5.4. Um jogador pode pagar o custo de um Pecado mesmo que a colocação dos marcadores de dano faça com que o dano marcado em seu Território alcance ou supere sua Resistência.
+
+8.5.5. Nesse caso, depois que a jogada do Pecado for concluída e antes que qualquer jogador receba prioridade, as ações baseadas no estado são verificadas. O jogador perde a partida antes que o Pecado possa resolver.
 
 ## 8.6. Dano por compra ou pulverização impossível
 
@@ -750,15 +769,21 @@
 
 ## 9.4. Custos de Pecado
 
-9.4.1. Custos de Pecado são pagos causando a quantidade exigida de dano ao próprio Território.
+9.4.1. O custo de um Pecado é pago colocando no próprio Território a quantidade de marcadores de dano exigida pelo custo total da carta.
 
 9.4.2. Pecados não são pagos com Essência por regra geral.
 
-9.4.3. Reduções genéricas que digam que uma carta “custa 1 a menos” reduzem apenas custos em Essência, salvo se o texto disser explicitamente que reduz dano de Pecado ou custo pago em dano.
+9.4.3. Reduções genéricas que indiquem que uma carta custa determinada quantidade a menos reduzem apenas custos em Essência, salvo se o efeito mencionar explicitamente o custo de Pecado ou a quantidade de marcadores de dano a serem colocados.
 
-9.4.4. Um efeito que diga que uma carta custa {1} a menos não reduz o dano causado ao próprio Território para pagar Pecado.
+9.4.4. Um efeito que diga que uma carta custa {1} a menos não reduz a quantidade de marcadores de dano exigida para pagar um Pecado.
 
-9.4.5. Um efeito que diga “o próximo Pecado que você jogar causa 1 dano a menos ao seu Território” reduz especificamente o custo de dano desse Pecado.
+9.4.5. Um efeito que diga que o próximo Pecado que você jogar coloca 1 marcador de dano a menos no seu Território reduz especificamente esse custo.
+
+9.4.6. Reduções específicas do custo de Pecado não podem reduzir a quantidade de marcadores exigida para menos de 0.
+
+9.4.7. O custo total de Pecado é determinado antes de seu pagamento, respeitando as regras gerais de determinação de custos.
+
+9.4.8. A colocação dos marcadores de dano exigidos pelo custo de Pecado ocorre durante o pagamento do custo. Os marcadores colocados dessa maneira não constituem eventos de dano.
 
 ## 9.5. Símbolo {T}
 
@@ -952,6 +977,10 @@
 
 11.2.11. Um requisito de Nv4 é satisfeito por valor igual a 4.
 
+11.2.12. Somente o efeito correspondente ao nível atual de uma Virtude ou Desvirtude está ativo. Os efeitos dos níveis inferiores não se acumulam, salvo se um texto disser explicitamente que são cumulativos.
+
+11.2.13. Quando um efeito de Virtude ou Desvirtude exigir que a mão ou o topo do baralho permaneça revelado, essa informação permanece pública enquanto o nível correspondente estiver ativo. Se o nível mudar e o novo efeito não exigir a mesma revelação, a informação deixa de precisar ser revelada imediatamente.
+
 ## 11.3. Progressão e movimento entre polos
 
 11.3.1. “Progrida em X sua [Virtude ou Desvirtude]” significa mover o eixo moral em X pontos na direção do polo indicado.
@@ -1002,7 +1031,7 @@
 
 11.5.3. Se uma carta deixar a pilha sem resolver, incluindo por anulação, suas Virtudes e Desvirtudes associadas não são aplicadas.
 
-11.5.4. Se uma carta resolver corretamente, suas Virtudes e Desvirtudes associadas serão aplicadas conforme esta seção.
+11.5.4. Se uma carta resolver corretamente ou uma permanente entrar com sucesso no campo de batalha, suas Virtudes e Desvirtudes associadas serão aplicadas conforme esta seção.
 
 11.5.5. Se uma carta Momentânea resolve, suas instruções são executadas primeiro. Depois da resolução da carta e antes que jogadores recebam prioridade, suas Virtudes e Desvirtudes associadas são aplicadas.
 
@@ -1032,6 +1061,24 @@
 
 11.5.18. “Desvirtude associada” considera apenas as Desvirtudes associadas à carta indicada.
 
+# 11.6. Punições de Justiça e Iniquidade
+
+11.6.1. Uma punição de Justiça ou Iniquidade que instrua a colocação de um marcador de dano consiste em colocar esse marcador no Território indicado, conforme as regras da seção 8.3. A colocação não constitui um evento de dano.
+
+11.6.2. Quando uma habilidade de Justiça desencadear por uma ação de um oponente, o marcador de dano da punição é colocado no Território do oponente cuja ação provocou o desencadeamento.
+
+11.6.3. Quando uma habilidade de Iniquidade desencadear por uma ação de seu controlador, o marcador de dano da punição é colocado no Território desse controlador.
+
+11.6.4. Para habilidades de Justiça ou Iniquidade cujo texto estabeleça uma ocorrência por turno, o limite é compartilhado entre todos os eventos qualificantes daquele nível. O limite não é reiniciado para cada oponente.
+
+11.6.5. Quando uma habilidade limitada à primeira ocorrência do turno desencadear, seu limite será considerado utilizado, mesmo que a habilidade seja posteriormente anulada ou não aplique seu efeito.
+
+11.6.6. Para fins de habilidades que desencadeiam quando um jogador alveja determinado objeto ou jogador, o evento ocorre quando a escolha válida desse objeto ou jogador como alvo é feita durante o procedimento de jogar uma carta ou ativar uma habilidade. A escolha de um Personagem ou Território como alvo de ataque durante a declaração de atacantes não constitui alvejar e não satisfaz essa condição, salvo se a habilidade mencionar expressamente ataques, declaração de atacantes ou alvos de ataque.
+
+11.6.7. Uma habilidade de Justiça ou Iniquidade que desencadeie na declaração de atacantes desencadeia nesse momento, antes da declaração de bloqueadores. A colocação do marcador de dano ocorre quando a habilidade correspondente resolver, conforme as regras gerais da pilha.
+
+11.6.8. Quando vários Personagens forem declarados atacantes na mesma declaração de atacantes, essa declaração constitui um único evento para fins de habilidades limitadas a uma ocorrência por turno.
+
 ---
 
 # 12. Jogar cartas, pilha e prioridade
@@ -1047,6 +1094,8 @@
 12.1.4. Uma carta não entra diretamente no campo de batalha a partir da mão apenas por ser jogada.
 
 12.1.5. Salvo permissão específica, um jogador só pode jogar cartas em momentos em que possua prioridade e em que o tipo de carta ou a regra temporal dessa carta permitam isso.
+
+12.1.6. Para efeitos que contem a quantidade de cartas jogadas durante um turno, cada jogada concluída de uma carta conta como uma jogada, mesmo que a carta seja posteriormente anulada ou movida para outra zona. Se a mesma carta for jogada mais de uma vez, cada jogada concluída conta separadamente. Cartas colocadas diretamente em uma zona por um efeito, sem serem jogadas, não contam como cartas jogadas. Ativar uma habilidade não conta como jogar uma carta.
 
 ## 12.2. Procedimento para jogar carta
 
@@ -1168,9 +1217,13 @@
 
 13.1.4. **Alvo de ataque** é o Território ou Personagem escolhido na declaração de atacantes.
 
-13.1.5. Textos de cartas devem especificar a categoria de alvo afetada sempre que houver risco de ambiguidade.
+13.1.5. **Alvejar** significa escolher formalmente um objeto ou jogador como alvo de uma carta, habilidade ou efeito, conforme a categoria aplicável. O objeto ou jogador é considerado alvejado quando essa escolha válida é feita.
 
-13.1.6. O uso isolado de “alvo” deve ser evitado em textos finais de carta.
+13.1.6. Embora a declaração de atacantes escolha um alvo de ataque, declarar um ataque contra um Personagem ou Território não constitui, por si só, alvejar. As referências a “alvejar”, “ser alvejado” ou “quando for alvejado” não incluem a declaração de atacantes, salvo se a regra ou habilidade mencionar expressamente ataques, declaração de atacantes ou alvos de ataque.
+
+13.1.7. Textos de cartas devem especificar a categoria de alvo afetada sempre que houver risco de ambiguidade.
+
+13.1.8. O uso isolado de “alvo” deve ser evitado em textos finais de carta.
 
 ## 13.2. Separação entre categorias
 
@@ -1188,7 +1241,7 @@
 
 13.3.2. Escolhas que não criam alvos não são afetadas por regras que impedem ser alvo.
 
-13.3.3. Se uma carta ou habilidade usa a palavra “alvo” ou uma expressão equivalente definida pelo template, ela cria alvo na categoria indicada.
+13.3.3. Se uma carta ou habilidade usa a palavra “alvo”, o verbo “alvejar” ou uma expressão equivalente definida pelo template, ela cria alvo na categoria indicada. O verbo “alvejar” designa alvos de carta, habilidade ou efeito, não alvos de ataque.
 
 ## 13.4. Validade de alvo
 
@@ -1260,7 +1313,11 @@
 
 14.5.4. Efeitos preventivos genéricos não impedem dano por compra ou pulverização impossível.
 
-14.5.5. Efeitos que mencionem explicitamente dano pago como custo, compra impossível, pulverização impossível ou fadiga podem afetar esses eventos conforme seu texto.
+14.5.5. Efeitos que mencionem explicitamente dano pago como custo, colocação de marcadores de dano como custo, compra impossível, pulverização impossível ou fadiga podem afetar esses eventos conforme seu texto.
+
+14.5.6. Quando um efeito prevenir até X pontos de dano que seriam causados a um ou mais objetos durante determinado período, X representa a quantidade total de dano que pode ser prevenida entre todos os objetos abrangidos, e não uma quantidade independente para cada objeto, salvo se o texto disser explicitamente o contrário.
+
+14.5.7. Se houver múltiplos eventos de dano possíveis e a quantidade que pode ser prevenida for insuficiente para prevenir todos eles, o jogador afetado escolhe quais pontos de dano serão prevenidos, salvo se uma regra ou efeito estabelecer outra forma de escolha.
 
 ## 14.6. Efeitos de substituição
 
@@ -1560,6 +1617,32 @@
 
 16.6.13. Subtipos como Soldado, Rebelde, Incenso e Ouro não possuem regras próprias por padrão. Eles funcionam como referências para cartas e efeitos.
 
+# 16.7. Marcadores
+
+16.7.1. Um marcador é um elemento contável colocado sobre um objeto de jogo para representar uma quantidade ou estado definido por uma regra ou efeito. Um marcador não é, por si só, uma carta ou permanente.
+
+16.7.2. Cada tipo de marcador é distinto. Um marcador de determinado tipo não pode ser utilizado como se fosse outro tipo de marcador, salvo se uma regra ou efeito disser explicitamente o contrário.
+
+16.7.3. Marcadores permanecem no objeto em que foram colocados enquanto esse objeto permanecer na mesma zona, salvo se uma regra ou efeito os remover ou estabelecer outra duração.
+
+16.7.4. Quando um objeto muda de zona, os marcadores sobre ele deixam de existir, salvo se uma regra ou efeito disser explicitamente o contrário.
+
+16.7.5. Colocar X marcadores significa colocar a quantidade indicada. Remover X marcadores significa remover até X marcadores do tipo indicado que estejam presentes no objeto. Se houver menos marcadores do que a quantidade exigida, remova todos os disponíveis.
+
+16.7.6. Marcadores de suprimento e marcadores de pedra não possuem efeitos inerentes. Suas funções dependem das regras e dos textos das cartas que os utilizam.
+
+16.7.7. Cada marcador de Escudo sobre um objeto previne 1 ponto de dano que seria causado àquele objeto. Depois de prevenir esse ponto, o marcador de Escudo é removido.
+
+16.7.8. Marcadores de Escudo podem prevenir dano de combate e dano de outras fontes, independentemente da origem do dano, observadas as regras específicas sobre dano pago como custo.
+
+16.7.9. Se um evento causar mais dano do que a quantidade de marcadores de Escudo presentes no objeto, cada marcador previne 1 ponto, e o dano restante é marcado normalmente.
+
+16.7.10. Marcadores de Escudo permanecem no objeto até serem utilizados, removidos por uma regra ou efeito ou até que o objeto mude de zona. Não há limite geral para a quantidade de marcadores de Escudo que um objeto pode possuir.
+
+16.7.11. Marcadores de Escudo não impedem a colocação de marcadores de dano, pois essa colocação não constitui um evento de dano.
+
+16.7.12. As regras específicas de marcadores de construção permanecem definidas na seção 16.5.
+
 ---
 
 # 17. Combate
@@ -1582,7 +1665,7 @@
 
 17.1.6. O dano de combate é simultâneo dentro de cada momento de dano aplicável.
 
-17.1.7. Efeitos que façam um Personagem causar dano primeiro criam um momento de dano anterior ao dano de combate normal, conforme a seção 17.6.
+17.1.7. GOLPE RÁPIDO permite que um Personagem atribua e cause seu dano de combate em um momento anterior ao dano de combate normal, conforme as regras da seção 17.6.
 
 17.1.8. Um Personagem participa de um combate se for um atacante, um bloqueador ou o Personagem atacado diretamente.
 
@@ -1591,6 +1674,8 @@
 17.1.10. Um Personagem batalhou outro Personagem se ambos estiveram ligados ao mesmo ataque como atacante e bloqueador ou como atacante e Personagem atacado diretamente.
 
 17.1.11. Batalhar ou combater não significa lutar. Lutar é uma ação distinta definida na seção 18.
+
+17.1.12. Para fins de habilidades que desencadeiem quando um jogador for atacado, considera-se que esse jogador foi atacado quando um oponente declara um ou mais Personagens como atacantes contra o Território daquele jogador ou contra um Personagem que ele controla. O evento ocorre no momento da declaração de atacantes, independentemente da quantidade de atacantes declarados.
 
 ## 17.2. Início do combate
 
@@ -1656,15 +1741,15 @@
 
 17.6.2. Por padrão, existe um único momento de dano de combate, no qual todos os Personagens aptos causam dano simultaneamente.
 
-17.6.3. Se ao menos um Personagem participante do combate possuir um efeito que diga que ele causa dano primeiro, o dano de combate será dividido em dois momentos.
+17.6.3. Se ao menos um Personagem participante do combate possuir GOLPE RÁPIDO no início do primeiro momento de dano de combate, o dano de combate será dividido em dois momentos.
 
-17.6.4. No primeiro momento de dano, apenas Personagens que causam dano primeiro atribuem e causam dano de combate.
+17.6.4. No primeiro momento de dano, apenas Personagens que possuíam GOLPE RÁPIDO no início desse momento atribuem e causam dano de combate, desde que permaneçam no combate e estejam aptos a causar dano.
 
-17.6.5. Depois do primeiro momento de dano, ações baseadas no estado são verificadas, habilidades desencadeadas apropriadas são colocadas na pilha e jogadores recebem prioridade.
+17.6.5. Depois do primeiro momento de dano, ações baseadas no estado são verificadas, habilidades desencadeadas apropriadas são colocadas na pilha e os jogadores recebem prioridade.
 
-17.6.6. Quando todos os jogadores passarem prioridade com a pilha vazia, ocorre o momento de dano de combate normal.
+17.6.6. Quando todos os jogadores passarem prioridade em sequência com a pilha vazia, ocorre o momento de dano de combate normal.
 
-17.6.7. No momento de dano normal, apenas Personagens aptos que não causaram dano no primeiro momento atribuem e causam dano.
+17.6.7. No momento de dano de combate normal, apenas Personagens que não possuíam GOLPE RÁPIDO no início do primeiro momento de dano atribuem e causam dano, desde que permaneçam no combate e estejam aptos a causar dano.
 
 17.6.8. Um Personagem causa dano de combate apenas uma vez por combate, salvo se regra ou efeito disser explicitamente o contrário.
 
@@ -1790,6 +1875,8 @@
 
 19.2.3. O limite de mão é aplicado apenas na etapa de Descarte, salvo se regra ou efeito disser o contrário.
 
+19.2.4. Descartar uma carta aleatoriamente significa selecionar uma carta da mão sem que o jogador afetado possa escolher qual será descartada. Para isso, o jogador afetado embaralha sua mão virada para baixo, sem revelar as faces das cartas, e um oponente escolhe uma delas sem ver sua face. A carta escolhida é revelada e descartada.
+
 ## 19.3. Buscar
 
 19.3.1. Buscar significa procurar uma carta em uma zona indicada, revelar a carta encontrada, movê-la para a zona indicada pelo efeito e cumprir qualquer instrução adicional do texto.
@@ -1821,6 +1908,12 @@
 19.5.2. Se um jogador for instruído a pulverizar mais cartas do que possui no baralho, ele move para o cemitério todas as cartas que ainda existirem e causa 2 de dano ao próprio Território por cada carta que não pôde ser pulverizada.
 
 19.5.3. A regra de dano por pulverização impossível se aplica individualmente para cada carta faltante.
+
+# 19.6. Ordem de cartas movidas ao topo ou ao fundo do baralho
+
+19.6.1. Quando um efeito mover simultaneamente várias cartas para o topo ou para o fundo de um baralho e não especificar sua ordem, o jogador que executa o efeito escolhe a ordem relativa dessas cartas dentro de cada grupo.
+
+19.6.2. A escolha da ordem não exige revelar as cartas aos oponentes, salvo se o efeito ou outra regra exigir essa revelação.
 
 ---
 
@@ -1930,7 +2023,7 @@
 
 ## 21.8. PROTEÇÃO
 
-21.8.1. Uma permanente com PROTEÇÃO não pode ser escolhida como alvo de carta, alvo de habilidade ou efeito nem alvo de ataque.
+21.8.1. Uma permanente com PROTEÇÃO não pode ser alvejada por cartas, habilidades ou efeitos, nem escolhida como alvo de ataque.
 
 21.8.2. Essa restrição também se aplica a cartas, habilidades e efeitos controlados pelo próprio controlador da permanente.
 
@@ -1954,15 +2047,15 @@
 
 21.10.3. RESERVA não torna funcionais os demais textos da carta.
 
-## 21.11. CAUSA DANO PRIMEIRO
+## 21.11. GOLPE RÁPIDO
 
-21.11.1. Um Personagem que causa dano primeiro atribui e causa seu dano de combate antes dos Personagens que não causam dano primeiro.
+21.11.1. GOLPE RÁPIDO significa que este Personagem atribui e causa seu dano de combate no primeiro momento de dano de combate, antes do dano de combate normal.
 
-21.11.2. Causar dano primeiro modifica apenas o momento em que o Personagem causa dano de combate.
+21.11.2. GOLPE RÁPIDO modifica apenas o momento em que o Personagem causa dano de combate. Não permite que ele cause dano de combate duas vezes.
 
-21.11.3. Causar dano primeiro não permite que o Personagem cause dano de combate duas vezes.
+21.11.3. Se um combate possuir dois momentos de dano, os Personagens com GOLPE RÁPIDO atribuem e causam dano no primeiro momento, enquanto os demais Personagens aptos atribuem e causam dano no momento normal, conforme a seção 17.6.
 
-21.11.4. As regras completas para causar dano primeiro estão na seção 17.6.
+21.11.4. As regras completas de GOLPE RÁPIDO estão na seção 17.6.
 
 ## 21.12. CONSTRUÇÃO X
 
@@ -1988,7 +2081,7 @@
 
 21.14.3. INESPERADO não altera custos, alvos, tipos ou demais restrições, salvo se a carta disser o contrário.
 
-21.14.4. Um Pecado com INESPERADO pode ser jogado fora da etapa de Alistamento, mas ainda é pago causando dano ao próprio Território, salvo se texto específico disser o contrário.
+21.14.4. Um Pecado com INESPERADO pode ser jogado fora da etapa de Alistamento, mas continua sendo pago pela colocação dos marcadores de dano exigidos em seu Território, salvo se o texto da carta disser explicitamente o contrário.
 
 ## 21.15. IMBLOQUEÁVEL
 
@@ -2068,6 +2161,50 @@
 
 21.20.10. O texto posterior aos dois-pontos apresenta apenas o efeito e eventuais condições adicionais. A expressão “No início do seu Reagrupamento” não deve ser repetida depois de DESGUARNECIDO X.
 
+## 21.21. INALVEJÁVEL
+
+21.21.1. Uma permanente com INALVEJÁVEL não pode ser alvejada por cartas, habilidades ou efeitos controlados por um oponente.
+
+21.21.2. O controlador da permanente pode alvejá-la com suas próprias cartas, habilidades ou efeitos.
+
+21.21.3. INALVEJÁVEL não impede que a permanente seja escolhida como alvo de ataque. Declarar um ataque contra ela não constitui alvejá-la para fins desta palavra-chave.
+
+21.21.4. INALVEJÁVEL não impede efeitos que não escolham a permanente como alvo, incluindo efeitos globais e instruções de escolha que não criem tecnicamente um alvo.
+
+21.21.5. A validade dos alvos continua sujeita à seção 13.4. Se uma permanente ganhar INALVEJÁVEL depois de ser alvejada por uma carta, habilidade ou efeito controlado por um oponente, esse alvo será considerado inválido na verificação de validade realizada na resolução.
+
+## 21.22. Classificações de Poder e Resistência
+
+21.22.1. REFORÇADA, ENFRAQUECIDA e INALTERADA são classificações aplicáveis a Personagens e determinadas pela comparação entre seus valores atuais de Poder e Resistência e seus respectivos valores base.
+
+21.22.2. Poder Base e Resistência Base são os valores resultantes da aplicação das alíneas (a) e (b) da regra 14.7.1, antes da aplicação dos modificadores positivos e negativos da alínea (c) e das alterações persistentes da alínea (d).
+
+21.22.3. REFORÇADA aplica-se a um Personagem quando seu Poder atual for superior ao Poder Base ou quando sua Resistência atual for superior à Resistência Base.
+
+21.22.4. ENFRAQUECIDA aplica-se a um Personagem quando seu Poder atual for inferior ao Poder Base ou quando sua Resistência atual for inferior à Resistência Base.
+
+21.22.5. INALTERADA aplica-se a um Personagem somente quando seu Poder atual e sua Resistência atual forem iguais aos respectivos valores-base.
+
+21.22.6. As classificações são determinadas continuamente e mudam imediatamente sempre que o Poder atual ou a Resistência atual do Personagem mudar.
+
+21.22.7. As classificações REFORÇADA e ENFRAQUECIDA não são mutuamente exclusivas. Se um Personagem possuir Poder superior ao seu Poder Base e Resistência inferior à sua Resistência Base, ou vice-versa, ele será simultaneamente REFORÇADO e ENFRAQUECIDO.
+
+21.22.8. Essas classificações não alteram os atributos do Personagem nem concedem efeitos próprios. Elas apenas identificam a condição atual de seus atributos e podem ser referenciadas por cartas, habilidades ou efeitos.
+
+## 21.23. Classificações de Dano
+
+21.23.1. FERIDA e ILESA são classificações de condição de dano aplicáveis a Personagens.
+
+21.23.2. A classificação FERIDA aplica-se a um Personagem que possua 1 ou mais pontos de dano marcado.
+
+21.23.3. A classificação ILESA aplica-se a um Personagem que não possua nenhum ponto de dano marcado.
+
+21.23.4. A classificação é determinada continuamente e muda imediatamente sempre que o total de dano marcado no Personagem mudar, inclusive por cura ou remoção de dano.
+
+21.23.5. As classificações FERIDA e ILESA são mutuamente exclusivas. Enquanto estiver no campo de batalha, cada Personagem se enquadra em exatamente uma delas.
+
+21.23.6. Essas classificações não causam, removem ou alteram dano. Elas apenas identificam se o Personagem possui ou não dano marcado e podem ser referenciadas por cartas, habilidades ou efeitos.
+
 ---
 
 # 22. Multijogador
@@ -2144,7 +2281,7 @@
 
 ## 23.3. Pecado letal
 
-23.3.1. Um jogador tem 9 de dano marcado em seu Território de Resistência 10. Ele joga um Pecado que exige causar 1 de dano ao próprio Território como custo. O custo é pago, o Pecado entra na pilha e o jogador é considerado como tendo passado prioridade. Antes que qualquer jogador receba prioridade, ações baseadas no estado são verificadas. O jogador perde a partida antes de o Pecado resolver.
+23.3.1. Um jogador tem 9 pontos de dano marcado em seu Território de Resistência 10. Ele joga um Pecado que exige colocar 1 marcador de dano em seu Território como custo. O marcador é colocado e o Pecado entra na pilha. Antes que qualquer jogador receba prioridade, ações baseadas no estado são verificadas. Como o dano marcado agora é igual à Resistência do Território, o jogador perde a partida antes que o Pecado resolva. A colocação do marcador não constitui dano causado e não aciona Esperança.
 
 ## 23.4. Reagrupamento
 
@@ -2192,7 +2329,9 @@
 
 **Ações baseadas no estado:** verificações automáticas executadas sempre que um jogador receberia prioridade.
 
-**Alvo de ataque:** Território ou Personagem escolhido na declaração de atacantes.
+**Alvejar:** escolher formalmente um objeto ou jogador como alvo de carta, habilidade ou efeito. Não inclui a declaração de atacantes, que é tratada como escolha de um alvo de ataque.
+
+**Alvo de ataque:** Território ou Personagem escolhido na declaração de atacantes. A escolha desse alvo não constitui, por si só, alvejar.
 
 **Alvo de carta:** objeto ou jogador escolhido por uma carta jogada.
 
@@ -2221,8 +2360,6 @@
 **Característica associada:** Virtude ou Desvirtude associada a uma carta.
 
 **Carta:** objeto de jogo com nome, custo, tipo, texto e, quando aplicável, Poder e Resistência.
-
-**Causar dano primeiro:** causar dano de combate em um momento anterior ao dano de combate normal.
 
 **Cemitério:** zona pública para cartas destruídas, mortas, anuladas ou Momentâneas resolvidas, salvo exceção.
 
@@ -2268,6 +2405,8 @@
 
 **ENTRADA:** habilidade desencadeada que significa “Quando esta permanente entra no campo de batalha”.
 
+**ENFRAQUECIDA:** classificação aplicável a um Personagem cujo Poder atual ou Resistência atual seja inferior ao respectivo valor-base.
+
 **Equipamento:** subtipo de Artefato que pode ser anexado a um Personagem.
 
 **EQUIPÁVEL:** marcador de texto de Equipamento aplicado ao Personagem equipado.
@@ -2278,9 +2417,13 @@
 
 **Exílio:** zona pública para cartas exiladas.
 
+**FERIDA:** classificação de dano que se aplica a um Personagem que possui 1 ou mais pontos de dano marcado.
+
 **Ficha:** objeto criado por regra ou efeito que existe apenas no campo de batalha.
 
 **Ficha de Ouro:** ficha de Artefato com subtipo Ouro e com a habilidade “{T}, renuncie esta ficha: compre 1 carta”.
+
+**GOLPE RÁPIDO:** palavra-chave que permite a um Personagem atribuir e causar seu dano de combate no primeiro momento de dano de combate.
 
 **Habilidade:** objeto na pilha que não é uma carta, incluindo habilidades ativadas e desencadeadas.
 
@@ -2290,7 +2433,13 @@
 
 **Habilidade estática:** habilidade que funciona continuamente enquanto sua fonte estiver na zona apropriada.
 
+**ILESA:** classificação de dano que se aplica a um Personagem que não possui nenhum ponto de dano marcado.
+
 **IMBLOQUEÁVEL:** palavra-chave que significa que o Personagem não pode ser bloqueado.
+
+**INALTERADA:** classificação aplicável a um Personagem cujo Poder atual e Resistência atual sejam iguais aos respectivos valores-base.
+
+**INALVEJÁVEL:** palavra-chave que impede uma permanente de ser alvejada por cartas, habilidades ou efeitos controlados por oponentes, mas não impede que seja escolhida como alvo de ataque.
 
 **INDESTRUTÍVEL:** palavra-chave que impede uma permanente de ser destruída e, quando aplicada a um Personagem, também previne o dano que lhe seria causado.
 
@@ -2302,6 +2451,10 @@
 
 **Lutar:** dois Personagens causam dano igual ao próprio Poder um ao outro.
 
+**Marcador de dano:** marcador que, quando colocado em um Território, adiciona 1 ponto ao dano marcado nele. Sua colocação conta para a condição de derrota, mas não constitui um evento de dano.
+
+**Marcador de Escudo:** marcador que previne 1 ponto de dano que seria causado ao objeto em que está colocado e que é removido depois de prevenir esse ponto.
+
 **Milagre:** tipo de carta de velocidade aberta, jogável quando seu controlador possui prioridade.
 
 **Momentâneo:** subtipo funcional de carta que vai ao cemitério após resolver, salvo exceção.
@@ -2312,7 +2465,7 @@
 
 **Omissão:** escolha de não Consagrar nem Profanar durante uma etapa de Consagração.
 
-**Pecado:** tipo de carta normalmente jogável na etapa de Alistamento e pago causando dano ao próprio Território.
+**Pecado:** tipo de carta normalmente jogável na etapa de Alistamento e pago pela colocação de marcadores de dano no próprio Território.
 
 **Permanente:** objeto duradouro no campo de batalha.
 
@@ -2321,6 +2474,8 @@
 **Pilha:** zona pública operacional em que jogadas e habilidades aguardam resolução.
 
 **Poder:** valor ofensivo de um Personagem.
+
+**Poder Base:** valor de Poder resultante da aplicação das alíneas (a) e (b) da regra 14.7.1, antes da aplicação dos modificadores positivos e negativos e das alterações persistentes.
 
 **Preparado:** estado vertical de uma carta apta a ser usada.
 
@@ -2334,9 +2489,11 @@
 
 **PRONTIDÃO:** palavra-chave que impede que um Personagem seja despreparado por ser declarado atacante.
 
-**PROTEÇÃO:** palavra-chave que impede uma permanente de ser escolhida como alvo de carta, habilidade, efeito ou ataque.
+**PROTEÇÃO:** palavra-chave que impede uma permanente de ser alvejada por cartas, habilidades ou efeitos e também de ser escolhida como alvo de ataque.
 
 **Pulverizar:** mover cartas do topo do baralho para o cemitério.
+
+**REFORÇADA:** classificação aplicável a um Personagem cujo Poder atual ou Resistência atual seja superior ao respectivo valor-base.
 
 **Renunciar:** mover uma permanente que você controla do campo de batalha para o cemitério. Renunciar não é destruir.
 
@@ -2345,6 +2502,8 @@
 **RESERVA, marcador de habilidade:** marcador que torna funcional o texto posterior enquanto a carta estiver na Reserva de seu dono.
 
 **Resistência:** valor defensivo de Personagem ou limite de dano do Território antes da derrota de seu controlador.
+
+**Resistência Base:** valor de Resistência resultante da aplicação das alíneas (a) e (b) da regra 14.7.1, antes da aplicação dos modificadores positivos e negativos e das alterações persistentes.
 
 **Sagrado:** subtipo de Artefato sem regra inerente.
 
@@ -2355,6 +2514,8 @@
 **Templo:** carta de Identidade que modifica regras de Consagração e Profanação conforme seu texto.
 
 **Território:** carta de Identidade que recebe dano e marca a derrota de seu controlador ao acumular dano igual ou superior à sua Resistência.
+
+**Território atacado:** Território contra o qual um ou mais Personagens foram declarados atacantes.
 
 **Vinculado:** objeto ou jogador ao qual um Vínculo está anexado.
 
