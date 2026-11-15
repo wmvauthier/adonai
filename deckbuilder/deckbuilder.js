@@ -231,7 +231,7 @@ function getTypeLabel(card) {
 
 function getCollectionCode(card) {
   const collection = references.collections.get(card.collection || 1);
-  return collection && collection.code ? collection.code : "FND";
+  return collection && collection.code ? collection.code : "UNK";
 }
 
 function getCardId(card) {
@@ -249,7 +249,7 @@ function getAssetTypeName(card) {
 
 function getCardImage(card) {
   if (card.images && card.images.card) return card.images.card;
-  return `../assets/cards/${getAssetTypeName(card)} - Foundations-${Number(card.number)}.webp`;
+  return "../assets/logo/adonai_logo_base-4.webp";
 }
 
 function cardHasFunction(card, functionId) {

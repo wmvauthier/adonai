@@ -342,14 +342,14 @@ function resolveEntities(kind, values) {
 function normalizeCollection(value) {
   const resolved = resolveEntity("collections", value);
   if (resolved) {
-    const code = String(localize(resolved.set) || resolved.code || "FND").toUpperCase();
+    const code = String(localize(resolved.set) || resolved.code || "UNK").toUpperCase();
     return {
       ...resolved,
       code,
       label: resolved.label || { pt: `${localize(resolved.name)} (${code})`, en: `${localize(resolved.name)} (${code})` }
     };
   }
-  return { name: { pt: "Foundations", en: "Foundations" }, code: "FND", label: { pt: "Foundations (FND)", en: "Foundations (FND)" } };
+  return { name: { pt: "Coleção não informada", en: "Unknown collection" }, code: "UNK", label: { pt: "Coleção não informada", en: "Unknown collection" } };
 }
 
 function normalizeNumber(value, fallback) {
@@ -370,7 +370,7 @@ function getPrimaryType(card) {
 }
 
 function getCardCode(card) {
-  const collectionCode = card.collection?.code || "FND";
+  const collectionCode = card.collection?.code || "UNK";
   const primaryType = getPrimaryType(card);
   const typeCode = primaryType.code || localize(primaryType.name || primaryType).slice(0, 3).toUpperCase() || "CRD";
   return `${collectionCode}-${typeCode}-${card.number}`;

@@ -11,7 +11,7 @@ const DATA_URLS = {
   engineAbilityLinks: "../data/engine/ability_links.json"
 };
 
-const CARD_BACK_IMAGE = "../assets/logo/Fundo - Foundation.webp";
+const CARD_BACK_IMAGE = "../assets/logo/Fundo - Adonai.webp";
 const ESSENCE_ICON_IMAGE = "../assets/icons/00.webp";
 const BUILDER_STORAGE_KEY = "adonai.deckbuilder.v1";
 const PLAY_STORAGE_KEY = "adonai.play.v1";
@@ -53,8 +53,8 @@ const INTERNAL_TOKEN_CARDS = [
     subtypes: ["Incenso"],
     text: "{T}, renuncie esta ficha: Gere {E}.",
     images: {
-      card: "../assets/tokens/cards/Artefato - Foundations-24.webp",
-      art: "../assets/tokens/imgs/Artefato - Foundations-24 - img.webp"
+      card: "../assets/tokens/cards/Artefato - Adonai-24.webp",
+      art: "../assets/tokens/imgs/Artefato - Adonai-24 - img.webp"
     },
     stats: {}
   },
@@ -70,8 +70,8 @@ const INTERNAL_TOKEN_CARDS = [
     subtypes: ["Soldado"],
     text: "Ficha de personagem Soldado Israelita 0/2.",
     images: {
-      card: "../assets/tokens/cards/Personagem - Foundations-21.webp",
-      art: "../assets/tokens/imgs/Personagem - Foundations-21 - img.webp"
+      card: "../assets/tokens/cards/Personagem - Adonai-21.webp",
+      art: "../assets/tokens/imgs/Personagem - Adonai-21 - img.webp"
     },
     stats: {
       attack: 0,
@@ -90,8 +90,8 @@ const INTERNAL_TOKEN_CARDS = [
     subtypes: ["Soldado"],
     text: "Ficha de personagem Soldado Filisteu 1/1.",
     images: {
-      card: "../assets/tokens/cards/Personagem - Foundations-22.webp",
-      art: "../assets/tokens/imgs/Personagem - Foundations-22 - img.webp"
+      card: "../assets/tokens/cards/Personagem - Adonai-22.webp",
+      art: "../assets/tokens/imgs/Personagem - Adonai-22 - img.webp"
     },
     stats: {
       attack: 1,
@@ -110,8 +110,8 @@ const INTERNAL_TOKEN_CARDS = [
     subtypes: ["Rebelde"],
     text: "Ficha de personagem Rebelde 1/1.",
     images: {
-      card: "../assets/tokens/cards/Personagem - Foundations-23.webp",
-      art: "../assets/tokens/imgs/Personagem - Foundations-23 - img.webp"
+      card: "../assets/tokens/cards/Personagem - Adonai-23.webp",
+      art: "../assets/tokens/imgs/Personagem - Adonai-23 - img.webp"
     },
     stats: {
       attack: 1,
@@ -1306,7 +1306,7 @@ function normalizeNumber(value, fallback) {
 
 function getCollectionCode(collectionId) {
   const collection = app.collectionsById.get(Number(collectionId));
-  return collection?.code || "FND";
+  return collection?.code || "UNK";
 }
 
 function getTypeCodeFromIds(typeIds = []) {
@@ -1420,14 +1420,14 @@ function getVirtueArtwork(virtue) {
   return virtue.images?.img ||
     virtue.images?.art ||
     virtue.images?.background ||
-    `../assets/virtudes/imgs/Virtudes - Foundations-${Number(virtue.id)} - img.webp`;
+    `../assets/virtudes/imgs/Virtudes - Adonai-${Number(virtue.id)} - img.webp`;
 }
 
 function getVirtueCardImage(virtue) {
   if (!virtue) return "";
   return virtue.images?.card ||
     virtue.images?.full ||
-    `../assets/virtudes/cards/Virtudes - Foundations-${Number(virtue.id)}.webp`;
+    `../assets/virtudes/cards/Virtudes - Adonai-${Number(virtue.id)}.webp`;
 }
 
 function getVirtueVisualAssets(virtue) {

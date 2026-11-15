@@ -155,7 +155,7 @@ function getCollection(cardOrBook) {
 function getCardCode(card) {
   const collection = getCollection(card);
   const type = getType(card);
-  const collectionCode = collection && collection.code ? collection.code : "FND";
+  const collectionCode = collection && collection.code ? collection.code : "UNK";
   const typeCode = type && type.code ? type.code : "CRD";
   return `${collectionCode}-${typeCode}-${card.number}`;
 }
@@ -167,7 +167,7 @@ function getAssetTypeName(card) {
 
 function getCardArt(card) {
   if (card && card.images && card.images.art) return card.images.art;
-  return `../assets/imgs/${getAssetTypeName(card)} - Foundations-${Number(card.number)} - img.webp`;
+  return "../assets/logo/adonai_logo_base-4.webp";
 }
 
 function getVirtueLabels(card) {
@@ -208,7 +208,7 @@ function enrichBooks(rawBooks) {
       ...book,
       collection,
       chapters,
-      coverImage: coverCard ? getCardArt(coverCard) : "../assets/logo/Fundo - Foundation.webp",
+      coverImage: coverCard ? getCardArt(coverCard) : "../assets/logo/Fundo - Adonai.webp",
       searchText: normalizeSearch([
         book.id,
         localize(book.title),
@@ -324,7 +324,7 @@ function renderBooks() {
           <span class="section-kicker">${escapeHtml(collectionName)}</span>
           <h3>${escapeHtml(bookTitle)}</h3>
           <div class="book-meta">
-            <span>${escapeHtml(formatDate(book.releaseDate))}</span>
+            ${book.releaseDate ? `<span>${escapeHtml(formatDate(book.releaseDate))}</span>` : ""}
             <span>${book.chapters.length} ${escapeHtml(t("chapters"))}</span>
             ${isActive ? `<span>${escapeHtml(t("continuation"))}</span>` : ""}
           </div>

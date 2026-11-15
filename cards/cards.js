@@ -18,7 +18,7 @@ const copy = {
     all: "Todos",
     allFeminine: "Todas",
     loadingTitle: "Carregando cartas",
-    loadingBody: "Buscando os dados da coleção Foundations.",
+    loadingBody: "Buscando as cartas das coleções de Adonai.",
     errorTitle: "Não foi possível carregar as cartas",
     errorBody: "Confira se a página está sendo servida por um servidor local e se os arquivos em data existem.",
     emptyTitle: "Nenhuma carta encontrada",
@@ -66,7 +66,7 @@ const copy = {
     all: "All",
     allFeminine: "All",
     loadingTitle: "Loading cards",
-    loadingBody: "Fetching the Foundations card data.",
+    loadingBody: "Fetching Adonai collection card data.",
     errorTitle: "Cards could not be loaded",
     errorBody: "Check that the page is running from a local server and that the files in data exist.",
     emptyTitle: "No cards found",
@@ -440,7 +440,7 @@ function resolveBibleReference(reference) {
 function normalizeCollection(value) {
   const resolved = resolveEntity("collections", value);
   if (resolved) {
-    const code = String(localize(resolved.set) || resolved.code || "FND").toUpperCase();
+    const code = String(localize(resolved.set) || resolved.code || "UNK").toUpperCase();
     return {
       ...resolved,
       code,
@@ -449,8 +449,8 @@ function normalizeCollection(value) {
   }
 
   if (value && typeof value === "object" && !Array.isArray(value)) {
-    const name = value.name || value.pt || value.label || "Foundations";
-    const code = String(value.code || "FND").toUpperCase();
+    const name = value.name || value.pt || value.label || "Coleção não informada";
+    const code = String(value.code || "UNK").toUpperCase();
     return {
       name,
       code,
@@ -458,7 +458,7 @@ function normalizeCollection(value) {
     };
   }
 
-  const text = String(value || "Foundations (FND)");
+  const text = String(value || "Coleção não informada");
   const match = text.match(/^(.+?)\s*\(([A-Za-z0-9]{3})\)$/);
   if (match) {
     return {
@@ -470,13 +470,13 @@ function normalizeCollection(value) {
 
   return {
     name: text,
-    code: "FND",
-    label: `${text} (FND)`
+    code: "UNK",
+    label: text
   };
 }
 
 function getCollectionLabel(card) {
-  return localize(card.collection?.label) || `${localize(card.collection?.name) || "Foundations"} (${card.collection?.code || "FND"})`;
+  return localize(card.collection?.label) || `${localize(card.collection?.name) || "Coleção não informada"} (${card.collection?.code || "UNK"})`;
 }
 
 function getPrimaryType(card) {
@@ -484,7 +484,7 @@ function getPrimaryType(card) {
 }
 
 function getCardCode(card) {
-  const collectionCode = card.collection?.code || "FND";
+  const collectionCode = card.collection?.code || "UNK";
   const primaryType = normalizeList(card.type)[0] || {};
   const type = getPrimaryType(card);
   const typeCode = primaryType.code || type.slice(0, 3).toUpperCase() || "CRD";

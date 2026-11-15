@@ -28,7 +28,9 @@
       typeof value === "string"
         ? value
         : value?.[lang] || value?.pt || value?.en || "";
-    bindings.forEach(({ element, card, typeNames }) => {
+    bindings.forEach(({ element, card, typeNames, collection }) => {
+      if (element.hasAttribute("data-card-collection"))
+        element.textContent = text(collection?.label || collection?.name);
       if (element.hasAttribute("data-card-name"))
         element.textContent = text(card.name);
       if (element.hasAttribute("data-card-type"))
@@ -81,6 +83,7 @@
           bindings.push({
             element,
             card,
+            collection: collections.collections.find((item) => item.id === card.collection),
             typeNames: (card.type || [])
               .map((id) => typeMap.get(id))
               .filter(Boolean),

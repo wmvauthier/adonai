@@ -96,7 +96,7 @@ def build_card_codes(errors: list[str]) -> tuple[set[str], dict[str, dict[str, A
     try:
       collection_id = int(card.get("collection", cards_doc.get("defaults", {}).get("collection", 1)))
       type_id = int((card.get("type") or [0])[0])
-      collection_code = collections[collection_id].get("code", "FND")
+      collection_code = collections[collection_id].get("code", "UNK")
       type_code = types[type_id].get("code", "CRD")
       number = normalize_number(card.get("number", index))
       code = f"{collection_code}-{type_code}-{number}"

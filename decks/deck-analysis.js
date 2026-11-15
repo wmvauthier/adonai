@@ -104,9 +104,9 @@ function normalizeCards(cardsPayload, refs) {
   const defaults = cardsPayload.defaults || {};
   return list(cardsPayload.cards).map((card, index) => {
     const merged = { ...defaults, ...card };
-    const collection = refs.collections.get(Number(merged.collection)) || { code: "FND" };
+    const collection = refs.collections.get(Number(merged.collection)) || { code: "UNK" };
     const type = list(merged.type).map((id) => refs.types.get(Number(id))).filter(Boolean);
-    const code = `${collection.code || "FND"}-${type[0]?.code || "CRD"}-${normalizeNumber(merged.number, index + 1)}`;
+    const code = `${collection.code || "UNK"}-${type[0]?.code || "CRD"}-${normalizeNumber(merged.number, index + 1)}`;
     return {
       ...merged,
       code,
