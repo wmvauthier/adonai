@@ -5,9 +5,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="../shared/theme.js"></script>
-  <title>Adonai Card Game — Galeria</title>
+  <title>Adonai Card Game — Reviews</title>
   <meta name="description"
-    content="Galeria funcional de conteúdos de Adonai Card Game reunindo vídeos do YouTube e posts do Instagram." />
+    content="Reviews e conteúdos da comunidade de Adonai Card Game: vídeos do YouTube e posts do Instagram." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -31,10 +31,10 @@
       <a href="../cards/" data-pt="Cartas" data-en="Cards">Cartas</a>
       <a href="../decks/" data-pt="Decks" data-en="Decks">Decks</a>
       <a href="../deckbuilder/" data-pt="Deckbuilder" data-en="Deckbuilder">Deckbuilder</a>
+      <a href="../gallery/" data-pt="Reviews" data-en="Reviews" aria-current="page">Reviews</a>
       <a href="../manual/" data-pt="Manual" data-en="Rulebook">Manual</a>
       <!-- <a href="../lore/">Lore</a> -->
       <!-- <a href="../index.html#shop">Loja</a> -->
-      <!-- <a href="../gallery/">Galeria</a> -->
     </nav>
     <div class="header-tools">
       <div class="theme-control" role="group" aria-label="Tema da página">
@@ -58,6 +58,16 @@
   </header>
 
   <main id="mainContent">
+    <div class="wrap community-heading">
+      <p class="eyebrow" data-pt="Comunidade Adonai" data-en="Adonai community">Comunidade Adonai</p>
+      <h1 data-pt="Reviews" data-en="Reviews">Reviews</h1>
+      <p data-pt="Opiniões dos criadores, vídeos e descobertas da comunidade." data-en="Creator reviews, videos, and community discoveries.">Opiniões dos criadores, vídeos e descobertas da comunidade.</p>
+      <nav class="community-links" aria-label="Conteúdos"><a href="#reviews" data-pt="Depoimentos ↓" data-en="Testimonials ↓">Depoimentos ↓</a><a href="#galleryFeed" data-pt="Vídeos e posts ↓" data-en="Videos and posts ↓">Vídeos e posts ↓</a></nav>
+    </div>
+    <section class="reviews wrap section" id="reviews" hidden aria-labelledby="reviewsTitle">
+      <!-- <div class="section-top"><h2 id="reviewsTitle" data-pt="Na mesa dos criadores" data-en="At the creators’ table">Na mesa dos criadores</h2></div> -->
+      <div class="reviews-grid" data-render="reviews"></div>
+    </section>
     <!-- <section class="gallery-intro">
       <div class="container">
         <p class="eyebrow" data-pt="A comunidade em cena" data-en="Community in the spotlight">A comunidade em cena</p>
@@ -79,7 +89,7 @@
       <div class="container gallery-tools reveal" id="galleryTools">
 
         <div class="gallery-featured-head">
-          <span class="section-kicker" data-pt="Galeria" data-en="Gallery">Galeria</span>
+          <span class="section-kicker" data-pt="Vídeos e posts" data-en="Videos and posts">Vídeos e posts</span>
         </div>
 
         <label class="gallery-search" for="gallerySearch"><span data-pt="Encontre sua próxima descoberta" data-en="Find your next discovery">Encontre sua próxima descoberta</span><input id="gallerySearch" type="search" data-pt="Buscar título ou criador…" data-en="Search title or creator…" placeholder="Buscar título ou criador…" /></label>
@@ -134,10 +144,10 @@
         <a href="../cards/" data-pt="Cartas" data-en="Cards">Cartas</a>
         <a href="../decks/" data-pt="Decks" data-en="Decks">Decks</a>
         <a href="../deckbuilder/" data-pt="Deckbuilder" data-en="Deckbuilder">Deckbuilder</a>
+        <a href="../gallery/" data-pt="Reviews" data-en="Reviews" aria-current="page">Reviews</a>
         <a href="../manual/" data-pt="Manual" data-en="Rulebook">Manual</a>
         <!-- <a href="../lore/">Lore</a> -->
         <!-- <a href="../index.html#shop">Loja</a> -->
-        <!-- <a href="../gallery/">Galeria</a> -->
       </div>
     </div>
     <div class="wrap footer-bottom">
@@ -147,6 +157,7 @@
   </footer>
 
   <script src="./gallery.js"></script>
+  <script src="../shared/reviews.js"></script>
 </body>
 
 </html>

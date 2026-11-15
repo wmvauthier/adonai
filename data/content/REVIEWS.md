@@ -1,31 +1,22 @@
-# Reviews da página inicial
+# Depoimentos da home e Galeria
 
-Edite `data/content/reviews.json`, mantendo uma lista JSON. A home lê esse arquivo ao abrir a página, assim como a Galeria lê seus arquivos de conteúdo. Após publicar o arquivo atualizado, os reviews aparecem na próxima carga da página (sujeito ao cache da hospedagem).
-
-A lista começa vazia (`[]`). A seção inteira fica oculta enquanto não houver reviews publicados. Não é necessário editar HTML ou JavaScript.
-
-Modelo de entrada (substitua os exemplos pelos dados reais antes de publicar):
+`data/content/reviews.json` alimenta as duas páginas. Cada cartão mostra a foto do criador, uma frase entre aspas e o link para o review completo. Não exibe título nem miniatura do vídeo.
 
 ```json
-[
-  {
-    "name": "Nome do influenciador",
-    "url": "https://www.youtube.com/watch?v=ID_DO_VIDEO",
-    "quote": {
-      "pt": "Trecho real do review em português.",
-      "en": "English translation of the review excerpt."
-    },
-    "thumbnail": "https://exemplo.com/imagem-do-review.jpg",
-    "enabled": true
-  }
-]
+{
+  "name": "Nome do criador",
+  "url": "https://www.youtube.com/watch?v=ID_DO_VIDEO",
+  "review": { "pt": "Frase real confirmada.", "en": "Confirmed translation." },
+  "enabled": true
+}
 ```
 
-- `name` e `url`: obrigatórios. Use um link HTTP ou HTTPS para o review.
-- `quote`: opcional; aceita texto simples ou traduções `pt`/`en`. Sem inglês, usa o português.
-- `thumbnail`: opcional; aceita URL externa ou caminho relativo à raiz do site, como `assets/reviews/foto.webp`. Para YouTube, a miniatura é obtida do link automaticamente quando este campo é omitido. Outros links usam o logo como alternativa.
-- `youtubeId`: opcional, permite informar o identificador de um vídeo explicitamente.
-- `enabled`: opcional; use `false` para guardar um review sem exibi-lo.
-- A ordem da lista determina a ordem dos reviews. Separe os objetos com vírgula. JSON não aceita comentários.
+- `url` identifica a publicação em `youtube.json` ou `instagram.json`. O avatar, a prioridade e a data são obtidos dessa publicação automaticamente.
+- `avatarSource` é opcional: URL de outra publicação desses arquivos cujo avatar será usado. Permite usar a foto local do Instagram para um review do YouTube sem duplicar caminhos.
+- `review` aceita texto ou traduções `pt`/`en`; `quote` continua aceito por compatibilidade. Entradas sem frase ficam ocultas.
+- `priority` e `date` são opcionais e substituem os valores herdados. Data no formato `DD/MM/AAAA` (ou ISO).
+- Ordenação igual aos destaques da Galeria: `max(0, 180 - dias desde a publicação mais recente da lista exibida) + priority * 24`, em ordem decrescente. Desempate pela data mais recente.
+- `enabled: false` oculta a entrada.
+- `provisional: true` sinaliza visivelmente uma frase provisória. Remova ou defina `false` somente após substituir pelo trecho confirmado.
 
-Cadastre apenas reviews reais. Nenhum exemplo deste documento é publicado automaticamente.
+A lista atual contém uma frase provisória fornecida para a montagem visual. Substitua-a pela citação real antes de tratá-la como depoimento confirmado.

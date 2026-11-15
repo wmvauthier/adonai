@@ -120,18 +120,18 @@
       },
       {
         "label": {
+          "pt": "Reviews",
+          "en": "Reviews"
+        },
+        "href": "./gallery/",
+        "enabled": true
+      },
+      {
+        "label": {
           "pt": "Manual",
           "en": "Rulebook"
         },
         "href": "./manual/"
-      },
-      {
-        "label": {
-          "pt": "Galeria",
-          "en": "Gallery"
-        },
-        "href": "./gallery/",
-        "enabled": false
       },
       {
         "label": {

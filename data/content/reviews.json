@@ -1,1 +1,13 @@
-[]
+[
+  {
+    "name": "Skull Servant do Bem",
+    "url": "https://www.youtube.com/watch?v=dfoPxD8FRSM",
+    "review": {
+      "pt": "É incrível como os personagens e suas histórias são referenciadas nas cartas de forma clara e ao mesmo tempo sutil. Não torna necessário um conhecimento prévio das escrituras mas torna ainda mais prazeroso reconhecer essas histórias por meio dos efeitos das cartas.",
+      "en": "It is remarkable how the characters and their stories are referenced in the cards—in a way that is both clear and subtle. While prior knowledge of the scriptures is not required, recognizing these stories through the effects of the cards makes the experience even more enjoyable."
+    },
+    "enabled": true,
+    "provisional": false,
+    "avatarSource": "https://www.instagram.com/p/DfufiAoPxPZ/"
+  }
+]

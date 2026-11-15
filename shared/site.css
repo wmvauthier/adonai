@@ -1330,3 +1330,17 @@ h2,
     display: none;
   }
 }
+
+/* Shared review cards on the home and community pages. */
+.home-review-copy > p { color: var(--muted); line-height: 1.6; overflow-wrap: anywhere; }
+.reviews > .button { margin-top: 24px; }
+
+/* Creator testimonials: portrait + quote, shared by Home and Gallery. */
+.testimonial { margin: 0; padding: clamp(22px, 2.5vw, 28px); display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.home-review.testimonial blockquote { margin: 0; font: 400 clamp(1.25rem, 2vw, 1.6rem)/1.45 var(--serif); color: var(--text); overflow-wrap: anywhere; }
+.testimonial figcaption { display: flex; align-items: center; gap: 16px; margin-top: auto; }
+.testimonial figcaption img { width: 64px; height: 64px; flex: 0 0 64px; aspect-ratio: 1; border-radius: 50%; object-fit: cover; border: 1px solid var(--gold); }
+.testimonial figcaption > div { min-width: 0; display: grid; gap: 8px; }
+.testimonial figcaption strong { font-size: .95rem; overflow-wrap: anywhere; }
+.testimonial .home-review-label { width: fit-content; line-height: 1.6; }
+.testimonial-note { font-size: .72rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 12px; }

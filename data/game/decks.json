@@ -1,0 +1,2514 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-11-15",
+  "decks": [
+    {
+      "id": "DECK-FND-001",
+      "name": {
+        "pt": "Golias — O Gigante do Desafio",
+        "en": "Goliath — Challenge of the Giant"
+      },
+      "creator": {
+        "id": "player-adonai-001",
+        "name": "Construtor de demonstração"
+      },
+      "identity": {
+        "champions": [
+          "DDG-CMP-001"
+        ],
+        "territories": [
+          "DDG-TER-009"
+        ],
+        "temples": [
+          "DDG-TEM-005"
+        ]
+      },
+      "cards": [
+        "DDG-PER-010",
+        "DDG-PER-011",
+        "DDG-PER-013",
+        "DDG-PER-018",
+        "DDG-PER-019",
+        "DDG-PER-020",
+        "DDG-PER-021",
+        "DDG-PER-022",
+        "DDG-PER-023",
+        "DDG-PER-024",
+        "DDG-PER-025",
+        "TEC-PER-010",
+        "TEC-PER-013",
+        "TEC-PER-015",
+        "TEC-PER-024",
+        "TEC-PER-025",
+        "TEC-PER-026",
+        "TEC-PER-027",
+        "TEC-PER-029",
+        "TEC-PER-030",
+        "DDG-MIL-028",
+        "DDG-MIL-029",
+        "DDG-MIL-031",
+        "DDG-MIL-035",
+        "DDG-MIL-038",
+        "TEC-MIL-034",
+        "TEC-MIL-036",
+        "TEC-MIL-037",
+        "DDG-ART-039",
+        "DDG-ART-040",
+        "DDG-ART-041",
+        "DDG-ART-043",
+        "TEC-ART-042",
+        "TEC-ART-043",
+        "DDG-PEC-045",
+        "DDG-PEC-046",
+        "DDG-PEC-047",
+        "DDG-PEC-048",
+        "DDG-PEC-049",
+        "TEC-PEC-048"
+      ],
+      "analysis": {
+        "summary": {
+          "pt": "Estratégia de pressão baseada em personagens de poder elevado. Golias habilita a punição de personagens menores e os ataques contra personagens preparados; equipamentos, duelos e remoções ajudam a abrir caminho para os golpes decisivos.",
+          "en": "A pressure strategy built around high-power characters. Goliath enables punishment of smaller characters and attacks against prepared characters; equipment, duels and removal clear the way for decisive strikes."
+        },
+        "tone": "positive",
+        "typeCounts": [
+          {
+            "label": "Personagem",
+            "value": 20,
+            "fieldAverage": 20.0,
+            "delta": 0.0,
+            "tone": "neutral"
+          },
+          {
+            "label": "Milagre",
+            "value": 8,
+            "fieldAverage": 9.5,
+            "delta": -1.5,
+            "tone": "negative"
+          },
+          {
+            "label": "Pecado",
+            "value": 6,
+            "fieldAverage": 5.0,
+            "delta": 1.0,
+            "tone": "positive"
+          },
+          {
+            "label": "Artefato",
+            "value": 6,
+            "fieldAverage": 5.5,
+            "delta": 0.5,
+            "tone": "neutral"
+          }
+        ],
+        "averageCostByType": [
+          {
+            "label": "Personagem",
+            "value": 3.1,
+            "fieldAverage": 2.52,
+            "delta": 0.58,
+            "tone": "negative"
+          },
+          {
+            "label": "Milagre",
+            "value": 3.25,
+            "fieldAverage": 2.79,
+            "delta": 0.46,
+            "tone": "negative"
+          },
+          {
+            "label": "Pecado",
+            "value": 2.33,
+            "fieldAverage": 2.4,
+            "delta": -0.07,
+            "tone": "neutral"
+          },
+          {
+            "label": "Artefato",
+            "value": 1.5,
+            "fieldAverage": 2.45,
+            "delta": -0.95,
+            "tone": "positive"
+          }
+        ],
+        "functionCounts": [
+          {
+            "label": "Alteração moral",
+            "value": 3,
+            "fieldAverage": 6.5,
+            "delta": -3.5,
+            "tone": "negative"
+          },
+          {
+            "label": "Resposta",
+            "value": 27,
+            "fieldAverage": 23.0,
+            "delta": 4.0,
+            "tone": "positive"
+          },
+          {
+            "label": "Compra de cartas",
+            "value": 2,
+            "fieldAverage": 4.0,
+            "delta": -2.0,
+            "tone": "negative"
+          },
+          {
+            "label": "Vantagem de cartas",
+            "value": 4,
+            "fieldAverage": 8.5,
+            "delta": -4.5,
+            "tone": "negative"
+          },
+          {
+            "label": "Controle de combate",
+            "value": 24,
+            "fieldAverage": 19.0,
+            "delta": 5.0,
+            "tone": "positive"
+          },
+          {
+            "label": "Cura",
+            "value": 1,
+            "fieldAverage": 3.0,
+            "delta": -2.0,
+            "tone": "negative"
+          },
+          {
+            "label": "Dano direto",
+            "value": 3,
+            "fieldAverage": 1.5,
+            "delta": 1.5,
+            "tone": "positive"
+          },
+          {
+            "label": "Aumento de poder/resistência",
+            "value": 15,
+            "fieldAverage": 9.5,
+            "delta": 5.5,
+            "tone": "positive"
+          }
+        ],
+        "averageCostByFunction": [
+          {
+            "label": "Alteração moral",
+            "value": 2.33,
+            "fieldAverage": 2.38,
+            "delta": -0.05,
+            "tone": "neutral"
+          },
+          {
+            "label": "Resposta",
+            "value": 2.96,
+            "fieldAverage": 2.54,
+            "delta": 0.42,
+            "tone": "negative"
+          },
+          {
+            "label": "Compra de cartas",
+            "value": 2.0,
+            "fieldAverage": 1.88,
+            "delta": 0.12,
+            "tone": "neutral"
+          },
+          {
+            "label": "Vantagem de cartas",
+            "value": 2.75,
+            "fieldAverage": 2.47,
+            "delta": 0.28,
+            "tone": "negative"
+          },
+          {
+            "label": "Controle de combate",
+            "value": 3.04,
+            "fieldAverage": 2.79,
+            "delta": 0.25,
+            "tone": "negative"
+          },
+          {
+            "label": "Cura",
+            "value": 3.0,
+            "fieldAverage": 2.17,
+            "delta": 0.83,
+            "tone": "negative"
+          },
+          {
+            "label": "Dano direto",
+            "value": 2.33,
+            "fieldAverage": 2.33,
+            "delta": 0.0,
+            "tone": "neutral"
+          },
+          {
+            "label": "Aumento de poder/resistência",
+            "value": 3.0,
+            "fieldAverage": 2.68,
+            "delta": 0.32,
+            "tone": "negative"
+          }
+        ],
+        "virtuePips": [
+          {
+            "id": 7,
+            "label": "Fortaleza",
+            "value": 10,
+            "fieldAverage": 6.5,
+            "delta": 3.5,
+            "tone": "positive"
+          },
+          {
+            "id": 2,
+            "label": "Dúvida",
+            "value": 8,
+            "fieldAverage": 4.0,
+            "delta": 4.0,
+            "tone": "positive"
+          },
+          {
+            "id": 14,
+            "label": "Egoísmo",
+            "value": 8,
+            "fieldAverage": 6.5,
+            "delta": 1.5,
+            "tone": "positive"
+          },
+          {
+            "id": 1,
+            "label": "Fé",
+            "value": 5,
+            "fieldAverage": 7.0,
+            "delta": -2.0,
+            "tone": "negative"
+          },
+          {
+            "id": 12,
+            "label": "Insensatez",
+            "value": 5,
+            "fieldAverage": 3.5,
+            "delta": 1.5,
+            "tone": "positive"
+          },
+          {
+            "id": 11,
+            "label": "Prudência",
+            "value": 4,
+            "fieldAverage": 4.0,
+            "delta": 0.0,
+            "tone": "neutral"
+          },
+          {
+            "id": 6,
+            "label": "Iniquidade",
+            "value": 3,
+            "fieldAverage": 3.0,
+            "delta": 0.0,
+            "tone": "neutral"
+          },
+          {
+            "id": 10,
+            "label": "Desespero",
+            "value": 3,
+            "fieldAverage": 2.0,
+            "delta": 1.0,
+            "tone": "positive"
+          },
+          {
+            "id": 4,
+            "label": "Descontrole",
+            "value": 2,
+            "fieldAverage": 1.5,
+            "delta": 0.5,
+            "tone": "neutral"
+          },
+          {
+            "id": 5,
+            "label": "Justiça",
+            "value": 2,
+            "fieldAverage": 3.0,
+            "delta": -1.0,
+            "tone": "negative"
+          },
+          {
+            "id": 3,
+            "label": "Temperança",
+            "value": 1,
+            "fieldAverage": 2.0,
+            "delta": -1.0,
+            "tone": "negative"
+          },
+          {
+            "id": 8,
+            "label": "Covardia",
+            "value": 1,
+            "fieldAverage": 1.0,
+            "delta": 0.0,
+            "tone": "neutral"
+          },
+          {
+            "id": 9,
+            "label": "Esperança",
+            "value": 1,
+            "fieldAverage": 3.5,
+            "delta": -2.5,
+            "tone": "negative"
+          }
+        ],
+        "averages": {
+          "cost": {
+            "value": 2.77,
+            "fieldAverage": 2.56,
+            "delta": 0.21,
+            "tone": "negative"
+          },
+          "attack": {
+            "value": 3.3,
+            "fieldAverage": 2.1,
+            "delta": 1.2,
+            "tone": "positive"
+          },
+          "resistance": {
+            "value": 2.85,
+            "fieldAverage": 2.35,
+            "delta": 0.5,
+            "tone": "positive"
+          }
+        },
+        "curve": [
+          {
+            "cost": 1,
+            "count": 10,
+            "fieldAverage": 11.0,
+            "tone": "negative"
+          },
+          {
+            "cost": 2,
+            "count": 6,
+            "fieldAverage": 11.0,
+            "tone": "negative"
+          },
+          {
+            "cost": 3,
+            "count": 12,
+            "fieldAverage": 9.0,
+            "tone": "positive"
+          },
+          {
+            "cost": 4,
+            "count": 8,
+            "fieldAverage": 5.0,
+            "tone": "positive"
+          },
+          {
+            "cost": 5,
+            "count": 3,
+            "fieldAverage": 2.5,
+            "tone": "neutral"
+          },
+          {
+            "cost": 6,
+            "count": 1,
+            "fieldAverage": 0.5,
+            "tone": "neutral"
+          },
+          {
+            "cost": 7,
+            "count": 0,
+            "fieldAverage": 1.0,
+            "tone": "negative"
+          }
+        ],
+        "sweetSpot": 3
+      }
+    },
+    {
+      "id": "DECK-FND-002",
+      "name": {
+        "pt": "Jessé — Os Pequenos sob Proteção",
+        "en": "Jesse — Protecting the Small"
+      },
+      "creator": {
+        "id": "player-adonai-002",
+        "name": "Construtor de demonstração"
+      },
+      "identity": {
+        "champions": [
+          "DDG-CMP-002"
+        ],
+        "territories": [
+          "DDG-TER-008"
+        ],
+        "temples": [
+          "DDG-TEM-006"
+        ]
+      },
+      "cards": [
+        "DDG-PER-012",
+        "DDG-PER-014",
+        "DDG-PER-015",
+        "DDG-PER-016",
+        "DDG-PER-017",
+        "DDG-PER-018",
+        "DDG-PER-024",
+        "DDG-PER-025",
+        "DDG-PER-026",
+        "DDG-PER-027",
+        "TEC-PER-012",
+        "TEC-PER-014",
+        "TEC-PER-016",
+        "TEC-PER-017",
+        "TEC-PER-018",
+        "TEC-PER-020",
+        "TEC-PER-022",
+        "TEC-PER-023",
+        "TEC-PER-028",
+        "TEC-PER-031",
+        "DDG-MIL-030",
+        "DDG-MIL-031",
+        "DDG-MIL-032",
+        "DDG-MIL-033",
+        "DDG-MIL-036",
+        "DDG-MIL-037",
+        "TEC-MIL-038",
+        "TEC-MIL-039",
+        "DDG-ART-039",
+        "DDG-ART-040",
+        "DDG-ART-042",
+        "DDG-ART-043",
+        "TEC-ART-042",
+        "TEC-ART-043",
+        "DDG-PEC-046",
+        "DDG-PEC-047",
+        "DDG-PEC-049",
+        "TEC-PEC-047",
+        "TEC-PEC-048",
+        "TEC-PEC-049"
+      ],
+      "analysis": {
+        "summary": {
+          "pt": "Plano de valor com personagens de baixo poder. Jessé encontra esses personagens e os mantém vivos; Belém reduz o dano que eles recebem contra ameaças maiores, enquanto milagres e equipamentos ampliam sua resistência e utilidade.",
+          "en": "A value plan built around low-power characters. Jesse finds them and keeps them alive; Bethlehem reduces the damage they take against larger threats, while miracles and equipment improve their resilience and utility."
+        },
+        "tone": "positive",
+        "typeCounts": [
+          {
+            "label": "Personagem",
+            "value": 20,
+            "fieldAverage": 20.0,
+            "delta": 0.0,
+            "tone": "neutral"
+          },
+          {
+            "label": "Milagre",
+            "value": 8,
+            "fieldAverage": 9.5,
+            "delta": -1.5,
+            "tone": "negative"
+          },
+          {
+            "label": "Pecado",
+            "value": 6,
+            "fieldAverage": 5.0,
+            "delta": 1.0,
+            "tone": "positive"
+          },
+          {
+            "label": "Artefato",
+            "value": 6,
+            "fieldAverage": 5.5,
+            "delta": 0.5,
+            "tone": "neutral"
+          }
+        ],
+        "averageCostByType": [
+          {
+            "label": "Personagem",
+            "value": 1.65,
+            "fieldAverage": 2.52,
+            "delta": -0.87,
+            "tone": "positive"
+          },
+          {
+            "label": "Milagre",
+            "value": 2.12,
+            "fieldAverage": 2.79,
+            "delta": -0.67,
+            "tone": "positive"
+          },
+          {
+            "label": "Pecado",
+            "value": 2.5,
+            "fieldAverage": 2.4,
+            "delta": 0.1,
+            "tone": "neutral"
+          },
+          {
+            "label": "Artefato",
+            "value": 1.33,
+            "fieldAverage": 2.45,
+            "delta": -1.12,
+            "tone": "positive"
+          }
+        ],
+        "functionCounts": [
+          {
+            "label": "Alteração moral",
+            "value": 6,
+            "fieldAverage": 6.5,
+            "delta": -0.5,
+            "tone": "neutral"
+          },
+          {
+            "label": "Resposta",
+            "value": 23,
+            "fieldAverage": 23.0,
+            "delta": 0.0,
+            "tone": "neutral"
+          },
+          {
+            "label": "Compra de cartas",
+            "value": 5,
+            "fieldAverage": 4.0,
+            "delta": 1.0,
+            "tone": "positive"
+          },
+          {
+            "label": "Vantagem de cartas",
+            "value": 10,
+            "fieldAverage": 8.5,
+            "delta": 1.5,
+            "tone": "positive"
+          },
+          {
+            "label": "Controle de combate",
+            "value": 12,
+            "fieldAverage": 19.0,
+            "delta": -7.0,
+            "tone": "negative"
+          },
+          {
+            "label": "Cura",
+            "value": 6,
+            "fieldAverage": 3.0,
+            "delta": 3.0,
+            "tone": "positive"
+          },
+          {
+            "label": "Dano direto",
+            "value": 1,
+            "fieldAverage": 1.5,
+            "delta": -0.5,
+            "tone": "neutral"
+          },
+          {
+            "label": "Aumento de poder/resistência",
+            "value": 9,
+            "fieldAverage": 9.5,
+            "delta": -0.5,
+            "tone": "neutral"
+          }
+        ],
+        "averageCostByFunction": [
+          {
+            "label": "Alteração moral",
+            "value": 1.5,
+            "fieldAverage": 2.38,
+            "delta": -0.88,
+            "tone": "positive"
+          },
+          {
+            "label": "Resposta",
+            "value": 1.87,
+            "fieldAverage": 2.54,
+            "delta": -0.67,
+            "tone": "positive"
+          },
+          {
+            "label": "Compra de cartas",
+            "value": 1.4,
+            "fieldAverage": 1.88,
+            "delta": -0.48,
+            "tone": "positive"
+          },
+          {
+            "label": "Vantagem de cartas",
+            "value": 2.2,
+            "fieldAverage": 2.47,
+            "delta": -0.27,
+            "tone": "positive"
+          },
+          {
+            "label": "Controle de combate",
+            "value": 2.08,
+            "fieldAverage": 2.79,
+            "delta": -0.71,
+            "tone": "positive"
+          },
+          {
+            "label": "Cura",
+            "value": 2.17,
+            "fieldAverage": 2.17,
+            "delta": 0.0,
+            "tone": "neutral"
+          },
+          {
+            "label": "Dano direto",
+            "value": 1.0,
+            "fieldAverage": 2.33,
+            "delta": -1.33,
+            "tone": "positive"
+          },
+          {
+            "label": "Aumento de poder/resistência",
+            "value": 1.89,
+            "fieldAverage": 2.68,
+            "delta": -0.79,
+            "tone": "positive"
+          }
+        ],
+        "virtuePips": [
+          {
+            "id": 1,
+            "label": "Fé",
+            "value": 5,
+            "fieldAverage": 7.0,
+            "delta": -2.0,
+            "tone": "negative"
+          },
+          {
+            "id": 14,
+            "label": "Egoísmo",
+            "value": 5,
+            "fieldAverage": 6.5,
+            "delta": -1.5,
+            "tone": "negative"
+          },
+          {
+            "id": 13,
+            "label": "Caridade",
+            "value": 4,
+            "fieldAverage": 3.0,
+            "delta": 1.0,
+            "tone": "positive"
+          },
+          {
+            "id": 7,
+            "label": "Fortaleza",
+            "value": 3,
+            "fieldAverage": 6.5,
+            "delta": -3.5,
+            "tone": "negative"
+          },
+          {
+            "id": 9,
+            "label": "Esperança",
+            "value": 3,
+            "fieldAverage": 3.5,
+            "delta": -0.5,
+            "tone": "neutral"
+          },
+          {
+            "id": 11,
+            "label": "Prudência",
+            "value": 3,
+            "fieldAverage": 4.0,
+            "delta": -1.0,
+            "tone": "negative"
+          },
+          {
+            "id": 2,
+            "label": "Dúvida",
+            "value": 2,
+            "fieldAverage": 4.0,
+            "delta": -2.0,
+            "tone": "negative"
+          },
+          {
+            "id": 5,
+            "label": "Justiça",
+            "value": 2,
+            "fieldAverage": 3.0,
+            "delta": -1.0,
+            "tone": "negative"
+          },
+          {
+            "id": 6,
+            "label": "Iniquidade",
+            "value": 2,
+            "fieldAverage": 3.0,
+            "delta": -1.0,
+            "tone": "negative"
+          },
+          {
+            "id": 12,
+            "label": "Insensatez",
+            "value": 2,
+            "fieldAverage": 3.5,
+            "delta": -1.5,
+            "tone": "negative"
+          },
+          {
+            "id": 3,
+            "label": "Temperança",
+            "value": 1,
+            "fieldAverage": 2.0,
+            "delta": -1.0,
+            "tone": "negative"
+          },
+          {
+            "id": 4,
+            "label": "Descontrole",
+            "value": 1,
+            "fieldAverage": 1.5,
+            "delta": -0.5,
+            "tone": "neutral"
+          },
+          {
+            "id": 8,
+            "label": "Covardia",
+            "value": 1,
+            "fieldAverage": 1.0,
+            "delta": 0.0,
+            "tone": "neutral"
+          },
+          {
+            "id": 10,
+            "label": "Desespero",
+            "value": 1,
+            "fieldAverage": 2.0,
+            "delta": -1.0,
+            "tone": "negative"
+          }
+        ],
+        "averages": {
+          "cost": {
+            "value": 1.82,
+            "fieldAverage": 2.56,
+            "delta": -0.74,
+            "tone": "positive"
+          },
+          "attack": {
+            "value": 0.8,
+            "fieldAverage": 2.1,
+            "delta": -1.3,
+            "tone": "negative"
+          },
+          "resistance": {
+            "value": 1.65,
+            "fieldAverage": 2.35,
+            "delta": -0.7,
+            "tone": "negative"
+          }
+        },
+        "curve": [
+          {
+            "cost": 1,
+            "count": 17,
+            "fieldAverage": 11.0,
+            "tone": "positive"
+          },
+          {
+            "cost": 2,
+            "count": 15,
+            "fieldAverage": 11.0,
+            "tone": "positive"
+          },
+          {
+            "cost": 3,
+            "count": 6,
+            "fieldAverage": 9.0,
+            "tone": "negative"
+          },
+          {
+            "cost": 4,
+            "count": 2,
+            "fieldAverage": 5.0,
+            "tone": "negative"
+          },
+          {
+            "cost": 5,
+            "count": 0,
+            "fieldAverage": 2.5,
+            "tone": "negative"
+          },
+          {
+            "cost": 6,
+            "count": 0,
+            "fieldAverage": 0.5,
+            "tone": "neutral"
+          },
+          {
+            "cost": 7,
+            "count": 0,
+            "fieldAverage": 1.0,
+            "tone": "negative"
+          }
+        ],
+        "sweetSpot": 1
+      }
+    },
+    {
+      "id": "DECK-FND-003",
+      "name": {
+        "pt": "Abner — Vanguarda dos Guerreiros",
+        "en": "Abner — Warrior Vanguard"
+      },
+      "creator": {
+        "id": "player-adonai-003",
+        "name": "Construtor de demonstração"
+      },
+      "identity": {
+        "champions": [
+          "DDG-CMP-003"
+        ],
+        "territories": [
+          "DDG-TER-007"
+        ],
+        "temples": [
+          "DDG-TEM-004"
+        ]
+      },
+      "cards": [
+        "DDG-PER-010",
+        "DDG-PER-011",
+        "DDG-PER-013",
+        "DDG-PER-018",
+        "DDG-PER-019",
+        "DDG-PER-020",
+        "DDG-PER-021",
+        "DDG-PER-022",
+        "DDG-PER-023",
+        "DDG-PER-024",
+        "TEC-PER-010",
+        "TEC-PER-013",
+        "TEC-PER-015",
+        "TEC-PER-024",
+        "TEC-PER-025",
+        "TEC-PER-026",
+        "TEC-PER-027",
+        "TEC-PER-029",
+        "TEC-PER-030",
+        "TEC-PER-031",
+        "DDG-MIL-028",
+        "DDG-MIL-029",
+        "DDG-MIL-030",
+        "DDG-MIL-031",
+        "DDG-MIL-035",
+        "DDG-MIL-038",
+        "TEC-MIL-034",
+        "TEC-MIL-036",
+        "DDG-ART-039",
+        "DDG-ART-040",
+        "DDG-ART-041",
+        "DDG-ART-043",
+        "TEC-ART-042",
+        "TEC-ART-043",
+        "DDG-PEC-045",
+        "DDG-PEC-046",
+        "DDG-PEC-049",
+        "TEC-PEC-045",
+        "TEC-PEC-047",
+        "TEC-PEC-049"
+      ],
+      "analysis": {
+        "summary": {
+          "pt": "Lista de combate centrada em Guerreiros. Abner fortalece a linha de frente e sua habilidade de Preparação cria oportunidades defensivas; Vale de Elá, equipamentos e milagres favorecem confrontos contra personagens mais fortes.",
+          "en": "A combat list centered on Warriors. Abner strengthens the front line and his Preparation ability creates defensive opportunities; the Valley of Elah, equipment and miracles reward engagements against stronger characters."
+        },
+        "tone": "positive",
+        "typeCounts": [
+          {
+            "label": "Personagem",
+            "value": 20,
+            "fieldAverage": 20.0,
+            "delta": 0.0,
+            "tone": "neutral"
+          },
+          {
+            "label": "Milagre",
+            "value": 8,
+            "fieldAverage": 9.5,
+            "delta": -1.5,
+            "tone": "negative"
+          },
+          {
+            "label": "Pecado",
+            "value": 6,
+            "fieldAverage": 5.0,
+            "delta": 1.0,
+            "tone": "positive"
+          },
+          {
+            "label": "Artefato",
+            "value": 6,
+            "fieldAverage": 5.5,
+            "delta": 0.5,
+            "tone": "neutral"
+          }
+        ],
+        "averageCostByType": [
+          {
+            "label": "Personagem",
+            "value": 3.15,
+            "fieldAverage": 2.52,
+            "delta": 0.63,
+            "tone": "negative"
+          },
+          {
+            "label": "Milagre",
+            "value": 3.0,
+            "fieldAverage": 2.79,
+            "delta": 0.21,
+            "tone": "negative"
+          },
+          {
+            "label": "Pecado",
+            "value": 2.17,
+            "fieldAverage": 2.4,
+            "delta": -0.23,
+            "tone": "positive"
+          },
+          {
+            "label": "Artefato",
+            "value": 1.5,
+            "fieldAverage": 2.45,
+            "delta": -0.95,
+            "tone": "positive"
+          }
+        ],
+        "functionCounts": [
+          {
+            "label": "Alteração moral",
+            "value": 2,
+            "fieldAverage": 6.5,
+            "delta": -4.5,
+            "tone": "negative"
+          },
+          {
+            "label": "Resposta",
+            "value": 28,
+            "fieldAverage": 23.0,
+            "delta": 5.0,
+            "tone": "positive"
+          },
+          {
+            "label": "Compra de cartas",
+            "value": 1,
+            "fieldAverage": 4.0,
+            "delta": -3.0,
+            "tone": "negative"
+          },
+          {
+            "label": "Vantagem de cartas",
+            "value": 6,
+            "fieldAverage": 8.5,
+            "delta": -2.5,
+            "tone": "negative"
+          },
+          {
+            "label": "Controle de combate",
+            "value": 26,
+            "fieldAverage": 19.0,
+            "delta": 7.0,
+            "tone": "positive"
+          },
+          {
+            "label": "Cura",
+            "value": 1,
+            "fieldAverage": 3.0,
+            "delta": -2.0,
+            "tone": "negative"
+          },
+          {
+            "label": "Dano direto",
+            "value": 3,
+            "fieldAverage": 1.5,
+            "delta": 1.5,
+            "tone": "positive"
+          },
+          {
+            "label": "Aumento de poder/resistência",
+            "value": 14,
+            "fieldAverage": 9.5,
+            "delta": 4.5,
+            "tone": "positive"
+          }
+        ],
+        "averageCostByFunction": [
+          {
+            "label": "Alteração moral",
+            "value": 2.0,
+            "fieldAverage": 2.38,
+            "delta": -0.38,
+            "tone": "positive"
+          },
+          {
+            "label": "Resposta",
+            "value": 2.82,
+            "fieldAverage": 2.54,
+            "delta": 0.28,
+            "tone": "negative"
+          },
+          {
+            "label": "Compra de cartas",
+            "value": 3.0,
+            "fieldAverage": 1.88,
+            "delta": 1.12,
+            "tone": "negative"
+          },
+          {
+            "label": "Vantagem de cartas",
+            "value": 2.5,
+            "fieldAverage": 2.47,
+            "delta": 0.03,
+            "tone": "neutral"
+          },
+          {
+            "label": "Controle de combate",
+            "value": 2.85,
+            "fieldAverage": 2.79,
+            "delta": 0.06,
+            "tone": "neutral"
+          },
+          {
+            "label": "Cura",
+            "value": 3.0,
+            "fieldAverage": 2.17,
+            "delta": 0.83,
+            "tone": "negative"
+          },
+          {
+            "label": "Dano direto",
+            "value": 2.33,
+            "fieldAverage": 2.33,
+            "delta": 0.0,
+            "tone": "neutral"
+          },
+          {
+            "label": "Aumento de poder/resistência",
+            "value": 2.93,
+            "fieldAverage": 2.68,
+            "delta": 0.25,
+            "tone": "negative"
+          }
+        ],
+        "virtuePips": [
+          {
+            "id": 7,
+            "label": "Fortaleza",
+            "value": 10,
+            "fieldAverage": 6.5,
+            "delta": 3.5,
+            "tone": "positive"
+          },
+          {
+            "id": 14,
+            "label": "Egoísmo",
+            "value": 8,
+            "fieldAverage": 6.5,
+            "delta": 1.5,
+            "tone": "positive"
+          },
+          {
+            "id": 2,
+            "label": "Dúvida",
+            "value": 7,
+            "fieldAverage": 4.0,
+            "delta": 3.0,
+            "tone": "positive"
+          },
+          {
+            "id": 1,
+            "label": "Fé",
+            "value": 5,
+            "fieldAverage": 7.0,
+            "delta": -2.0,
+            "tone": "negative"
+          },
+          {
+            "id": 6,
+            "label": "Iniquidade",
+            "value": 5,
+            "fieldAverage": 3.0,
+            "delta": 2.0,
+            "tone": "positive"
+          },
+          {
+            "id": 11,
+            "label": "Prudência",
+            "value": 5,
+            "fieldAverage": 4.0,
+            "delta": 1.0,
+            "tone": "positive"
+          },
+          {
+            "id": 12,
+            "label": "Insensatez",
+            "value": 5,
+            "fieldAverage": 3.5,
+            "delta": 1.5,
+            "tone": "positive"
+          },
+          {
+            "id": 5,
+            "label": "Justiça",
+            "value": 3,
+            "fieldAverage": 3.0,
+            "delta": 0.0,
+            "tone": "neutral"
+          },
+          {
+            "id": 4,
+            "label": "Descontrole",
+            "value": 2,
+            "fieldAverage": 1.5,
+            "delta": 0.5,
+            "tone": "neutral"
+          },
+          {
+            "id": 8,
+            "label": "Covardia",
+            "value": 2,
+            "fieldAverage": 1.0,
+            "delta": 1.0,
+            "tone": "positive"
+          },
+          {
+            "id": 10,
+            "label": "Desespero",
+            "value": 2,
+            "fieldAverage": 2.0,
+            "delta": 0.0,
+            "tone": "neutral"
+          },
+          {
+            "id": 9,
+            "label": "Esperança",
+            "value": 1,
+            "fieldAverage": 3.5,
+            "delta": -2.5,
+            "tone": "negative"
+          }
+        ],
+        "averages": {
+          "cost": {
+            "value": 2.73,
+            "fieldAverage": 2.56,
+            "delta": 0.17,
+            "tone": "neutral"
+          },
+          "attack": {
+            "value": 3.35,
+            "fieldAverage": 2.1,
+            "delta": 1.25,
+            "tone": "positive"
+          },
+          "resistance": {
+            "value": 2.95,
+            "fieldAverage": 2.35,
+            "delta": 0.6,
+            "tone": "positive"
+          }
+        },
+        "curve": [
+          {
+            "cost": 1,
+            "count": 9,
+            "fieldAverage": 11.0,
+            "tone": "negative"
+          },
+          {
+            "cost": 2,
+            "count": 9,
+            "fieldAverage": 11.0,
+            "tone": "negative"
+          },
+          {
+            "cost": 3,
+            "count": 11,
+            "fieldAverage": 9.0,
+            "tone": "positive"
+          },
+          {
+            "cost": 4,
+            "count": 7,
+            "fieldAverage": 5.0,
+            "tone": "positive"
+          },
+          {
+            "cost": 5,
+            "count": 3,
+            "fieldAverage": 2.5,
+            "tone": "neutral"
+          },
+          {
+            "cost": 6,
+            "count": 1,
+            "fieldAverage": 0.5,
+            "tone": "neutral"
+          },
+          {
+            "cost": 7,
+            "count": 0,
+            "fieldAverage": 1.0,
+            "tone": "negative"
+          }
+        ],
+        "sweetSpot": 3
+      }
+    },
+    {
+      "id": "DECK-FND-004",
+      "name": {
+        "pt": "Davi — O Reino Unido",
+        "en": "David — The United Kingdom"
+      },
+      "creator": {
+        "id": "player-adonai-004",
+        "name": "Construtor de demonstração"
+      },
+      "identity": {
+        "champions": [
+          "TEC-CMP-001"
+        ],
+        "territories": [
+          "TEC-TER-007"
+        ],
+        "temples": [
+          "TEC-TEM-004"
+        ]
+      },
+      "cards": [
+        "TEC-PER-010",
+        "TEC-PER-014",
+        "TEC-PER-015",
+        "TEC-PER-016",
+        "TEC-PER-017",
+        "TEC-PER-018",
+        "TEC-PER-020",
+        "TEC-PER-022",
+        "TEC-PER-023",
+        "TEC-PER-024",
+        "TEC-PER-025",
+        "TEC-PER-027",
+        "TEC-PER-028",
+        "TEC-PER-029",
+        "TEC-PER-030",
+        "TEC-PER-031",
+        "DDG-PER-015",
+        "DDG-PER-017",
+        "DDG-PER-013",
+        "DDG-PER-012",
+        "TEC-MIL-032",
+        "TEC-MIL-033",
+        "TEC-MIL-035",
+        "TEC-MIL-036",
+        "TEC-MIL-037",
+        "TEC-MIL-038",
+        "TEC-MIL-039",
+        "DDG-MIL-038",
+        "TEC-ART-040",
+        "DDG-ART-042",
+        "TEC-ART-042",
+        "TEC-ART-043",
+        "TEC-ART-044",
+        "DDG-ART-043",
+        "TEC-PEC-045",
+        "TEC-PEC-046",
+        "TEC-PEC-047",
+        "TEC-PEC-048",
+        "TEC-PEC-049",
+        "DDG-PEC-049"
+      ],
+      "analysis": {
+        "summary": {
+          "pt": "Estratégia de enxame e sinergia entre Reis. Davi recompensa a presença de três ou mais personagens, amplia o ataque coletivo e gera soldados; os efeitos de compra, construção e SOBREPUJAR convertem presença de mesa em pressão.",
+          "en": "A swarm strategy with King synergies. David rewards controlling three or more characters, boosts the team and creates soldiers; card draw, construction and OVERWHELM effects turn board presence into pressure."
+        },
+        "tone": "positive",
+        "typeCounts": [
+          {
+            "label": "Personagem",
+            "value": 20,
+            "fieldAverage": 20.0,
+            "delta": 0.0,
+            "tone": "neutral"
+          },
+          {
+            "label": "Milagre",
+            "value": 8,
+            "fieldAverage": 9.5,
+            "delta": -1.5,
+            "tone": "negative"
+          },
+          {
+            "label": "Pecado",
+            "value": 6,
+            "fieldAverage": 5.0,
+            "delta": 1.0,
+            "tone": "positive"
+          },
+          {
+            "label": "Artefato",
+            "value": 6,
+            "fieldAverage": 5.5,
+            "delta": 0.5,
+            "tone": "neutral"
+          }
+        ],
+        "averageCostByType": [
+          {
+            "label": "Personagem",
+            "value": 2.35,
+            "fieldAverage": 2.52,
+            "delta": -0.17,
+            "tone": "neutral"
+          },
+          {
+            "label": "Milagre",
+            "value": 2.75,
+            "fieldAverage": 2.79,
+            "delta": -0.04,
+            "tone": "neutral"
+          },
+          {
+            "label": "Pecado",
+            "value": 2.83,
+            "fieldAverage": 2.4,
+            "delta": 0.43,
+            "tone": "negative"
+          },
+          {
+            "label": "Artefato",
+            "value": 1.67,
+            "fieldAverage": 2.45,
+            "delta": -0.78,
+            "tone": "positive"
+          }
+        ],
+        "functionCounts": [
+          {
+            "label": "Alteração moral",
+            "value": 5,
+            "fieldAverage": 6.5,
+            "delta": -1.5,
+            "tone": "negative"
+          },
+          {
+            "label": "Resposta",
+            "value": 21,
+            "fieldAverage": 23.0,
+            "delta": -2.0,
+            "tone": "negative"
+          },
+          {
+            "label": "Compra de cartas",
+            "value": 6,
+            "fieldAverage": 4.0,
+            "delta": 2.0,
+            "tone": "positive"
+          },
+          {
+            "label": "Vantagem de cartas",
+            "value": 12,
+            "fieldAverage": 8.5,
+            "delta": 3.5,
+            "tone": "positive"
+          },
+          {
+            "label": "Controle de combate",
+            "value": 17,
+            "fieldAverage": 19.0,
+            "delta": -2.0,
+            "tone": "negative"
+          },
+          {
+            "label": "Cura",
+            "value": 3,
+            "fieldAverage": 3.0,
+            "delta": 0.0,
+            "tone": "neutral"
+          },
+          {
+            "label": "Dano direto",
+            "value": 0,
+            "fieldAverage": 1.5,
+            "delta": -1.5,
+            "tone": "negative"
+          },
+          {
+            "label": "Aumento de poder/resistência",
+            "value": 12,
+            "fieldAverage": 9.5,
+            "delta": 2.5,
+            "tone": "positive"
+          }
+        ],
+        "averageCostByFunction": [
+          {
+            "label": "Alteração moral",
+            "value": 1.8,
+            "fieldAverage": 2.38,
+            "delta": -0.58,
+            "tone": "positive"
+          },
+          {
+            "label": "Resposta",
+            "value": 2.67,
+            "fieldAverage": 2.54,
+            "delta": 0.13,
+            "tone": "neutral"
+          },
+          {
+            "label": "Compra de cartas",
+            "value": 2.0,
+            "fieldAverage": 1.88,
+            "delta": 0.12,
+            "tone": "neutral"
+          },
+          {
+            "label": "Vantagem de cartas",
+            "value": 2.5,
+            "fieldAverage": 2.47,
+            "delta": 0.03,
+            "tone": "neutral"
+          },
+          {
+            "label": "Controle de combate",
+            "value": 2.53,
+            "fieldAverage": 2.79,
+            "delta": -0.26,
+            "tone": "positive"
+          },
+          {
+            "label": "Cura",
+            "value": 2.33,
+            "fieldAverage": 2.17,
+            "delta": 0.16,
+            "tone": "neutral"
+          },
+          {
+            "label": "Dano direto",
+            "value": 0,
+            "fieldAverage": 2.33,
+            "delta": -2.33,
+            "tone": "positive"
+          },
+          {
+            "label": "Aumento de poder/resistência",
+            "value": 2.92,
+            "fieldAverage": 2.68,
+            "delta": 0.24,
+            "tone": "negative"
+          }
+        ],
+        "virtuePips": [
+          {
+            "id": 14,
+            "label": "Egoísmo",
+            "value": 8,
+            "fieldAverage": 6.5,
+            "delta": 1.5,
+            "tone": "positive"
+          },
+          {
+            "id": 1,
+            "label": "Fé",
+            "value": 6,
+            "fieldAverage": 7.0,
+            "delta": -1.0,
+            "tone": "negative"
+          },
+          {
+            "id": 7,
+            "label": "Fortaleza",
+            "value": 6,
+            "fieldAverage": 6.5,
+            "delta": -0.5,
+            "tone": "neutral"
+          },
+          {
+            "id": 5,
+            "label": "Justiça",
+            "value": 4,
+            "fieldAverage": 3.0,
+            "delta": 1.0,
+            "tone": "positive"
+          },
+          {
+            "id": 12,
+            "label": "Insensatez",
+            "value": 4,
+            "fieldAverage": 3.5,
+            "delta": 0.5,
+            "tone": "neutral"
+          },
+          {
+            "id": 6,
+            "label": "Iniquidade",
+            "value": 3,
+            "fieldAverage": 3.0,
+            "delta": 0.0,
+            "tone": "neutral"
+          },
+          {
+            "id": 10,
+            "label": "Desespero",
+            "value": 3,
+            "fieldAverage": 2.0,
+            "delta": 1.0,
+            "tone": "positive"
+          },
+          {
+            "id": 11,
+            "label": "Prudência",
+            "value": 3,
+            "fieldAverage": 4.0,
+            "delta": -1.0,
+            "tone": "negative"
+          },
+          {
+            "id": 13,
+            "label": "Caridade",
+            "value": 3,
+            "fieldAverage": 3.0,
+            "delta": 0.0,
+            "tone": "neutral"
+          },
+          {
+            "id": 2,
+            "label": "Dúvida",
+            "value": 2,
+            "fieldAverage": 4.0,
+            "delta": -2.0,
+            "tone": "negative"
+          },
+          {
+            "id": 3,
+            "label": "Temperança",
+            "value": 2,
+            "fieldAverage": 2.0,
+            "delta": 0.0,
+            "tone": "neutral"
+          },
+          {
+            "id": 9,
+            "label": "Esperança",
+            "value": 2,
+            "fieldAverage": 3.5,
+            "delta": -1.5,
+            "tone": "negative"
+          },
+          {
+            "id": 4,
+            "label": "Descontrole",
+            "value": 1,
+            "fieldAverage": 1.5,
+            "delta": -0.5,
+            "tone": "neutral"
+          },
+          {
+            "id": 8,
+            "label": "Covardia",
+            "value": 1,
+            "fieldAverage": 1.0,
+            "delta": 0.0,
+            "tone": "neutral"
+          }
+        ],
+        "averages": {
+          "cost": {
+            "value": 2.4,
+            "fieldAverage": 2.56,
+            "delta": -0.16,
+            "tone": "neutral"
+          },
+          "attack": {
+            "value": 1.8,
+            "fieldAverage": 2.1,
+            "delta": -0.3,
+            "tone": "negative"
+          },
+          "resistance": {
+            "value": 2.4,
+            "fieldAverage": 2.35,
+            "delta": 0.05,
+            "tone": "neutral"
+          }
+        },
+        "curve": [
+          {
+            "cost": 1,
+            "count": 13,
+            "fieldAverage": 11.0,
+            "tone": "positive"
+          },
+          {
+            "cost": 2,
+            "count": 9,
+            "fieldAverage": 11.0,
+            "tone": "negative"
+          },
+          {
+            "cost": 3,
+            "count": 9,
+            "fieldAverage": 9.0,
+            "tone": "neutral"
+          },
+          {
+            "cost": 4,
+            "count": 7,
+            "fieldAverage": 5.0,
+            "tone": "positive"
+          },
+          {
+            "cost": 5,
+            "count": 2,
+            "fieldAverage": 2.5,
+            "tone": "neutral"
+          },
+          {
+            "cost": 6,
+            "count": 0,
+            "fieldAverage": 0.5,
+            "tone": "neutral"
+          },
+          {
+            "cost": 7,
+            "count": 0,
+            "fieldAverage": 1.0,
+            "tone": "negative"
+          }
+        ],
+        "sweetSpot": 1
+      }
+    },
+    {
+      "id": "DECK-FND-005",
+      "name": {
+        "pt": "Obede-Edom — Guardião da Arca",
+        "en": "Obed-Edom — Keeper of the Ark"
+      },
+      "creator": {
+        "id": "player-adonai-005",
+        "name": "Construtor de demonstração"
+      },
+      "identity": {
+        "champions": [
+          "TEC-CMP-002"
+        ],
+        "territories": [
+          "TEC-TER-009"
+        ],
+        "temples": [
+          "TEC-TEM-006"
+        ]
+      },
+      "cards": [
+        "TEC-PER-010",
+        "TEC-PER-013",
+        "TEC-PER-014",
+        "TEC-PER-015",
+        "TEC-PER-016",
+        "TEC-PER-017",
+        "TEC-PER-018",
+        "TEC-PER-019",
+        "TEC-PER-020",
+        "TEC-PER-022",
+        "TEC-PER-023",
+        "TEC-PER-024",
+        "TEC-PER-028",
+        "TEC-PER-031",
+        "DDG-PER-014",
+        "DDG-PER-015",
+        "DDG-PER-017",
+        "DDG-PER-025",
+        "DDG-PER-026",
+        "DDG-PER-027",
+        "TEC-MIL-032",
+        "TEC-MIL-033",
+        "TEC-MIL-035",
+        "TEC-MIL-038",
+        "TEC-MIL-039",
+        "DDG-MIL-030",
+        "DDG-MIL-031",
+        "DDG-MIL-032",
+        "DDG-MIL-033",
+        "DDG-MIL-037",
+        "TEC-ART-040",
+        "TEC-ART-041",
+        "TEC-ART-042",
+        "TEC-ART-043",
+        "TEC-ART-044",
+        "DDG-ART-039",
+        "DDG-ART-040",
+        "DDG-ART-041",
+        "DDG-ART-042",
+        "DDG-ART-043"
+      ],
+      "analysis": {
+        "summary": {
+          "pt": "Plano de artefatos, geração de Ouro e vantagem incremental. Obede-Edom sustenta o território e recompensa artefatos; Arca da Aliança, Palácio de Cedro, Escudos de Ouro e efeitos de busca/cura formam o núcleo de valor.",
+          "en": "An artifact, Gold-generation and incremental-value plan. Obed-Edom sustains the territory and rewards artifacts; the Ark of the Covenant, Cedar Palace, Golden Shields and search/healing effects form the value core."
+        },
+        "tone": "neutral",
+        "typeCounts": [
+          {
+            "label": "Personagem",
+            "value": 20,
+            "fieldAverage": 20.0,
+            "delta": 0.0,
+            "tone": "neutral"
+          },
+          {
+            "label": "Milagre",
+            "value": 10,
+            "fieldAverage": 9.5,
+            "delta": 0.5,
+            "tone": "neutral"
+          },
+          {
+            "label": "Pecado",
+            "value": 0,
+            "fieldAverage": 5.0,
+            "delta": -5.0,
+            "tone": "negative"
+          },
+          {
+            "label": "Artefato",
+            "value": 10,
+            "fieldAverage": 5.5,
+            "delta": 4.5,
+            "tone": "positive"
+          }
+        ],
+        "averageCostByType": [
+          {
+            "label": "Personagem",
+            "value": 2.2,
+            "fieldAverage": 2.52,
+            "delta": -0.32,
+            "tone": "positive"
+          },
+          {
+            "label": "Milagre",
+            "value": 2.1,
+            "fieldAverage": 2.79,
+            "delta": -0.69,
+            "tone": "positive"
+          },
+          {
+            "label": "Pecado",
+            "value": 0,
+            "fieldAverage": 2.4,
+            "delta": -2.4,
+            "tone": "positive"
+          },
+          {
+            "label": "Artefato",
+            "value": 2.2,
+            "fieldAverage": 2.45,
+            "delta": -0.25,
+            "tone": "positive"
+          }
+        ],
+        "functionCounts": [
+          {
+            "label": "Alteração moral",
+            "value": 8,
+            "fieldAverage": 6.5,
+            "delta": 1.5,
+            "tone": "positive"
+          },
+          {
+            "label": "Resposta",
+            "value": 19,
+            "fieldAverage": 23.0,
+            "delta": -4.0,
+            "tone": "negative"
+          },
+          {
+            "label": "Compra de cartas",
+            "value": 7,
+            "fieldAverage": 4.0,
+            "delta": 3.0,
+            "tone": "positive"
+          },
+          {
+            "label": "Vantagem de cartas",
+            "value": 14,
+            "fieldAverage": 8.5,
+            "delta": 5.5,
+            "tone": "positive"
+          },
+          {
+            "label": "Controle de combate",
+            "value": 15,
+            "fieldAverage": 19.0,
+            "delta": -4.0,
+            "tone": "negative"
+          },
+          {
+            "label": "Cura",
+            "value": 5,
+            "fieldAverage": 3.0,
+            "delta": 2.0,
+            "tone": "positive"
+          },
+          {
+            "label": "Dano direto",
+            "value": 1,
+            "fieldAverage": 1.5,
+            "delta": -0.5,
+            "tone": "neutral"
+          },
+          {
+            "label": "Aumento de poder/resistência",
+            "value": 10,
+            "fieldAverage": 9.5,
+            "delta": 0.5,
+            "tone": "neutral"
+          }
+        ],
+        "averageCostByFunction": [
+          {
+            "label": "Alteração moral",
+            "value": 2.5,
+            "fieldAverage": 2.38,
+            "delta": 0.12,
+            "tone": "neutral"
+          },
+          {
+            "label": "Resposta",
+            "value": 2.16,
+            "fieldAverage": 2.54,
+            "delta": -0.38,
+            "tone": "positive"
+          },
+          {
+            "label": "Compra de cartas",
+            "value": 1.71,
+            "fieldAverage": 1.88,
+            "delta": -0.17,
+            "tone": "neutral"
+          },
+          {
+            "label": "Vantagem de cartas",
+            "value": 2.36,
+            "fieldAverage": 2.47,
+            "delta": -0.11,
+            "tone": "neutral"
+          },
+          {
+            "label": "Controle de combate",
+            "value": 2.53,
+            "fieldAverage": 2.79,
+            "delta": -0.26,
+            "tone": "positive"
+          },
+          {
+            "label": "Cura",
+            "value": 2.2,
+            "fieldAverage": 2.17,
+            "delta": 0.03,
+            "tone": "neutral"
+          },
+          {
+            "label": "Dano direto",
+            "value": 1.0,
+            "fieldAverage": 2.33,
+            "delta": -1.33,
+            "tone": "positive"
+          },
+          {
+            "label": "Aumento de poder/resistência",
+            "value": 2.4,
+            "fieldAverage": 2.68,
+            "delta": -0.28,
+            "tone": "positive"
+          }
+        ],
+        "virtuePips": [
+          {
+            "id": 1,
+            "label": "Fé",
+            "value": 7,
+            "fieldAverage": 7.0,
+            "delta": 0.0,
+            "tone": "neutral"
+          },
+          {
+            "id": 11,
+            "label": "Prudência",
+            "value": 6,
+            "fieldAverage": 4.0,
+            "delta": 2.0,
+            "tone": "positive"
+          },
+          {
+            "id": 5,
+            "label": "Justiça",
+            "value": 5,
+            "fieldAverage": 3.0,
+            "delta": 2.0,
+            "tone": "positive"
+          },
+          {
+            "id": 7,
+            "label": "Fortaleza",
+            "value": 5,
+            "fieldAverage": 6.5,
+            "delta": -1.5,
+            "tone": "negative"
+          },
+          {
+            "id": 9,
+            "label": "Esperança",
+            "value": 4,
+            "fieldAverage": 3.5,
+            "delta": 0.5,
+            "tone": "neutral"
+          },
+          {
+            "id": 13,
+            "label": "Caridade",
+            "value": 4,
+            "fieldAverage": 3.0,
+            "delta": 1.0,
+            "tone": "positive"
+          },
+          {
+            "id": 3,
+            "label": "Temperança",
+            "value": 2,
+            "fieldAverage": 2.0,
+            "delta": 0.0,
+            "tone": "neutral"
+          },
+          {
+            "id": 14,
+            "label": "Egoísmo",
+            "value": 2,
+            "fieldAverage": 6.5,
+            "delta": -4.5,
+            "tone": "negative"
+          },
+          {
+            "id": 6,
+            "label": "Iniquidade",
+            "value": 1,
+            "fieldAverage": 3.0,
+            "delta": -2.0,
+            "tone": "negative"
+          },
+          {
+            "id": 10,
+            "label": "Desespero",
+            "value": 1,
+            "fieldAverage": 2.0,
+            "delta": -1.0,
+            "tone": "negative"
+          },
+          {
+            "id": 12,
+            "label": "Insensatez",
+            "value": 1,
+            "fieldAverage": 3.5,
+            "delta": -2.5,
+            "tone": "negative"
+          }
+        ],
+        "averages": {
+          "cost": {
+            "value": 2.17,
+            "fieldAverage": 2.56,
+            "delta": -0.39,
+            "tone": "positive"
+          },
+          "attack": {
+            "value": 1.2,
+            "fieldAverage": 2.1,
+            "delta": -0.9,
+            "tone": "negative"
+          },
+          "resistance": {
+            "value": 2.0,
+            "fieldAverage": 2.35,
+            "delta": -0.35,
+            "tone": "negative"
+          }
+        },
+        "curve": [
+          {
+            "cost": 1,
+            "count": 14,
+            "fieldAverage": 11.0,
+            "tone": "positive"
+          },
+          {
+            "cost": 2,
+            "count": 14,
+            "fieldAverage": 11.0,
+            "tone": "positive"
+          },
+          {
+            "cost": 3,
+            "count": 8,
+            "fieldAverage": 9.0,
+            "tone": "negative"
+          },
+          {
+            "cost": 4,
+            "count": 1,
+            "fieldAverage": 5.0,
+            "tone": "negative"
+          },
+          {
+            "cost": 5,
+            "count": 2,
+            "fieldAverage": 2.5,
+            "tone": "neutral"
+          },
+          {
+            "cost": 6,
+            "count": 0,
+            "fieldAverage": 0.5,
+            "tone": "neutral"
+          },
+          {
+            "cost": 7,
+            "count": 1,
+            "fieldAverage": 1.0,
+            "tone": "neutral"
+          }
+        ],
+        "sweetSpot": 1
+      }
+    },
+    {
+      "id": "DECK-FND-006",
+      "name": {
+        "pt": "Abigail — A Grande Conciliadora",
+        "en": "Abigail — The Great Peacemaker"
+      },
+      "creator": {
+        "id": "player-adonai-006",
+        "name": "Construtor de demonstração"
+      },
+      "identity": {
+        "champions": [
+          "TEC-CMP-003"
+        ],
+        "territories": [
+          "TEC-TER-008"
+        ],
+        "temples": [
+          "DDG-TEM-006"
+        ]
+      },
+      "cards": [
+        "TEC-PER-013",
+        "TEC-PER-014",
+        "TEC-PER-015",
+        "TEC-PER-016",
+        "TEC-PER-017",
+        "TEC-PER-018",
+        "TEC-PER-019",
+        "TEC-PER-020",
+        "TEC-PER-022",
+        "TEC-PER-023",
+        "TEC-PER-024",
+        "TEC-PER-025",
+        "TEC-PER-026",
+        "TEC-PER-027",
+        "TEC-PER-028",
+        "TEC-PER-029",
+        "TEC-PER-030",
+        "TEC-PER-031",
+        "DDG-PER-014",
+        "DDG-PER-015",
+        "TEC-MIL-033",
+        "TEC-MIL-035",
+        "TEC-MIL-038",
+        "TEC-MIL-039",
+        "DDG-MIL-031",
+        "DDG-MIL-032",
+        "DDG-MIL-036",
+        "DDG-MIL-037",
+        "DDG-ART-042",
+        "DDG-ART-043",
+        "TEC-ART-040",
+        "TEC-ART-041",
+        "TEC-ART-042",
+        "TEC-ART-043",
+        "TEC-PEC-045",
+        "TEC-PEC-047",
+        "TEC-PEC-048",
+        "TEC-PEC-049",
+        "DDG-PEC-047",
+        "DDG-PEC-048"
+      ],
+      "analysis": {
+        "summary": {
+          "pt": "Deck de controle e preservação. Abigail interrompe ataques e protege personagens que seriam destruídos em combate; Hebrom recompensa características compartilhadas, enquanto milagres de prevenção, seleção e remoção mantêm a mesa sob controle.",
+          "en": "A control and preservation deck. Abigail stops attacks and protects characters that would be destroyed in combat; Hebron rewards shared characteristics, while prevention, selection and removal miracles keep the board under control."
+        },
+        "tone": "neutral",
+        "typeCounts": [
+          {
+            "label": "Personagem",
+            "value": 20,
+            "fieldAverage": 20.0,
+            "delta": 0.0,
+            "tone": "neutral"
+          },
+          {
+            "label": "Milagre",
+            "value": 8,
+            "fieldAverage": 9.5,
+            "delta": -1.5,
+            "tone": "negative"
+          },
+          {
+            "label": "Pecado",
+            "value": 6,
+            "fieldAverage": 5.0,
+            "delta": 1.0,
+            "tone": "positive"
+          },
+          {
+            "label": "Artefato",
+            "value": 6,
+            "fieldAverage": 5.5,
+            "delta": 0.5,
+            "tone": "neutral"
+          }
+        ],
+        "averageCostByType": [
+          {
+            "label": "Personagem",
+            "value": 2.3,
+            "fieldAverage": 2.52,
+            "delta": -0.22,
+            "tone": "positive"
+          },
+          {
+            "label": "Milagre",
+            "value": 2.12,
+            "fieldAverage": 2.79,
+            "delta": -0.67,
+            "tone": "positive"
+          },
+          {
+            "label": "Pecado",
+            "value": 2.5,
+            "fieldAverage": 2.4,
+            "delta": 0.1,
+            "tone": "neutral"
+          },
+          {
+            "label": "Artefato",
+            "value": 2.17,
+            "fieldAverage": 2.45,
+            "delta": -0.28,
+            "tone": "positive"
+          }
+        ],
+        "functionCounts": [
+          {
+            "label": "Alteração moral",
+            "value": 9,
+            "fieldAverage": 6.5,
+            "delta": 2.5,
+            "tone": "positive"
+          },
+          {
+            "label": "Resposta",
+            "value": 21,
+            "fieldAverage": 23.0,
+            "delta": -2.0,
+            "tone": "negative"
+          },
+          {
+            "label": "Compra de cartas",
+            "value": 6,
+            "fieldAverage": 4.0,
+            "delta": 2.0,
+            "tone": "positive"
+          },
+          {
+            "label": "Vantagem de cartas",
+            "value": 10,
+            "fieldAverage": 8.5,
+            "delta": 1.5,
+            "tone": "positive"
+          },
+          {
+            "label": "Controle de combate",
+            "value": 18,
+            "fieldAverage": 19.0,
+            "delta": -1.0,
+            "tone": "negative"
+          },
+          {
+            "label": "Cura",
+            "value": 4,
+            "fieldAverage": 3.0,
+            "delta": 1.0,
+            "tone": "positive"
+          },
+          {
+            "label": "Dano direto",
+            "value": 1,
+            "fieldAverage": 1.5,
+            "delta": -0.5,
+            "tone": "neutral"
+          },
+          {
+            "label": "Aumento de poder/resistência",
+            "value": 8,
+            "fieldAverage": 9.5,
+            "delta": -1.5,
+            "tone": "negative"
+          }
+        ],
+        "averageCostByFunction": [
+          {
+            "label": "Alteração moral",
+            "value": 2.56,
+            "fieldAverage": 2.38,
+            "delta": 0.18,
+            "tone": "neutral"
+          },
+          {
+            "label": "Resposta",
+            "value": 2.19,
+            "fieldAverage": 2.54,
+            "delta": -0.35,
+            "tone": "positive"
+          },
+          {
+            "label": "Compra de cartas",
+            "value": 1.83,
+            "fieldAverage": 1.88,
+            "delta": -0.05,
+            "tone": "neutral"
+          },
+          {
+            "label": "Vantagem de cartas",
+            "value": 2.2,
+            "fieldAverage": 2.47,
+            "delta": -0.27,
+            "tone": "positive"
+          },
+          {
+            "label": "Controle de combate",
+            "value": 2.17,
+            "fieldAverage": 2.79,
+            "delta": -0.62,
+            "tone": "positive"
+          },
+          {
+            "label": "Cura",
+            "value": 2.5,
+            "fieldAverage": 2.17,
+            "delta": 0.33,
+            "tone": "negative"
+          },
+          {
+            "label": "Dano direto",
+            "value": 3.0,
+            "fieldAverage": 2.33,
+            "delta": 0.67,
+            "tone": "negative"
+          },
+          {
+            "label": "Aumento de poder/resistência",
+            "value": 2.25,
+            "fieldAverage": 2.68,
+            "delta": -0.43,
+            "tone": "positive"
+          }
+        ],
+        "virtuePips": [
+          {
+            "id": 14,
+            "label": "Egoísmo",
+            "value": 9,
+            "fieldAverage": 6.5,
+            "delta": 2.5,
+            "tone": "positive"
+          },
+          {
+            "id": 7,
+            "label": "Fortaleza",
+            "value": 6,
+            "fieldAverage": 6.5,
+            "delta": -0.5,
+            "tone": "neutral"
+          },
+          {
+            "id": 5,
+            "label": "Justiça",
+            "value": 5,
+            "fieldAverage": 3.0,
+            "delta": 2.0,
+            "tone": "positive"
+          },
+          {
+            "id": 11,
+            "label": "Prudência",
+            "value": 5,
+            "fieldAverage": 4.0,
+            "delta": 1.0,
+            "tone": "positive"
+          },
+          {
+            "id": 1,
+            "label": "Fé",
+            "value": 4,
+            "fieldAverage": 7.0,
+            "delta": -3.0,
+            "tone": "negative"
+          },
+          {
+            "id": 13,
+            "label": "Caridade",
+            "value": 4,
+            "fieldAverage": 3.0,
+            "delta": 1.0,
+            "tone": "positive"
+          },
+          {
+            "id": 3,
+            "label": "Temperança",
+            "value": 3,
+            "fieldAverage": 2.0,
+            "delta": 1.0,
+            "tone": "positive"
+          },
+          {
+            "id": 6,
+            "label": "Iniquidade",
+            "value": 3,
+            "fieldAverage": 3.0,
+            "delta": 0.0,
+            "tone": "neutral"
+          },
+          {
+            "id": 10,
+            "label": "Desespero",
+            "value": 3,
+            "fieldAverage": 2.0,
+            "delta": 1.0,
+            "tone": "positive"
+          },
+          {
+            "id": 2,
+            "label": "Dúvida",
+            "value": 2,
+            "fieldAverage": 4.0,
+            "delta": -2.0,
+            "tone": "negative"
+          },
+          {
+            "id": 9,
+            "label": "Esperança",
+            "value": 2,
+            "fieldAverage": 3.5,
+            "delta": -1.5,
+            "tone": "negative"
+          },
+          {
+            "id": 4,
+            "label": "Descontrole",
+            "value": 1,
+            "fieldAverage": 1.5,
+            "delta": -0.5,
+            "tone": "neutral"
+          },
+          {
+            "id": 8,
+            "label": "Covardia",
+            "value": 1,
+            "fieldAverage": 1.0,
+            "delta": 0.0,
+            "tone": "neutral"
+          },
+          {
+            "id": 12,
+            "label": "Insensatez",
+            "value": 1,
+            "fieldAverage": 3.5,
+            "delta": -2.5,
+            "tone": "negative"
+          }
+        ],
+        "averages": {
+          "cost": {
+            "value": 2.27,
+            "fieldAverage": 2.56,
+            "delta": -0.29,
+            "tone": "positive"
+          },
+          "attack": {
+            "value": 1.55,
+            "fieldAverage": 2.1,
+            "delta": -0.55,
+            "tone": "negative"
+          },
+          "resistance": {
+            "value": 2.05,
+            "fieldAverage": 2.35,
+            "delta": -0.3,
+            "tone": "negative"
+          }
+        },
+        "curve": [
+          {
+            "cost": 1,
+            "count": 13,
+            "fieldAverage": 11.0,
+            "tone": "positive"
+          },
+          {
+            "cost": 2,
+            "count": 11,
+            "fieldAverage": 11.0,
+            "tone": "neutral"
+          },
+          {
+            "cost": 3,
+            "count": 12,
+            "fieldAverage": 9.0,
+            "tone": "positive"
+          },
+          {
+            "cost": 4,
+            "count": 2,
+            "fieldAverage": 5.0,
+            "tone": "negative"
+          },
+          {
+            "cost": 5,
+            "count": 1,
+            "fieldAverage": 2.5,
+            "tone": "negative"
+          },
+          {
+            "cost": 6,
+            "count": 0,
+            "fieldAverage": 0.5,
+            "tone": "neutral"
+          },
+          {
+            "cost": 7,
+            "count": 1,
+            "fieldAverage": 1.0,
+            "tone": "neutral"
+          }
+        ],
+        "sweetSpot": 1
+      }
+    }
+  ]
+}
