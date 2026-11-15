@@ -1,6 +1,6 @@
 {
   "schemaVersion": 4,
-  "updatedAt": "2026-09-26",
+  "updatedAt": "2026-11-15",
   "meta": {
     "collections": [
       3,
@@ -38,8 +38,8 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 17:4-11",
-      "text": "Dúvida Nv1 — Se você controlar um personagem com poder 6 ou mais, desprepare um personagem alvo que um oponente controla com poder 5 ou menos.\n\nInsensatez Nv2 — Um personagem alvo que você controla com poder 6 ou mais pode atacar um personagem preparado neste turno como se ele estivesse despreparado.",
+      "reference": "1 Samuel 17:4–11",
+      "text": "Dúvida Nv1 — Se você controlar um personagem com poder 6 ou mais, desprepare um personagem alvo que um oponente controla com poder 5 ou menos.\n\nInsensatez Nv1 — Um personagem alvo que você controla com poder 6 ou mais pode atacar um personagem preparado neste turno como se ele estivesse despreparado.",
       "rulings": []
     },
     {
@@ -72,7 +72,7 @@
       },
       "role": null,
       "reference": "1 Samuel 16:3",
-      "text": "Caridade Nv1 — Cure 1 de dano de até dois personagens alvo que você controla com poder 2 ou menos.\n\nPrudência Nv2 — Olhe as duas cartas do topo do seu baralho. Você pode revelar um personagem com poder 2 ou menos dentre elas e colocá-lo na sua mão. Coloque o resto no fundo.",
+      "text": "Caridade Nv2 — Cure 1 de dano de até dois personagens alvo que você controla com poder 2 ou menos.\n\nPrudência Nv2 — Olhe as duas cartas do topo do seu baralho. Você pode revelar um personagem com poder 2 ou menos dentre elas e colocá-lo na sua mão. Coloque o resto no fundo.",
       "rulings": []
     },
     {
@@ -104,8 +104,8 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 17:55-58",
-      "text": "Fortaleza Nv1 — Até dois Guerreiros alvo que você controla recebem +0/+1 até o reagrupamento.\n\nPrudência Nv2 — Prepare um personagem alvo que você controla. Ele não pode atacar neste turno.",
+      "reference": "1 Samuel 17:55–58",
+      "text": "Fortaleza Nv2 — Até dois Guerreiros alvo que você controla recebem +0/+1 até o reagrupamento.\n\nPrudência Nv3 — Prepare um personagem alvo que você controla.",
       "rulings": []
     },
     {
@@ -137,8 +137,8 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 17:45-47",
-      "text": "Ao consagrar um artefato, em vez do efeito normal, você pode escolher um personagem seu sem equipamentos ou só com equipamentos de custo {1} ou menos. Ele recebe +2/+2 até o reagrupamento. Se equipar um de custo {2} ou mais, perde o bônus.",
+      "reference": "1 Samuel 17:45–47",
+      "text": "Ao consagrar um artefato, em vez do efeito normal, você pode escolher um personagem que você controla com poder 2 ou menos e sem equipamentos ou só com equipamentos de custo {1} ou menos. Ele recebe +2/+2 até o reagrupamento. Ele não pode ser equipado até o reagrupamento.",
       "rulings": []
     },
     {
@@ -157,7 +157,7 @@
         "art": "../assets/imgs/DDG - 005.webp"
       },
       "virtues": [],
-      "cost": 1.0,
+      "cost": 2.0,
       "stats": {
         "attack": null,
         "resistance": null
@@ -170,8 +170,8 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 17:45-47",
-      "text": "Ao consagrar um personagem, em vez do efeito normal, você pode escolher um personagem alvo seu e um personagem alvo de um oponente com poder maior. O primeiro recebe +1/+1 e, até o reagrupamento, ele pode atacar o segundo mesmo preparado.",
+      "reference": "1 Samuel 17:45–47",
+      "text": "Ao consagrar um personagem, em vez do efeito normal, você pode escolher um personagem alvo que você controla e um personagem alvo que um oponente controla com poder maior. O primeiro recebe +1/+1 e, até o reagrupamento, ele pode atacar o segundo mesmo preparado.",
       "rulings": []
     },
     {
@@ -203,8 +203,8 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 16:1-5",
-      "text": "Quando consagrar um milagre, em vez do efeito normal, você pode escolher um personagem preparado que controla. Até o reagrupamento, enquanto ele permanecer preparado, não poderá ser alvo de cartas nem habilidades de oponentes.",
+      "reference": "1 Samuel 16:1–5",
+      "text": "Quando consagrar um milagre, em vez do efeito normal, você pode escolher um personagem preparado que você controla. Até o reagrupamento, enquanto ele permanecer preparado, ele recebe INALVEJÁVEL.",
       "rulings": []
     },
     {
@@ -226,7 +226,7 @@
       "cost": null,
       "stats": {
         "attack": null,
-        "resistance": 18.0
+        "resistance": 14.0
       },
       "rating": 0,
       "functions": [],
@@ -236,7 +236,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 17:2-3",
+      "reference": "1 Samuel 17:2–3",
       "text": "A primeira vez em cada turno que um personagem que você controla for declarado atacante contra outro personagem, ele recebe +1/+0 até o reagrupamento. Se o personagem atacado possuir poder maior, ele recebe +2/+0 em vez disso.",
       "rulings": []
     },
@@ -259,7 +259,7 @@
       "cost": null,
       "stats": {
         "attack": null,
-        "resistance": 24.0
+        "resistance": 14.0
       },
       "rating": 0,
       "functions": [],
@@ -269,8 +269,8 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 16:1-13",
-      "text": "No início do seu combate, escolha um personagem que você controla com poder 2 ou menos. Até o reagrupamento, a primeira vez que ele combater contra um personagem com poder maior, previna 1 do dano que receberia naquele combate.",
+      "reference": "1 Samuel 16:1–13",
+      "text": "No início do seu combate, escolha um personagem que você controla com poder 2 ou menos. Até o reagrupamento, a primeira vez que ele combater contra um personagem com poder maior, cure-o em 1 e coloque nele um marcador de escudo.",
       "rulings": []
     },
     {
@@ -292,7 +292,7 @@
       "cost": null,
       "stats": {
         "attack": null,
-        "resistance": 22.0
+        "resistance": 14.0
       },
       "rating": 0,
       "functions": [],
@@ -302,8 +302,8 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 17:1-11.",
-      "text": "No início do seu combate, você pode revelar um personagem com poder 6 ou mais da mão. Se fizer, progrida em 1 sua Dúvida ou Insensatez e até um personagem alvo sem Fé como virtude associada recebe -2/-0 até o reagrupamento.",
+      "reference": "1 Samuel 17:1–11.",
+      "text": "No início do seu combate, você pode revelar um personagem com poder 6 ou mais da mão. Se fizer, progrida em 1 sua Dúvida ou Insensatez e até um personagem alvo sem Fé como virtude associada recebe -3/-0 até o reagrupamento.",
       "rulings": []
     },
     {
@@ -341,8 +341,8 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 17:32-49",
-      "text": "Este personagem pode atacar personagens preparados que possuam poder maior que o dele. ATAQUE: Se ele estiver equipado com um equipamento de custo {1} ou menos e atacar um personagem com poder 6 ou mais, destrua o personagem atacado.",
+      "reference": "1 Samuel 17:32–49",
+      "text": "Este personagem pode atacar personagens preparados que possuam poder maior que o dele. ATAQUE: Se este personagem estiver equipado com um equipamento de custo {1} ou menos e atacar um personagem com poder 6 ou mais, destrua o personagem atacado.",
       "rulings": []
     },
     {
@@ -381,7 +381,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 17:41-44",
+      "reference": "1 Samuel 17:41–44",
       "text": "SOBREPUJAR. Este personagem pode atacar personagens preparados como se estivessem despreparados. Enquanto um oponente controlar um personagem, este personagem não pode atacar o território daquele oponente.",
       "rulings": []
     },
@@ -416,7 +416,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 16:11-13",
+      "reference": "1 Samuel 16:11–13",
       "text": "Animais que seus oponentes controlam recebem -1/-0. Animais que você controla recebem +0/+1.",
       "rulings": []
     },
@@ -440,8 +440,7 @@
       },
       "virtues": [
         2,
-        10,
-        14
+        10
       ],
       "cost": 4.0,
       "stats": {
@@ -493,7 +492,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 16:1-13",
+      "reference": "1 Samuel 16:1–13",
       "text": "ENTRADA: Olhe as três cartas do topo do seu baralho. Você pode revelar um personagem com poder 2 ou menos dentre elas e colocá-lo na sua mão. Se fizer isso, progrida em 1 sua Esperança. Coloque o resto no fundo.",
       "rulings": []
     },
@@ -564,7 +563,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 17:17-22",
+      "reference": "1 Samuel 17:17–22",
       "text": "ENTRADA: Cure 1 de dano de até dois Guerreiros alvo que você controla.",
       "rulings": []
     },
@@ -600,7 +599,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 16:21-23",
+      "reference": "1 Samuel 16:21–23",
       "text": "{T}: Se este personagem estiver equipado com um Instrumento, prepare outro personagem alvo. Se ele possuir Desespero ou Dúvida como desvirtude associada, seu controlador pode progredir em 1 a virtude oposta a uma delas.",
       "rulings": []
     },
@@ -626,7 +625,7 @@
         7,
         14
       ],
-      "cost": 2.0,
+      "cost": 3.0,
       "stats": {
         "attack": 3.0,
         "resistance": 1.0
@@ -662,7 +661,7 @@
         "art": "../assets/imgs/DDG - 019.webp"
       },
       "virtues": [],
-      "cost": 2.0,
+      "cost": 3.0,
       "stats": {
         "attack": 3.0,
         "resistance": 1.0
@@ -675,8 +674,8 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 16:8-10",
-      "text": "Sempre que outro personagem com poder 2 ou menos entrar sob seu controle, se este personagem estiver preparado, desprepare-o. Se fizer isso, aquele personagem recebe +1/+1 até o reagrupamento.",
+      "reference": "1 Samuel 16:8–10",
+      "text": "Sempre que outro personagem com poder 2 ou menos entrar sob seu controle, se este personagem estiver preparado, desprepare-o. Se fizer isso, aquele personagem recebe PRONTIDÃO até o reagrupamento.",
       "rulings": []
     },
     {
@@ -751,7 +750,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 17:1-11.",
+      "reference": "1 Samuel 17:1–11.",
       "text": "ATAQUE: Se você controlar outro personagem com poder 6 ou mais, este personagem recebe +1/+0 até o reagrupamento.",
       "rulings": []
     },
@@ -787,7 +786,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 17:51-53",
+      "reference": "1 Samuel 17:51–53",
       "text": "INESPERADO. ENTRADA: Se for seu turno, um personagem com poder 6 ou mais tiver morrido neste turno e você estiver na etapa de combate, após esta etapa haverá uma etapa de combate adicional.",
       "rulings": []
     },
@@ -826,8 +825,8 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 17:55-58",
-      "text": "Sempre que outro personagem que você controla destruir em combate um personagem com poder 6 ou mais, se você controlar um Rei, prepare aquele personagem. Ele se torna Nobre além de seus outros tipos.",
+      "reference": "1 Samuel 17:55–58",
+      "text": "Sempre que outro personagem que você controla destruir em combate um personagem com poder 6 ou mais, se você controlar um rei, prepare o personagem e ele torna-se Nobre além dos outros tipos.",
       "rulings": []
     },
     {
@@ -899,7 +898,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 16:15-18",
+      "reference": "1 Samuel 16:15–18",
       "text": "ENTRADA: Olhe as três cartas do topo do seu baralho. Você pode revelar um personagem de custo {2} ou menos dentre elas e colocá-lo no topo. Coloque o resto no fundo.",
       "rulings": []
     },
@@ -970,7 +969,7 @@
       },
       "role": null,
       "reference": "1 Samuel 16:20",
-      "text": "Este personagem entra com três marcadores de suprimento. {T}, remova um marcador de suprimento: cure 1 de dano de um personagem alvo que você controla. Quando o último marcador for removido, renuncie este personagem.",
+      "text": "Este personagem entra com três marcadores de suprimento. {T}, remova um marcador de suprimento deste personagem: cure 1 de dano de um personagem alvo que você controla. Quando o último marcador for removido, renuncie este personagem.",
       "rulings": []
     },
     {
@@ -983,8 +982,8 @@
         3
       ],
       "name": {
-        "pt": "Pedra à Testa",
-        "en": "Pedra À Testa"
+        "pt": "Headshot",
+        "en": "Headshot"
       },
       "images": {
         "card": "../assets/cards/DDG - 028.webp",
@@ -1006,7 +1005,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 17:48-50",
+      "reference": "1 Samuel 17:48–50",
       "text": "Cause 3 de dano a um personagem alvo. Se ele possuir poder 6 ou mais, destrua-o em vez disso.",
       "rulings": []
     },
@@ -1043,7 +1042,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 17:45-47",
+      "reference": "1 Samuel 17:45–47",
       "text": "Escolha um personagem alvo que você controla com poder 2 ou menos e um personagem alvo que um oponente controla com poder 6 ou mais. Até o reagrupamento, o primeiro ganha LETAL e INDESTRUTÍVEL. Eles duelam.",
       "rulings": []
     },
@@ -1067,7 +1066,7 @@
       "virtues": [
         11
       ],
-      "cost": 2.0,
+      "cost": 1.0,
       "stats": {
         "attack": null,
         "resistance": null
@@ -1080,7 +1079,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 17:38-40",
+      "reference": "1 Samuel 17:38–40",
       "text": "Devolva um equipamento anexado a um personagem alvo que você controla para a mão de seu dono. Se fizer isso, prepare esse personagem, busque em sua reserva um equipamento de custo menor e coloque-o no campo de batalha anexado a ele.",
       "rulings": []
     },
@@ -1118,7 +1117,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 17:34-37",
+      "reference": "1 Samuel 17:34–37",
       "text": "Escolha um personagem alvo que você controla. Até o reagrupamento, previna todo o dano de combate que personagens com poder base maior causariam a ele. Enquanto ele bloquear um ou mais desses personagens, recebe +3/+0.",
       "rulings": []
     },
@@ -1155,7 +1154,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 16:6-7;",
+      "reference": "1 Samuel 16:6–7;",
       "text": "O personagem alvo com o menor poder entre os personagens que você controla recebe +2/+2 até o reagrupamento.",
       "rulings": []
     },
@@ -1192,8 +1191,8 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 16:11-13",
-      "text": "Jogue esta carta apenas se você não controlar um personagem com poder 2 ou menos. Busque em sua reserva um personagem com poder 2 ou menos e coloque-o na sua mão.",
+      "reference": "1 Samuel 16:11–13",
+      "text": "Jogue esta carta apenas se você não controlar um personagem com poder 2 ou menos. Busque na sua reserva um personagem com poder 2 ou menos e coloque-o na sua mão.",
       "rulings": []
     },
     {
@@ -1251,7 +1250,7 @@
       "virtues": [
         7
       ],
-      "cost": 1.0,
+      "cost": 2.0,
       "stats": {
         "attack": null,
         "resistance": null
@@ -1264,8 +1263,8 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 17:25-27",
-      "text": "Quando um personagem seu destruir em combate um de poder 6 ou mais, renuncie este milagre e escolha um: crie duas fichas de Ouro; ele recebe +2/+2 e se torna Nobre além dos seus outros tipos; sua próxima carta neste turno custa {3} a menos.",
+      "reference": "1 Samuel 17:25–27",
+      "text": "Quando um personagem que você controla destruir em combate um de poder 6 ou mais, renuncie este milagre e escolha um: crie duas fichas de Ouro; ele recebe +2/+2 e se torna Nobre além dos seus outros tipos; sua próxima carta neste turno custa {3} a menos.",
       "rulings": []
     },
     {
@@ -1300,7 +1299,7 @@
       },
       "role": null,
       "reference": "1 Samuel 16:11",
-      "text": "Personagens não podem atacar. Quando um personagem com poder 2 ou menos entrar no campo de batalha, renuncie este milagre. Qualquer jogador pode ativar “Progrida em 2 seu Descontrole: destrua este milagre”.",
+      "text": "Personagens não podem ser declarados como atacantes. Quando um personagem com poder 2 ou menos entrar no campo de batalha, renuncie este milagre. Qualquer jogador pode ativar “Progrida em 2 seu Descontrole: destrua este milagre”.",
       "rulings": []
     },
     {
@@ -1371,8 +1370,8 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 18:6-9",
-      "text": "Escolha dois personagens alvo que você controla que combateram neste turno. Um deles recebe  +1/+0 e o outro recebe +3/+0. Prepare-os. Se o personagem com maior bônus não for um Rei e você controlar um Rei, progrida 1 Egoísmo.",
+      "reference": "1 Samuel 18:6–9",
+      "text": "Escolha dois personagens alvo que você controla que combateram neste turno. Um deles recebe +1/+0 e o outro recebe +3/+0. Prepare-os. Se o personagem que recebeu o maior bônus não for um Rei e você controlar um Rei, progrida 1 Egoísmo.",
       "rulings": []
     },
     {
@@ -1407,7 +1406,7 @@
       },
       "role": null,
       "reference": "1 Samuel 17:40",
-      "text": "Este artefato entra com cinco marcadores de pedra. EQUIPÁVEL: {T}, remova dele um marcador de pedra: cause 1 de dano a um personagem alvo. Se o equipado possuir poder 2 ou menos e o alvo possuir poder 6 ou mais, destrua-o em vez disso.",
+      "text": "Este artefato entra com cinco marcadores de pedra. EQUIPÁVEL: {T}, remova um marcador de pedra: cause 1 de dano a um personagem alvo. Se o equipado possuir poder 2 ou menos e o alvo possuir poder 6 ou mais, renuncie este artefato e destrua-o em vez disso.",
       "rulings": []
     },
     {
@@ -1442,7 +1441,7 @@
       },
       "role": null,
       "reference": "1 Samuel 17:51",
-      "text": "EQUIPÁVEL: +4/+0. Quando o personagem equipado morrer em combate, o controlador deste artefato escolhe um personagem que batalhou com ele. O controlador do escolhido ganha o controle deste artefato e pode anexá-lo àquele personagem.",
+      "text": "EQUIPÁVEL: +4/+0. Quando o personagem equipado for destruído, se um ou mais personagens causaram dano de combate a ele neste turno, escolha um dentre eles. O controlador do personagem escolhido ganha o controle deste Equipamento. Em seguida, aquele jogador pode anexá-lo a um personagem à sua escolha.",
       "rulings": []
     },
     {
@@ -1476,7 +1475,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 17:38-39",
+      "reference": "1 Samuel 17:38–39",
       "text": "EQUIPÁVEL: +0/+4. Se o poder base do personagem equipado for 2 ou menos, ele não pode atacar nem bloquear.",
       "rulings": []
     },
@@ -1544,7 +1543,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 16:21-23",
+      "reference": "1 Samuel 16:21–23",
       "text": "EQUIPÁVEL: {T}: prepare outro personagem alvo. Se ele for um Rei, seu controlador pode progredir em 1 sua Esperança.",
       "rulings": []
     },
@@ -1635,9 +1634,9 @@
       },
       "virtues": [
         2,
-        4,
         6,
-        12
+        12,
+        4
       ],
       "cost": 1.0,
       "stats": {
@@ -1652,7 +1651,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 17:42-44",
+      "reference": "1 Samuel 17:42–44",
       "text": "Um personagem alvo com poder 2 ou menos recebe -1/-1 até o reagrupamento. Ele recebe -1/-1 adicional se não estiver equipado ou se todos os equipamentos anexados custarem {1} ou menos, e mais -1/-1 se não possuir Fé como virtude associada.",
       "rulings": []
     },
@@ -1666,8 +1665,8 @@
         3
       ],
       "name": {
-        "pt": "Com Quem Deixaste as Ovelhas?",
-        "en": "Com Quem Deixaste As Ovelhas?"
+        "pt": "Arrogância do Fortes",
+        "en": "Arrogância Do Fortes"
       },
       "images": {
         "card": "../assets/cards/DDG - 047.webp",
@@ -1689,8 +1688,8 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 17:28-30",
-      "text": "Escolha um personagem alvo com poder 2 ou menos que um oponente controla. Seu controlador pode devolvê-lo à mão de seu dono. Se não fizer isso, ele recebe -1/-1 até o reagrupamento, ou -2/-2 se for Pastor.",
+      "reference": "1 Samuel 17:28–30",
+      "text": "Escolha um personagem alvo com poder 2 ou menos que um oponente controla. Seu controlador pode devolvê-lo à mão de seu dono. Se não fizer isso, ele recebe -1/-1 até o reagrupamento. Se o personagem não for um Guerreiro ele recebe -2/-2 em vez disso.",
       "rulings": []
     },
     {
@@ -1701,8 +1700,8 @@
       ],
       "subtype": [],
       "name": {
-        "pt": "Espírito Mau sobre Saul",
-        "en": "Espírito Mau Sobre Saul"
+        "pt": "O Preço da Rejeição",
+        "en": "O Preço Da Rejeição"
       },
       "images": {
         "card": "../assets/cards/DDG - 048.webp",
@@ -1727,7 +1726,7 @@
       },
       "role": null,
       "reference": "1 Samuel 16:14",
-      "text": "VINCULAR A PERSONAGEM QUE VOCÊ CONTROLA. Jogadas e habilidades de oponentes que puderem escolher um personagem seu como alvo devem escolher este se possível. Sempre que ele for alvo dessa forma, desprepare-o e progrida em 1 seu Desespero.",
+      "text": "VINCULAR A PERSONAGEM QUE VOCÊ CONTROLA. Jogadas e habilidades de oponentes que puderem escolher um personagem seu como alvo devem escolher este personagem se possível. Sempre que este personagem se tornar alvo dessa forma, desprepare-o e progrida em 1 seu Desespero.",
       "rulings": []
     },
     {
@@ -1763,7 +1762,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 16:6-7",
+      "reference": "1 Samuel 16:6–7",
       "text": "Um personagem alvo que você controla recebe +3/+3 até o reagrupamento. Outro personagem alvo que você controla com poder menor recebe -1/-1 até o reagrupamento.",
       "rulings": []
     },
@@ -1829,8 +1828,8 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "2 Samuel 6:10-12",
-      "text": "Esperança Nv2 — Se você controlar um artefato Sagrado sua próxima carta neste turno custa {1} a menos.\n\nFé Nv1 — Cure 1 de dano do seu território. Se você controlar um artefato Sagrado, cure 2 em vez disso.",
+      "reference": "2 Samuel 6:10–12",
+      "text": "Esperança Nv2 — Se você controlar um artefato Sagrado sua próxima carta neste turno custa {1} a menos.\n\nFé Nv2 — Cure 1 de dano do seu território. Se você controlar um artefato Sagrado, cure 2 em vez disso.",
       "rulings": []
     },
     {
@@ -1862,8 +1861,8 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 25:23-35",
-      "text": "Prudência Nv1 — Um personagem alvo não pode atacar até o reagrupamento.\n\nCaridade Nv1 — Até o reagrupamento, se um personagem alvo que você controla fosse ser destruído em combate, coloque-o no topo do seu baralho em vez disso.",
+      "reference": "1 Samuel 25:23–35",
+      "text": "Caridade Nv2 — Até o reagrupamento, se um personagem alvo que você controla fosse ser destruído em combate, coloque-o no topo do seu baralho em vez disso. Prudência Nv3 — O personagem alvo não pode atacar até o reagrupamento.",
       "rulings": []
     },
     {
@@ -1882,7 +1881,7 @@
         "art": "../assets/imgs/TEC - 004.webp"
       },
       "virtues": [],
-      "cost": 2.0,
+      "cost": 3.0,
       "stats": {
         "attack": null,
         "resistance": null
@@ -1895,8 +1894,8 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "Salmo 51:16-17",
-      "text": "Na sua etapa de Consagração, ao declarar Omissão tendo uma desvirtude ativa, você pode descartar 1 carta. Se fizer isso, escolha uma de suas desvirtudes ativas de maior valor e progrida em 2 a virtude oposta.",
+      "reference": "Salmo 51:16–17",
+      "text": "Na sua etapa de Consagração, ao declarar Omissão tendo uma desvirtude ativa, você pode descartar 1 carta. Se fizer isso, escolha uma de suas desvirtudes ativas de maior valor e progrida em 3 a virtude oposta.",
       "rulings": []
     },
     {
@@ -1915,7 +1914,7 @@
         "art": "../assets/imgs/TEC - 005.webp"
       },
       "virtues": [],
-      "cost": 1.0,
+      "cost": 2.0,
       "stats": {
         "attack": null,
         "resistance": null
@@ -1928,8 +1927,8 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "2 Samuel 6:12-13",
-      "text": "No início da sua etapa de Consagração, você pode despreparar um artefato Sagrado e um personagem seu. Se os despreparar e escolher consagrar, você pode consagrar outra carta adicional. Se não os despreparar, renuncie um artefato.",
+      "reference": "2 Samuel 6:12–13",
+      "text": "No início da sua etapa de Consagração, você pode despreparar um artefato Sagrado e um personagem que você controla. Se o fizer e optar por Consagração, você pode consagrar uma carta adicional. Se não os despreparar, renuncie um artefato Sagrado.",
       "rulings": []
     },
     {
@@ -1940,15 +1939,15 @@
       ],
       "subtype": [],
       "name": {
-        "pt": "Casa de Obede-Edom",
-        "en": "Casa De Obede-Edom"
+        "pt": "Morada da Plenitude",
+        "en": "Morada Da Plenitude"
       },
       "images": {
         "card": "../assets/cards/TEC - 006.webp",
         "art": "../assets/imgs/TEC - 006.webp"
       },
       "virtues": [],
-      "cost": 3.0,
+      "cost": 2.0,
       "stats": {
         "attack": null,
         "resistance": null
@@ -1961,8 +1960,8 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "2 Samuel 6:10-12",
-      "text": "Se você controlar um artefato Sagrado, ao consagrar uma carta, aplique o efeito de Consagração de artefato em vez do efeito correspondente ao tipo dela.",
+      "reference": "2 Samuel 6:10–12",
+      "text": "Se você controlar um artefato Sagrado, ao consagrar uma carta, você pode aplicar o efeito de Consagração de artefato em vez do efeito correspondente ao tipo dela.",
       "rulings": []
     },
     {
@@ -1984,7 +1983,7 @@
       "cost": null,
       "stats": {
         "attack": null,
-        "resistance": 18.0
+        "resistance": 12.0
       },
       "rating": 0,
       "functions": [],
@@ -1994,7 +1993,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "2 Samuel 5:6-10",
+      "reference": "2 Samuel 5:6–10",
       "text": "No início da sua etapa de Combate, se você controlar três ou mais personagens, um personagem alvo que você controla recebe +1/+0 e SOBREPUJAR até o reagrupamento.",
       "rulings": []
     },
@@ -2017,7 +2016,7 @@
       "cost": null,
       "stats": {
         "attack": null,
-        "resistance": 14.0
+        "resistance": 12.0
       },
       "rating": 0,
       "functions": [],
@@ -2027,8 +2026,8 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "2 Samuel 2:1-4",
-      "text": "No início da sua etapa de Combate, escolha um personagem que você controla. personagens que compartilham ao menos uma característica associada com ele recebem +1/+1 até o reagrupamento.",
+      "reference": "2 Samuel 2:1–4",
+      "text": "No início da sua etapa de Combate, escolha um personagem que você controla. Personagens que compartilham ao menos uma característica associada com ele recebem +1/+1 até o reagrupamento.",
       "rulings": []
     },
     {
@@ -2050,7 +2049,7 @@
       "cost": null,
       "stats": {
         "attack": null,
-        "resistance": 18.0
+        "resistance": 14.0
       },
       "rating": 0,
       "functions": [],
@@ -2084,8 +2083,8 @@
       },
       "virtues": [
         1,
-        6,
         7,
+        6,
         12
       ],
       "cost": 5.0,
@@ -2101,7 +2100,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "2 Samuel 5:1-5",
+      "reference": "2 Samuel 5:1–5",
       "text": "Enquanto você controlar três ou mais personagens, outros personagens que você controla recebem +1/+1. ATAQUE: Crie uma ficha de personagem Soldado Israelita 0/2 despreparada e atacando o mesmo alvo.",
       "rulings": []
     },
@@ -2125,8 +2124,8 @@
       },
       "virtues": [
         1,
-        7,
-        9
+        9,
+        7
       ],
       "cost": 5.0,
       "stats": {
@@ -2141,7 +2140,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "2 Samuel 2:1-4",
+      "reference": "2 Samuel 2:1–4",
       "text": "Este personagem ataca e bloqueia em cada combate se estiver apto. Enquanto estiver no campo de batalha, todos os territórios perdem todas as habilidades.",
       "rulings": []
     },
@@ -2163,7 +2162,7 @@
         "art": "../assets/imgs/TEC - 012.webp"
       },
       "virtues": [],
-      "cost": 1.0,
+      "cost": 2.0,
       "stats": {
         "attack": 0.0,
         "resistance": 1.0
@@ -2177,7 +2176,7 @@
       },
       "role": null,
       "reference": "2 Samuel 11:3",
-      "text": "INESPERADO. Ao jogar esta carta, seu dono escolhe um oponente. Ela entra no campo de batalha sob o controle dele. Enquanto seu controlador tiver Insensatez 1 ou mais, ele pula sua etapa de Combate.",
+      "text": "INESPERADO. Ao jogar este personagem, escolha um oponente alvo. Este personagem entra no campo de batalha sob o controle do oponente escolhido. Enquanto o controlador deste personagem possuir Prudência 0 ou menos ele pula sua etapa de Combate.",
       "rulings": []
     },
     {
@@ -2214,7 +2213,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "2 Samuel 11:6-13",
+      "reference": "2 Samuel 11:6–13",
       "text": "PRONTIDÃO. Enquanto este personagem estiver despreparado, sua Resistência base é 1.",
       "rulings": []
     },
@@ -2251,7 +2250,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "2 Samuel 12:1-7",
+      "reference": "2 Samuel 12:1–7",
       "text": "ENTRADA: Um oponente alvo revela a mão. Escolha um Urias, uma Bate-Seba ou um pecado revelado dessa forma. Aquele jogador descarta a carta escolhida.",
       "rulings": []
     },
@@ -2344,13 +2343,13 @@
         "art": "../assets/imgs/TEC - 017.webp"
       },
       "virtues": [
-        11,
-        13
+        13,
+        11
       ],
       "cost": 3.0,
       "stats": {
         "attack": 0.0,
-        "resistance": 3.0
+        "resistance": 2.0
       },
       "rating": 0,
       "functions": [],
@@ -2360,7 +2359,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "1 Samuel 25:23-35",
+      "reference": "1 Samuel 25:23–35",
       "text": "INESPERADO. ENTRADA: Até o reagrupamento, previna todo o dano de combate que seria causado por personagens.",
       "rulings": []
     },
@@ -2399,7 +2398,7 @@
       },
       "role": null,
       "reference": "2 Samuel 6:11",
-      "text": "No início do seu reagrupamento, se você controlar um artefato Sagrado, crie uma ficha de Ouro.",
+      "text": "No início do seu reagrupamento, se você controlar um artefato Sagrado, crie uma ficha de Ouro despreparada.",
       "rulings": []
     },
     {
@@ -2412,17 +2411,17 @@
         9
       ],
       "name": {
-        "pt": "Uza, Mão Impulsiva",
-        "en": "Uza, Mão Impulsiva"
+        "pt": "Uzá, Mão Impulsiva",
+        "en": "Uzá, Mão Impulsiva"
       },
       "images": {
         "card": "../assets/cards/TEC - 019.webp",
         "art": "../assets/imgs/TEC - 019.webp"
       },
       "virtues": [],
-      "cost": 3.0,
+      "cost": 2.0,
       "stats": {
-        "attack": 1.0,
+        "attack": 0.0,
         "resistance": 1.0
       },
       "rating": 0,
@@ -2433,8 +2432,8 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "2 Samuel 6:3-7",
-      "text": "INESPERADO. ENTRADA: Até o reagrupamento, um artefato alvo ganha INDESTRUTÍVEL e não pode ser alvo de jogadas nem habilidades de oponentes. Se o artefato escolhido for Sagrado, renuncie este personagem.",
+      "reference": "2 Samuel 6:3–7",
+      "text": "INESPERADO. ENTRADA: Até o reagrupamento, um artefato alvo ganha INDESTRUTÍVEL e INALVEJÁVEL. Se o artefato escolhido for Sagrado, renuncie este personagem.",
       "rulings": []
     },
     {
@@ -2468,7 +2467,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "2 Samuel 6:3-4",
+      "reference": "2 Samuel 6:3–4",
       "text": "Enquanto você controlar um artefato Sagrado, este personagem recebe +1/+0 durante seu turno.",
       "rulings": []
     },
@@ -2488,9 +2487,9 @@
         "art": "../assets/imgs/TEC - 021.webp"
       },
       "virtues": [
+        14,
         6,
-        12,
-        14
+        12
       ],
       "cost": 2.0,
       "stats": {
@@ -2540,8 +2539,8 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "2 Samuel 9:1-13",
-      "text": "RESERVA: Quando você jogar um Rei, pode revelar esta carta e colocá-la no campo de batalha sob seu controle, despreparada. ENTRADA: Crie uma ficha de Ouro.",
+      "reference": "2 Samuel 9:1–13",
+      "text": "RESERVA: Quando você jogar um Rei, pode revelar esta carta e colocá-la no campo de batalha sob seu controle, despreparada. ENTRADA: Crie uma ficha de Ouro despreparada",
       "rulings": []
     },
     {
@@ -2563,7 +2562,7 @@
       "cost": 3.0,
       "stats": {
         "attack": 1.0,
-        "resistance": 1.0
+        "resistance": 3.0
       },
       "rating": 0,
       "functions": [],
@@ -2573,7 +2572,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "2 Samuel 9:2-5",
+      "reference": "2 Samuel 9:2–5",
       "text": "ENTRADA: Busque em sua reserva um personagem com poder 0 e coloque-o em sua mão.",
       "rulings": []
     },
@@ -2612,7 +2611,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "2 Samuel 3:6-21",
+      "reference": "2 Samuel 3:6–21",
       "text": "ENTRADA: Compre 1 carta, depois descarte 1 carta. SAÍDA: Compre 1 carta, depois descarte 1 carta.",
       "rulings": []
     },
@@ -2632,7 +2631,6 @@
         "art": "../assets/imgs/TEC - 025.webp"
       },
       "virtues": [
-        2,
         10
       ],
       "cost": 1.0,
@@ -2649,7 +2647,7 @@
       },
       "role": null,
       "reference": "2 Samuel 2:8-10",
-      "text": "Enquanto você controlar outro personagem com poder 3 ou mais e nenhum outro Rei, este personagem é Rei além dos outros tipos. Sempre que ele deixar de ser Rei, desprepare-o. Enquanto não for Rei, ele não pode atacar nem bloquear.",
+      "text": "Enquanto você controlar outro personagem com poder 3 ou mais e nenhum Rei, este personagem é Rei além dos outros tipos. No seu reagrupamento, se este personagem não for um Rei, desprepare-o.",
       "rulings": []
     },
     {
@@ -2668,9 +2666,9 @@
         "art": "../assets/imgs/TEC - 026.webp"
       },
       "virtues": [
-        4,
+        14,
         6,
-        14
+        4
       ],
       "cost": 3.0,
       "stats": {
@@ -2685,7 +2683,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "2 Samuel 4:5-12",
+      "reference": "2 Samuel 4:5–12",
       "text": "ENTRADA: Cause 3 de dano a um personagem alvo despreparado. Quando esse dano destruir o alvo, desprepare este personagem e progrida em 1 sua Covardia.",
       "rulings": []
     },
@@ -2724,7 +2722,7 @@
       },
       "role": null,
       "reference": "2 Samuel 2:18",
-      "text": "Este personagem só pode atacar personagens. Ao atacar, ele causa dano primeiro. Ele não pode ser preparado durante sua etapa de Preparação.",
+      "text": "Este personagem só pode declarar ataque a personagens. Este personagem não pode ser preparado durante sua etapa de Preparação. ATAQUE: ao atacar um personagem, este personagem ganha GOLPE RÁPIDO até o seu reagrupamento.",
       "rulings": []
     },
     {
@@ -2749,8 +2747,8 @@
       ],
       "cost": 1.0,
       "stats": {
-        "attack": 1.0,
-        "resistance": 2.0
+        "attack": 0.0,
+        "resistance": 3.0
       },
       "rating": 0,
       "functions": [],
@@ -2761,7 +2759,7 @@
       },
       "role": null,
       "reference": "2 Samuel 3:14-16",
-      "text": "Sempre que outro personagem que você controla deixar o campo de batalha sem morrer, se este estiver preparado, desprepare-o. Se fizer isso, compre 1 carta.",
+      "text": "Sempre que outro personagem que você controla deixar o campo de batalha sem morrer, se este personagem estiver preparado, desprepare-o. Se fizer isso, compre 1 carta.",
       "rulings": []
     },
     {
@@ -2799,7 +2797,7 @@
       },
       "role": null,
       "reference": "2 Samuel 10:10",
-      "text": "{T}: Até o reagrupamento, se um personagem seu fosse causar dano a outro com poder maior, antes disso ele recebe +1/+1 até o reagrupamento. Ative apenas se controlar três ou mais personagens.",
+      "text": "{T}: Se um personagem alvo que você controla fosse causar dano a outro personagem, antes disso ele recebe +3/+3 até o reagrupamento. Ative apenas se você controlar três ou mais personagens.",
       "rulings": []
     },
     {
@@ -2837,7 +2835,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "2 Samuel 8:15-18",
+      "reference": "2 Samuel 8:15–18",
       "text": "SOBREPUJAR",
       "rulings": []
     },
@@ -2863,7 +2861,7 @@
       ],
       "cost": 2.0,
       "stats": {
-        "attack": 2.0,
+        "attack": 1.0,
         "resistance": 3.0
       },
       "rating": 0,
@@ -2899,7 +2897,7 @@
         1,
         5
       ],
-      "cost": 2.0,
+      "cost": 1.0,
       "stats": {
         "attack": null,
         "resistance": null
@@ -2912,7 +2910,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "2 Samuel 7:8-16",
+      "reference": "2 Samuel 7:8–16",
       "text": "Como custo adicional para jogar esta carta, revele de sua mão um personagem que compartilhe ao menos um subtipo com um personagem que você controla. Busque em seu baralho uma Construção e coloque-a em sua mão.",
       "rulings": []
     },
@@ -2926,8 +2924,8 @@
         3
       ],
       "name": {
-        "pt": "Confissão do Rei Davi",
-        "en": "Confissão Do Rei Davi"
+        "pt": "Tú És este Homem",
+        "en": "Tú És Este Homem"
       },
       "images": {
         "card": "../assets/cards/TEC - 033.webp",
@@ -2936,7 +2934,7 @@
       "virtues": [
         3
       ],
-      "cost": 2.0,
+      "cost": 1.0,
       "stats": {
         "attack": null,
         "resistance": null
@@ -2950,7 +2948,7 @@
       },
       "role": null,
       "reference": "2 Samuel 12:13",
-      "text": "Escolha uma desvirtude ativa sua. Você pode despreparar um Rei preparado que controla. Se fizer isso, progrida em 2 a virtude correspondente; caso contrário, progrida em 1 essa virtude.",
+      "text": "Escolha a sua desvirtude ativa de maior valor. Você pode despreparar um Rei preparado que controla. Se fizer isso, progrida em 3 a Virtude oposta correspondente à ela; caso contrário, progrida somente 1 em vez disso.",
       "rulings": []
     },
     {
@@ -2963,8 +2961,8 @@
         3
       ],
       "name": {
-        "pt": "Entrada pelo Canal de Água",
-        "en": "Entrada Pelo Canal De Água"
+        "pt": "Sussurro em Sião",
+        "en": "Sussurro Em Sião"
       },
       "images": {
         "card": "../assets/cards/TEC - 034.webp",
@@ -2973,7 +2971,7 @@
       "virtues": [
         11
       ],
-      "cost": 4.0,
+      "cost": 3.0,
       "stats": {
         "attack": null,
         "resistance": null
@@ -3061,7 +3059,7 @@
       },
       "role": null,
       "reference": "2 Samuel 5:20",
-      "text": "Se você controlar três ou mais personagens ao jogar esta carta, não escolha alvo: personagens que você controla recebem +1/+0 e SOBREPUJAR até o reagrupamento. Caso contrário, um personagem alvo seu ganha SOBREPUJAR até o reagrupamento.",
+      "text": "Um personagem alvo que você controla ganha SOBREPUJAR até o reagrupamento. Se você controlar três ou mais personagens, em vez disso, todos os personagens que você controla recebem +1/+0 e SOBREPUJAR até o reagrupamento.",
       "rulings": []
     },
     {
@@ -3097,8 +3095,8 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "2 Samuel 5:23-25",
-      "text": "Se esta for sua primeira carta jogada neste turno, jogue-a sem alvo: personagens atacantes que você controla recebem +1/+0 e SOBREPUJAR até o reagrupamento. Caso contrário, um personagem atacante alvo seu recebe +1/+0 até o reagrupamento.",
+      "reference": "2 Samuel 5:23–25",
+      "text": "O personagem atacante alvo recebe +1/+0 até o reagrupamento. Se esta for sua primeira carta jogada nesse turno, ao invés disso, todos os seus personagens atacantes ganham +1/+0 e SOBREPUJAR.",
       "rulings": []
     },
     {
@@ -3134,7 +3132,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "2 Samuel 9:1-7",
+      "reference": "2 Samuel 9:1–7",
       "text": "Busque em sua reserva ou em seu cemitério um personagem com poder 0 e coloque-o em sua mão. Cure 1 de dano do seu território.",
       "rulings": []
     },
@@ -3171,7 +3169,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "2 Samuel 1:17-27",
+      "reference": "2 Samuel 1:17–27",
       "text": "Compre 1 carta. Depois, você pode colocar um personagem do seu cemitério no fundo do seu baralho. Se fizer isso, cure 2 de dano do seu território.",
       "rulings": []
     },
@@ -3204,8 +3202,8 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "2 Samuel 5:11-12",
-      "text": "CONSTRUÇÃO 5:\nDESGUARNECIDO 2: Se você controlar um Rei despreparado, crie uma ficha de Ouro.\nDESGUARNECIDO 1: Se você controlar um Rei preparado, progrida em 1 sua Insensatez.",
+      "reference": "2 Samuel 5:11–12",
+      "text": "CONSTRUÇÃO 3:\nDESGUARNECIDO 2: Se você controlar um Rei despreparado, crie uma ficha de Ouro.\nDESGUARNECIDO 1: Se você controlar um Rei preparado, compre uma carta e progrida em 1 sua Insensatez.",
       "rulings": []
     },
     {
@@ -3225,12 +3223,12 @@
       },
       "virtues": [
         1,
-        3,
+        9,
+        13,
         5,
         7,
-        9,
         11,
-        13
+        3
       ],
       "cost": 7.0,
       "stats": {
@@ -3245,8 +3243,8 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "2 Samuel 6:1-15",
-      "text": "Esta carta não pode ser anulada. Se fosse ao cemitério, embaralhe-a no baralho em vez disso. No início do seu reagrupamento, progrida em 1 uma virtude à sua escolha. Se você tinha uma desvirtude ativa nesse momento, renuncie este artefato.",
+      "reference": "2 Samuel 6:1–15",
+      "text": "Esta carta não pode ser anulada. \nSe este artefato fosse ser colocado no seu cemitério, embaralhe-o no baralho em vez disso. No início do seu reagrupamento, se você possuir desvirtudes ativas renuncie este artefato. Se não possuir nenhuma desvirtude ativa, progrida em 1 uma virtude à sua escolha em vez disso.este artefato.",
       "rulings": []
     },
     {
@@ -3281,7 +3279,7 @@
       },
       "role": null,
       "reference": "2 Samuel 6:14",
-      "text": "EQUIPÁVEL: +0/+1. ATAQUE: Se você tiver Fé ativa, o personagem equipado recebe +1/+0 até o reagrupamento.",
+      "text": "EQUIPÁVEL: +0/+1. ATAQUE: Se você possuir Fé ativa, o personagem equipado recebe +1/+0 até o reagrupamento.",
       "rulings": []
     },
     {
@@ -3302,7 +3300,7 @@
         "art": "../assets/imgs/TEC - 043.webp"
       },
       "virtues": [],
-      "cost": 2.0,
+      "cost": 1.0,
       "stats": {
         "attack": null,
         "resistance": null
@@ -3316,7 +3314,7 @@
       },
       "role": null,
       "reference": "2 Samuel 8:7-11",
-      "text": "EQUIPÁVEL: +0/+2. Sempre que o personagem equipado causar dano de combate a um território, crie uma ficha de Ouro.",
+      "text": "EQUIPÁVEL: +0/+1. Sempre que o personagem equipado causar dano de combate a um território, crie uma ficha de Ouro despreparada.",
       "rulings": []
     },
     {
@@ -3337,7 +3335,7 @@
         "art": "../assets/imgs/TEC - 044.webp"
       },
       "virtues": [],
-      "cost": 4.0,
+      "cost": 3.0,
       "stats": {
         "attack": null,
         "resistance": null
@@ -3351,7 +3349,7 @@
       },
       "role": null,
       "reference": "2 Samuel 8:2",
-      "text": "EQUIPÁVEL: Quando o equipado causar dano de combate ao território de um oponente, você pode renunciar este artefato. Se fizer, progrida em 3 seu Egoísmo e escolha até 3 personagens que esse oponente controla. Destrua 2 dentre eles.",
+      "text": "EQUIPÁVEL: Quando o personagem equipado causar dano de combate ao território de um oponente, você pode renunciar este artefato. Se fizer isso, progrida em 4 seu Egoísmo e escolha até 3 personagens que esse oponente controla. Destrua 2 dentre eles.",
       "rulings": []
     },
     {
@@ -3364,16 +3362,16 @@
         3
       ],
       "name": {
-        "pt": "Ponde Urias na Frente",
-        "en": "Ponde Urias Na Frente"
+        "pt": "Sentença Velada",
+        "en": "Sentença Velada"
       },
       "images": {
         "card": "../assets/cards/TEC - 045.webp",
         "art": "../assets/imgs/TEC - 045.webp"
       },
       "virtues": [
-        6,
-        14
+        14,
+        6
       ],
       "cost": 1.0,
       "stats": {
@@ -3388,8 +3386,8 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "2 Samuel 11:14-17",
-      "text": "Prepare um personagem alvo. Ele deve bloquear neste turno, se estiver apto. Se for Urias, somente ele poderá bloquear neste turno.",
+      "reference": "2 Samuel 11:14–17",
+      "text": "Prepare o personagem alvo que você controla e todos os personagens do oponente alvo. O personagem perde PRONTIDÃO e, se estiver apto, deve atacar sozinho o território do oponente. Todos os personagens aptos do oponente o bloqueiam. Se o personagem escolhido desta forma for destruído neste turno, compre uma carta.",
       "rulings": []
     },
     {
@@ -3410,11 +3408,11 @@
         "art": "../assets/imgs/TEC - 046.webp"
       },
       "virtues": [
-        4,
+        14,
         12,
-        14
+        4
       ],
-      "cost": 3.0,
+      "cost": 1.0,
       "stats": {
         "attack": null,
         "resistance": null
@@ -3428,7 +3426,7 @@
       },
       "role": null,
       "reference": "2 Samuel 5:13",
-      "text": "Compre 3 cartas. No início do seu próximo reagrupamento, descarte 3 cartas.",
+      "text": "Compre 3 cartas. No início do seu próximo reagrupamento, descarte 2 cartas.",
       "rulings": []
     },
     {
@@ -3449,8 +3447,8 @@
         "art": "../assets/imgs/TEC - 047.webp"
       },
       "virtues": [
-        6,
-        14
+        14,
+        6
       ],
       "cost": 4.0,
       "stats": {
@@ -3465,7 +3463,7 @@
         "archetypes": []
       },
       "role": null,
-      "reference": "2 Samuel 3:26-30",
+      "reference": "2 Samuel 3:26–30",
       "text": "INESPERADO. Jogue apenas durante o reagrupamento de um oponente e se nenhum personagem que ele controla tiver atacado seu território ou um personagem que você controla neste turno. Destrua um personagem alvo que aquele oponente controla.",
       "rulings": []
     },
@@ -3503,7 +3501,7 @@
       },
       "role": null,
       "reference": "2 Samuel 10:4-6",
-      "text": "Desprepare até dois personagens alvo. Cada personagem despreparado dessa forma recebe -2/-0 até o reagrupamento.",
+      "text": "Desprepare até três personagens alvo que seus oponentes controlam. Cada personagem despreparado dessa forma recebe -3/-0 até o reagrupamento.",
       "rulings": []
     },
     {
@@ -3524,8 +3522,8 @@
         "art": "../assets/imgs/TEC - 049.webp"
       },
       "virtues": [
-        8,
-        14
+        14,
+        8
       ],
       "cost": 2.0,
       "stats": {
@@ -3541,7 +3539,7 @@
       },
       "role": null,
       "reference": "2 Samuel 2:14-16",
-      "text": "Um personagem alvo com o menor poder entre os que você controla luta com um personagem com o menor poder entre os que um oponente alvo controla.",
+      "text": "O personagem alvo com o menor poder dentre os que você controla luta com um personagem com o menor poder entre os que um oponente alvo controla.",
       "rulings": []
     }
   ]

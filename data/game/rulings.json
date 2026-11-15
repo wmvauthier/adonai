@@ -1,73 +1,79 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-05-30",
+  "updatedAt": "2026-11-15",
   "rulings": {
     "type": [
       {
         "type": "Artefato",
         "title": "Artefato",
         "rulings": [
-          "Artefatos são permanentes duradouras. Depois que uma jogada de Artefato resolve, ela entra no campo de batalha e permanece lá até ser removida por regra ou efeito.",
-          "Artefatos não possuem poder ou resistência, salvo se uma carta disser explicitamente o contrário.",
-          "Um Artefato que também seja Equipamento segue as regras de anexar, desanexar e EQUIPÁVEL do subtipo Equipamento."
+          "Artefatos são permanentes. Quando sua jogada resolve corretamente, entram no campo de batalha e permanecem lá até serem movidos por regra ou efeito.",
+          "Os subtipos de Artefato definidos nas regras incluem Equipamento, Construção, Sagrado, Incenso e Ouro.",
+          "Sagrado é um subtipo sem regra inerente: por si só, não altera custo, estado de entrada, funcionamento, controle, alvo ou permanência do Artefato.",
+          "Um Artefato com subtipo Construção entra no campo de batalha despreparado e segue as regras de CONSTRUÇÃO X."
         ]
       },
       {
         "type": "Campeão",
         "title": "Campeão",
         "rulings": [
-          "Campeões começam a partida na zona de Identidade e não são permanentes do campo de batalha.",
-          "Campeões não atacam, não bloqueiam, não possuem poder ou resistência e não podem ser alvo de cartas ou efeitos, salvo se uma regra futura disser explicitamente o contrário.",
-          "Cada jogador pode ativar apenas uma habilidade de seu Campeão por rodada. Depois disso, o Campeão fica Encoberto até a etapa de Preparação de seu controlador.",
-          "Requisitos como “Fé Nv3” ou “Iniquidade Nv1” são verificados apenas no momento em que a habilidade é ativada."
+          "Campeões começam e permanecem na zona de Identidade. Não são permanentes do campo de batalha e não possuem Poder ou Resistência por regra geral.",
+          "Campeões não atacam, não bloqueiam e não participam de combate. Também não podem ser alvos de cartas, habilidades, efeitos ou ataques, salvo quando uma regra ou efeito mencionar explicitamente Campeão ou a zona de Identidade.",
+          "Requisitos como “Fé Nv3” ou “Iniquidade Nv1” exigem que o atributo indicado esteja no nível mínimo informado e são verificados no momento da ativação.",
+          "Cada jogador pode ativar apenas uma habilidade de seu Campeão por rodada. Encobrir o Campeão faz parte do custo; se a habilidade for anulada, ele continua Encoberto e o uso da rodada permanece gasto.",
+          "O Campeão deixa de estar Encoberto na etapa de Preparação de seu controlador."
         ]
       },
       {
         "type": "Milagre",
         "title": "Milagre",
         "rulings": [
-          "Milagres podem ser jogados em qualquer momento em que seu controlador tenha prioridade, salvo restrição impressa na carta.",
-          "Um Milagre Momentâneo resolve, executa suas instruções na ordem escrita e vai ao cemitério de seu dono, salvo se uma regra ou efeito disser o contrário.",
-          "As Virtudes associadas ao Milagre são aplicadas somente depois que a carta termina de resolver. Se o Milagre for anulado, essas alterações morais não acontecem."
+          "Milagres podem ser jogados sempre que seu controlador tiver prioridade, salvo restrição específica impressa na carta.",
+          "Milagres podem ser Momentâneos, Duradouros ou possuir Vínculo. Momentâneos vão ao cemitério após resolver; Duradouros entram no campo de batalha como permanentes; cartas com Vínculo entram anexadas ao alvo permitido por VINCULAR A.",
+          "As Virtudes e Desvirtudes associadas a um Milagre são aplicadas somente depois que a carta resolve corretamente. Se a jogada for anulada, as alterações morais associadas não são aplicadas.",
+          "Se um Milagre Duradouro gerar habilidades de ENTRADA próprias, as alterações morais associadas ficam pendentes até que essas habilidades resolvam ou deixem a pilha."
         ]
       },
       {
         "type": "Pecado",
         "title": "Pecado",
         "rulings": [
-          "Pecados, por regra geral, só podem ser jogados durante a etapa de Alistamento do próprio jogador, salvo permissão específica.",
-          "Custos de Pecado são pagos causando dano ao território do próprio controlador. Esse dano é custo e deve ser pago integralmente para que a carta seja jogada.",
-          "Um Pecado Momentâneo resolve, executa suas instruções e vai ao cemitério de seu dono, salvo se uma regra ou efeito disser o contrário.",
-          "As Desvirtudes associadas ao Pecado são aplicadas depois da resolução da carta. Se o Pecado for anulado, suas alterações morais associadas não são aplicadas."
+          "Pecados, por regra geral, só podem ser jogados durante a etapa de Alistamento de seu controlador, salvo se uma regra ou efeito permitir outro momento. INESPERADO permite jogá-los em qualquer momento em que seu controlador tenha prioridade.",
+          "O custo de um Pecado é pago colocando no próprio Território a quantidade exigida de marcadores de dano. Essa colocação não constitui um evento de dano e não é afetada por efeitos que apenas previnam, reduzam, redirecionem ou substituam dano.",
+          "Os marcadores colocados como custo contam para a condição de derrota do Território. Mesmo que a colocação faça o dano marcado alcançar ou superar a Resistência, o custo pode ser pago; o jogador perde na verificação de ações baseadas no estado antes que o Pecado possa resolver.",
+          "As Desvirtudes associadas a um Pecado são aplicadas depois que a carta resolve corretamente. Se a jogada for anulada, essas alterações morais não são aplicadas.",
+          "Se a carta Duradoura gerar habilidades de ENTRADA próprias, as alterações morais associadas ficam pendentes até que essas habilidades resolvam ou deixem a pilha."
         ]
       },
       {
         "type": "Personagem",
         "title": "Personagem",
         "rulings": [
-          "Personagens são permanentes com poder e resistência. Eles entram no campo de batalha quando sua jogada resolve.",
-          "Todos os personagens possuem haste por regra geral do jogo, portanto podem atacar ou usar habilidades com {T} no turno em que entram, se estiverem ativados e aptos.",
-          "Dano marcado em personagens permanece marcado até ser removido ou até o personagem deixar o campo de batalha.",
-          "Um personagem com dano marcado igual ou superior à sua resistência, ou com resistência 0 ou menos, é colocado no cemitério como ação baseada no estado."
+          "Personagens são permanentes com Poder e Resistência. Entram no campo de batalha quando sua jogada resolve corretamente.",
+          "Todos os Personagens podem atacar no turno em que entram no campo de batalha, salvo se uma regra ou efeito os impedir.",
+          "Dano marcado em um Personagem permanece até ser removido ou até que ele deixe sua zona; não é removido automaticamente no Reagrupamento ou no início de um turno.",
+          "Um Personagem com dano marcado igual ou superior à sua Resistência é destruído por dano como ação baseada no estado. Um Personagem com Resistência 0 ou menos é colocado no cemitério como ação baseada no estado.",
+          "As classificações FERIDA e ILESA indicam, respectivamente, a presença ou ausência de dano marcado no Personagem."
         ]
       },
       {
         "type": "Templo",
         "title": "Templo",
         "rulings": [
-          "Templos começam a partida na zona de Identidade e não são permanentes do campo de batalha.",
-          "Templos modificam Consagração, Profanação ou ações relacionadas conforme seu texto.",
-          "Um Templo não pode ser alvo, destruído, exilado, devolvido à mão ou removido da zona de Identidade por regras gerais do jogo."
+          "Templos começam e permanecem na zona de Identidade. Não são permanentes do campo de batalha.",
+          "Templos modificam regras, efeitos e permissões de Consagração ou Profanação conforme seu texto.",
+          "Um Templo não pode ser alvo de cartas, habilidades, efeitos ou ataques, nem sair da zona de Identidade por regras gerais, salvo se uma regra ou efeito mencionar explicitamente Templo ou a zona de Identidade."
         ]
       },
       {
         "type": "Território",
         "title": "Território",
         "rulings": [
-          "Territórios começam a partida na zona de Identidade e representam a condição de derrota do jogador.",
-          "Dano causado ao território é marcado nele. Se o dano marcado for igual ou superior à resistência do território, seu controlador perde a partida.",
-          "Territórios não podem ser destruídos, exilados, devolvidos à mão ou removidos da zona de Identidade por regras gerais.",
-          "Efeitos podem causar dano ou curar dano de um território apenas quando disserem isso explicitamente."
+          "Territórios começam e permanecem na zona de Identidade e possuem uma Resistência impressa.",
+          "Um Território pode ser alvo de ataque e pode receber dano ou ser curado por efeitos que o mencionem explicitamente.",
+          "O dano marcado no Território é comparado à sua Resistência. Quando o total alcança ou supera essa Resistência, seu controlador perde a partida.",
+          "Colocar marcadores de dano no Território conta para a condição de derrota, mas não constitui, por si só, um evento de dano.",
+          "Territórios não podem ser destruídos, exilados, devolvidos à mão, renunciados ou removidos da zona de Identidade por regras gerais."
         ]
       }
     ],
@@ -76,28 +82,80 @@
         "subtype": "Equipamento",
         "title": "Equipamento",
         "rulings": [
-          "Equipamento é um subtipo de Artefato que pode ser anexado a um personagem válido.",
-          "Quando um Equipamento é jogado, seu controlador escolhe um personagem válido como alvo para que ele entre anexado, se houver alvo válido. Se o alvo se tornar inválido antes da resolução, o Equipamento entra desanexado.",
-          "Se o personagem equipado deixar o campo de batalha, o Equipamento permanece no campo de batalha desanexado, salvo se uma carta disser o contrário.",
-          "Um Equipamento desanexado permanece no campo de batalha, mas não concede seus efeitos de EQUIPÁVEL a nenhum personagem."
+          "Equipamento é um subtipo de Artefato. Por regra geral, pode ser anexado a um Personagem controlado por seu controlador.",
+          "Uma carta de Equipamento não tem alvo ao ser jogada, salvo se seu próprio texto disser o contrário. Quando resolve, entra no campo de batalha desanexada.",
+          "Ao entrar, o Equipamento desencadeia sua habilidade de equipar inicial se seu controlador tiver ao menos um Personagem válido. Ao colocar essa habilidade na pilha, ele escolhe um Personagem alvo que controla.",
+          "Se o alvo da habilidade inicial se tornar inválido antes da resolução, o Equipamento permanece no campo de batalha desanexado. Se não houver Personagem válido, a habilidade inicial não é colocada na pilha.",
+          "Equipar e reequipar são habilidades ativadas. Salvo texto contrário, só podem ser ativadas durante a etapa de Alistamento; o controlador escolhe um Personagem preparado que controla e o desprepara como custo.",
+          "Se a habilidade de Equipar for anulada, o Personagem escolhido continua despreparado, pois o custo já foi pago. Um Equipamento desanexado permanece no campo de batalha sem modificar um Personagem."
         ]
       },
       {
         "subtype": "Momentâneo",
         "title": "Momentâneo",
         "rulings": [
-          "Uma carta Momentânea não permanece no campo de batalha após resolver.",
-          "Depois de resolver, uma carta Momentânea vai ao cemitério de seu dono, salvo se uma regra ou efeito disser o contrário.",
-          "Se uma carta Momentânea for anulada, ela não resolve e suas Virtudes ou Desvirtudes associadas não são aplicadas."
+          "Uma carta Momentânea não permanece no campo de batalha após resolver; suas instruções são executadas e ela vai ao cemitério de seu dono, salvo se uma regra ou efeito disser o contrário.",
+          "As Virtudes ou Desvirtudes associadas a uma carta Momentânea são aplicadas depois que suas instruções terminam de resolver e antes que qualquer jogador receba prioridade.",
+          "Se a carta Momentânea for anulada, ela não resolve e suas alterações morais associadas não são aplicadas."
+        ]
+      },
+      {
+        "subtype": "Duradouro",
+        "title": "Duradouro",
+        "rulings": [
+          "Uma carta Duradoura, após resolver, entra ou permanece no campo de batalha como permanente, salvo se uma regra ou efeito disser o contrário.",
+          "Se a carta Duradoura entrar no campo de batalha sem gerar habilidades de ENTRADA próprias, suas alterações morais associadas são aplicadas depois da entrada e antes que jogadores recebam prioridade.",
+          "Se gerar habilidades de ENTRADA próprias, as alterações morais associadas ficam pendentes até que todas essas habilidades resolvam ou deixem a pilha."
+        ]
+      },
+      {
+        "subtype": "Vínculo",
+        "title": "Vínculo",
+        "rulings": [
+          "Vínculo é um subtipo funcional de Milagre e Pecado. Toda carta com Vínculo possui VINCULAR A, que define os alvos permitidos e a que objetos ou jogadores ela pode permanecer anexada.",
+          "Ao jogar uma carta com Vínculo, seu controlador escolhe um alvo permitido. A carta não pode ser jogada se não houver alvo válido.",
+          "Se o alvo se tornar inválido antes da resolução, a jogada é anulada e a carta vai ao cemitério. Se permanecer válido, o Vínculo entra no campo de batalha anexado a ele.",
+          "Se um Vínculo ficar desanexado ou anexado ilegalmente, ele é colocado no cemitério de seu dono como ação baseada no estado; isso não é destruir nem renunciar.",
+          "Se um Vínculo entrar no campo de batalha sem ter sido jogado, a escolha de algo a que possa ser anexado não usa alvo. Se não houver escolha legal, ele permanece na zona anterior.",
+          "PROTEÇÃO impede que um Vínculo escolha a permanente como alvo ao ser jogado. Ganhar PROTEÇÃO depois que o Vínculo já está anexado não o remove."
+        ]
+      },
+      {
+        "subtype": "Construção",
+        "title": "Construção",
+        "rulings": [
+          "Construção é um subtipo de Artefato. Um Artefato com esse subtipo entra no campo de batalha despreparado.",
+          "CONSTRUÇÃO X indica a quantidade mínima de marcadores de construção necessária para que o texto posterior aos dois-pontos funcione.",
+          "Um Artefato com CONSTRUÇÃO X possui uma habilidade ativada que exige despreparar um Personagem preparado que seu controlador controla para colocar 1 marcador de construção. A habilidade só pode ser ativada durante a etapa de Alistamento e usa a pilha.",
+          "Se o Personagem despreparado para pagar esse custo possuir CONSTRUIR Y, serão colocados Y marcadores de construção quando a habilidade resolver. O valor de Y é registrado no momento do pagamento do custo.",
+          "O texto condicionado deixa de funcionar imediatamente se a Construção ficar com menos de X marcadores."
+        ]
+      },
+      {
+        "subtype": "Sagrado",
+        "title": "Sagrado",
+        "rulings": [
+          "Sagrado é um subtipo de Artefato e não possui regra inerente.",
+          "Um Artefato é Sagrado se possuir o subtipo Sagrado impresso ou se uma regra ou efeito lhe conceder esse subtipo.",
+          "Ser Sagrado não altera custo, estado de entrada, funcionamento, controle, alvo ou permanência do Artefato, salvo se outra regra ou efeito disser o contrário."
         ]
       },
       {
         "subtype": "Incenso",
         "title": "Incenso",
         "rulings": [
-          "Uma ficha de Incenso é uma ficha de Artefato com a habilidade “{T}, renuncie esta ficha: Gere {E}.”",
-          "Renunciar a ficha de Incenso faz parte do custo da habilidade. Depois de deixar o campo de batalha, a ficha deixa de existir na próxima verificação de ações baseadas no estado.",
-          "O {E} gerado por Incenso entra no pool de Essência e se perde no reagrupamento se não for usado."
+          "Uma ficha de Incenso é uma ficha de Artefato com subtipo Incenso e com a habilidade “{T}, renuncie esta ficha: Gere {E}.”",
+          "Para pagar {T}, a ficha precisa estar preparada e é despreparada como parte do custo. Renunciar a ficha também faz parte do custo.",
+          "O {E} gerado entra no pool de Essência e o recurso não gasto é esvaziado no Reagrupamento."
+        ]
+      },
+      {
+        "subtype": "Ouro",
+        "title": "Ouro",
+        "rulings": [
+          "Uma ficha de Ouro é uma ficha de Artefato com subtipo Ouro e com a habilidade “{T}, renuncie esta ficha: compre 1 carta.”",
+          "Para pagar {T}, a ficha precisa estar preparada e é despreparada como parte do custo. Renunciar a ficha também faz parte do custo.",
+          "Depois de deixar o campo de batalha, a ficha deixa de existir na próxima verificação de ações baseadas no estado."
         ]
       }
     ],
@@ -106,99 +164,104 @@
         "effect": "alvo",
         "title": "Alvos",
         "rulings": [
-          "Alvos são escolhidos quando a jogada ou habilidade é colocada na pilha, salvo se o texto disser que a escolha ocorre durante a resolução.",
-          "Se todos os alvos de uma jogada ou habilidade se tornarem inválidos antes da resolução, aquele objeto é anulado pelas regras do jogo.",
-          "Se ao menos um alvo permanecer válido, o objeto resolve e afeta apenas os alvos válidos na medida aplicável."
+          "O jogo distingue alvo de carta, alvo de habilidade ou efeito e alvo de ataque.",
+          "Alvejar significa escolher formalmente um objeto ou jogador como alvo de uma carta, habilidade ou efeito. Declarar um ataque contra um Personagem ou Território escolhe um alvo de ataque e não constitui alvejar.",
+          "Os alvos de cartas e habilidades são escolhidos durante o procedimento de jogar a carta ou ativar a habilidade e sua validade é verificada novamente na resolução.",
+          "Se todos os alvos se tornarem inválidos antes da resolução, a jogada ou habilidade é anulada pelas regras do jogo. Se ao menos um alvo permanecer válido, o objeto resolve e afeta apenas os alvos válidos."
         ]
       },
       {
         "effect": "anexar",
         "title": "Anexar e desanexar",
         "rulings": [
-          "Anexar um Equipamento a um personagem faz com que aquele Equipamento passe a modificar ou conceder habilidades ao personagem equipado conforme seu texto.",
-          "Um Equipamento só pode ser anexado a um objeto legal. Se estiver anexado ilegalmente, ele se torna desanexado como ação baseada no estado.",
-          "Desanexar um Equipamento não o remove do campo de batalha."
+          "Um Equipamento entra no campo de batalha desanexado e pode anexar-se por sua habilidade de equipar inicial ou por uma habilidade de Equipar.",
+          "Um Equipamento anexado ilegalmente torna-se desanexado como ação baseada no estado e permanece no campo de batalha.",
+          "Um Vínculo usa VINCULAR A e tem regras próprias: se ficar desanexado ou anexado ilegalmente, é colocado no cemitério de seu dono como ação baseada no estado.",
+          "Desanexar um Equipamento ou Vínculo não significa, por si só, destruir ou renunciar a carta."
         ]
       },
       {
         "effect": "buscar",
         "title": "Buscar",
         "rulings": [
-          "Buscar no baralho permite localizar uma carta que satisfaça a restrição indicada pelo efeito.",
-          "Quando um efeito instrui buscar uma carta com característica específica, a carta encontrada deve ser revelada para confirmar que a busca foi legal.",
-          "Depois de buscar no baralho, embaralhe o baralho, salvo se o efeito disser explicitamente o contrário."
+          "Buscar significa procurar uma carta na zona indicada, revelar a carta encontrada, movê-la para a zona indicada e cumprir as demais instruções do efeito.",
+          "Toda busca revela a carta encontrada, salvo se o texto disser explicitamente “busque secretamente”.",
+          "Depois de buscar no baralho, embaralhe-o. Uma busca na Reserva não a embaralha, pois a Reserva é privada e não ordenada."
         ]
       },
       {
         "effect": "reserva",
         "title": "Reserva",
         "rulings": [
-          "A Reserva é uma zona privada e só pode ser acessada por efeitos que mencionem explicitamente a Reserva.",
-          "Quando uma carta é buscada na Reserva, ela deve ser revelada se o efeito exigir uma característica verificável ou se a regra geral da busca exigir revelação.",
-          "Buscar na Reserva não embaralha o baralho, a menos que o mesmo efeito também tenha buscado no baralho."
+          "A Reserva é uma zona privada: sua quantidade de cartas é pública, mas seu conteúdo permanece oculto, salvo quando uma carta é revelada por regra ou efeito.",
+          "Por padrão, o texto de uma carta não funciona enquanto ela estiver na Reserva.",
+          "O marcador RESERVA torna funcional somente o texto localizado após ele, que pode ser uma habilidade estática, ativada ou desencadeada."
         ]
       },
       {
         "effect": "comprar",
         "title": "Comprar cartas",
         "rulings": [
-          "Comprar uma carta significa mover a carta do topo do baralho para a mão do jogador.",
+          "Comprar uma carta significa mover a carta do topo do baralho para a mão de seu dono.",
           "Compras múltiplas são realizadas uma de cada vez.",
-          "Se um jogador não puder comprar uma carta por não haver cartas suficientes no baralho, ele causa 2 de dano ao próprio território para cada carta que não pôde ser comprada."
+          "Se o baralho não possuir cartas suficientes, o jogador causa 2 de dano ao próprio Território por cada carta que não pôde comprar. Esse dano não pode ser prevenido por efeitos genéricos de prevenção de dano ao Território."
         ]
       },
       {
         "effect": "descartar",
         "title": "Descartar",
         "rulings": [
-          "Descartar uma carta significa mover uma carta da mão de seu dono para o cemitério.",
-          "Se um efeito instruir um jogador a descartar e não especificar quem escolhe, o jogador que descarta escolhe a carta.",
-          "Um jogador sem cartas na mão não descarta nada, mas o restante do efeito ainda resolve na medida possível."
+          "Descartar uma carta significa movê-la da mão para o cemitério de seu dono.",
+          "Se um jogador tiver de descartar mais cartas do que possui, ele descarta o máximo possível.",
+          "Se o descarte aleatório for exigido, o jogador afetado embaralha sua mão virada para baixo e um oponente escolhe uma carta sem ver sua face; a carta escolhida é revelada e descartada."
         ]
       },
       {
         "effect": "dano",
         "title": "Dano",
         "rulings": [
-          "Dano causado a personagens ou territórios é marcado no objeto ou território afetado.",
-          "Dano não reduz resistência diretamente; ele é comparado à resistência para determinar ações baseadas no estado ou derrota.",
-          "Dano de combate e dano não combatente são ambos dano, mas efeitos podem se importar especificamente com um deles."
+          "Dano causado a um Personagem ou Território é marcado no objeto afetado.",
+          "Dano marcado não reduz diretamente a Resistência. Em Personagens, é comparado à Resistência para verificar destruição; em Territórios, é comparado à Resistência para verificar a derrota do controlador.",
+          "Dano marcado em Personagens não é removido automaticamente no Reagrupamento ou no início de turnos.",
+          "Colocar marcadores de dano em um Território aumenta o dano marcado e conta para a derrota, mas não constitui causar dano nem faz o Território sofrer dano."
         ]
       },
       {
         "effect": "dano ao próprio território",
-        "title": "Dano ao próprio território",
+        "title": "Dano ao próprio Território",
         "rulings": [
-          "Causar dano ao próprio território pode ser custo ou efeito, conforme o texto da carta.",
-          "Dano causado ao próprio território como custo deve ser pago integralmente para que a ação seja legal.",
-          "Dano ao próprio território pode causar derrota se o dano marcado atingir ou exceder a resistência do território."
+          "Causar dano ao próprio Território pode ser custo ou efeito. Dano causado como custo não pode ser prevenido, reduzido, redirecionado ou substituído por efeitos genéricos, salvo texto explícito em contrário.",
+          "O custo de Pecado é diferente: é pago pela colocação de marcadores de dano no próprio Território, e essa colocação não constitui um evento de dano.",
+          "Tanto o dano causado quanto os marcadores colocados contam para o total comparado à Resistência do Território."
         ]
       },
       {
         "effect": "curar",
         "title": "Curar",
         "rulings": [
-          "Curar remove dano marcado de um personagem ou território.",
-          "Cura não aumenta resistência e não pode reduzir dano marcado abaixo de 0.",
-          "Se o objeto ou território tiver menos dano marcado do que a quantidade de cura, remova apenas o dano existente."
+          "Curar um Personagem ou Território significa remover dano marcado dele.",
+          "A cura não aumenta a Resistência e não pode remover mais dano do que o objeto possui.",
+          "Ao curar um Território, removem-se pontos de dano marcado independentemente de terem sido originados por dano causado ou pela colocação de marcadores de dano."
         ]
       },
       {
         "effect": "prevenir dano",
         "title": "Prevenir dano",
         "rulings": [
-          "Prevenir dano substitui o evento de dano antes que ele seja marcado.",
-          "Dano prevenido não conta como dano causado.",
-          "Se múltiplos efeitos de prevenção puderem se aplicar ao mesmo dano, aplique apenas a quantidade necessária conforme as regras de substituição aplicáveis."
+          "Prevenir dano substitui um evento de dano antes que ele seja marcado. Dano prevenido não é causado e não precisa ser curado.",
+          "Efeitos preventivos genéricos não impedem dano pago como custo nem dano causado por compra ou pulverização impossível.",
+          "Cada marcador de Escudo previne 1 ponto de dano que seria causado ao objeto em que está colocado e é removido depois de prevenir esse ponto.",
+          "Marcadores de Escudo não impedem a colocação de marcadores de dano, pois essa colocação não é um evento de dano."
         ]
       },
       {
         "effect": "destruir",
         "title": "Destruir",
         "rulings": [
-          "Destruir uma permanente tenta movê-la do campo de batalha para o cemitério.",
-          "Destruir não é causar dano, e exilar não é destruir.",
-          "Uma permanente indestrutível não pode ser destruída por efeitos que digam “destrua”."
+          "Destruir significa aplicar um efeito ou regra que tenta mover uma permanente do campo de batalha para o cemitério.",
+          "Um Personagem com dano marcado igual ou superior à sua Resistência é destruído por dano como ação baseada no estado.",
+          "INDESTRUTÍVEL impede a destruição e, quando aplicado a um Personagem, também previne o dano que lhe seria causado. Entretanto, não impede que um Personagem com Resistência 0 ou menos seja colocado no cemitério.",
+          "Territórios não podem ser destruídos por regras gerais."
         ]
       },
       {
@@ -206,99 +269,119 @@
         "title": "Renunciar",
         "rulings": [
           "Renunciar uma permanente significa que seu controlador a move do campo de batalha para o cemitério.",
-          "Renunciar não é destruir, mas uma permanente renunciada morre se for do campo de batalha para o cemitério.",
-          "Apenas o controlador de uma permanente pode renunciá-la, salvo se uma regra ou efeito disser explicitamente o contrário."
+          "Renunciar não é destruir, e INDESTRUTÍVEL não impede que uma permanente seja renunciada.",
+          "Uma permanente renunciada morre se for movida do campo de batalha para o cemitério."
         ]
       },
       {
         "effect": "lutar",
         "title": "Lutar",
         "rulings": [
-          "Dois personagens lutam quando cada um causa ao outro dano igual ao seu próprio poder.",
+          "Dois Personagens lutam quando cada um causa ao outro dano igual ao seu próprio Poder.",
           "Dano causado por luta não é dano de combate.",
-          "Se um ou ambos os personagens não forem alvos válidos ou não estiverem no campo de batalha na resolução, a luta não ocorre."
+          "Se um ou ambos os Personagens não estiverem mais presentes ou não forem Personagens válidos no momento da resolução, a luta não ocorre."
         ]
       },
       {
         "effect": "retornar à mão",
         "title": "Retornar à mão",
         "rulings": [
-          "Retornar uma carta ou permanente à mão move esse objeto para a mão de seu dono, salvo se o efeito disser outro destino.",
-          "Quando uma permanente retorna à mão, ela deixa o campo de batalha e passa a ser um novo objeto se for jogada novamente.",
-          "Fichas que deixem o campo de batalha deixam de existir na próxima verificação de ações baseadas no estado."
+          "Retornar uma carta ou permanente à mão move o objeto para a mão de seu dono.",
+          "Quando um objeto muda de zona, passa a ser um novo objeto para fins de rastreamento de efeitos anteriores.",
+          "Uma ficha que deixe o campo de batalha deixa de existir na próxima verificação de ações baseadas no estado."
         ]
       },
       {
         "effect": "ganhar controle",
         "title": "Ganhar controle",
         "rulings": [
-          "Ganhar controle de um personagem não o remove do combate automaticamente.",
-          "Quando um efeito de controle temporário termina, o personagem volta ao controlador anterior se ainda estiver no campo de batalha.",
-          "Ativar um personagem ganho por controle temporário não concede permissão especial para atacar fora das regras normais."
+          "Por padrão, o controlador de uma carta ou permanente é o jogador que a jogou ou sob cujo controle ela entrou no campo de batalha, salvo efeito que altere esse controle.",
+          "O controlador de uma habilidade é quem controlava sua fonte no momento em que a habilidade foi ativada ou desencadeada, salvo regra ou efeito em contrário.",
+          "O controle de um Vínculo e o controle do objeto vinculado são independentes: alterar um deles não altera automaticamente o outro."
         ]
       },
       {
         "effect": "criar ficha",
         "title": "Criar ficha",
         "rulings": [
-          "Criar uma ficha coloca aquela ficha no campo de batalha sob controle do jogador indicado pelo efeito, ou sob controle do controlador do efeito se nada for indicado.",
-          "Criar uma ficha não é jogar uma carta e não usa a pilha separadamente.",
-          "Fichas podem atacar, bloquear, sofrer dano, morrer, ser renunciadas ou ser afetadas por efeitos normalmente conforme seus tipos."
+          "Uma ficha é criada por regra ou efeito. Seu dono é o jogador que a criou e, salvo instrução diferente, ela entra sob o controle desse jogador.",
+          "Uma ficha existe apenas no campo de batalha. Pode atacar, bloquear, sofrer dano, morrer, ser destruída, renunciada ou exilada conforme seus tipos e características.",
+          "Quando uma ficha deixa o campo de batalha, ela deixa de existir na próxima verificação de ações baseadas no estado.",
+          "Uma ficha de Incenso é um Artefato com “{T}, renuncie esta ficha: Gere {E}.” Uma ficha de Ouro é um Artefato com “{T}, renuncie esta ficha: compre 1 carta.”"
         ]
       },
       {
         "effect": "desativar",
-        "title": "Ativar e desativar",
+        "title": "Preparar e despreparar",
         "rulings": [
-          "Desativar uma permanente coloca essa permanente em estado horizontalizado de uso.",
-          "Ativar uma permanente restaura essa permanente ao estado verticalizado e apto para pagar custos com {T} ou atacar, se nada mais a impedir.",
-          "Um personagem desativado pode ser atacado diretamente por personagens oponentes durante o combate."
+          "Preparar coloca uma carta no estado preparado; despreparar coloca a carta no estado despreparado.",
+          "O símbolo {T} em um custo significa despreparar o objeto que possui a habilidade como parte do pagamento. O objeto precisa estar preparado para pagar esse custo.",
+          "Se uma habilidade com {T} for concedida a um Personagem por um Equipamento, o custo é pago despreparando o Personagem equipado, não o Equipamento.",
+          "Permanentes e cartas colocadas na zona de Essência entram preparadas, salvo regra ou efeito em contrário. Artefatos com subtipo Construção entram despreparados.",
+          "Na etapa de Preparação, o jogador ativo prepara suas permanentes e Essências despreparadas, salvo se uma regra ou efeito impedir."
         ]
       },
       {
         "effect": "anular",
         "title": "Anular",
         "rulings": [
-          "Anular uma jogada remove aquela jogada da pilha antes que ela resolva e a coloca no cemitério de seu dono, salvo se um efeito disser o contrário.",
-          "Anular uma habilidade remove aquela habilidade da pilha; ela deixa de existir e não produz seus efeitos.",
-          "Uma carta anulada não aplica suas Virtudes ou Desvirtudes associadas, porque não resolveu."
+          "Anular uma jogada remove a carta da pilha antes que ela resolva e a coloca no cemitério de seu dono, salvo regra ou efeito em contrário.",
+          "Anular uma habilidade remove a habilidade da pilha; ela deixa de existir e não produz seus efeitos.",
+          "Se todos os alvos de uma jogada ou habilidade se tornarem inválidos antes da resolução, o objeto é anulado pelas regras do jogo. Se ao menos um alvo permanecer válido, ele resolve e afeta apenas os alvos válidos.",
+          "Uma carta anulada não aplica suas Virtudes ou Desvirtudes associadas, pois não resolveu."
         ]
       },
       {
         "effect": "redução de custo",
         "title": "Redução de custo",
         "rulings": [
-          "Reduções de custo são aplicadas depois de custos adicionais e aumentos de custo.",
-          "O custo numérico de uma carta nunca pode ser reduzido abaixo de 0.",
-          "Quando uma redução se aplica à próxima carta jogada, ela é consumida pela primeira carta jogada que satisfaça a condição, mesmo que essa carta seja anulada."
+          "Para determinar o custo total, comece pelo custo base ou alternativo, aplique custos adicionais e aumentos e, depois, aplique reduções.",
+          "Se houver múltiplas reduções, o jogador que paga escolhe a ordem em que serão aplicadas. O componente numérico do custo nunca pode ser reduzido abaixo de 0.",
+          "Reduções genéricas de custo em Essência não reduzem o custo de Pecado, que é pago pela colocação de marcadores de dano no Território, salvo se o efeito mencionar explicitamente esse custo.",
+          "O desconto criado pela Consagração de um Artefato é consumido pela primeira carta jogada depois de sua criação, mesmo que essa jogada seja anulada.",
+          "O desconto criado pela Consagração de um Artefato expira no Reagrupamento se não tiver sido consumido."
         ]
       },
       {
         "effect": "consagrar",
         "title": "Consagração",
         "rulings": [
-          "Consagrar é uma ação estrutural da etapa de Consagração do jogador ativo e não usa a pilha por si só.",
-          "Para Consagrar, o jogador move uma carta da mão para a zona de Essência; depois aplica o efeito do tipo original da carta e o ajuste moral da Consagração.",
-          "O ajuste moral da Consagração executa apenas o primeiro caso aplicável da ordem definida nas regras."
+          "Consagrar é uma ação estrutural da etapa de Consagração e não usa a pilha por si só. O jogador move uma carta da mão para a zona de Essência e aplica o efeito correspondente ao tipo da carta.",
+          "Depois do efeito de Consagração por tipo, o jogador aplica o ajuste moral geral, executando apenas o primeiro caso aplicável previsto nas regras.",
+          "Em cada etapa de Consagração, o jogador escolhe exatamente uma opção: Consagrar, Profanar ou declarar Omissão.",
+          "Depois de concluir a Consagração e o ajuste moral, verifica-se a condição alternativa de vitória das sete Virtudes em Nv4 antes que habilidades desencadeadas pela Consagração sejam colocadas na pilha e antes que qualquer jogador receba prioridade."
         ]
       },
       {
         "effect": "profanar",
         "title": "Profanação",
         "rulings": [
-          "Profanar é uma ação estrutural da etapa de Consagração do jogador ativo e não usa a pilha por si só.",
-          "Para Profanar, o jogador escolhe uma carta em sua zona de Essência e a retorna para sua mão.",
-          "Depois da Profanação, o jogador aplica o ajuste moral de Profanação executando apenas o primeiro caso aplicável da ordem definida nas regras."
+          "Profanar é uma ação estrutural da etapa de Consagração. O jogador escolhe uma carta de sua zona de Essência e a retorna para a mão de seu dono.",
+          "A carta deixa de funcionar como Essência e volta a existir como carta normal na mão. A Profanação reduz a quantidade de Essências controladas pelo jogador.",
+          "Depois da Profanação, o jogador aplica o ajuste moral geral, executando apenas o primeiro caso aplicável previsto nas regras.",
+          "O jogador não pode Profanar se não controlar ao menos uma carta na zona de Essência."
         ]
       },
       {
         "effect": "alteração moral",
         "title": "Alteração moral",
         "rulings": [
-          "Virtudes e Desvirtudes funcionam como polos opostos de sete eixos morais.",
-          "Uma alteração em direção a um polo reduz primeiro o polo oposto; se houver excedente, aumenta o polo escolhido.",
-          "Exemplo: se um jogador possui Fé 1 e recebe Fé -2, Fé é reduzida para 0 e o excedente cria Dúvida 1.",
-          "Nenhum polo pode ultrapassar Nv4. Excedentes além de Nv4 são ignorados."
+          "Cada jogador possui sete eixos morais, cada um com uma Virtude e uma Desvirtude opostas. Um eixo pode estar neutro ou ter apenas um dos polos ativo.",
+          "Os valores vão de 0 a 4, correspondendo a Nv1 a Nv4. Somente o efeito do nível atual fica ativo, salvo texto explicitamente cumulativo.",
+          "Progredir em um polo reduz primeiro o valor do polo oposto. Se houver excedente, ele aumenta o polo escolhido; nenhum polo pode ultrapassar Nv4.",
+          "Virtudes e Desvirtudes associadas a cartas são aplicadas após a resolução correta da carta. Se uma permanente gerar habilidades de ENTRADA próprias, o ajuste moral fica pendente até que essas habilidades resolvam ou deixem a pilha.",
+          "Característica associada abrange Virtude ou Desvirtude; Virtude associada considera somente Virtudes; Desvirtude associada considera somente Desvirtudes."
+        ]
+      },
+      {
+        "effect": "punições de Justiça e Iniquidade",
+        "title": "Punições de Justiça e Iniquidade",
+        "rulings": [
+          "Uma punição que instrua colocar marcadores de dano acrescenta esses marcadores ao Território indicado; a colocação não constitui um evento de dano.",
+          "Quando uma habilidade de Justiça desencadeia por uma ação de um oponente, a punição é colocada no Território do oponente cuja ação provocou o desencadeamento. Quando uma habilidade de Iniquidade desencadeia por ação de seu controlador, a punição é colocada no Território desse controlador.",
+          "O limite de uma ocorrência por turno é compartilhado entre todos os eventos qualificantes daquele nível, e é considerado utilizado assim que a habilidade desencadeia, mesmo que seja anulada ou não aplique seu efeito.",
+          "Escolher um Personagem ou Território como alvo de ataque não é alvejar. Habilidades que mencionem expressamente a declaração de atacantes podem, contudo, desencadear nesse evento.",
+          "Quando a habilidade desencadeia na declaração de atacantes, ela desencadeia antes da declaração de bloqueadores; os marcadores são colocados quando a habilidade resolver."
         ]
       },
       {
@@ -307,16 +390,65 @@
         "rulings": [
           "Olhar cartas do topo do baralho não as revela aos oponentes, salvo se o efeito disser “revele”.",
           "Colocar cartas no fundo do baralho não embaralha o baralho.",
-          "Quando múltiplas cartas são colocadas no fundo em qualquer ordem, apenas o jogador instruído pelo efeito escolhe essa ordem."
+          "Quando várias cartas são movidas simultaneamente para o topo ou para o fundo e a ordem não é especificada, o jogador que executa o efeito escolhe a ordem relativa dentro de cada grupo."
         ]
       },
       {
         "effect": "até o reagrupamento",
-        "title": "Duração até o reagrupamento",
+        "title": "Duração até o Reagrupamento",
         "rulings": [
-          "Efeitos que duram até o reagrupamento expiram durante a etapa de Reagrupamento antes da etapa de Descarte.",
-          "Se a fonte do efeito deixar o campo de batalha antes do reagrupamento, isso não encerra automaticamente um efeito já criado, salvo se o texto disser o contrário.",
-          "Bônus temporários de poder e resistência são removidos quando a duração expira."
+          "Efeitos com duração “até o Reagrupamento” expiram quando a etapa de Reagrupamento começa, depois do evento inicial que permite desencadear habilidades “no início do Reagrupamento”.",
+          "A expiração desses efeitos não usa a pilha. Depois dela, ações baseadas no estado são verificadas, habilidades desencadeadas apropriadas são colocadas na pilha e o jogador ativo recebe prioridade.",
+          "O recurso de Essência não gasto também é esvaziado nesse marco."
+        ]
+      },
+      {
+        "effect": "condição alternativa de vitória",
+        "title": "Condição alternativa de vitória",
+        "rulings": [
+          "Um jogador vence por essa condição se, durante sua própria etapa de Consagração, escolher Consagrar e, após a conclusão integral dessa ação, possuir as sete Virtudes em Nv4.",
+          "As sete Virtudes são Fé, Esperança, Caridade, Prudência, Justiça, Fortaleza e Temperança. Cada uma deve estar ativa em Nv4; um eixo neutro ou com Desvirtude ativa não satisfaz a condição.",
+          "A verificação ocorre depois do efeito de Consagração correspondente ao tipo da carta e do ajuste moral geral, mesmo quando esse ajuste for ignorado por não haver eixo elegível.",
+          "A condição é verificada antes que habilidades desencadeadas pela Consagração sejam colocadas na pilha e antes que qualquer jogador receba prioridade. Se estiver satisfeita, o jogador vence imediatamente."
+        ]
+      },
+      {
+        "effect": "classificação de poder e resistência",
+        "title": "Classificações de Poder e Resistência",
+        "rulings": [
+          "Poder Base e Resistência Base são os valores após a aplicação dos valores impressos ou definidos e dos efeitos que fixam valores, mas antes dos modificadores positivos ou negativos e das alterações persistentes.",
+          "REFORÇADA aplica-se quando o Poder atual ou a Resistência atual é superior ao respectivo valor-base.",
+          "ENFRAQUECIDA aplica-se quando o Poder atual ou a Resistência atual é inferior ao respectivo valor-base.",
+          "INALTERADA aplica-se somente quando Poder e Resistência atuais são iguais aos respectivos valores-base.",
+          "REFORÇADA e ENFRAQUECIDA não são mutuamente exclusivas: um Personagem pode ter um atributo acima do valor-base e o outro abaixo. As classificações são contínuas e não concedem efeitos próprios."
+        ]
+      },
+      {
+        "effect": "classificação de dano",
+        "title": "Classificações de Dano",
+        "rulings": [
+          "FERIDA aplica-se a um Personagem que possua 1 ou mais pontos de dano marcado.",
+          "ILESA aplica-se a um Personagem que não possua nenhum ponto de dano marcado.",
+          "FERIDA e ILESA são mutuamente exclusivas. A classificação muda imediatamente quando o dano marcado muda, inclusive por cura ou remoção de dano.",
+          "Essas classificações apenas identificam a condição de dano; não causam, removem ou alteram dano."
+        ]
+      },
+      {
+        "effect": "marcador de Escudo",
+        "title": "Marcador de Escudo",
+        "rulings": [
+          "Cada marcador de Escudo sobre um objeto previne 1 ponto de dano que seria causado a esse objeto e é removido depois de prevenir esse ponto.",
+          "Marcadores de Escudo podem prevenir dano de combate e dano de outras fontes.",
+          "Marcadores de Escudo não impedem a colocação de marcadores de dano, pois essa colocação não constitui um evento de dano."
+        ]
+      },
+      {
+        "effect": "pilha e prioridade",
+        "title": "Pilha e prioridade",
+        "rulings": [
+          "Cartas jogadas, habilidades ativadas e habilidades desencadeadas aguardam resolução na pilha, que resolve em ordem LIFO: o último objeto colocado é o primeiro a resolver.",
+          "Depois de jogar uma carta ou ativar uma habilidade, o jogador é considerado como tendo passado prioridade, que passa ao próximo jogador em ordem de turno.",
+          "Quando todos os jogadores passam prioridade em sequência sem colocar novo objeto na pilha, o objeto no topo resolve. Depois da resolução, ações baseadas no estado são verificadas, habilidades desencadeadas apropriadas são colocadas na pilha e o jogador ativo recebe prioridade."
         ]
       }
     ],
@@ -329,9 +461,9 @@
           "entrada"
         ],
         "rulings": [
-          "ENTRADA significa “Quando esta permanente entra no campo de batalha”.",
-          "A habilidade de ENTRADA é colocada na pilha na próxima vez em que um jogador receberia prioridade depois do evento de entrada.",
-          "Se múltiplas permanentes entrarem ao mesmo tempo, suas habilidades de ENTRADA desencadeiam simultaneamente e são ordenadas conforme as regras de habilidades desencadeadas."
+          "ENTRADA significa “Quando esta permanente entra no campo de batalha” e é uma habilidade desencadeada que usa a pilha.",
+          "A habilidade é colocada na pilha na próxima vez em que um jogador receberia prioridade após o evento de entrada.",
+          "As alterações morais associadas à carta que gerou habilidades de ENTRADA seguem a regra de ajuste moral pendente."
         ]
       },
       {
@@ -343,9 +475,9 @@
           "saida"
         ],
         "rulings": [
-          "SAÍDA significa “Quando esta permanente deixa o campo de batalha”.",
-          "Uma habilidade de SAÍDA usa as informações conhecidas por último da permanente antes de ela deixar o campo.",
-          "Se a permanente deixar o campo e voltar depois, ela é um novo objeto e não mantém relação com a habilidade já desencadeada."
+          "SAÍDA significa “Quando esta permanente deixa o campo de batalha” e é uma habilidade desencadeada que usa a pilha.",
+          "A habilidade utiliza as últimas informações conhecidas da permanente antes de ela deixar o campo.",
+          "Se a permanente deixar o campo e voltar depois, ela é um novo objeto."
         ]
       },
       {
@@ -356,25 +488,133 @@
           "ataque"
         ],
         "rulings": [
-          "ATAQUE significa “Quando este personagem for declarado atacante”.",
-          "Um personagem que entra no campo de batalha já atacando não foi declarado atacante e, portanto, não desencadeia habilidades de ATAQUE.",
-          "Se uma habilidade de ATAQUE exigir uma condição, essa condição é verificada no momento em que a habilidade desencadear, salvo se o texto indicar outra verificação."
+          "ATAQUE significa “Quando este Personagem for declarado atacante” e é uma habilidade desencadeada.",
+          "Um Personagem que entra no campo de batalha já atacando não foi declarado atacante e não desencadeia ATAQUE."
         ]
       },
       {
-        "keyword": "EQUIPÁVEL",
-        "title": "EQUIPÁVEL",
+        "keyword": "DEFESA",
+        "title": "DEFESA",
         "forms": [
-          "EQUIPÁVEL",
-          "equipável",
-          "EQUIPAVEL",
-          "equipavel"
+          "DEFESA",
+          "defesa"
         ],
         "rulings": [
-          "EQUIPÁVEL indica o texto que o Equipamento concede ao personagem equipado.",
-          "Se o texto após EQUIPÁVEL for um modificador, o personagem equipado recebe esse modificador enquanto o Equipamento permanecer anexado.",
-          "Se o texto após EQUIPÁVEL for uma habilidade ativada, o personagem equipado possui aquela habilidade.",
-          "Se uma habilidade concedida por EQUIPÁVEL possuir {T}, o custo é pago desativando o personagem equipado, não o Equipamento."
+          "DEFESA significa “Quando este Personagem for declarado bloqueador” e é uma habilidade desencadeada.",
+          "Um Personagem que entra no campo de batalha já bloqueando não foi declarado bloqueador e não desencadeia DEFESA."
+        ]
+      },
+      {
+        "keyword": "COMBATE",
+        "title": "COMBATE",
+        "forms": [
+          "COMBATE",
+          "combate"
+        ],
+        "rulings": [
+          "COMBATE significa “Quando este Personagem for declarado atacante ou bloqueador” e reúne os eventos de ATAQUE e DEFESA.",
+          "Ser escolhido como alvo de ataque não desencadeia COMBATE, pois o Personagem atacado diretamente não foi declarado atacante nem bloqueador."
+        ]
+      },
+      {
+        "keyword": "LETAL",
+        "title": "LETAL",
+        "forms": [
+          "LETAL",
+          "letal"
+        ],
+        "rulings": [
+          "Qualquer quantidade de dano maior que 0 causada por uma fonte com LETAL a um Personagem é considerada letal para aquele Personagem.",
+          "Um Personagem que tenha recebido dano maior que 0 de uma fonte com LETAL é destruído por dano na próxima verificação de ações baseadas no estado, salvo se regra ou efeito impedir.",
+          "Para atribuição de dano entre múltiplos bloqueadores ou por SOBREPUJAR, 1 ponto de dano de uma fonte com LETAL é considerado dano letal.",
+          "LETAL não modifica dano causado a Territórios e não impede efeitos de prevenção de dano."
+        ]
+      },
+      {
+        "keyword": "PROTEÇÃO",
+        "title": "PROTEÇÃO",
+        "forms": [
+          "PROTEÇÃO",
+          "proteção",
+          "PROTECAO",
+          "protecao"
+        ],
+        "rulings": [
+          "Uma permanente com PROTEÇÃO não pode ser alvejada por cartas, habilidades ou efeitos, nem escolhida como alvo de ataque.",
+          "A restrição também se aplica a cartas, habilidades e efeitos controlados pelo próprio controlador da permanente.",
+          "PROTEÇÃO não impede efeitos que não escolham a permanente como alvo, incluindo efeitos globais e escolhas que não criem tecnicamente um alvo.",
+          "Se a permanente ganhar PROTEÇÃO depois de um ataque ter sido legalmente declarado contra ela, isso não remove retroativamente a permanente do combate."
+        ]
+      },
+      {
+        "keyword": "PRONTIDÃO",
+        "title": "PRONTIDÃO",
+        "forms": [
+          "PRONTIDÃO",
+          "prontidão",
+          "PRONTIDAO",
+          "prontidao"
+        ],
+        "rulings": [
+          "PRONTIDÃO significa que declarar o Personagem como atacante não faz com que ele seja despreparado.",
+          "PRONTIDÃO não impede que o Personagem seja despreparado por custos, habilidades, efeitos ou por ser declarado bloqueador.",
+          "O Personagem ainda precisa estar preparado e legalmente apto para ser declarado atacante."
+        ]
+      },
+      {
+        "keyword": "RESERVA",
+        "title": "RESERVA",
+        "forms": [
+          "RESERVA",
+          "reserva"
+        ],
+        "rulings": [
+          "RESERVA indica que o texto localizado após esse marcador funciona enquanto a carta estiver na Reserva de seu dono.",
+          "O texto pode representar uma habilidade estática, ativada ou desencadeada.",
+          "RESERVA não torna funcionais os demais textos da carta."
+        ]
+      },
+      {
+        "keyword": "GOLPE RÁPIDO",
+        "title": "GOLPE RÁPIDO",
+        "forms": [
+          "GOLPE RÁPIDO",
+          "golpe rápido",
+          "GOLPE RAPIDO",
+          "golpe rapido"
+        ],
+        "rulings": [
+          "GOLPE RÁPIDO faz o Personagem atribuir e causar seu dano de combate no primeiro momento de dano de combate, antes do dano normal.",
+          "Se o combate tiver dois momentos de dano, somente os Personagens que possuíam GOLPE RÁPIDO no início do primeiro momento causam dano nele; os demais aptos causam dano no momento normal.",
+          "GOLPE RÁPIDO não permite que o Personagem cause dano de combate duas vezes no mesmo combate."
+        ]
+      },
+      {
+        "keyword": "CONSTRUÇÃO X",
+        "title": "CONSTRUÇÃO X",
+        "forms": [
+          "CONSTRUÇÃO X",
+          "construção X",
+          "CONSTRUCAO X",
+          "construcao X"
+        ],
+        "rulings": [
+          "CONSTRUÇÃO X é um marcador de habilidade de Artefatos com subtipo Construção.",
+          "X indica a quantidade mínima de marcadores de construção necessária para que o texto posterior aos dois-pontos se torne funcional.",
+          "O texto condicionado deixa de funcionar imediatamente se o Artefato ficar com menos de X marcadores."
+        ]
+      },
+      {
+        "keyword": "CONSTRUIR X",
+        "title": "CONSTRUIR X",
+        "forms": [
+          "CONSTRUIR X",
+          "construir X"
+        ],
+        "rulings": [
+          "CONSTRUIR X é uma habilidade estática de Personagens.",
+          "Se um Personagem com CONSTRUIR X for despreparado para pagar o custo de uma habilidade de CONSTRUÇÃO, serão colocados X marcadores de construção em vez de 1 quando a habilidade resolver.",
+          "CONSTRUIR X não permite que um Personagem já despreparado pague esse custo."
         ]
       },
       {
@@ -385,25 +625,9 @@
           "inesperado"
         ],
         "rulings": [
-          "INESPERADO significa que a carta pode ser jogada em qualquer momento em que seu controlador tenha prioridade.",
-          "INESPERADO altera apenas a permissão temporal para jogar a carta; ela ainda deve ter seus custos pagos e ainda usa a pilha normalmente.",
-          "Uma carta com INESPERADO pode ser jogada durante combate, em resposta a uma jogada ou habilidade, ou no turno de um oponente, desde que seu controlador tenha prioridade."
-        ]
-      },
-      {
-        "keyword": "INDESTRUTÍVEL",
-        "title": "INDESTRUTÍVEL",
-        "forms": [
-          "INDESTRUTÍVEL",
-          "indestrutível",
-          "INDESTRUTIVEL",
-          "indestrutivel"
-        ],
-        "rulings": [
-          "Um personagem INDESTRUTÍVEL não pode ser destruído por efeitos que digam “destrua”.",
-          "Um personagem INDESTRUTÍVEL não é colocado no cemitério por ter dano marcado igual ou superior à sua resistência.",
-          "Se dano seria causado a um personagem INDESTRUTÍVEL, previna esse dano.",
-          "INDESTRUTÍVEL não impede exílio, retorno à mão, sacrifício ou ser colocado no cemitério por ter resistência 0 ou menos."
+          "INESPERADO permite jogar a carta em qualquer momento em que seu controlador tenha prioridade.",
+          "INESPERADO altera apenas a restrição temporal; não altera custos, alvos, tipos ou outras restrições.",
+          "Um Pecado com INESPERADO pode ser jogado fora da etapa de Alistamento, mas continua sendo pago pela colocação dos marcadores de dano exigidos em seu Território, salvo texto contrário."
         ]
       },
       {
@@ -416,9 +640,25 @@
           "imbloqueavel"
         ],
         "rulings": [
-          "IMBLOQUEÁVEL significa que o personagem não pode ser bloqueado.",
-          "Restrições que exigiriam múltiplos bloqueadores não permitem bloquear um personagem IMBLOQUEÁVEL.",
-          "IMBLOQUEÁVEL não impede que o personagem seja alvo de efeitos antes ou depois da declaração de bloqueadores."
+          "IMBLOQUEÁVEL significa que o Personagem não pode ser bloqueado.",
+          "Um Personagem IMBLOQUEÁVEL ainda precisa ser declarado atacante legalmente.",
+          "IMBLOQUEÁVEL não impede efeitos válidos que removam o Personagem do combate, previnam dano ou alterem o alvo de ataque."
+        ]
+      },
+      {
+        "keyword": "INDESTRUTÍVEL",
+        "title": "INDESTRUTÍVEL",
+        "forms": [
+          "INDESTRUTÍVEL",
+          "indestrutível",
+          "INDESTRUTIVEL",
+          "indestrutivel"
+        ],
+        "rulings": [
+          "INDESTRUTÍVEL impede que uma permanente seja destruída por efeitos que digam “destrua”.",
+          "Um Personagem INDESTRUTÍVEL não é destruído por ter dano marcado igual ou superior à sua Resistência nem por receber dano de uma fonte com LETAL; o dano que lhe seria causado é prevenido.",
+          "INDESTRUTÍVEL não impede exílio, retorno à mão, renúncia ou a colocação no cemitério de um Personagem com Resistência 0 ou menos.",
+          "Para atribuição de dano letal, INDESTRUTÍVEL não reduz a quantidade de dano que precisa ser atribuída."
         ]
       },
       {
@@ -429,11 +669,70 @@
           "sobrepujar"
         ],
         "rulings": [
-          "SOBREPUJAR modifica a atribuição de dano de combate de um personagem atacante bloqueado.",
-          "O controlador do atacante deve atribuir dano letal aos bloqueadores na ordem definida antes de atribuir dano excedente ao alvo original do ataque.",
-          "Se o alvo original do ataque era um território, o dano excedente pode ser atribuído àquele território.",
-          "Se o alvo original do ataque era um personagem, o dano excedente pode ser atribuído àquele personagem.",
-          "Se o alvo original não estiver presente ou não puder receber dano no momento da atribuição, SOBREPUJAR não redireciona o excedente para outro alvo."
+          "SOBREPUJAR modifica a atribuição de dano de combate de um Personagem atacante bloqueado.",
+          "O controlador do atacante deve atribuir dano letal aos bloqueadores na ordem definida antes de atribuir dano excedente ao alvo de ataque original.",
+          "O dano excedente pode ser atribuído ao Território ou Personagem que era o alvo original do ataque.",
+          "Se o alvo original não estiver presente ou não puder receber dano no momento da atribuição, SOBREPUJAR não redireciona o excedente para outro alvo.",
+          "Prevenção de dano e INDESTRUTÍVEL não reduzem a quantidade que precisa ser atribuída como dano letal."
+        ]
+      },
+      {
+        "keyword": "EQUIPÁVEL",
+        "title": "EQUIPÁVEL",
+        "forms": [
+          "EQUIPÁVEL",
+          "equipável",
+          "EQUIPAVEL",
+          "equipavel"
+        ],
+        "rulings": [
+          "EQUIPÁVEL é um marcador de texto de Equipamentos. Enquanto o Equipamento estiver anexado, o texto posterior é aplicado ao Personagem equipado.",
+          "Se o texto for um modificador estático, o Personagem recebe esse modificador; se for uma habilidade ativada, o Personagem equipado possui essa habilidade.",
+          "O controlador do Personagem equipado controla e pode ativar as habilidades concedidas. Se a habilidade concedida tiver {T}, o custo é pago despreparando o Personagem equipado."
+        ]
+      },
+      {
+        "keyword": "VINCULAR A",
+        "title": "VINCULAR A",
+        "forms": [
+          "VINCULAR A",
+          "vincular a"
+        ],
+        "rulings": [
+          "VINCULAR A aparece em cartas com Vínculo e define os alvos que a carta pode escolher e os objetos ou jogadores aos quais pode permanecer anexada.",
+          "VINCULAR A não usa a pilha separadamente: funciona durante o processo de jogar a carta, durante sua resolução e enquanto a permanente permanecer no campo de batalha."
+        ]
+      },
+      {
+        "keyword": "DESGUARNECIDO X",
+        "title": "DESGUARNECIDO X",
+        "forms": [
+          "DESGUARNECIDO X",
+          "desguarnecido X",
+          "DESGUARNECIDO",
+          "desguarnecido"
+        ],
+        "rulings": [
+          "DESGUARNECIDO X significa: “No início do seu Reagrupamento, se você controlar X ou mais Personagens despreparados, [efeito]”.",
+          "A condição é verificada no início do Reagrupamento e novamente quando a habilidade resolve. Apenas Personagens despreparados controlados pelo controlador da habilidade e presentes no campo de batalha são contados.",
+          "Cada ocorrência impressa é uma habilidade independente. Se mais de um limite for satisfeito, todas as habilidades correspondentes desencadeiam.",
+          "As habilidades usam a pilha; se várias controladas pelo mesmo jogador desencadearem simultaneamente, ele escolhe a ordem em que serão colocadas na pilha."
+        ]
+      },
+      {
+        "keyword": "INALVEJÁVEL",
+        "title": "INALVEJÁVEL",
+        "forms": [
+          "INALVEJÁVEL",
+          "inalvejável",
+          "INALVEJAVEL",
+          "inalvejavel"
+        ],
+        "rulings": [
+          "Uma permanente com INALVEJÁVEL não pode ser alvejada por cartas, habilidades ou efeitos controlados por um oponente.",
+          "O controlador da permanente pode alvejá-la com suas próprias cartas, habilidades ou efeitos.",
+          "INALVEJÁVEL não impede que a permanente seja escolhida como alvo de ataque e não impede efeitos que não escolham a permanente como alvo.",
+          "Se uma permanente ganhar INALVEJÁVEL depois de ser alvejada por um oponente, o alvo será considerado inválido na verificação de validade realizada na resolução."
         ]
       }
     ]

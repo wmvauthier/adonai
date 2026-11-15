@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "updatedAt": "2026-06-11",
+  "updatedAt": "2026-11-15",
   "virtues": [
     {
       "id": 1,
@@ -25,7 +25,7 @@
             "pt": "Convicção"
           },
           "text": {
-            "pt": "No início da sua etapa de compra, você pode colocar três cartas da sua mão no fundo do seu baralho. Se fizer isso, compre uma carta adicional."
+            "pt": "No início da sua etapa de compra, você pode colocar três cartas da sua mão no fundo do seu baralho ou pagar EEE. Se fizer isso, compre uma carta adicional."
           }
         },
         {
@@ -34,7 +34,7 @@
             "pt": "Confiança"
           },
           "text": {
-            "pt": "No início da sua etapa de compra, você pode colocar duas cartas da sua mão no fundo do seu baralho. Se fizer isso, compre uma carta adicional."
+            "pt": "No início da sua etapa de compra, você pode colocar três cartas da sua mão no fundo do seu baralho ou pagar EEE. Se fizer isso, compre duas cartas adicionais."
           }
         },
         {
@@ -43,7 +43,7 @@
             "pt": "Revelação"
           },
           "text": {
-            "pt": "No início da sua etapa de compra, você pode comprar duas cartas adicionais. Se fizer isso, coloque três cartas da sua mão no fundo do seu baralho."
+            "pt": "No início da sua etapa de compra, você pode colocar duas cartas da sua mão no fundo do seu baralho ou pagar EEE. Se fizer isso, compre duas cartas adicionais."
           }
         },
         {
@@ -52,7 +52,7 @@
             "pt": "Providência"
           },
           "text": {
-            "pt": "No início da sua etapa de compra, você pode comprar até quatro cartas adicionais. Se fizer isso, coloque duas cartas da sua mão no fundo do seu baralho."
+            "pt": "No início da sua etapa de compra, você pode colocar duas cartas da sua mão no fundo do seu baralho ou pagar EEE. Se fizer isso, compre três cartas adicionais."
           }
         }
       ]
@@ -135,7 +135,7 @@
             "pt": "Disciplina"
           },
           "text": {
-            "pt": "No seu reagrupamento, se você jogou até uma carta neste turno, você pode desativar E e criar uma ficha de Incenso."
+            "pt": "No seu reagrupamento, se você jogou até uma carta neste turno, você pode despreparar uma carta de E para criar uma ficha de Incenso despreparada."
           }
         },
         {
@@ -144,7 +144,7 @@
             "pt": "Sobriedade"
           },
           "text": {
-            "pt": "No seu reagrupamento, se você jogou até uma carta neste turno, crie uma ficha de Incenso."
+            "pt": "No seu reagrupamento, se você jogou até uma carta neste turno, crie uma ficha de Incenso despreparada."
           }
         },
         {
@@ -153,7 +153,7 @@
             "pt": "Autodomínio"
           },
           "text": {
-            "pt": "No seu reagrupamento, se você jogou até uma carta neste turno, ative E e crie uma ficha de Incenso."
+            "pt": "No seu reagrupamento, se você jogou até uma carta neste turno, prepare uma carta de E e crie uma ficha de Incenso despreparada."
           }
         },
         {
@@ -162,7 +162,7 @@
             "pt": "Harmonia"
           },
           "text": {
-            "pt": "No seu reagrupamento, se você jogou até uma carta neste turno, ative EE e crie uma ficha de Incenso."
+            "pt": "No seu reagrupamento, se você jogou até uma carta neste turno, prepare duas cartas de E e crie uma ficha de Incenso despreparada."
           }
         }
       ]
@@ -190,7 +190,7 @@
             "pt": "Excesso"
           },
           "text": {
-            "pt": "No seu reagrupamento, se você jogou duas ou mais cartas neste turno, desative até E."
+            "pt": "No seu reagrupamento, se você jogou duas ou mais cartas neste turno, desprepare até uma carta de E."
           }
         },
         {
@@ -199,7 +199,7 @@
             "pt": "Impulso"
           },
           "text": {
-            "pt": "No seu reagrupamento, se você jogou duas ou mais cartas neste turno, desative até E e descarte uma carta."
+            "pt": "No seu reagrupamento, se você jogou duas ou mais cartas neste turno, desprepare até uma carta de E e descarte uma carta."
           }
         },
         {
@@ -208,7 +208,7 @@
             "pt": "Descontrole"
           },
           "text": {
-            "pt": "No seu reagrupamento, se você jogou uma ou mais cartas neste turno, desative até EE e descarte uma carta."
+            "pt": "No seu reagrupamento, se você jogou uma ou mais cartas neste turno, desprepare até duas cartas de E e descarte uma carta."
           }
         },
         {
@@ -217,7 +217,7 @@
             "pt": "Caos"
           },
           "text": {
-            "pt": "No seu reagrupamento, se você jogou uma ou mais cartas neste turno, desative até EE e descarte uma carta aleatoriamente."
+            "pt": "No seu reagrupamento, se você jogou uma ou mais cartas neste turno, desprepare até duas carta de E e descarte uma carta aleatoriamente."
           }
         }
       ]
@@ -245,7 +245,7 @@
             "pt": "Ordem"
           },
           "text": {
-            "pt": "A primeira vez a cada turno que um personagem com poder 3 ou mais causar dano de combate ao seu território, cause 1 de dano a ele."
+            "pt": "Uma vez por turno, quando um oponente alvejar você ou seu Território, ele coloca um marcador de dano no próprio Território."
           }
         },
         {
@@ -254,16 +254,16 @@
             "pt": "Julgamento"
           },
           "text": {
-            "pt": "A primeira vez a cada turno que um personagem com poder 3 ou mais causar dano de combate a um personagem que você controla ou ao seu território, cause 1 de dano a ele."
+            "pt": "Uma vez por turno, quando um oponente alvejar você ou seu Território, ele coloca dois marcadores de dano no próprio Território."
           }
         },
         {
           "level": 3,
           "title": {
-            "pt": "Retribuição"
+            "pt": "Condenação"
           },
           "text": {
-            "pt": "Toda vez que um personagem com poder 3 ou mais causar dano de combate a um personagem que você controla ou ao seu território, cause 1 de dano a ele."
+            "pt": "Uma vez por turno, quando um oponente alvejar você, seu Território ou suas permanentes, ele coloca dois marcadores de dano no próprio Território."
           }
         },
         {
@@ -272,7 +272,7 @@
             "pt": "Lei Suprema"
           },
           "text": {
-            "pt": "Toda vez que um personagem com poder 3 ou mais causar dano de combate a um personagem que você controla ou ao seu território, cause 2 de dano a ele."
+            "pt": "Uma vez por turno, quando um oponente alvejar você, seu Território, suas permanentes ou declarar atacantes contra um deles, ele coloca três marcadores de dano no próprio Território."
           }
         }
       ]
@@ -300,7 +300,7 @@
             "pt": "Parcialidade"
           },
           "text": {
-            "pt": "A primeira vez a cada turno que um personagem seu com poder 3 ou mais causar dano de combate a um território, cause 1 de dano a ele."
+            "pt": "Uma vez por turno, quando uma carta ou habilidade que você controla alvejar um oponente ou o Território dele, coloque um marcador de dano no seu Território."
           }
         },
         {
@@ -309,7 +309,7 @@
             "pt": "Corrupção"
           },
           "text": {
-            "pt": "A primeira vez a cada turno que um personagem seu com poder 3 ou mais causar dano de combate a um personagem ou a um território, cause 1 de dano a ele."
+            "pt": "Uma vez por turno, quando uma carta ou habilidade que você controla alvejar um oponente ou o Território dele, coloque dois marcadores de dano no seu Território."
           }
         },
         {
@@ -318,7 +318,7 @@
             "pt": "Opressão"
           },
           "text": {
-            "pt": "Toda vez que um personagem que você controla com poder 3 ou mais causar dano de combate, cause 1 de dano a ele."
+            "pt": "Uma vez por turno, quando uma carta ou habilidade que você controla alvejar um oponente, um território ou alguma permanente dele, coloque dois marcadores de dano no seu Território."
           }
         },
         {
@@ -327,7 +327,7 @@
             "pt": "Tirania"
           },
           "text": {
-            "pt": "Toda vez que um personagem que você controla com poder 3 ou mais causar dano de combate, cause 2 de dano a ele."
+            "pt": "Uma vez por turno, quando uma carta ou habilidade que você controla alvejar um oponente, o território, uma permanente dele, ou você declarar atacantes contra algum destes, coloque três marcadores de dano no seu Território."
           }
         }
       ]
@@ -355,7 +355,7 @@
             "pt": "Resistência"
           },
           "text": {
-            "pt": "Durante cada turno, previna até 1 de dano de combate que seria causado a personagens que você controla."
+            "pt": "Quando você for atacado, coloque até 1 marcador de escudo num personagem que você controla."
           }
         },
         {
@@ -364,7 +364,7 @@
             "pt": "Determinação"
           },
           "text": {
-            "pt": "Durante cada turno, previna até 1 de dano de combate que seria causado ao seu território ou a personagens que você controla."
+            "pt": "Quando você for atacado, coloque até 1 marcador de escudo no seu território ou em um personagem que você controla."
           }
         },
         {
@@ -373,7 +373,7 @@
             "pt": "Coragem"
           },
           "text": {
-            "pt": "Durante cada turno, previna até 2 de dano de combate que seria causado ao seu território ou a personagens que você controla."
+            "pt": "Quando você atacar ou for atacado, coloque até 1 marcador de escudo no seu território ou em um personagem que você controla."
           }
         },
         {
@@ -382,7 +382,7 @@
             "pt": "Inabalável"
           },
           "text": {
-            "pt": "Durante cada turno, previna até 2 de dano de combate que seria causado ao seu território e até 2 de dano de combate que seria causado a personagens que você controla."
+            "pt": "Quando você atacar ou for atacado, coloque até 2 marcadores de escudo no seu território ou em personagens que você controla."
           }
         }
       ]
@@ -410,7 +410,7 @@
             "pt": "Fraqueza"
           },
           "text": {
-            "pt": "Personagens danificados que você controla não podem atacar sozinhos."
+            "pt": "Personagens feridos que você controla tem -1/-0 enquanto estiverem atacando."
           }
         },
         {
@@ -419,7 +419,7 @@
             "pt": "Fragilidade"
           },
           "text": {
-            "pt": "Personagens danificados que você controla não podem atacar sozinhos e têm -1/-0 enquanto estiverem atacando."
+            "pt": "Personagens feridos que você controla não podem atacar sozinhos e tem -1/-0 enquanto estiverem atacando."
           }
         },
         {
@@ -428,7 +428,7 @@
             "pt": "Pânico"
           },
           "text": {
-            "pt": "Personagens danificados que você controla não podem atacar."
+            "pt": "Personagens feridos que você controla não podem atacar."
           }
         },
         {
@@ -437,7 +437,7 @@
             "pt": "Colapso"
           },
           "text": {
-            "pt": "Toda vez que um personagem que você controla sofrer dano de combate, desative-o. Personagens danificados que você controla não podem ativar durante sua ativação."
+            "pt": "Toda vez que um personagem que você controla sofrer dano de combate, desprepare-o. Personagens feridos que você controla não podem ser preparados durante sua Preparação."
           }
         }
       ]
@@ -465,7 +465,7 @@
             "pt": "Ânimo"
           },
           "text": {
-            "pt": "No reagrupamento de cada oponente, se seu território sofreu dano neste turno, cure em 1 o seu território."
+            "pt": "Em cada reagrupamento, se seu território sofreu dano neste turno, remova 1 marcador de dano do seu território."
           }
         },
         {
@@ -474,7 +474,7 @@
             "pt": "Perseverança"
           },
           "text": {
-            "pt": "No reagrupamento de cada oponente, se seu território sofreu dano neste turno, cure em 2 o seu território ou em 1 um personagem que você controla."
+            "pt": "Em cada reagrupamento, se seu território sofreu dano neste turno, remova 1 marcador de dano do seu território ou de um personagem que você controla."
           }
         },
         {
@@ -483,7 +483,7 @@
             "pt": "Renovação"
           },
           "text": {
-            "pt": "No reagrupamento de cada oponente, se seu território sofreu dano neste turno, cure em 2 o seu território e em 1 um personagem que você controla."
+            "pt": "Em cada reagrupamento, se seu território ou personagens que você controla sofreram dano neste turno, cure em até 2 o dano marcado entre eles."
           }
         },
         {
@@ -492,7 +492,7 @@
             "pt": "Milagre"
           },
           "text": {
-            "pt": "No reagrupamento de cada oponente, se seu território sofreu dano neste turno, cure em 3 o dano distribuído entre seu território e os personagens que você controla."
+            "pt": "Em cada reagrupamento, se seu território ou personagens que você controla sofreram dano neste turno, cure em até 3 o dano marcado entre eles."
           }
         }
       ]
@@ -520,7 +520,7 @@
             "pt": "Cansaço"
           },
           "text": {
-            "pt": "No reagrupamento de cada oponente, se seu território sofreu dano neste turno, cause 1 de dano ao seu território."
+            "pt": "Em cada reagrupamento, se seu território sofreu dano neste turno, coloque 1 marcador de dano nele."
           }
         },
         {
@@ -529,7 +529,7 @@
             "pt": "Exaustão"
           },
           "text": {
-            "pt": "No reagrupamento de cada oponente, se seu território sofreu dano neste turno, cause 2 de dano ao seu território ou 1 a um personagem que você controla."
+            "pt": "Em cada reagrupamento, se seu território sofreu dano neste turno, coloque 1 marcador de dano nele ou em um personagem que você controla."
           }
         },
         {
@@ -538,7 +538,7 @@
             "pt": "Ruína"
           },
           "text": {
-            "pt": "No reagrupamento de cada oponente, se seu território sofreu dano neste turno, cause 2 de dano distribuídos dentre seu território e os personagens que você controla."
+            "pt": "Em cada reagrupamento, se seu território ou personagens que você controla sofreram dano neste turno, distribua 2 marcadores de dano dentre eles."
           }
         },
         {
@@ -547,7 +547,7 @@
             "pt": "Desolação"
           },
           "text": {
-            "pt": "No reagrupamento de cada oponente, se seu território sofreu dano neste turno, cause 3 de dano distribuídos dentre seu território e os personagens que você controla."
+            "pt": "Em cada reagrupamento, se seu território ou personagens que você controla sofreram dano neste turno, distribua 3 marcadores de dano dentre eles."
           }
         }
       ]
@@ -630,7 +630,7 @@
             "pt": "Distração"
           },
           "text": {
-            "pt": "Jogue com o topo do seu baralho revelado. Na sua preparação, pulverize uma carta."
+            "pt": "Jogue com o topo do seu baralho revelado.\nNa sua preparação, pulverize uma carta."
           }
         },
         {
@@ -639,7 +639,7 @@
             "pt": "Impulsividade"
           },
           "text": {
-            "pt": "Jogue com a mão e o topo do seu baralho revelados. Na sua preparação, pulverize duas cartas."
+            "pt": "Jogue com a mão e o topo do seu baralho revelados.\nNa sua preparação, pulverize duas cartas."
           }
         },
         {
@@ -648,7 +648,7 @@
             "pt": "Irreflexão"
           },
           "text": {
-            "pt": "Jogue com a mão e o topo do seu baralho revelados. Na sua preparação, pulverize três cartas."
+            "pt": "Jogue com a mão e o topo do seu baralho revelados.\nNa sua preparação, pulverize três cartas."
           }
         },
         {
@@ -657,7 +657,7 @@
             "pt": "Insensatez"
           },
           "text": {
-            "pt": "Jogue com a mão e o topo do seu baralho revelados. Na sua preparação, pulverize quatro cartas."
+            "pt": "Jogue com a mão e o topo do seu baralho revelados.\nNa sua preparação, pulverize quatro cartas."
           }
         }
       ]
@@ -685,7 +685,7 @@
             "pt": "Cuidado"
           },
           "text": {
-            "pt": "Toda vez que você atacar com exatamente dois personagens, eles ganham +1/+0 até o reagrupamento."
+            "pt": "Toda vez que você atacar com dois ou mais personagens, o personagem com menor poder dentre eles recebe +1/+1 até o reagrupamento."
           }
         },
         {
@@ -694,7 +694,7 @@
             "pt": "Comunhão"
           },
           "text": {
-            "pt": "Toda vez que você atacar com dois ou mais personagens, eles ganham +1/+0 até o reagrupamento."
+            "pt": "Toda vez que você atacar com dois ou mais personagens, os dois personagens com menor poder dentre eles recebem +1/+1 até o reagrupamento."
           }
         },
         {
@@ -703,7 +703,7 @@
             "pt": "Generosidade"
           },
           "text": {
-            "pt": "Toda vez que você atacar com dois ou mais personagens, eles ganham +1/+1 até o reagrupamento."
+            "pt": "Toda vez que você atacar com dois ou mais personagens, eles recebem +1/+1 até o reagrupamento."
           }
         },
         {
@@ -712,7 +712,7 @@
             "pt": "Amor Perfeito"
           },
           "text": {
-            "pt": "Toda vez que você atacar com dois ou mais personagens, eles ganham +1/+1 até o reagrupamento. Personagens desativados que você controla podem bloquear ataques direcionados a personagens que você controla."
+            "pt": "Toda vez que você atacar com dois ou mais personagens, eles recebem +1/+1 até o reagrupamento. Personagens despreparados que você controla podem bloquear ataques direcionados a personagens que você controla."
           }
         }
       ]
@@ -740,7 +740,7 @@
             "pt": "Indiferença"
           },
           "text": {
-            "pt": "Toda vez que você atacar com dois ou mais personagens, eles ganham -1/-0 até o reagrupamento."
+            "pt": "Toda vez que você atacar com dois ou mais personagens, o personagem com menor poder dentre eles recebe -2/-0 até o reagrupamento."
           }
         },
         {
@@ -749,7 +749,7 @@
             "pt": "Isolamento"
           },
           "text": {
-            "pt": "Toda vez que você atacar com dois ou mais personagens, eles ganham -2/-0 até o reagrupamento."
+            "pt": "Toda vez que você atacar com dois ou mais personagens, os dois personagens com menor poder dentre eles recebem -2/+0 até o reagrupamento."
           }
         },
         {
