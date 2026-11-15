@@ -247,22 +247,32 @@ function renderCard(item) {
 }
 
 function renderFeatured() {
-  const featured = galleryItems
-    .slice()
-    .sort((a, b) => getFeaturedScore(b) - getFeaturedScore(a) || b.dateObj - a.dateObj)
-    .slice(0, 4);
-  els.featuredSection.hidden = !featured.length;
-  if (!featured.length) return;
-
-  els.featuredStrip.innerHTML = featured.map((item) => `
-    <a class="featured-card" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">
-      <img src="${escapeHtml(item.thumb)}" alt="${escapeHtml(item.title)}" loading="lazy" />
-      <div>
-        <strong>${escapeHtml(item.title)}</strong>
-        <span>${escapeHtml(item.creator)} · ${escapeHtml(getPlatformMeta(item.platform).label)} · ${escapeHtml(formatDate(item.dateObj))}</span>
+  const featured = galleryItems.slice().sort((a, b) => getFeaturedScore(b) - getFeaturedScore(a) || b.dateObj - a.dateObj)[0];
+  els.featuredSection.hidden = !featured;
+  if (!featured) return;
+  const item = featured;
+  els.featuredStrip.innerHTML = `
+    <article class="screen-feature">
+      <img class="screen-backdrop" src="${escapeHtml(item.thumb)}" alt="" />
+      <div class="screen-copy">
+        <span class="screen-kicker">${currentLang === 'pt' ? 'EM DESTAQUE' : 'IN THE SPOTLIGHT'} · ${escapeHtml(getPlatformMeta(item.platform).label)}</span>
+        <h2>${escapeHtml(item.title)}</h2>
+        <p>${escapeHtml(item.creator)} · ${escapeHtml(formatDate(item.dateObj))}</p>
+        <a class="button" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">▶</span> ${currentLang === 'pt' ? 'Ver conteúdo' : 'Watch content'}</a>
       </div>
-    </a>
-  `).join("");
+      <img class="screen-poster" src="${escapeHtml(item.thumb)}" alt="${escapeHtml(item.title)}" />
+    </article>`;
+}
+
+function renderMediaShelf(items, platform) {
+  if (!items.length) return '';
+  const label = platform === 'youtube' ? (currentLang === 'pt' ? 'Para assistir' : 'Watch next') : (currentLang === 'pt' ? 'Na comunidade' : 'From the community');
+  const id = `shelf-${platform}`;
+  return `<section class="media-shelf" aria-labelledby="${id}-title">
+    <header><div><span class="section-kicker">${getPlatformMeta(platform).label}</span><h2 id="${id}-title">${label} <small>${items.length}</small></h2></div>
+    ${items.length > 1 ? `<div class="shelf-controls"><button type="button" data-shelf="${id}" data-step="-1" aria-label="${currentLang === 'pt' ? 'Conteúdos anteriores' : 'Previous content'}">←</button><button type="button" data-shelf="${id}" data-step="1" aria-label="${currentLang === 'pt' ? 'Próximos conteúdos' : 'Next content'}">→</button></div>` : ''}</header>
+    <div class="media-rail" id="${id}">${items.map(renderCard).join('')}</div>
+  </section>`;
 }
 
 function renderEmptyState() {
@@ -291,7 +301,7 @@ function renderGallery() {
     return;
   }
 
-  els.galleryGrid.innerHTML = sorted.map(renderCard).join("");
+  els.galleryGrid.innerHTML = renderMediaShelf(sorted.filter(item => item.platform === 'youtube'), 'youtube') + renderMediaShelf(sorted.filter(item => item.platform === 'instagram'), 'instagram');
   handleReveal();
 }
 
@@ -364,6 +374,40 @@ function handleReveal() {
 }
 
 function bindEvents() {
+  const player = document.getElementById('reviewPlayer');
+  const frame = document.getElementById('playerFrame');
+  const closePlayer = document.getElementById('closePlayer');
+  closePlayer.addEventListener('click', () => player.close());
+  player.addEventListener('close', () => { frame.replaceChildren(); document.body.classList.remove('review-player-open'); });
+  player.addEventListener('click', event => { if (event.target === player) player.close(); });
+  document.getElementById('mainContent').addEventListener('click', event => {
+    const arrow = event.target.closest('[data-shelf]');
+    if (arrow) {
+      const rail = document.getElementById(arrow.dataset.shelf);
+      rail.scrollBy({ left: Number(arrow.dataset.step) * rail.clientWidth * .85, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+      return;
+    }
+    const anchor = event.target.closest('.screen-feature a, .gallery-card');
+    if (!anchor || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    const item = galleryItems.find(item => item.url === anchor.getAttribute('href'));
+    if (!item || item.platform !== 'youtube') return;
+    const url = new URL(item.url);
+    if (!['youtube.com', 'www.youtube.com', 'm.youtube.com', 'youtu.be'].includes(url.hostname)) return;
+    const id = url.hostname === 'youtu.be' ? url.pathname.slice(1) : url.searchParams.get('v') || url.pathname.match(/^\/(?:shorts|embed)\/([\w-]+)/)?.[1];
+    if (!/^[\w-]{11}$/.test(id || '')) return;
+    event.preventDefault();
+    document.getElementById('playerTitle').textContent = item.title;
+    document.getElementById('playerOriginal').href = item.url;
+    closePlayer.setAttribute('aria-label', currentLang === 'pt' ? 'Fechar vídeo' : 'Close video');
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
+    iframe.title = item.title;
+    iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+    iframe.allowFullscreen = true;
+    frame.replaceChildren(iframe);
+    player.showModal();
+    document.body.classList.add('review-player-open');
+  });
   document.getElementById("mainContent").addEventListener("error", (event) => {
     const image = event.target;
     if (!(image instanceof HTMLImageElement) || image.dataset.fallback) return;

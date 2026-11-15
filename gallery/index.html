@@ -64,8 +64,14 @@
       <p data-pt="Opiniões dos criadores, vídeos e descobertas da comunidade." data-en="Creator reviews, videos, and community discoveries.">Opiniões dos criadores, vídeos e descobertas da comunidade.</p>
       <nav class="community-links" aria-label="Conteúdos"><a href="#reviews" data-pt="Depoimentos ↓" data-en="Testimonials ↓">Depoimentos ↓</a><a href="#galleryFeed" data-pt="Vídeos e posts ↓" data-en="Videos and posts ↓">Vídeos e posts ↓</a></nav>
     </div>
+      <section class="container gallery-featured reveal" id="galleryHighlights" hidden>
+        <div class="gallery-featured-head">
+          <span class="section-kicker" data-pt="Destaques" data-en="Highlights">Destaques</span>
+        </div>
+        <div class="featured-strip" id="featuredStrip"></div>
+      </section>
     <section class="reviews wrap section" id="reviews" hidden aria-labelledby="reviewsTitle">
-      <!-- <div class="section-top"><h2 id="reviewsTitle" data-pt="Na mesa dos criadores" data-en="At the creators’ table">Na mesa dos criadores</h2></div> -->
+      <div class="section-top"><h2 id="reviewsTitle" data-pt="Na mesa dos criadores" data-en="At the creators’ table">Na mesa dos criadores</h2></div>
       <div class="reviews-grid" data-render="reviews"></div>
     </section>
     <!-- <section class="gallery-intro">
@@ -79,12 +85,7 @@
       </div>
     </section> -->
     <section class="section gallery-shell" id="galleryFeed">
-      <section class="container gallery-featured reveal" id="galleryHighlights" hidden>
-        <div class="gallery-featured-head">
-          <span class="section-kicker" data-pt="Destaques" data-en="Highlights">Destaques</span>
-        </div>
-        <div class="featured-strip" id="featuredStrip"></div>
-      </section>
+
 
       <div class="container gallery-tools reveal" id="galleryTools">
 
@@ -127,10 +128,15 @@
         </div>
       </div>
 
-      <div class="container gallery-grid" id="galleryGrid" aria-live="polite"></div>
+      <div class="container media-library" id="galleryGrid" aria-live="polite"></div>
     </section>
   </main>
 
+  <dialog class="review-player" id="reviewPlayer" aria-labelledby="playerTitle">
+    <div class="player-heading"><h2 id="playerTitle"></h2><button type="button" id="closePlayer" aria-label="Fechar vídeo">×</button></div>
+    <div id="playerFrame"></div>
+    <a id="playerOriginal" target="_blank" rel="noopener noreferrer" data-pt="Abrir no YouTube ↗" data-en="Open on YouTube ↗">Abrir no YouTube ↗</a>
+  </dialog>
   <footer class="footer">
     <div class="wrap footer-top">
       <a class="wordmark" href="../index.html">
