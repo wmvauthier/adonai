@@ -1,6 +1,6 @@
 {
   "schemaVersion": 4,
-  "updatedAt": "2026-11-15",
+  "updatedAt": "2026-11-18",
   "meta": {
     "collections": [
       1,
@@ -30,11 +30,11 @@
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 0.83,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 1,
+        "inclusion": 16.67,
         "archetypes": []
       },
       "role": null,
@@ -63,11 +63,11 @@
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 0.83,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 1,
+        "inclusion": 16.67,
         "archetypes": []
       },
       "role": null,
@@ -96,11 +96,11 @@
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 0.83,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 1,
+        "inclusion": 16.67,
         "archetypes": []
       },
       "role": null,
@@ -124,16 +124,16 @@
         "art": "../assets/imgs/DDG - 004.webp"
       },
       "virtues": [],
-      "cost": 2.0,
+      "cost": 2,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 0.83,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 1,
+        "inclusion": 16.67,
         "archetypes": []
       },
       "role": null,
@@ -157,16 +157,16 @@
         "art": "../assets/imgs/DDG - 005.webp"
       },
       "virtues": [],
-      "cost": 2.0,
+      "cost": 2,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 0.83,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 1,
+        "inclusion": 16.67,
         "archetypes": []
       },
       "role": null,
@@ -190,16 +190,16 @@
         "art": "../assets/imgs/DDG - 006.webp"
       },
       "virtues": [],
-      "cost": 1.0,
+      "cost": 1,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 1.67,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 2,
+        "inclusion": 33.33,
         "archetypes": []
       },
       "role": null,
@@ -226,13 +226,13 @@
       "cost": null,
       "stats": {
         "attack": null,
-        "resistance": 14.0
+        "resistance": 14
       },
-      "rating": 0,
+      "rating": 0.83,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 1,
+        "inclusion": 16.67,
         "archetypes": []
       },
       "role": null,
@@ -259,13 +259,13 @@
       "cost": null,
       "stats": {
         "attack": null,
-        "resistance": 14.0
+        "resistance": 14
       },
-      "rating": 0,
+      "rating": 0.83,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 1,
+        "inclusion": 16.67,
         "archetypes": []
       },
       "role": null,
@@ -292,13 +292,13 @@
       "cost": null,
       "stats": {
         "attack": null,
-        "resistance": 14.0
+        "resistance": 14
       },
-      "rating": 0,
+      "rating": 0.83,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 1,
+        "inclusion": 16.67,
         "archetypes": []
       },
       "role": null,
@@ -328,16 +328,16 @@
         1,
         7
       ],
-      "cost": 3.0,
+      "cost": 3,
       "stats": {
-        "attack": 2.0,
-        "resistance": 3.0
+        "attack": 2,
+        "resistance": 3
       },
-      "rating": 0,
+      "rating": 1.67,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 2,
+        "inclusion": 33.33,
         "archetypes": []
       },
       "role": null,
@@ -368,16 +368,16 @@
         2,
         12
       ],
-      "cost": 6.0,
+      "cost": 6,
       "stats": {
-        "attack": 8.0,
-        "resistance": 8.0
+        "attack": 8,
+        "resistance": 8
       },
-      "rating": 0,
+      "rating": 1.67,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 2,
+        "inclusion": 33.33,
         "archetypes": []
       },
       "role": null,
@@ -403,16 +403,16 @@
       "virtues": [
         1
       ],
-      "cost": 2.0,
+      "cost": 2,
       "stats": {
-        "attack": 2.0,
-        "resistance": 3.0
+        "attack": 2,
+        "resistance": 3
       },
-      "rating": 0,
+      "rating": 1.67,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 2,
+        "inclusion": 33.33,
         "archetypes": []
       },
       "role": null,
@@ -442,16 +442,16 @@
         2,
         10
       ],
-      "cost": 4.0,
+      "cost": 4,
       "stats": {
-        "attack": 5.0,
-        "resistance": 5.0
+        "attack": 5,
+        "resistance": 5
       },
-      "rating": 0,
+      "rating": 2.5,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 3,
+        "inclusion": 50,
         "archetypes": []
       },
       "role": null,
@@ -479,16 +479,16 @@
       "virtues": [
         9
       ],
-      "cost": 2.0,
+      "cost": 2,
       "stats": {
-        "attack": 0.0,
-        "resistance": 1.0
+        "attack": 0,
+        "resistance": 1
       },
-      "rating": 0,
+      "rating": 2.5,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 3,
+        "inclusion": 50,
         "archetypes": []
       },
       "role": null,
@@ -514,16 +514,16 @@
         "art": "../assets/imgs/DDG - 015.webp"
       },
       "virtues": [],
-      "cost": 1.0,
+      "cost": 1,
       "stats": {
-        "attack": 0.0,
-        "resistance": 2.0
+        "attack": 0,
+        "resistance": 2
       },
-      "rating": 0,
+      "rating": 3.33,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 4,
+        "inclusion": 66.67,
         "archetypes": []
       },
       "role": null,
@@ -550,16 +550,16 @@
         1,
         13
       ],
-      "cost": 2.0,
+      "cost": 2,
       "stats": {
-        "attack": 1.0,
-        "resistance": 1.0
+        "attack": 1,
+        "resistance": 1
       },
-      "rating": 0,
+      "rating": 0.83,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 1,
+        "inclusion": 16.67,
         "archetypes": []
       },
       "role": null,
@@ -586,16 +586,16 @@
         1,
         9
       ],
-      "cost": 1.0,
+      "cost": 1,
       "stats": {
-        "attack": 1.0,
-        "resistance": 1.0
+        "attack": 1,
+        "resistance": 1
       },
-      "rating": 0,
+      "rating": 2.5,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 3,
+        "inclusion": 50,
         "archetypes": []
       },
       "role": null,
@@ -625,16 +625,16 @@
         7,
         14
       ],
-      "cost": 3.0,
+      "cost": 3,
       "stats": {
-        "attack": 3.0,
-        "resistance": 1.0
+        "attack": 3,
+        "resistance": 1
       },
-      "rating": 0,
+      "rating": 2.5,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 3,
+        "inclusion": 50,
         "archetypes": []
       },
       "role": null,
@@ -661,16 +661,16 @@
         "art": "../assets/imgs/DDG - 019.webp"
       },
       "virtues": [],
-      "cost": 3.0,
+      "cost": 3,
       "stats": {
-        "attack": 3.0,
-        "resistance": 1.0
+        "attack": 3,
+        "resistance": 1
       },
-      "rating": 0,
+      "rating": 1.67,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 2,
+        "inclusion": 33.33,
         "archetypes": []
       },
       "role": null,
@@ -699,16 +699,16 @@
       "virtues": [
         8
       ],
-      "cost": 3.0,
+      "cost": 3,
       "stats": {
-        "attack": 4.0,
-        "resistance": 4.0
+        "attack": 4,
+        "resistance": 4
       },
-      "rating": 0,
+      "rating": 1.67,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 2,
+        "inclusion": 33.33,
         "archetypes": []
       },
       "role": null,
@@ -737,16 +737,16 @@
       "virtues": [
         2
       ],
-      "cost": 4.0,
+      "cost": 4,
       "stats": {
-        "attack": 4.0,
-        "resistance": 4.0
+        "attack": 4,
+        "resistance": 4
       },
-      "rating": 0,
+      "rating": 1.67,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 2,
+        "inclusion": 33.33,
         "archetypes": []
       },
       "role": null,
@@ -773,16 +773,16 @@
         "art": "../assets/imgs/DDG - 022.webp"
       },
       "virtues": [],
-      "cost": 5.0,
+      "cost": 5,
       "stats": {
-        "attack": 5.0,
-        "resistance": 2.0
+        "attack": 5,
+        "resistance": 2
       },
-      "rating": 0,
+      "rating": 1.67,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 2,
+        "inclusion": 33.33,
         "archetypes": []
       },
       "role": null,
@@ -812,16 +812,16 @@
         7,
         11
       ],
-      "cost": 4.0,
+      "cost": 4,
       "stats": {
-        "attack": 3.0,
-        "resistance": 4.0
+        "attack": 3,
+        "resistance": 4
       },
-      "rating": 0,
+      "rating": 1.67,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 2,
+        "inclusion": 33.33,
         "archetypes": []
       },
       "role": null,
@@ -850,16 +850,16 @@
       "virtues": [
         2
       ],
-      "cost": 1.0,
+      "cost": 1,
       "stats": {
-        "attack": 1.0,
-        "resistance": 1.0
+        "attack": 1,
+        "resistance": 1
       },
-      "rating": 0,
+      "rating": 2.5,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 3,
+        "inclusion": 50,
         "archetypes": []
       },
       "role": null,
@@ -885,16 +885,16 @@
         "art": "../assets/imgs/DDG - 025.webp"
       },
       "virtues": [],
-      "cost": 1.0,
+      "cost": 1,
       "stats": {
-        "attack": 1.0,
-        "resistance": 1.0
+        "attack": 1,
+        "resistance": 1
       },
-      "rating": 0,
+      "rating": 2.5,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 3,
+        "inclusion": 50,
         "archetypes": []
       },
       "role": null,
@@ -920,16 +920,16 @@
         "art": "../assets/imgs/DDG - 026.webp"
       },
       "virtues": [],
-      "cost": 1.0,
+      "cost": 1,
       "stats": {
-        "attack": 0.0,
-        "resistance": 2.0
+        "attack": 0,
+        "resistance": 2
       },
-      "rating": 0,
+      "rating": 1.67,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 2,
+        "inclusion": 33.33,
         "archetypes": []
       },
       "role": null,
@@ -955,16 +955,16 @@
         "art": "../assets/imgs/DDG - 027.webp"
       },
       "virtues": [],
-      "cost": 1.0,
+      "cost": 1,
       "stats": {
-        "attack": 0.0,
-        "resistance": 1.0
+        "attack": 0,
+        "resistance": 1
       },
-      "rating": 0,
+      "rating": 1.67,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 2,
+        "inclusion": 33.33,
         "archetypes": []
       },
       "role": null,
@@ -992,16 +992,16 @@
       "virtues": [
         1
       ],
-      "cost": 3.0,
+      "cost": 3,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 1.67,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 2,
+        "inclusion": 33.33,
         "archetypes": []
       },
       "role": null,
@@ -1029,16 +1029,16 @@
       "virtues": [
         1
       ],
-      "cost": 3.0,
+      "cost": 3,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 1.67,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 2,
+        "inclusion": 33.33,
         "archetypes": []
       },
       "role": null,
@@ -1066,16 +1066,16 @@
       "virtues": [
         11
       ],
-      "cost": 1.0,
+      "cost": 1,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 2.5,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 3,
+        "inclusion": 50,
         "archetypes": []
       },
       "role": null,
@@ -1104,16 +1104,16 @@
         1,
         7
       ],
-      "cost": 3.0,
+      "cost": 3,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 4.17,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 5,
+        "inclusion": 83.33,
         "archetypes": []
       },
       "role": null,
@@ -1141,16 +1141,16 @@
       "virtues": [
         11
       ],
-      "cost": 2.0,
+      "cost": 2,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 2.5,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 3,
+        "inclusion": 50,
         "archetypes": []
       },
       "role": null,
@@ -1178,16 +1178,16 @@
       "virtues": [
         9
       ],
-      "cost": 2.0,
+      "cost": 2,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 1.67,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 2,
+        "inclusion": 33.33,
         "archetypes": []
       },
       "role": null,
@@ -1215,7 +1215,7 @@
         9,
         13
       ],
-      "cost": 7.0,
+      "cost": 7,
       "stats": {
         "attack": null,
         "resistance": null
@@ -1250,16 +1250,16 @@
       "virtues": [
         7
       ],
-      "cost": 2.0,
+      "cost": 2,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 1.67,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 2,
+        "inclusion": 33.33,
         "archetypes": []
       },
       "role": null,
@@ -1285,16 +1285,16 @@
       "virtues": [
         3
       ],
-      "cost": 2.0,
+      "cost": 2,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 1.67,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 2,
+        "inclusion": 33.33,
         "archetypes": []
       },
       "role": null,
@@ -1320,16 +1320,16 @@
         "art": "../assets/imgs/DDG - 037.webp"
       },
       "virtues": [],
-      "cost": 2.0,
+      "cost": 2,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 2.5,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 3,
+        "inclusion": 50,
         "archetypes": []
       },
       "role": null,
@@ -1357,16 +1357,16 @@
       "virtues": [
         9
       ],
-      "cost": 4.0,
+      "cost": 4,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 2.5,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 3,
+        "inclusion": 50,
         "archetypes": []
       },
       "role": null,
@@ -1392,16 +1392,16 @@
         "art": "../assets/imgs/DDG - 039.webp"
       },
       "virtues": [],
-      "cost": 1.0,
+      "cost": 1,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 3.33,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 4,
+        "inclusion": 66.67,
         "archetypes": []
       },
       "role": null,
@@ -1427,16 +1427,16 @@
         "art": "../assets/imgs/DDG - 040.webp"
       },
       "virtues": [],
-      "cost": 2.0,
+      "cost": 2,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 3.33,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 4,
+        "inclusion": 66.67,
         "archetypes": []
       },
       "role": null,
@@ -1462,16 +1462,16 @@
         "art": "../assets/imgs/DDG - 041.webp"
       },
       "virtues": [],
-      "cost": 2.0,
+      "cost": 2,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 2.5,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 3,
+        "inclusion": 50,
         "archetypes": []
       },
       "role": null,
@@ -1495,16 +1495,16 @@
         "art": "../assets/imgs/DDG - 042.webp"
       },
       "virtues": [],
-      "cost": 1.0,
+      "cost": 1,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 3.33,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 4,
+        "inclusion": 66.67,
         "archetypes": []
       },
       "role": null,
@@ -1530,16 +1530,16 @@
         "art": "../assets/imgs/DDG - 043.webp"
       },
       "virtues": [],
-      "cost": 1.0,
+      "cost": 1,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 5,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 6,
+        "inclusion": 100,
         "archetypes": []
       },
       "role": null,
@@ -1563,7 +1563,7 @@
         "art": "../assets/imgs/DDG - 044.webp"
       },
       "virtues": [],
-      "cost": 5.0,
+      "cost": 5,
       "stats": {
         "attack": null,
         "resistance": null
@@ -1598,16 +1598,16 @@
       "virtues": [
         2
       ],
-      "cost": 2.0,
+      "cost": 2,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 1.67,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 2,
+        "inclusion": 33.33,
         "archetypes": []
       },
       "role": null,
@@ -1638,16 +1638,16 @@
         12,
         4
       ],
-      "cost": 1.0,
+      "cost": 1,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 2.5,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 3,
+        "inclusion": 50,
         "archetypes": []
       },
       "role": null,
@@ -1675,16 +1675,16 @@
       "virtues": [
         14
       ],
-      "cost": 1.0,
+      "cost": 1,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 2.5,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 3,
+        "inclusion": 50,
         "archetypes": []
       },
       "role": null,
@@ -1712,16 +1712,16 @@
         10,
         14
       ],
-      "cost": 3.0,
+      "cost": 3,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 1.67,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 2,
+        "inclusion": 33.33,
         "archetypes": []
       },
       "role": null,
@@ -1749,16 +1749,16 @@
       "virtues": [
         12
       ],
-      "cost": 3.0,
+      "cost": 3,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 3.33,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 4,
+        "inclusion": 66.67,
         "archetypes": []
       },
       "role": null,
@@ -1787,11 +1787,11 @@
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 0.83,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 1,
+        "inclusion": 16.67,
         "archetypes": []
       },
       "role": null,
@@ -1820,11 +1820,11 @@
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 0.83,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 1,
+        "inclusion": 16.67,
         "archetypes": []
       },
       "role": null,
@@ -1853,11 +1853,11 @@
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 0.83,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 1,
+        "inclusion": 16.67,
         "archetypes": []
       },
       "role": null,
@@ -1881,16 +1881,16 @@
         "art": "../assets/imgs/TEC - 004.webp"
       },
       "virtues": [],
-      "cost": 3.0,
+      "cost": 3,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 0.83,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 1,
+        "inclusion": 16.67,
         "archetypes": []
       },
       "role": null,
@@ -1914,7 +1914,7 @@
         "art": "../assets/imgs/TEC - 005.webp"
       },
       "virtues": [],
-      "cost": 2.0,
+      "cost": 2,
       "stats": {
         "attack": null,
         "resistance": null
@@ -1947,16 +1947,16 @@
         "art": "../assets/imgs/TEC - 006.webp"
       },
       "virtues": [],
-      "cost": 2.0,
+      "cost": 2,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 0.83,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 1,
+        "inclusion": 16.67,
         "archetypes": []
       },
       "role": null,
@@ -1983,13 +1983,13 @@
       "cost": null,
       "stats": {
         "attack": null,
-        "resistance": 12.0
+        "resistance": 12
       },
-      "rating": 0,
+      "rating": 0.83,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 1,
+        "inclusion": 16.67,
         "archetypes": []
       },
       "role": null,
@@ -2016,13 +2016,13 @@
       "cost": null,
       "stats": {
         "attack": null,
-        "resistance": 12.0
+        "resistance": 12
       },
-      "rating": 0,
+      "rating": 0.83,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 1,
+        "inclusion": 16.67,
         "archetypes": []
       },
       "role": null,
@@ -2049,13 +2049,13 @@
       "cost": null,
       "stats": {
         "attack": null,
-        "resistance": 14.0
+        "resistance": 14
       },
-      "rating": 0,
+      "rating": 0.83,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 1,
+        "inclusion": 16.67,
         "archetypes": []
       },
       "role": null,
@@ -2087,16 +2087,16 @@
         6,
         12
       ],
-      "cost": 5.0,
+      "cost": 5,
       "stats": {
-        "attack": 4.0,
-        "resistance": 4.0
+        "attack": 4,
+        "resistance": 4
       },
-      "rating": 0,
+      "rating": 3.33,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 4,
+        "inclusion": 66.67,
         "archetypes": []
       },
       "role": null,
@@ -2127,10 +2127,10 @@
         9,
         7
       ],
-      "cost": 5.0,
+      "cost": 5,
       "stats": {
-        "attack": 5.0,
-        "resistance": 5.0
+        "attack": 5,
+        "resistance": 5
       },
       "rating": 0,
       "functions": [],
@@ -2162,16 +2162,16 @@
         "art": "../assets/imgs/TEC - 012.webp"
       },
       "virtues": [],
-      "cost": 2.0,
+      "cost": 2,
       "stats": {
-        "attack": 0.0,
-        "resistance": 1.0
+        "attack": 0,
+        "resistance": 1
       },
-      "rating": 0,
+      "rating": 0.83,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 1,
+        "inclusion": 16.67,
         "archetypes": []
       },
       "role": null,
@@ -2200,16 +2200,16 @@
       "virtues": [
         5
       ],
-      "cost": 3.0,
+      "cost": 3,
       "stats": {
-        "attack": 3.0,
-        "resistance": 3.0
+        "attack": 3,
+        "resistance": 3
       },
-      "rating": 0,
+      "rating": 3.33,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 4,
+        "inclusion": 66.67,
         "archetypes": []
       },
       "role": null,
@@ -2237,16 +2237,16 @@
       "virtues": [
         5
       ],
-      "cost": 1.0,
+      "cost": 1,
       "stats": {
-        "attack": 1.0,
-        "resistance": 1.0
+        "attack": 1,
+        "resistance": 1
       },
-      "rating": 0,
+      "rating": 3.33,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 4,
+        "inclusion": 66.67,
         "archetypes": []
       },
       "role": null,
@@ -2277,16 +2277,16 @@
         11,
         14
       ],
-      "cost": 5.0,
+      "cost": 5,
       "stats": {
-        "attack": 4.0,
-        "resistance": 4.0
+        "attack": 4,
+        "resistance": 4
       },
-      "rating": 0,
+      "rating": 4.17,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 5,
+        "inclusion": 83.33,
         "archetypes": []
       },
       "role": null,
@@ -2310,16 +2310,16 @@
         "art": "../assets/imgs/TEC - 016.webp"
       },
       "virtues": [],
-      "cost": 1.0,
+      "cost": 1,
       "stats": {
-        "attack": 0.0,
-        "resistance": 2.0
+        "attack": 0,
+        "resistance": 2
       },
-      "rating": 0,
+      "rating": 3.33,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 4,
+        "inclusion": 66.67,
         "archetypes": []
       },
       "role": null,
@@ -2346,16 +2346,16 @@
         13,
         11
       ],
-      "cost": 3.0,
+      "cost": 3,
       "stats": {
-        "attack": 0.0,
-        "resistance": 2.0
+        "attack": 0,
+        "resistance": 2
       },
-      "rating": 0,
+      "rating": 3.33,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 4,
+        "inclusion": 66.67,
         "archetypes": []
       },
       "role": null,
@@ -2384,16 +2384,16 @@
         1,
         7
       ],
-      "cost": 3.0,
+      "cost": 3,
       "stats": {
-        "attack": 1.0,
-        "resistance": 3.0
+        "attack": 1,
+        "resistance": 3
       },
-      "rating": 0,
+      "rating": 3.33,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 4,
+        "inclusion": 66.67,
         "archetypes": []
       },
       "role": null,
@@ -2419,16 +2419,16 @@
         "art": "../assets/imgs/TEC - 019.webp"
       },
       "virtues": [],
-      "cost": 2.0,
+      "cost": 2,
       "stats": {
-        "attack": 0.0,
-        "resistance": 1.0
+        "attack": 0,
+        "resistance": 1
       },
-      "rating": 0,
+      "rating": 1.67,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 2,
+        "inclusion": 33.33,
         "archetypes": []
       },
       "role": null,
@@ -2454,16 +2454,16 @@
         "art": "../assets/imgs/TEC - 020.webp"
       },
       "virtues": [],
-      "cost": 1.0,
+      "cost": 1,
       "stats": {
-        "attack": 1.0,
-        "resistance": 2.0
+        "attack": 1,
+        "resistance": 2
       },
-      "rating": 0,
+      "rating": 3.33,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 4,
+        "inclusion": 66.67,
         "archetypes": []
       },
       "role": null,
@@ -2491,10 +2491,10 @@
         6,
         12
       ],
-      "cost": 2.0,
+      "cost": 2,
       "stats": {
-        "attack": 1.0,
-        "resistance": 1.0
+        "attack": 1,
+        "resistance": 1
       },
       "rating": 0,
       "functions": [],
@@ -2526,16 +2526,16 @@
         "art": "../assets/imgs/TEC - 022.webp"
       },
       "virtues": [],
-      "cost": 3.0,
+      "cost": 3,
       "stats": {
-        "attack": 0.0,
-        "resistance": 1.0
+        "attack": 0,
+        "resistance": 1
       },
-      "rating": 0,
+      "rating": 3.33,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 4,
+        "inclusion": 66.67,
         "archetypes": []
       },
       "role": null,
@@ -2559,16 +2559,16 @@
         "art": "../assets/imgs/TEC - 023.webp"
       },
       "virtues": [],
-      "cost": 3.0,
+      "cost": 3,
       "stats": {
-        "attack": 1.0,
-        "resistance": 3.0
+        "attack": 1,
+        "resistance": 3
       },
-      "rating": 0,
+      "rating": 3.33,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 4,
+        "inclusion": 66.67,
         "archetypes": []
       },
       "role": null,
@@ -2598,16 +2598,16 @@
         11,
         14
       ],
-      "cost": 3.0,
+      "cost": 3,
       "stats": {
-        "attack": 3.0,
-        "resistance": 2.0
+        "attack": 3,
+        "resistance": 2
       },
-      "rating": 0,
+      "rating": 4.17,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 5,
+        "inclusion": 83.33,
         "archetypes": []
       },
       "role": null,
@@ -2633,16 +2633,16 @@
       "virtues": [
         10
       ],
-      "cost": 1.0,
+      "cost": 1,
       "stats": {
-        "attack": 2.0,
-        "resistance": 2.0
+        "attack": 2,
+        "resistance": 2
       },
-      "rating": 0,
+      "rating": 3.33,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 4,
+        "inclusion": 66.67,
         "archetypes": []
       },
       "role": null,
@@ -2670,16 +2670,16 @@
         6,
         4
       ],
-      "cost": 3.0,
+      "cost": 3,
       "stats": {
-        "attack": 3.0,
-        "resistance": 1.0
+        "attack": 3,
+        "resistance": 1
       },
-      "rating": 0,
+      "rating": 2.5,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 3,
+        "inclusion": 50,
         "archetypes": []
       },
       "role": null,
@@ -2708,16 +2708,16 @@
       "virtues": [
         12
       ],
-      "cost": 1.0,
+      "cost": 1,
       "stats": {
-        "attack": 2.0,
-        "resistance": 1.0
+        "attack": 2,
+        "resistance": 1
       },
-      "rating": 0,
+      "rating": 3.33,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 4,
+        "inclusion": 66.67,
         "archetypes": []
       },
       "role": null,
@@ -2745,16 +2745,16 @@
       "virtues": [
         10
       ],
-      "cost": 1.0,
+      "cost": 1,
       "stats": {
-        "attack": 0.0,
-        "resistance": 3.0
+        "attack": 0,
+        "resistance": 3
       },
-      "rating": 0,
+      "rating": 3.33,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 4,
+        "inclusion": 66.67,
         "archetypes": []
       },
       "role": null,
@@ -2783,16 +2783,16 @@
       "virtues": [
         7
       ],
-      "cost": 3.0,
+      "cost": 3,
       "stats": {
-        "attack": 3.0,
-        "resistance": 3.0
+        "attack": 3,
+        "resistance": 3
       },
-      "rating": 0,
+      "rating": 3.33,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 4,
+        "inclusion": 66.67,
         "archetypes": []
       },
       "role": null,
@@ -2822,16 +2822,16 @@
         5,
         7
       ],
-      "cost": 3.0,
+      "cost": 3,
       "stats": {
-        "attack": 3.0,
-        "resistance": 3.0
+        "attack": 3,
+        "resistance": 3
       },
-      "rating": 0,
+      "rating": 3.33,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 4,
+        "inclusion": 66.67,
         "archetypes": []
       },
       "role": null,
@@ -2859,16 +2859,16 @@
       "virtues": [
         5
       ],
-      "cost": 2.0,
+      "cost": 2,
       "stats": {
-        "attack": 1.0,
-        "resistance": 3.0
+        "attack": 1,
+        "resistance": 3
       },
-      "rating": 0,
+      "rating": 4.17,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 5,
+        "inclusion": 83.33,
         "archetypes": []
       },
       "role": null,
@@ -2897,16 +2897,16 @@
         1,
         5
       ],
-      "cost": 1.0,
+      "cost": 1,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 1.67,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 2,
+        "inclusion": 33.33,
         "archetypes": []
       },
       "role": null,
@@ -2934,16 +2934,16 @@
       "virtues": [
         3
       ],
-      "cost": 1.0,
+      "cost": 1,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 2.5,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 3,
+        "inclusion": 50,
         "archetypes": []
       },
       "role": null,
@@ -2971,16 +2971,16 @@
       "virtues": [
         11
       ],
-      "cost": 3.0,
+      "cost": 3,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 1.67,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 2,
+        "inclusion": 33.33,
         "archetypes": []
       },
       "role": null,
@@ -3008,16 +3008,16 @@
       "virtues": [
         1
       ],
-      "cost": 2.0,
+      "cost": 2,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 2.5,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 3,
+        "inclusion": 50,
         "archetypes": []
       },
       "role": null,
@@ -3045,16 +3045,16 @@
       "virtues": [
         7
       ],
-      "cost": 4.0,
+      "cost": 4,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 2.5,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 3,
+        "inclusion": 50,
         "archetypes": []
       },
       "role": null,
@@ -3082,16 +3082,16 @@
       "virtues": [
         3
       ],
-      "cost": 4.0,
+      "cost": 4,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 1.67,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 2,
+        "inclusion": 33.33,
         "archetypes": []
       },
       "role": null,
@@ -3119,16 +3119,16 @@
       "virtues": [
         13
       ],
-      "cost": 2.0,
+      "cost": 2,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 3.33,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 4,
+        "inclusion": 66.67,
         "archetypes": []
       },
       "role": null,
@@ -3156,16 +3156,16 @@
       "virtues": [
         13
       ],
-      "cost": 2.0,
+      "cost": 2,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 3.33,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 4,
+        "inclusion": 66.67,
         "archetypes": []
       },
       "role": null,
@@ -3189,16 +3189,16 @@
         "art": "../assets/imgs/TEC - 040.webp"
       },
       "virtues": [],
-      "cost": 1.0,
+      "cost": 1,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 2.5,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 3,
+        "inclusion": 50,
         "archetypes": []
       },
       "role": null,
@@ -3230,16 +3230,16 @@
         11,
         3
       ],
-      "cost": 7.0,
+      "cost": 7,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 1.67,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 2,
+        "inclusion": 33.33,
         "archetypes": []
       },
       "role": null,
@@ -3265,16 +3265,16 @@
         "art": "../assets/imgs/TEC - 042.webp"
       },
       "virtues": [],
-      "cost": 1.0,
+      "cost": 1,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 5,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 6,
+        "inclusion": 100,
         "archetypes": []
       },
       "role": null,
@@ -3300,16 +3300,16 @@
         "art": "../assets/imgs/TEC - 043.webp"
       },
       "virtues": [],
-      "cost": 1.0,
+      "cost": 1,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 5,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 6,
+        "inclusion": 100,
         "archetypes": []
       },
       "role": null,
@@ -3335,16 +3335,16 @@
         "art": "../assets/imgs/TEC - 044.webp"
       },
       "virtues": [],
-      "cost": 3.0,
+      "cost": 3,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 1.67,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 2,
+        "inclusion": 33.33,
         "archetypes": []
       },
       "role": null,
@@ -3373,16 +3373,16 @@
         14,
         6
       ],
-      "cost": 1.0,
+      "cost": 1,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 2.5,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 3,
+        "inclusion": 50,
         "archetypes": []
       },
       "role": null,
@@ -3412,16 +3412,16 @@
         12,
         4
       ],
-      "cost": 1.0,
+      "cost": 1,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 0.83,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 1,
+        "inclusion": 16.67,
         "archetypes": []
       },
       "role": null,
@@ -3450,16 +3450,16 @@
         14,
         6
       ],
-      "cost": 4.0,
+      "cost": 4,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 3.33,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 4,
+        "inclusion": 66.67,
         "archetypes": []
       },
       "role": null,
@@ -3487,16 +3487,16 @@
       "virtues": [
         14
       ],
-      "cost": 4.0,
+      "cost": 4,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 3.33,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 4,
+        "inclusion": 66.67,
         "archetypes": []
       },
       "role": null,
@@ -3525,16 +3525,16 @@
         14,
         8
       ],
-      "cost": 2.0,
+      "cost": 2,
       "stats": {
         "attack": null,
         "resistance": null
       },
-      "rating": 0,
+      "rating": 3.33,
       "functions": [],
       "usage": {
-        "deckCount": 0,
-        "inclusion": 0,
+        "deckCount": 4,
+        "inclusion": 66.67,
         "archetypes": []
       },
       "role": null,
