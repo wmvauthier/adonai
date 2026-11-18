@@ -3,10 +3,11 @@
 ## Cartas horizontais e intercâmbio de decks
 
 `shared/card-orientation.js` identifica Templos e Territórios pelo catálogo e pelos
-tipos `TEM`/`TER`. Quando a imagem completa está vertical, produz uma versão
-horizontal em memória (90° no sentido horário) para os elementos `img`, incluindo
-prévias e conteúdo inserido dinamicamente. Não modifica arquivos, artes isoladas
-nem imagens que já estejam horizontais. A versão é reutilizada durante a visita.
+tipos `TEM`/`TER`. Quando a imagem completa está vertical, aplica uma rotação CSS
+de 90° no sentido horário ao próprio `img`, dentro de um espaço horizontal
+responsivo, incluindo prévias e conteúdo inserido dinamicamente. O `src` permanece
+o arquivo original: abrir a imagem em outra aba ou salvá-la mantém a orientação
+vertical. Não modifica arquivos, artes isoladas nem imagens já horizontais.
 
 `shared/deck-text.js` implementa o TXT do TCGArena: `quantidade Nome`, com identidade,
 14 virtudes/desvirtudes, baralho e `Sideboard:` vazio. Os nomes exportados são os
