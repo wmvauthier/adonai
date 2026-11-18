@@ -1317,33 +1317,44 @@ function parseIds(text) {
 }
 
 function exportDeckText() {
-  const lines = [];
-  ["champions", "territories", "temples"].forEach((key) => {
-    state.identity[key].forEach((id) => {
-      const card = cardById.get(id);
-      if (card) lines.push(`- [${id}] ${getCardName(card)}`);
-    });
-  });
-  lines.push("");
-  state.main.forEach((id) => {
-    const card = cardById.get(id);
-    if (card) lines.push(`- [${id}] ${getCardName(card)}`);
-  });
-  els.deckText.value = lines.join("\n");
+  const ids = [...state.identity.champions, ...state.identity.temples, ...state.identity.territories, ...state.main];
+  els.deckText.value = AdonaiDeckText.exportText(ids, cardById, [...references.virtues.values()]);
+  const blob = new Blob([els.deckText.value], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'adonai-deck-tcgarena.txt';
+  document.body.append(link);
+  link.click();
+  link.remove();
+  // Allow the browser to start reading the file before releasing its URL.
+  window.setTimeout(() => URL.revokeObjectURL(url), 60000);
+  document.getElementById('deckTextStatus').textContent = 'Download do TXT iniciado. A lista também está disponível abaixo para copiar.';
 }
 
 function importDeckText() {
-  const ids = parseIds(els.deckText.value);
-  state.identity = { champions: [], territories: [], temples: [] };
-  state.main = [];
-  state.deckLayout = normalizeDeckLayout();
-  ids.forEach((id) => {
+  const result = AdonaiDeckText.importText(els.deckText.value, cardById, [...references.virtues.values()]);
+  const identity = { champions: [], territories: [], temples: [] };
+  const main = [];
+  result.ids.forEach(id => {
     const card = cardById.get(id);
-    if (!card) return;
-    addCard(card);
+    if (isIdentityCard(card)) identity[getIdentityKey(card)].push(id);
+    else main.push(id);
   });
+  if (!result.ids.length) result.errors.push('Nenhuma carta de deck encontrada.');
+  if (main.length > MAIN_DECK_SIZE) result.errors.push(`O baralho aceita até ${MAIN_DECK_SIZE} cartas.`);
+  if (Object.values(identity).some(ids => ids.length > 1)) result.errors.push('Escolha apenas um campeão, um templo e um território.');
+  const status = document.getElementById('deckTextStatus');
+  if (result.errors.length) {
+    status.textContent = `Importação não aplicada. ${result.errors.slice(0, 4).join(' ')}`;
+    return;
+  }
+  state.identity = identity;
+  state.main = main;
+  state.deckLayout = normalizeDeckLayout();
   resetDeckLayoutByCost();
   renderAll();
+  status.textContent = `${result.ids.length} cartas importadas. ${result.ignoredVirtues} virtudes/desvirtudes ignoradas.${result.sideboard ? ` ${result.sideboard} entradas de Sideboard não importadas: este construtor não possui reserva.` : ''}`;
 }
 
 function scoreCard(card, mechanicId, speed, requiredIds, bannedIds) {

@@ -225,12 +225,13 @@
           </div>
 
           <div class="deck-actions">
-          <button type="button" id="exportDeck">Exportar TXT</button>
-          <button type="button" id="importDeck">Importar TXT</button>
+          <button type="button" id="exportDeck">Baixar TXT · TCGArena</button>
+          <button type="button" id="importDeck">Importar TCGArena</button>
           <button type="button" id="clearDeck">Limpar</button>
           </div>
 
-          <textarea id="deckText" placeholder="Cole ou copie a lista TXT aqui"></textarea>
+          <textarea id="deckText" aria-label="Lista do deck em formato TCGArena" placeholder="1 Nome da carta&#10;Sideboard:"></textarea>
+          <p id="deckTextStatus" role="status" aria-live="polite"></p>
         </section>
 
         <section class="assistant-section suggestion-section">
@@ -270,7 +271,9 @@
     </div>
   </footer>
 
+  <script src="../shared/deck-text.js"></script>
   <script src="./deckbuilder.js"></script>
+  <script src="../shared/card-orientation.js" defer></script>
 </body>
 
 </html>
