@@ -1,0 +1,106 @@
+{
+  "sets": [
+    {
+      "collectionId": 1,
+      "virtues": [
+        {"virtueId": 1, "image": "../assets/cards/extras/ddg/virtude_fe.png"},
+        {"virtueId": 2, "image": "../assets/cards/extras/ddg/desvirtude_duvida.png"},
+        {"virtueId": 3, "image": "../assets/cards/extras/ddg/virtude_temperanca.png"},
+        {"virtueId": 4, "image": "../assets/cards/extras/ddg/desvirtude_descontrole.png"},
+        {"virtueId": 5, "image": "../assets/cards/extras/ddg/virtude_justica.png"},
+        {"virtueId": 6, "image": "../assets/cards/extras/ddg/desvirtude_iniquidade.png"},
+        {"virtueId": 7, "image": "../assets/cards/extras/ddg/virtude_fortaleza.png"},
+        {"virtueId": 8, "image": "../assets/cards/extras/ddg/desvirtude_covardia.png"},
+        {"virtueId": 9, "image": "../assets/cards/extras/ddg/virtude_esperanca.png"},
+        {"virtueId": 10, "image": "../assets/cards/extras/ddg/desvirtude_desespero.png"},
+        {"virtueId": 11, "image": "../assets/cards/extras/ddg/virtude_prudencia.png"},
+        {"virtueId": 12, "image": "../assets/cards/extras/ddg/desvirtude_insensatez.png"},
+        {"virtueId": 13, "image": "../assets/cards/extras/ddg/virtude_caridade.png"},
+        {"virtueId": 14, "image": "../assets/cards/extras/ddg/desvirtude_egoismo.png"}
+      ]
+    },
+    {
+      "collectionId": 2,
+      "virtues": [
+        {"virtueId": 1, "image": "../assets/cards/extras/tec/virtude_fe.png"},
+        {"virtueId": 2, "image": "../assets/cards/extras/tec/desvirtude_duvida.png"},
+        {"virtueId": 3, "image": "../assets/cards/extras/tec/virtude_temperanca.png"},
+        {"virtueId": 4, "image": "../assets/cards/extras/tec/desvirtude_descontrole.png"},
+        {"virtueId": 5, "image": "../assets/cards/extras/tec/virtude_justica.png"},
+        {"virtueId": 6, "image": "../assets/cards/extras/tec/desvirtude_iniquidade.png"},
+        {"virtueId": 7, "image": "../assets/cards/extras/tec/virtude_fortaleza.png"},
+        {"virtueId": 8, "image": "../assets/cards/extras/tec/desvirtude_covardia.png"},
+        {"virtueId": 9, "image": "../assets/cards/extras/tec/virtude_esperanca.png"},
+        {"virtueId": 10, "image": "../assets/cards/extras/tec/desvirtude_desespero.png"},
+        {"virtueId": 11, "image": "../assets/cards/extras/tec/virtude_prudencia.png"},
+        {"virtueId": 12, "image": "../assets/cards/extras/tec/desvirtude_insensatez.png"},
+        {"virtueId": 13, "image": "../assets/cards/extras/tec/virtude_caridade.png"},
+        {"virtueId": 14, "image": "../assets/cards/extras/tec/desvirtude_egoismo.png"}
+      ]
+    }
+  ],
+  "tokens": [
+    {
+      "id": "ouro",
+      "name": {
+        "pt": "Ouro",
+        "en": "Gold"
+      },
+      "art": [
+        {"collectionId": 1, "image": "../assets/cards/extras/ddg/ficha_ouro.png"},
+        {"collectionId": 2, "image": "../assets/cards/extras/tec/ficha_ouro.png"}
+      ]
+    },
+    {
+      "id": "essencia",
+      "name": {
+        "pt": "Essência",
+        "en": "Essence"
+      },
+      "art": [
+        {"collectionId": 1, "image": "../assets/cards/extras/ddg/ficha_essencia.png"},
+        {"collectionId": 2, "image": "../assets/cards/extras/tec/ficha_essencia.png"}
+      ]
+    },
+    {
+      "id": "servo",
+      "name": {
+        "pt": "Servo",
+        "en": "Servant"
+      },
+      "art": [
+        {"collectionId": 2, "image": "../assets/cards/extras/tec/ficha_servo.png"}
+      ]
+    },
+    {
+      "id": "israelita",
+      "name": {
+        "pt": "Israelita",
+        "en": "Israelite"
+      },
+      "art": [
+        {"collectionId": 2, "image": "../assets/cards/extras/tec/ficha_israelita.png"}
+      ]
+    }
+  ],
+  "variants": {
+    "DDG-MIL-029": [
+      {
+        "name": {
+          "pt": "Arte alternativa",
+          "en": "Alternate art"
+        },
+        "image": "../assets/cards/extras/ddg/59 - A Batalha é do Senhor - Textless.png"
+      }
+    ],
+    "DDG-MIL-028": [
+      {
+        "name": {
+          "pt": "Colecionável",
+          "en": "Collectible"
+        },
+        "image": "../assets/cards/extras/ddg/60 - Headshot - Colecionável.png"
+      }
+    ]
+  }
+}

@@ -5,6 +5,7 @@
     {
       "id": 1,
       "code": "DDG",
+      "releaseOrder": 1,
       "name": {
         "pt": "Desafio do Gigante",
         "en": "Giant's Challenge"
@@ -21,6 +22,7 @@
     {
       "id": 2,
       "code": "TEC",
+      "releaseOrder": 2,
       "name": {
         "pt": "Trono e Culpa",
         "en": "Throne and Guilt"

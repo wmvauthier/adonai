@@ -75,6 +75,12 @@
       </div>
     </section> -->
 
+    <nav class="container catalog-sections" aria-label="Seções do catálogo">
+      <a href="#cardsCatalog" aria-current="location" data-pt="Cartas" data-en="Cards">Cartas</a>
+      <a href="#virtudes" data-pt="Virtudes" data-en="Virtues">Virtudes</a>
+      <a href="#fichas" data-pt="Fichas" data-en="Tokens">Fichas</a>
+    </nav>
+
     <section class="section catalog-shell" id="cardsCatalog">
       <div class="container catalog-heading reveal">
         <p class="eyebrow" data-pt="Catálogo de cartas" data-en="Card catalog">Catálogo de cartas</p>
@@ -293,6 +299,21 @@
         </div>
       </div>
     </section>
+
+    <section class="container catalog-extras" id="virtudes" aria-labelledby="virtueCardsTitle" hidden>
+      <header class="catalog-extras-heading">
+        <h2 id="virtueCardsTitle" data-pt="Virtudes e desvirtudes" data-en="Virtues and vices">Virtudes e desvirtudes</h2>
+        <label><span data-pt="Coleção" data-en="Set">Coleção</span><select id="virtueCardsSet"></select></label>
+      </header>
+      <div id="virtueCardsGrid" class="catalog-extras-grid"></div>
+    </section>
+
+    <section class="container catalog-extras" id="fichas" aria-labelledby="tokenCardsTitle" hidden>
+      <header class="catalog-extras-heading">
+        <h2 id="tokenCardsTitle" data-pt="Fichas" data-en="Tokens">Fichas</h2>
+      </header>
+      <div id="tokenCardsGrid" class="catalog-extras-grid"></div>
+    </section>
   </main>
 
   <aside class="card-drawer" id="cardDrawer" aria-hidden="true">
@@ -302,6 +323,18 @@
       <div class="drawer-inner" id="drawerContent"></div>
     </div>
   </aside>
+  <dialog class="token-detail" id="tokenDetail" aria-labelledby="tokenDetailTitle">
+    <header class="token-detail-heading">
+      <div>
+        <h2 id="tokenDetailTitle"></h2>
+        <p data-pt="Artes por coleção" data-en="Artwork by set">Artes por coleção</p>
+      </div>
+      <form method="dialog">
+        <button class="token-detail-close" type="submit" data-pt="Fechar" data-en="Close" autofocus>Fechar</button>
+      </form>
+    </header>
+    <div class="token-art-groups" id="tokenArtGroups"></div>
+  </dialog>
   <div class="hover-preview" id="hoverPreview" aria-hidden="true"></div>
 
   <footer class="footer">

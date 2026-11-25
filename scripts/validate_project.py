@@ -132,12 +132,13 @@ def iter_deck_refs(section_value: Any) -> list[str]:
 
 
 def validate_game_data(errors: list[str]) -> None:
-  card_codes, _ = build_card_codes(errors)
+  card_codes, cards_by_code = build_card_codes(errors)
   cards_doc = load_json(DATA / "game" / "cards.json")
   decks_doc = load_json(DATA / "game" / "decks.json")
   virtues_doc = load_json(DATA / "game" / "virtues.json")
 
-  require_unique(virtues_doc.get("virtues", []), "id", "virtues.id", errors)
+  virtue_ids = require_unique(virtues_doc.get("virtues", []), "id", "virtues.id", errors)
+  validate_card_extras(card_codes, virtue_ids, errors)
 
   for deck in decks_doc.get("decks", []):
     deck_id = deck.get("id", "deck sem id")
@@ -146,7 +147,7 @@ def validate_game_data(errors: list[str]) -> None:
         if ref not in card_codes:
           errors.append(f"data/game/decks.json: {deck_id}.{section} referencia carta inexistente {ref}")
 
-  for card_code, card in build_card_codes(errors)[1].items():
+  for card_code, card in cards_by_code.items():
     images = card.get("images") or {}
     for image_kind, image_path in images.items():
       if not isinstance(image_path, str):
@@ -160,6 +161,55 @@ def validate_game_data(errors: list[str]) -> None:
         resolved = resolve_local_path(ROOT, image_path)
       if resolved and not resolved.exists():
         errors.append(f"data/game/cards.json: {card_code}.images.{image_kind} nao existe: {image_path}")
+
+
+def validate_card_extras(card_codes: set[str], virtue_ids: set[int], errors: list[str]) -> None:
+  source = DATA / "game" / "card-extras.json"
+  label = str(source.relative_to(ROOT))
+  extras = load_json(source)
+  collections = load_json(DATA / "refs" / "collections.json").get("collections", [])
+  collection_ids = {item["id"] for item in collections}
+
+  def check_image(entry: dict[str, Any]) -> None:
+    image = entry.get("image", "")
+    path = resolve_local_path(ROOT / "cards", image)
+    if path is None or not path.is_file():
+      errors.append(f"{label}: imagem inexistente {image!r}")
+
+  def check_extra_image(entry: dict[str, Any]) -> None:
+    image = entry.get("image", "")
+    if not re.fullmatch(r"[a-z0-9_]+\.[a-z0-9]+", Path(image).name):
+      errors.append(f"{label}: nome de imagem deve usar letras minusculas ASCII, numeros ou _: {image!r}")
+    check_image(entry)
+
+  sets = extras.get("sets", [])
+  require_unique(sets, "collectionId", f"{label}.sets", errors)
+  for collection in sets:
+    if collection.get("collectionId") not in collection_ids:
+      errors.append(f"{label}: colecao inexistente {collection.get('collectionId')}")
+    virtues = collection.get("virtues", [])
+    require_unique(virtues, "virtueId", f"{label}.virtues", errors)
+    for entry in virtues:
+      if entry.get("virtueId") not in virtue_ids:
+        errors.append(f"{label}: virtude inexistente {entry.get('virtueId')}")
+      check_extra_image(entry)
+
+  tokens = extras.get("tokens", [])
+  require_unique(tokens, "id", f"{label}.tokens", errors)
+  for token in tokens:
+    art = token.get("art", [])
+    if not art:
+      errors.append(f"{label}: ficha sem arte {token.get('id')}")
+    for entry in art:
+      if entry.get("collectionId") not in collection_ids:
+        errors.append(f"{label}: colecao inexistente {entry.get('collectionId')} na ficha {token.get('id')}")
+      check_extra_image(entry)
+
+  for card_code, variants in extras.get("variants", {}).items():
+    if card_code not in card_codes:
+      errors.append(f"{label}: variante de carta inexistente {card_code}")
+    for entry in variants:
+      check_image(entry)
 
 
 def walk_effects(value: Any) -> list[str]:

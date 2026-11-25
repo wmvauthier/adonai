@@ -1413,3 +1413,202 @@
   .catalog-page .advanced-search-panel{padding:18px}
   .catalog-page .catalog-tools-controls{display:grid; grid-template-columns:1fr}
 }
+
+.catalog-sections {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-block: 24px 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.catalog-sections a {
+  padding: 10px 16px;
+  border: 1px solid var(--line);
+  color: var(--text);
+}
+
+.catalog-sections a:hover,
+.catalog-sections a[aria-current] {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: var(--surface);
+}
+
+.catalog-page .catalog-shell,
+.catalog-extras {
+  padding-top: clamp(28px, 5vw, 56px);
+}
+
+.catalog-extras { padding-bottom: 72px; }
+
+.catalog-extras-heading {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: end;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.catalog-extras-heading h2 { margin: 0; }
+
+.catalog-extras-heading label {
+  display: grid;
+  gap: 6px;
+  max-width: 100%;
+  color: var(--muted);
+}
+
+.catalog-extras-heading select {
+  max-width: 100%;
+  min-height: 44px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+}
+
+.catalog-extras-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(115px, 45%), 1fr));
+  gap: clamp(14px, 2vw, 24px);
+}
+
+.catalog-extra-card { margin: 0; min-width: 0; }
+.catalog-extra-card a { display: block; }
+
+.catalog-extra-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 815 / 1110;
+  object-fit: contain;
+  background: var(--surface);
+}
+
+.catalog-extra-card figcaption {
+  margin-top: 8px;
+  overflow-wrap: anywhere;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.catalog-token-card {
+  padding: 0;
+  align-self: start;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  text-align: left;
+}
+
+.catalog-token-card:hover { border-color: var(--gold); }
+
+.catalog-token-label {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 4px 8px;
+  padding: 10px;
+}
+
+.catalog-token-label > span { font-size: .75rem; color: var(--muted); }
+
+.token-detail {
+  width: min(760px, calc(100% - 32px));
+  max-height: calc(100dvh - 32px);
+  padding: clamp(16px, 4vw, 32px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--text);
+}
+
+.token-detail::backdrop { background: #000b; }
+body:has(.token-detail[open]) { overflow: hidden; }
+
+.token-detail-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.token-detail-heading h2 { margin: 0; font-size: clamp(2rem, 5vw, 3rem); }
+.token-detail-heading p { margin: 6px 0 0; color: var(--muted); }
+
+.token-detail-close {
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.token-art-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 16px;
+}
+
+.token-art-group {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.token-art-group h3 { margin: 0 0 12px; font-size: 1rem; }
+.token-art-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 100px), 1fr)); gap: 10px; }
+.token-art-grid a { display: block; }
+.token-art-grid img { width: 100%; max-height: 420px; aspect-ratio: 815 / 1110; object-fit: contain; }
+
+.detail-visual {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  min-width: 0;
+  min-height: 0;
+  gap: 12px;
+}
+
+.card-versions {
+  padding: 12px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.card-versions h3 { margin: 0 0 10px; font-size: 1rem; }
+
+.card-version-list {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px;
+}
+
+.card-version {
+  display: grid;
+  flex: 0 0 100px;
+  justify-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 6px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: .8rem;
+  text-align: center;
+}
+
+.card-version[aria-pressed="true"] { border-color: var(--gold); color: var(--gold); }
+
+.card-version img { width: 46px; height: 62px; object-fit: contain; }
+
+@media (max-width: 760px) {
+  .detail-visual .detail-art { min-height: 0; aspect-ratio: 815 / 1110; }
+}

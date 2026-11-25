@@ -21,7 +21,7 @@
         "en": "Golias, Voz Do Desafio"
       },
       "images": {
-        "card": "../assets/cards/DDG - 001.webp",
+        "card": "../assets/cards/ddg_001.webp",
         "art": "../assets/imgs/DDG - 001.webp"
       },
       "virtues": [],
@@ -54,7 +54,7 @@
         "en": "Jessé, Father's King"
       },
       "images": {
-        "card": "../assets/cards/DDG - 002.webp",
+        "card": "../assets/cards/ddg_002.webp",
         "art": "../assets/imgs/DDG - 002.webp"
       },
       "virtues": [],
@@ -87,7 +87,7 @@
         "en": "Abner, Chanceler Real"
       },
       "images": {
-        "card": "../assets/cards/DDG - 003.webp",
+        "card": "../assets/cards/ddg_003.webp",
         "art": "../assets/imgs/DDG - 003.webp"
       },
       "virtues": [],
@@ -120,7 +120,7 @@
         "en": "Sem Espada E Nem Lança"
       },
       "images": {
-        "card": "../assets/cards/DDG - 004.webp",
+        "card": "../assets/cards/ddg_004.webp",
         "art": "../assets/imgs/DDG - 004.webp"
       },
       "virtues": [],
@@ -153,7 +153,7 @@
         "en": "Pelo Senhor Dos Exércitos"
       },
       "images": {
-        "card": "../assets/cards/DDG - 005.webp",
+        "card": "../assets/cards/ddg_005.webp",
         "art": "../assets/imgs/DDG - 005.webp"
       },
       "virtues": [],
@@ -186,7 +186,7 @@
         "en": "O Sacrifício Em Belém"
       },
       "images": {
-        "card": "../assets/cards/DDG - 006.webp",
+        "card": "../assets/cards/ddg_006.webp",
         "art": "../assets/imgs/DDG - 006.webp"
       },
       "virtues": [],
@@ -219,7 +219,7 @@
         "en": "Vale De Elá, Campo Do Desafio"
       },
       "images": {
-        "card": "../assets/cards/DDG - 007.webp",
+        "card": "../assets/cards/ddg_007.webp",
         "art": "../assets/imgs/DDG - 007.webp"
       },
       "virtues": [],
@@ -252,7 +252,7 @@
         "en": "Belém, Campos De Jessé"
       },
       "images": {
-        "card": "../assets/cards/DDG - 008.webp",
+        "card": "../assets/cards/ddg_008.webp",
         "art": "../assets/imgs/DDG - 008.webp"
       },
       "virtues": [],
@@ -285,7 +285,7 @@
         "en": "Socó, O Acampamento Filisteu"
       },
       "images": {
-        "card": "../assets/cards/DDG - 009.webp",
+        "card": "../assets/cards/ddg_009.webp",
         "art": "../assets/imgs/DDG - 009.webp"
       },
       "virtues": [],
@@ -321,7 +321,7 @@
         "en": "Davi, Desafiante Do Gigante"
       },
       "images": {
-        "card": "../assets/cards/DDG - 010.webp",
+        "card": "../assets/cards/ddg_010.webp",
         "art": "../assets/imgs/DDG - 010.webp"
       },
       "virtues": [
@@ -361,7 +361,7 @@
         "en": "Golias, O Herói Filisteu"
       },
       "images": {
-        "card": "../assets/cards/DDG - 011.webp",
+        "card": "../assets/cards/ddg_011.webp",
         "art": "../assets/imgs/DDG - 011.webp"
       },
       "virtues": [
@@ -397,7 +397,7 @@
         "en": "Davi, O Pastor De Ovelhas"
       },
       "images": {
-        "card": "../assets/cards/DDG - 012.webp",
+        "card": "../assets/cards/ddg_012.webp",
         "art": "../assets/imgs/DDG - 012.webp"
       },
       "virtues": [
@@ -435,7 +435,7 @@
         "en": "Saul, O Rei Amedrontado"
       },
       "images": {
-        "card": "../assets/cards/DDG - 013.webp",
+        "card": "../assets/cards/ddg_013.webp",
         "art": "../assets/imgs/DDG - 013.webp"
       },
       "virtues": [
@@ -473,7 +473,7 @@
         "en": "Samuel, Profeta Em Belém"
       },
       "images": {
-        "card": "../assets/cards/DDG - 014.webp",
+        "card": "../assets/cards/ddg_014.webp",
         "art": "../assets/imgs/DDG - 014.webp"
       },
       "virtues": [
@@ -510,7 +510,7 @@
         "en": "Jessé, Pai De Davi"
       },
       "images": {
-        "card": "../assets/cards/DDG - 015.webp",
+        "card": "../assets/cards/ddg_015.webp",
         "art": "../assets/imgs/DDG - 015.webp"
       },
       "virtues": [],
@@ -543,7 +543,7 @@
         "en": "Davi, Portador De Mantimentos"
       },
       "images": {
-        "card": "../assets/cards/DDG - 016.webp",
+        "card": "../assets/cards/ddg_016.webp",
         "art": "../assets/imgs/DDG - 016.webp"
       },
       "virtues": [
@@ -579,7 +579,7 @@
         "en": "Davi, Harpista De Saul"
       },
       "images": {
-        "card": "../assets/cards/DDG - 017.webp",
+        "card": "../assets/cards/ddg_017.webp",
         "art": "../assets/imgs/DDG - 017.webp"
       },
       "virtues": [
@@ -618,7 +618,7 @@
         "en": "Eliabe, O Primogênito Bonito"
       },
       "images": {
-        "card": "../assets/cards/DDG - 018.webp",
+        "card": "../assets/cards/ddg_018.webp",
         "art": "../assets/imgs/DDG - 018.webp"
       },
       "virtues": [
@@ -657,7 +657,7 @@
         "en": "Abinadabe E Samá"
       },
       "images": {
-        "card": "../assets/cards/DDG - 019.webp",
+        "card": "../assets/cards/ddg_019.webp",
         "art": "../assets/imgs/DDG - 019.webp"
       },
       "virtues": [],
@@ -693,7 +693,7 @@
         "en": "Exército Israelita Amedrontado"
       },
       "images": {
-        "card": "../assets/cards/DDG - 020.webp",
+        "card": "../assets/cards/ddg_020.webp",
         "art": "../assets/imgs/DDG - 020.webp"
       },
       "virtues": [
@@ -731,7 +731,7 @@
         "en": "Exército Filisteu Confiante"
       },
       "images": {
-        "card": "../assets/cards/DDG - 021.webp",
+        "card": "../assets/cards/ddg_021.webp",
         "art": "../assets/imgs/DDG - 021.webp"
       },
       "virtues": [
@@ -769,7 +769,7 @@
         "en": "Exército Israelita Confiante"
       },
       "images": {
-        "card": "../assets/cards/DDG - 022.webp",
+        "card": "../assets/cards/ddg_022.webp",
         "art": "../assets/imgs/DDG - 022.webp"
       },
       "virtues": [],
@@ -805,7 +805,7 @@
         "en": "Abner, Comandante De Saul"
       },
       "images": {
-        "card": "../assets/cards/DDG - 023.webp",
+        "card": "../assets/cards/ddg_023.webp",
         "art": "../assets/imgs/DDG - 023.webp"
       },
       "virtues": [
@@ -844,7 +844,7 @@
         "en": "Escudeiro De Golias"
       },
       "images": {
-        "card": "../assets/cards/DDG - 024.webp",
+        "card": "../assets/cards/ddg_024.webp",
         "art": "../assets/imgs/DDG - 024.webp"
       },
       "virtues": [
@@ -881,7 +881,7 @@
         "en": "Servo De Saul, O Olhar Atento"
       },
       "images": {
-        "card": "../assets/cards/DDG - 025.webp",
+        "card": "../assets/cards/ddg_025.webp",
         "art": "../assets/imgs/DDG - 025.webp"
       },
       "virtues": [],
@@ -916,7 +916,7 @@
         "en": "Guardador Dos Mantimentos"
       },
       "images": {
-        "card": "../assets/cards/DDG - 026.webp",
+        "card": "../assets/cards/ddg_026.webp",
         "art": "../assets/imgs/DDG - 026.webp"
       },
       "virtues": [],
@@ -951,7 +951,7 @@
         "en": "Jumentinho Do Jessé"
       },
       "images": {
-        "card": "../assets/cards/DDG - 027.webp",
+        "card": "../assets/cards/ddg_027.webp",
         "art": "../assets/imgs/DDG - 027.webp"
       },
       "virtues": [],
@@ -986,7 +986,7 @@
         "en": "Headshot"
       },
       "images": {
-        "card": "../assets/cards/DDG - 028.webp",
+        "card": "../assets/cards/ddg_028.webp",
         "art": "../assets/imgs/DDG - 028.webp"
       },
       "virtues": [
@@ -1023,7 +1023,7 @@
         "en": "A Batalha É Do Senhor"
       },
       "images": {
-        "card": "../assets/cards/DDG - 029.webp",
+        "card": "../assets/cards/ddg_029.webp",
         "art": "../assets/imgs/DDG - 029.webp"
       },
       "virtues": [
@@ -1060,7 +1060,7 @@
         "en": "Recusa Da Armadura"
       },
       "images": {
-        "card": "../assets/cards/DDG - 030.webp",
+        "card": "../assets/cards/ddg_030.webp",
         "art": "../assets/imgs/DDG - 030.webp"
       },
       "virtues": [
@@ -1097,7 +1097,7 @@
         "en": "Livramento Do Leão E Do Urso"
       },
       "images": {
-        "card": "../assets/cards/DDG - 031.webp",
+        "card": "../assets/cards/ddg_031.webp",
         "art": "../assets/imgs/DDG - 031.webp"
       },
       "virtues": [
@@ -1135,7 +1135,7 @@
         "en": "O Senhor Vê O Coração"
       },
       "images": {
-        "card": "../assets/cards/DDG - 032.webp",
+        "card": "../assets/cards/ddg_032.webp",
         "art": "../assets/imgs/DDG - 032.webp"
       },
       "virtues": [
@@ -1172,7 +1172,7 @@
         "en": "Ainda Falta O Menor"
       },
       "images": {
-        "card": "../assets/cards/DDG - 033.webp",
+        "card": "../assets/cards/ddg_033.webp",
         "art": "../assets/imgs/DDG - 033.webp"
       },
       "virtues": [
@@ -1207,7 +1207,7 @@
         "en": "Espírito Do Senhor Sobre Davi"
       },
       "images": {
-        "card": "../assets/cards/DDG - 034.webp",
+        "card": "../assets/cards/ddg_034.webp",
         "art": "../assets/imgs/DDG - 034.webp"
       },
       "virtues": [
@@ -1244,7 +1244,7 @@
         "en": "A Recompensa Do Rei"
       },
       "images": {
-        "card": "../assets/cards/DDG - 035.webp",
+        "card": "../assets/cards/ddg_035.webp",
         "art": "../assets/imgs/DDG - 035.webp"
       },
       "virtues": [
@@ -1279,7 +1279,7 @@
         "en": "Até Que Ele Venha"
       },
       "images": {
-        "card": "../assets/cards/DDG - 036.webp",
+        "card": "../assets/cards/ddg_036.webp",
         "art": "../assets/imgs/DDG - 036.webp"
       },
       "virtues": [
@@ -1316,7 +1316,7 @@
         "en": "Entre A Corte E O Rebanho"
       },
       "images": {
-        "card": "../assets/cards/DDG - 037.webp",
+        "card": "../assets/cards/ddg_037.webp",
         "art": "../assets/imgs/DDG - 037.webp"
       },
       "virtues": [],
@@ -1351,7 +1351,7 @@
         "en": "Cântico Dos Milhares"
       },
       "images": {
-        "card": "../assets/cards/DDG - 038.webp",
+        "card": "../assets/cards/ddg_038.webp",
         "art": "../assets/imgs/DDG - 038.webp"
       },
       "virtues": [
@@ -1388,7 +1388,7 @@
         "en": "Funda E Cinco Pedras"
       },
       "images": {
-        "card": "../assets/cards/DDG - 039.webp",
+        "card": "../assets/cards/ddg_039.webp",
         "art": "../assets/imgs/DDG - 039.webp"
       },
       "virtues": [],
@@ -1423,7 +1423,7 @@
         "en": "Espada De Golias"
       },
       "images": {
-        "card": "../assets/cards/DDG - 040.webp",
+        "card": "../assets/cards/ddg_040.webp",
         "art": "../assets/imgs/DDG - 040.webp"
       },
       "virtues": [],
@@ -1458,7 +1458,7 @@
         "en": "Armadura De Saul"
       },
       "images": {
-        "card": "../assets/cards/DDG - 041.webp",
+        "card": "../assets/cards/ddg_041.webp",
         "art": "../assets/imgs/DDG - 041.webp"
       },
       "virtues": [],
@@ -1491,7 +1491,7 @@
         "en": "Chifre De Azeite"
       },
       "images": {
-        "card": "../assets/cards/DDG - 042.webp",
+        "card": "../assets/cards/ddg_042.webp",
         "art": "../assets/imgs/DDG - 042.webp"
       },
       "virtues": [],
@@ -1526,7 +1526,7 @@
         "en": "Harpa De Davi"
       },
       "images": {
-        "card": "../assets/cards/DDG - 043.webp",
+        "card": "../assets/cards/ddg_043.webp",
         "art": "../assets/imgs/DDG - 043.webp"
       },
       "virtues": [],
@@ -1559,7 +1559,7 @@
         "en": "Espólios Do Gigante"
       },
       "images": {
-        "card": "../assets/cards/DDG - 044.webp",
+        "card": "../assets/cards/ddg_044.webp",
         "art": "../assets/imgs/DDG - 044.webp"
       },
       "virtues": [],
@@ -1592,7 +1592,7 @@
         "en": "Quarenta Dias De Desafio"
       },
       "images": {
-        "card": "../assets/cards/DDG - 045.webp",
+        "card": "../assets/cards/ddg_045.webp",
         "art": "../assets/imgs/DDG - 045.webp"
       },
       "virtues": [
@@ -1629,7 +1629,7 @@
         "en": "Desprezo Do Gigante"
       },
       "images": {
-        "card": "../assets/cards/DDG - 046.webp",
+        "card": "../assets/cards/ddg_046.webp",
         "art": "../assets/imgs/DDG - 046.webp"
       },
       "virtues": [
@@ -1669,7 +1669,7 @@
         "en": "Arrogância Do Fortes"
       },
       "images": {
-        "card": "../assets/cards/DDG - 047.webp",
+        "card": "../assets/cards/ddg_047.webp",
         "art": "../assets/imgs/DDG - 047.webp"
       },
       "virtues": [
@@ -1704,7 +1704,7 @@
         "en": "O Preço Da Rejeição"
       },
       "images": {
-        "card": "../assets/cards/DDG - 048.webp",
+        "card": "../assets/cards/ddg_048.webp",
         "art": "../assets/imgs/DDG - 048.webp"
       },
       "virtues": [
@@ -1743,7 +1743,7 @@
         "en": "Julgar Pela Aparência"
       },
       "images": {
-        "card": "../assets/cards/DDG - 049.webp",
+        "card": "../assets/cards/ddg_049.webp",
         "art": "../assets/imgs/DDG - 049.webp"
       },
       "virtues": [
@@ -1778,7 +1778,7 @@
         "en": "Davi, Segundo O Coração De Deus"
       },
       "images": {
-        "card": "../assets/cards/TEC - 001.webp",
+        "card": "../assets/cards/tec_001.webp",
         "art": "../assets/imgs/TEC - 001.webp"
       },
       "virtues": [],
@@ -1811,7 +1811,7 @@
         "en": "Obede-Edom, O Guardião Da Arca"
       },
       "images": {
-        "card": "../assets/cards/TEC - 002.webp",
+        "card": "../assets/cards/tec_002.webp",
         "art": "../assets/imgs/TEC - 002.webp"
       },
       "virtues": [],
@@ -1844,7 +1844,7 @@
         "en": "Abigail, A Grande Conciliadora"
       },
       "images": {
-        "card": "../assets/cards/TEC - 003.webp",
+        "card": "../assets/cards/tec_003.webp",
         "art": "../assets/imgs/TEC - 003.webp"
       },
       "virtues": [],
@@ -1877,7 +1877,7 @@
         "en": "Altar Do Coração Contrito"
       },
       "images": {
-        "card": "../assets/cards/TEC - 004.webp",
+        "card": "../assets/cards/tec_004.webp",
         "art": "../assets/imgs/TEC - 004.webp"
       },
       "virtues": [],
@@ -1910,7 +1910,7 @@
         "en": "Altar Dos Seis Passos"
       },
       "images": {
-        "card": "../assets/cards/TEC - 005.webp",
+        "card": "../assets/cards/tec_005.webp",
         "art": "../assets/imgs/TEC - 005.webp"
       },
       "virtues": [],
@@ -1943,7 +1943,7 @@
         "en": "Morada Da Plenitude"
       },
       "images": {
-        "card": "../assets/cards/TEC - 006.webp",
+        "card": "../assets/cards/tec_006.webp",
         "art": "../assets/imgs/TEC - 006.webp"
       },
       "virtues": [],
@@ -1976,7 +1976,7 @@
         "en": "Jerusalém, Cidade De Davi"
       },
       "images": {
-        "card": "../assets/cards/TEC - 007.webp",
+        "card": "../assets/cards/tec_007.webp",
         "art": "../assets/imgs/TEC - 007.webp"
       },
       "virtues": [],
@@ -2009,7 +2009,7 @@
         "en": "Hebrom, Trono Da Unção"
       },
       "images": {
-        "card": "../assets/cards/TEC - 008.webp",
+        "card": "../assets/cards/tec_008.webp",
         "art": "../assets/imgs/TEC - 008.webp"
       },
       "virtues": [],
@@ -2042,7 +2042,7 @@
         "en": "Rabá, A Frente Distante"
       },
       "images": {
-        "card": "../assets/cards/TEC - 009.webp",
+        "card": "../assets/cards/tec_009.webp",
         "art": "../assets/imgs/TEC - 009.webp"
       },
       "virtues": [],
@@ -2078,7 +2078,7 @@
         "en": "Davi, Rei De Todo Israel"
       },
       "images": {
-        "card": "../assets/cards/TEC - 010.webp",
+        "card": "../assets/cards/tec_010.webp",
         "art": "../assets/imgs/TEC - 010.webp"
       },
       "virtues": [
@@ -2119,7 +2119,7 @@
         "en": "Davi, Rei De Judá"
       },
       "images": {
-        "card": "../assets/cards/TEC - 011.webp",
+        "card": "../assets/cards/tec_011.webp",
         "art": "../assets/imgs/TEC - 011.webp"
       },
       "virtues": [
@@ -2158,7 +2158,7 @@
         "en": "Bate-Seba, Filha De Eliã"
       },
       "images": {
-        "card": "../assets/cards/TEC - 012.webp",
+        "card": "../assets/cards/tec_012.webp",
         "art": "../assets/imgs/TEC - 012.webp"
       },
       "virtues": [],
@@ -2194,7 +2194,7 @@
         "en": "Urias, Guerreiro Leal"
       },
       "images": {
-        "card": "../assets/cards/TEC - 013.webp",
+        "card": "../assets/cards/tec_013.webp",
         "art": "../assets/imgs/TEC - 013.webp"
       },
       "virtues": [
@@ -2231,7 +2231,7 @@
         "en": "Natã, O Profeta Do Rei"
       },
       "images": {
-        "card": "../assets/cards/TEC - 014.webp",
+        "card": "../assets/cards/tec_014.webp",
         "art": "../assets/imgs/TEC - 014.webp"
       },
       "virtues": [
@@ -2269,7 +2269,7 @@
         "en": "Joabe, O General Da Vanguarda"
       },
       "images": {
-        "card": "../assets/cards/TEC - 015.webp",
+        "card": "../assets/cards/tec_015.webp",
         "art": "../assets/imgs/TEC - 015.webp"
       },
       "virtues": [
@@ -2306,7 +2306,7 @@
         "en": "Anciões Do Pacto De Hebrom"
       },
       "images": {
-        "card": "../assets/cards/TEC - 016.webp",
+        "card": "../assets/cards/tec_016.webp",
         "art": "../assets/imgs/TEC - 016.webp"
       },
       "virtues": [],
@@ -2339,7 +2339,7 @@
         "en": "Abigail, Voz Da Prudência"
       },
       "images": {
-        "card": "../assets/cards/TEC - 017.webp",
+        "card": "../assets/cards/tec_017.webp",
         "art": "../assets/imgs/TEC - 017.webp"
       },
       "virtues": [
@@ -2377,7 +2377,7 @@
         "en": "Obede-Edom, Anfitrião Da Arca"
       },
       "images": {
-        "card": "../assets/cards/TEC - 018.webp",
+        "card": "../assets/cards/tec_018.webp",
         "art": "../assets/imgs/TEC - 018.webp"
       },
       "virtues": [
@@ -2415,7 +2415,7 @@
         "en": "Uzá, Mão Impulsiva"
       },
       "images": {
-        "card": "../assets/cards/TEC - 019.webp",
+        "card": "../assets/cards/tec_019.webp",
         "art": "../assets/imgs/TEC - 019.webp"
       },
       "virtues": [],
@@ -2450,7 +2450,7 @@
         "en": "Aiô, Diante Da Arca"
       },
       "images": {
-        "card": "../assets/cards/TEC - 020.webp",
+        "card": "../assets/cards/tec_020.webp",
         "art": "../assets/imgs/TEC - 020.webp"
       },
       "virtues": [],
@@ -2483,7 +2483,7 @@
         "en": "Mical, Olhar Da Janela"
       },
       "images": {
-        "card": "../assets/cards/TEC - 021.webp",
+        "card": "../assets/cards/tec_021.webp",
         "art": "../assets/imgs/TEC - 021.webp"
       },
       "virtues": [
@@ -2522,7 +2522,7 @@
         "en": "Mefibosete, À Mesa Do Rei"
       },
       "images": {
-        "card": "../assets/cards/TEC - 022.webp",
+        "card": "../assets/cards/tec_022.webp",
         "art": "../assets/imgs/TEC - 022.webp"
       },
       "virtues": [],
@@ -2555,7 +2555,7 @@
         "en": "Ziba, Servo Da Casa De Saul"
       },
       "images": {
-        "card": "../assets/cards/TEC - 023.webp",
+        "card": "../assets/cards/tec_023.webp",
         "art": "../assets/imgs/TEC - 023.webp"
       },
       "virtues": [],
@@ -2591,7 +2591,7 @@
         "en": "Abner, Pacto De Hebrom"
       },
       "images": {
-        "card": "../assets/cards/TEC - 024.webp",
+        "card": "../assets/cards/tec_024.webp",
         "art": "../assets/imgs/TEC - 024.webp"
       },
       "virtues": [
@@ -2627,7 +2627,7 @@
         "en": "Is-Bosete, Rei Sustentado"
       },
       "images": {
-        "card": "../assets/cards/TEC - 025.webp",
+        "card": "../assets/cards/tec_025.webp",
         "art": "../assets/imgs/TEC - 025.webp"
       },
       "virtues": [
@@ -2662,7 +2662,7 @@
         "en": "Recabe E Baaná, Os Regicidas"
       },
       "images": {
-        "card": "../assets/cards/TEC - 026.webp",
+        "card": "../assets/cards/tec_026.webp",
         "art": "../assets/imgs/TEC - 026.webp"
       },
       "virtues": [
@@ -2702,7 +2702,7 @@
         "en": "Asael, O Veloz Como A Gazela"
       },
       "images": {
-        "card": "../assets/cards/TEC - 027.webp",
+        "card": "../assets/cards/tec_027.webp",
         "art": "../assets/imgs/TEC - 027.webp"
       },
       "virtues": [
@@ -2739,7 +2739,7 @@
         "en": "Paltiel, Que Seguiu Chorando"
       },
       "images": {
-        "card": "../assets/cards/TEC - 028.webp",
+        "card": "../assets/cards/tec_028.webp",
         "art": "../assets/imgs/TEC - 028.webp"
       },
       "virtues": [
@@ -2777,7 +2777,7 @@
         "en": "Abisai, General Do Flanco"
       },
       "images": {
-        "card": "../assets/cards/TEC - 029.webp",
+        "card": "../assets/cards/tec_029.webp",
         "art": "../assets/imgs/TEC - 029.webp"
       },
       "virtues": [
@@ -2815,7 +2815,7 @@
         "en": "Benaia, Capitão Dos Quereteus"
       },
       "images": {
-        "card": "../assets/cards/TEC - 030.webp",
+        "card": "../assets/cards/tec_030.webp",
         "art": "../assets/imgs/TEC - 030.webp"
       },
       "virtues": [
@@ -2853,7 +2853,7 @@
         "en": "Hirão, Rei De Tiro"
       },
       "images": {
-        "card": "../assets/cards/TEC - 031.webp",
+        "card": "../assets/cards/tec_031.webp",
         "art": "../assets/imgs/TEC - 031.webp"
       },
       "virtues": [
@@ -2890,7 +2890,7 @@
         "en": "Promessa À Casa De Davi"
       },
       "images": {
-        "card": "../assets/cards/TEC - 032.webp",
+        "card": "../assets/cards/tec_032.webp",
         "art": "../assets/imgs/TEC - 032.webp"
       },
       "virtues": [
@@ -2928,7 +2928,7 @@
         "en": "Tú És Este Homem"
       },
       "images": {
-        "card": "../assets/cards/TEC - 033.webp",
+        "card": "../assets/cards/tec_033.webp",
         "art": "../assets/imgs/TEC - 033.webp"
       },
       "virtues": [
@@ -2965,7 +2965,7 @@
         "en": "Sussurro Em Sião"
       },
       "images": {
-        "card": "../assets/cards/TEC - 034.webp",
+        "card": "../assets/cards/tec_034.webp",
         "art": "../assets/imgs/TEC - 034.webp"
       },
       "virtues": [
@@ -3002,7 +3002,7 @@
         "en": "Consulta Ao Senhor"
       },
       "images": {
-        "card": "../assets/cards/TEC - 035.webp",
+        "card": "../assets/cards/tec_035.webp",
         "art": "../assets/imgs/TEC - 035.webp"
       },
       "virtues": [
@@ -3039,7 +3039,7 @@
         "en": "A Ruptura De Baal-Perazim"
       },
       "images": {
-        "card": "../assets/cards/TEC - 036.webp",
+        "card": "../assets/cards/tec_036.webp",
         "art": "../assets/imgs/TEC - 036.webp"
       },
       "virtues": [
@@ -3076,7 +3076,7 @@
         "en": "Som Das Amoreiras"
       },
       "images": {
-        "card": "../assets/cards/TEC - 037.webp",
+        "card": "../assets/cards/tec_037.webp",
         "art": "../assets/imgs/TEC - 037.webp"
       },
       "virtues": [
@@ -3113,7 +3113,7 @@
         "en": "Bondade Por Amor A Jônatas"
       },
       "images": {
-        "card": "../assets/cards/TEC - 038.webp",
+        "card": "../assets/cards/tec_038.webp",
         "art": "../assets/imgs/TEC - 038.webp"
       },
       "virtues": [
@@ -3150,7 +3150,7 @@
         "en": "Lamento Pelos Valentes"
       },
       "images": {
-        "card": "../assets/cards/TEC - 039.webp",
+        "card": "../assets/cards/tec_039.webp",
         "art": "../assets/imgs/TEC - 039.webp"
       },
       "virtues": [
@@ -3185,7 +3185,7 @@
         "en": "Palácio De Cedro"
       },
       "images": {
-        "card": "../assets/cards/TEC - 040.webp",
+        "card": "../assets/cards/tec_040.webp",
         "art": "../assets/imgs/TEC - 040.webp"
       },
       "virtues": [],
@@ -3218,7 +3218,7 @@
         "en": "Arca Da Aliança"
       },
       "images": {
-        "card": "../assets/cards/TEC - 041.webp",
+        "card": "../assets/cards/tec_041.webp",
         "art": "../assets/imgs/TEC - 041.webp"
       },
       "virtues": [
@@ -3261,7 +3261,7 @@
         "en": "Éfode De Linho"
       },
       "images": {
-        "card": "../assets/cards/TEC - 042.webp",
+        "card": "../assets/cards/tec_042.webp",
         "art": "../assets/imgs/TEC - 042.webp"
       },
       "virtues": [],
@@ -3296,7 +3296,7 @@
         "en": "Escudos De Ouro De Hadadezer"
       },
       "images": {
-        "card": "../assets/cards/TEC - 043.webp",
+        "card": "../assets/cards/tec_043.webp",
         "art": "../assets/imgs/TEC - 043.webp"
       },
       "virtues": [],
@@ -3331,7 +3331,7 @@
         "en": "Cordel Da Medida"
       },
       "images": {
-        "card": "../assets/cards/TEC - 044.webp",
+        "card": "../assets/cards/tec_044.webp",
         "art": "../assets/imgs/TEC - 044.webp"
       },
       "virtues": [],
@@ -3366,7 +3366,7 @@
         "en": "Sentença Velada"
       },
       "images": {
-        "card": "../assets/cards/TEC - 045.webp",
+        "card": "../assets/cards/tec_045.webp",
         "art": "../assets/imgs/TEC - 045.webp"
       },
       "virtues": [
@@ -3404,7 +3404,7 @@
         "en": "Mulheres E Concubinas De Davi"
       },
       "images": {
-        "card": "../assets/cards/TEC - 046.webp",
+        "card": "../assets/cards/tec_046.webp",
         "art": "../assets/imgs/TEC - 046.webp"
       },
       "virtues": [
@@ -3443,7 +3443,7 @@
         "en": "Vingança No Portão De Hebrom"
       },
       "images": {
-        "card": "../assets/cards/TEC - 047.webp",
+        "card": "../assets/cards/tec_047.webp",
         "art": "../assets/imgs/TEC - 047.webp"
       },
       "virtues": [
@@ -3481,7 +3481,7 @@
         "en": "Humilhação Dos Embaixadores"
       },
       "images": {
-        "card": "../assets/cards/TEC - 048.webp",
+        "card": "../assets/cards/tec_048.webp",
         "art": "../assets/imgs/TEC - 048.webp"
       },
       "virtues": [
@@ -3518,7 +3518,7 @@
         "en": "Combate No Tanque De Gibeão"
       },
       "images": {
-        "card": "../assets/cards/TEC - 049.webp",
+        "card": "../assets/cards/tec_049.webp",
         "art": "../assets/imgs/TEC - 049.webp"
       },
       "virtues": [

@@ -1,5 +1,6 @@
 const DATA_URL = "../data/game/cards.json";
 const RULINGS_URL = "../data/game/rulings.json";
+const EXTRAS_URL = "../data/game/card-extras.json";
 const STORAGE_KEY = "adonai.cards.filters.v1";
 const REFERENCE_URLS = {
   collections: "../data/refs/collections.json",
@@ -56,6 +57,10 @@ const copy = {
     attack: "Ataque",
     resistance: "Resistência",
     imageAlt: "Imagem da carta",
+    cardVersions: "Versões da carta",
+    extraImagesLoading: "Carregando imagens da coleção…",
+    extraImagesUnavailable: "Não foi possível carregar as imagens da coleção.",
+    viewImage: "Abrir imagem em nova aba",
     close: "Fechar detalhes",
     viewStandard: "Padrão",
     viewCompact: "Compacto",
@@ -104,6 +109,10 @@ const copy = {
     attack: "Attack",
     resistance: "Resistance",
     imageAlt: "Card image",
+    cardVersions: "Card versions",
+    extraImagesLoading: "Loading set images…",
+    extraImagesUnavailable: "The set images could not be loaded.",
+    viewImage: "Open image in a new tab",
     close: "Close details",
     viewStandard: "Standard",
     viewCompact: "Compact",
@@ -136,6 +145,9 @@ const state = {
   viewMode: "standard",
   lang: "pt"
 };
+
+const catalogLinks = document.querySelectorAll(".catalog-sections a");
+let cardExtras;
 let isApplyingUrlState = false;
 
 const els = {
@@ -179,6 +191,12 @@ const els = {
   drawerClose: document.getElementById("drawerClose"),
   drawerContent: document.getElementById("drawerContent"),
   hoverPreview: document.getElementById("hoverPreview"),
+  virtueCardsSet: document.getElementById("virtueCardsSet"),
+  virtueCardsGrid: document.getElementById("virtueCardsGrid"),
+  tokenCardsGrid: document.getElementById("tokenCardsGrid"),
+  tokenDetail: document.getElementById("tokenDetail"),
+  tokenDetailTitle: document.getElementById("tokenDetailTitle"),
+  tokenArtGroups: document.getElementById("tokenArtGroups"),
   catalogHeroCards: document.getElementById("catalogHeroCards"),
   collectionCount: document.getElementById("collectionCount"),
   typeCount: document.getElementById("typeCount"),
@@ -207,6 +225,92 @@ let querySuggestionState = null;
 
 function t(key) {
   return copy[state.lang][key] || copy.pt[key] || key;
+}
+
+function syncCatalogSection() {
+  const active = ["#virtudes", "#fichas"].includes(location.hash) ? location.hash : "#cardsCatalog";
+  catalogLinks.forEach(link => {
+    const selected = link.hash === active;
+    document.getElementById(link.hash.slice(1)).hidden = !selected;
+    if (selected) link.setAttribute("aria-current", "location");
+    else link.removeAttribute("aria-current");
+  });
+}
+
+function renderVirtueCards() {
+  const { virtueCardsSet: select, virtueCardsGrid: grid } = els;
+  const sets = cardExtras?.sets?.filter(set => set.virtues?.length) || [];
+  const selection = sets.find(set => String(set.collectionId) === select.value) || sets[0];
+  select.disabled = !selection;
+  select.innerHTML = sets.map(({ collectionId }) => {
+    const collection = referenceData.collections.get(collectionId);
+    return `<option value="${escapeHtml(collectionId)}">${escapeHtml(localize(collection?.label || collection?.name) || collectionId)}</option>`;
+  }).join("");
+  if (!selection) {
+    grid.textContent = t(cardExtras === undefined ? "extraImagesLoading" : "extraImagesUnavailable");
+    return;
+  }
+  select.value = String(selection.collectionId);
+  grid.innerHTML = selection.virtues.map(entry => {
+    const name = localize(referenceData.virtues.get(entry.virtueId)?.name);
+    return `<figure class="catalog-extra-card">
+      <a href="${escapeHtml(entry.image)}" target="_blank" rel="noopener" aria-label="${escapeHtml(`${name} · ${t("viewImage")}`)}">
+        <img src="${escapeHtml(entry.image)}" alt="" loading="lazy" decoding="async" />
+      </a>
+      <figcaption>${escapeHtml(name)}</figcaption>
+    </figure>`;
+  }).join("");
+}
+
+function getTokenArtGroups(token) {
+  const groups = new Map();
+  for (const art of token.art) {
+    const collection = referenceData.collections.get(art.collectionId);
+    if (!collection) continue;
+    if (!groups.has(collection.id)) groups.set(collection.id, { collection, art: [] });
+    groups.get(collection.id).art.push(art);
+  }
+  return [...groups.values()].sort((a, b) => {
+    const orderA = a.collection.releaseOrder ?? a.collection.id;
+    const orderB = b.collection.releaseOrder ?? b.collection.id;
+    return orderB - orderA;
+  });
+}
+
+function renderTokenCards() {
+  if (!cardExtras?.tokens?.length) {
+    els.tokenCardsGrid.textContent = t(cardExtras === undefined ? "extraImagesLoading" : "extraImagesUnavailable");
+    return;
+  }
+  els.tokenCardsGrid.innerHTML = cardExtras.tokens.map(token => {
+    const [latest] = getTokenArtGroups(token);
+    if (!latest) return "";
+    const name = localize(token.name);
+    return `<button class="catalog-extra-card catalog-token-card" type="button" data-token-id="${escapeHtml(token.id)}" aria-haspopup="dialog">
+      <img src="${escapeHtml(latest.art[0].image)}" alt="" loading="lazy" decoding="async" />
+      <span class="catalog-token-label"><strong>${escapeHtml(name)}</strong><span>${escapeHtml(latest.collection.code)}</span></span>
+    </button>`;
+  }).join("");
+}
+
+function openTokenDetail(tokenId) {
+  const token = cardExtras?.tokens?.find(item => item.id === tokenId);
+  if (!token) return;
+  const name = localize(token.name);
+  els.tokenDetailTitle.textContent = name;
+  els.tokenArtGroups.innerHTML = getTokenArtGroups(token).map(({ collection, art }) => {
+    const label = localize(collection.label || collection.name);
+    return `<section class="token-art-group">
+      <h3>${escapeHtml(label)}</h3>
+      <div class="token-art-grid">
+        ${art.map(entry => `<a href="${escapeHtml(entry.image)}" target="_blank" rel="noopener" aria-label="${escapeHtml(`${name} · ${label} · ${t("viewImage")}`)}">
+          <img src="${escapeHtml(entry.image)}" alt="" decoding="async" />
+        </a>`).join("")}
+      </div>
+    </section>`;
+  }).join("");
+  els.tokenDetail.showModal();
+  els.tokenDetail.scrollTop = 0;
 }
 
 function hydrateCatalogHero() {
@@ -1418,7 +1522,7 @@ function syncUrlFromState() {
   if (state.maxResistance !== null && resistanceBounds.max !== null && state.maxResistance !== resistanceBounds.max) params.set("resMax", String(state.maxResistance));
   if (state.currentPage > 1) params.set("page", String(state.currentPage));
 
-  const next = `${window.location.pathname}${params.toString() ? `?${params.toString()}` : ""}`;
+  const next = `${window.location.pathname}${params.toString() ? `?${params.toString()}` : ""}${window.location.hash}`;
   window.history.replaceState({}, "", next);
 }
 
@@ -1790,6 +1894,11 @@ function openDrawer(cardCode) {
 
   const name = getCardName(card);
   const image = card.images.card || card.images.art;
+  const variants = cardExtras?.variants?.[cardCode] || [];
+  const art = `<div class="detail-art">
+    <img src="${escapeHtml(image)}" alt="${escapeHtml(`${t("imageAlt")}: ${name}`)}" />
+  </div>`;
+  const versions = [{ name: t("viewStandard"), image }, ...variants];
   const backgroundImage = card.images.art || image;
   const functions = formatFunctions(card);
   const referenceParts = formatReferenceParts(card);
@@ -1800,9 +1909,22 @@ function openDrawer(cardCode) {
   els.drawerPanel?.style.setProperty("--drawer-bg", `url("${cssUrl(backgroundImage)}")`);
   els.drawerContent.innerHTML = `
     <section class="detail-layout">
-      <div class="detail-art">
-        <img src="${escapeHtml(image)}" alt="${escapeHtml(`${t("imageAlt")}: ${name}`)}" />
-      </div>
+      ${variants.length ? `<div class="detail-visual">
+        ${art}
+        <section class="card-versions" aria-labelledby="cardVersionsTitle">
+          <h3 id="cardVersionsTitle">${escapeHtml(t("cardVersions"))}</h3>
+          <div class="card-version-list">
+            ${versions.map((version, index) => {
+              const label = localize(version.name);
+              return `<button class="card-version" type="button" aria-pressed="${index === 0}"
+                data-version-image="${escapeHtml(version.image)}" data-version-alt="${escapeHtml(`${name} · ${label}`)}">
+                <img src="${escapeHtml(version.image)}" alt="" loading="lazy" decoding="async" />
+                <span>${escapeHtml(label)}</span>
+              </button>`;
+            }).join("")}
+          </div>
+        </section>
+      </div>` : art}
       <div class="detail-main">
         <div class="detail-heading">
           <span class="section-kicker">${escapeHtml(name)}</span>
@@ -1984,6 +2106,8 @@ function applyLanguage(lang) {
 
   els.mobileToggle?.setAttribute("aria-label", lang === "pt" ? "Alternar menu" : "Toggle menu");
   updateFilterToggleLabel();
+  renderVirtueCards();
+  renderTokenCards();
 
   populateFilters();
   state.set = els.setFilter.value;
@@ -2014,9 +2138,16 @@ async function loadCards() {
 
   try {
     const referenceEntries = Object.entries(REFERENCE_URLS);
-    const [cardsResponse, rulingsResponse, ...referenceResponses] = await Promise.all([
+    const [cardsResponse, rulingsResponse, extras, ...referenceResponses] = await Promise.all([
       fetch(DATA_URL),
       fetch(RULINGS_URL),
+      fetch(EXTRAS_URL).then(response => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json();
+      }).catch(error => {
+        console.warn("Imagens extras do catálogo:", error);
+        return null;
+      }),
       ...referenceEntries.map(([, url]) => fetch(url))
     ]);
     if (!cardsResponse.ok) throw new Error(`HTTP ${cardsResponse.status}`);
@@ -2028,6 +2159,9 @@ async function loadCards() {
     const rulingsPayload = await rulingsResponse.json();
     const referencePayloads = await Promise.all(referenceResponses.map((response) => response.json()));
     setReferenceData(Object.fromEntries(referenceEntries.map(([key], index) => [key, referencePayloads[index]])));
+    cardExtras = extras;
+    renderVirtueCards();
+    renderTokenCards();
 
     cardsMeta = payload.meta || {};
     rulingBase = rulingsPayload.rulings || { type: [], subtype: [], effect: [], keyword: [] };
@@ -2230,6 +2364,25 @@ els.pagination.addEventListener("click", (event) => {
 
 els.drawerBackdrop.addEventListener("click", closeDrawer);
 els.drawerClose.addEventListener("click", closeDrawer);
+els.drawerContent.addEventListener("click", event => {
+  const button = event.target.closest("[data-version-image]");
+  if (!button || button.getAttribute("aria-pressed") === "true") return;
+  const image = els.drawerContent.querySelector(".detail-art img");
+  image.src = button.dataset.versionImage;
+  image.alt = button.dataset.versionAlt;
+  button.parentElement.querySelector('[aria-pressed="true"]')?.setAttribute("aria-pressed", "false");
+  button.setAttribute("aria-pressed", "true");
+});
+
+syncCatalogSection();
+window.addEventListener("hashchange", syncCatalogSection);
+renderVirtueCards();
+renderTokenCards();
+els.virtueCardsSet.addEventListener("change", renderVirtueCards);
+els.tokenCardsGrid.addEventListener("click", event => {
+  const trigger = event.target.closest("[data-token-id]");
+  if (trigger) openTokenDetail(trigger.dataset.tokenId);
+});
 
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") closeDrawer();
