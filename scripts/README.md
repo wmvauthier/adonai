@@ -41,3 +41,16 @@ Verificação:
 node --test scripts/update-card-usage.test.mjs
 python3 scripts/validate_project.py
 ```
+
+## Gerar o PDF das regras
+
+Com Node.js, FFmpeg e Chromium instalados, execute `node scripts/build-rules-pdf.mjs`.
+A variável `CHROMIUM` permite indicar o executável do navegador. Para usar a
+impressão via Playwright, disponibilize `playwright-core` ao Node e acrescente
+`--playwright` ao comando.
+
+O gerador combina `data/rules/comprehensive_rules.md` com exemplos vinculados aos
+números das subseções e grava `manual/regras-adonai.pdf`. Edite as situações em
+`scripts/rules-examples.mjs`. As quatro demonstrações com passos e as fichas
+ilustradas estão em `scripts/build-rules-pdf.mjs`. As imagens são redimensionadas
+em uma pasta temporária durante a geração.

@@ -1038,7 +1038,6 @@ function compareNumber(actual, operator, expected) {
 }
 
 function queryFieldValue(card, key) {
-  const typeLine = [card.type, card.subtype].map(flattenValue).join(" ");
   const oracleText = [card.text, card.rulings];
   const referenceText = formatReference(card);
   const allText = [
@@ -1065,7 +1064,7 @@ function queryFieldValue(card, key) {
     text: oracleText,
     ruling: card.rulings,
     rulings: card.rulings,
-    t: typeLine,
+    t: card.type,
     type: card.type,
     types: card.type,
     st: card.subtype,
@@ -1124,6 +1123,10 @@ function matchesQueryToken(card, token) {
   let matched;
   if (Object.prototype.hasOwnProperty.call(numericFields, token.key)) {
     matched = compareNumber(numericFields[token.key], token.operator, token.value);
+  } else if (["t", "type", "types", "st", "subtype", "subtypes"].includes(token.key)) {
+    const labels = formatList(queryFieldValue(card, token.key));
+    const exact = labels.some(label => normalizeSearch(label) === normalizeSearch(token.value));
+    matched = token.operator === "!=" ? !exact : exact;
   } else {
     const value = queryFieldValue(card, token.key);
     matched = token.operator === "!="

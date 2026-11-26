@@ -1,4 +1,4 @@
-# Comprehensive Rules — ADONAI CARD GAME
+# Comprehensive Rules - Adonai CARD GAME
 
 **Versão corrigida:** 1.2  
 **Data:** 28/08/2026  
